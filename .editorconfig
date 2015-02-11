@@ -9,7 +9,7 @@ insert_final_newline = true
 max_line_length = 72
 trim_trailing_whitespace = true
 
-[**.{json,md}]
+[**.{json,md,sh}]
 max_line_length = false
 
 [Makefile]
