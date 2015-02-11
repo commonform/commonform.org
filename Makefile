@@ -31,7 +31,10 @@ ${build}/%.html: %.html
 	mkdir -p ${build}
 	cp $< $@
 
-.PHONY: clean
+.PHONY: clean watch
 
 clean:
 	rm -rf ${build}
+
+watch:
+	watchify --verbose --debug source/js/index.js -o application/index.js

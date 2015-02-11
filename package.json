@@ -22,7 +22,6 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "build": "make",
-    "watch": "watchify --verbose --debug source/js/index.js -o application/index.js"
+    "build": "make"
   }
 }
