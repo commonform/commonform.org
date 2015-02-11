@@ -1,4 +1,3 @@
-var React = require('react');
 var validate = require('commonform-validate');
 
 var Definition = require('./definition');

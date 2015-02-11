@@ -1,6 +1,3 @@
-var React = require('react');
-var Reflux = require('reflux');
-
 var Form = require('./form');
 var Navigation = require('./navigation');
 

@@ -1,5 +1,3 @@
-var React = require('react');
-
 var componentFor = require('./component-for-content');
 
 var attributes = {className: 'paragraph'};

@@ -4,6 +4,10 @@
   "camelcase": true,
   "curly": true,
   "eqeqeq": true,
+  "globals": {
+    "React": false,
+    "Reflux": false
+  },
   "immed": true,
   "indent": 2,
   "latedef": true,

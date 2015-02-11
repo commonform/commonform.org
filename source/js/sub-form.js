@@ -1,5 +1,3 @@
-var React = require('react');
-
 var Summary = require('./summary');
 
 var attributes = {className: 'subForm'};

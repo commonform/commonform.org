@@ -1,5 +1,3 @@
-var React = require('react');
-
 var SubForm = require('./sub-form');
 
 var attributes = {className: 'series'};

@@ -1,4 +1,3 @@
-var React = require('react');
 var group = require('commonform-group-series');
 
 var Paragraph = require('./paragraph');
