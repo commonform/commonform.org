@@ -1,0 +1,28 @@
+{
+  "name": "commonform-client",
+  "version": "0.0.0-prerelease",
+  "dependencies": {
+    "commonform-validate": "file:../../../../../tmp/npm-21885-e1daed52/git-cache-9a3aabe35c19/9d1536ad5df2e2b32cdc217f3e2a77ed2e9bb50c",
+    "react": "^0.12.2",
+    "reflux": "^0.2.5"
+  },
+  "devDependencies": {
+    "browserify": "^8.1.3",
+    "cssmin": "^0.4.2",
+    "exorcist": "^0.1.6",
+    "istanbul": "^0.3.5",
+    "jscs": "^1.11.1",
+    "jshint": "^2.6.0",
+    "less": "^2.4.0",
+    "react": "^0.12.2",
+    "uglify-js": "^2.4.16",
+    "uglifyify": "^3.0.1",
+    "watchify": "^2.3.0"
+  },
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "build": "browserify -g uglifyify source/js/index.js -d | exorcist application/index.js.map > application/index.js",
+    "watch": "watchify --verbose --debug source/js/index.js -o application/index.js"
+  }
+}

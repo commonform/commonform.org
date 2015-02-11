@@ -1,0 +1,5 @@
+*.tgz
+*.map
+coverage
+application
+node_modules
