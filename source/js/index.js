@@ -2,6 +2,7 @@ var React = require('react');
 var Reflux = require('reflux');
 
 var Form = require('./form');
+var Navigation = require('./navigation');
 
 document.addEventListener('DOMContentLoaded', function() {
   var formChange = Reflux.createAction();
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   React.initializeTouchEvents(true);
 
-  var element = document.getElementsByClassName('project')[0];
+  var element = document.getElementsByClassName('application')[0];
   var project = {
     form: {
       content: ['This is a test']
@@ -54,12 +55,16 @@ document.addEventListener('DOMContentLoaded', function() {
       this.listenTo(formStore, this.onFormChange);
     },
     render: function() {
+      var navigation = React.createElement(Navigation);
       var form = React.createElement(Form, {
         content: this.props.form.content,
         conspicuous: this.props.form.conspicuous,
         path: this.props.path.concat('form')
       });
-      return React.DOM.div({className: 'project'}, form);
+      var content = React.DOM.div({className: 'container'}, form);
+      return React.DOM.div({className: 'project'}, [
+        navigation, content
+      ]);
     }
   });
 
