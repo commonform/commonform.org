@@ -4,6 +4,7 @@
   "dependencies": {
     "commonform-group-series": "0.1.x",
     "commonform-validate": "0.1.x",
+    "indepth": "^0.1.0",
     "reflux": "^0.2.5"
   },
   "devDependencies": {
@@ -16,6 +17,9 @@
     "less": "^2.4.0",
     "uglifyify": "^3.0.1",
     "watchify": "^2.3.0"
+  },
+  "engines": {
+    "node": "0.10.x"
   },
   "license": "Apache-2.0",
   "private": true,

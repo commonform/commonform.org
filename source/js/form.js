@@ -1,28 +1,37 @@
 var group = require('commonform-group-series');
+var validate = require('commonform-validate');
 
 var Paragraph = require('./paragraph');
 var Series = require('./series');
 
 module.exports = React.createClass({
+  propTypes: {
+    path: React.PropTypes.array.isRequired,
+    form: function(props, propName) {
+      if (!validate.nestedForm(props[propName])) {
+        throw new Error('Invalid form');
+      }
+    }
+  },
   render: function() {
     var path = this.props.path;
-    var attributes = {
-      className: 'form',
-      path: path
-    };
-    var groups = group({content: this.props.content});
+    var form = this.props.form;
     var pathCounter = 0;
-    var children = groups.map(function(element) {
-      var childPath = path.concat(pathCounter++);
+    var groups = group({content: form.content});
+    var children = groups.map(function(group) {
       var childAttributes = {
-        content: element.content,
-        path: childPath,
-        key: childPath.join('.')
+        content: group.content,
+        path: path.concat('content'),
+        offset: pathCounter
       };
-      return element.type === 'paragraph' ?
+      pathCounter = pathCounter + group.content.length;
+      return group.type === 'paragraph' ?
         React.createElement(Paragraph, childAttributes) :
         React.createElement(Series, childAttributes);
     });
-    return React.DOM.div(attributes, children);
+    return React.DOM.div({
+      className: 'form',
+      path: path
+    }, children);
   }
 });

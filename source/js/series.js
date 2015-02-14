@@ -5,15 +5,14 @@ var attributes = {className: 'series'};
 module.exports = React.createClass({
   render: function() {
     var path = this.props.path;
+    var offset = this.props.offset;
     var children = this.props.content.map(function(subForm, index) {
-      var subFormPath = path.concat(index);
-      subForm.form.path = subFormPath.concat(index);
+      var subFormPath = path.concat(offset + index);
       var childAttributes = {
         subForm: subForm,
-        path: subFormPath,
-        key: subFormPath.join('.')
+        path: subFormPath
       };
-      var childPath = path.concat('content', index);
+      var childPath = subFormPath.concat('content', index);
       return React.createElement(SubForm, childAttributes, childPath);
     });
     return React.DOM.div(attributes, children);
