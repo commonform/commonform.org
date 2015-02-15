@@ -4,7 +4,8 @@
   "dependencies": {
     "commonform-group-series": "0.1.x",
     "commonform-validate": "0.1.x",
-    "indepth": "^0.1.0",
+    "indepth": "^0.1.2",
+    "just-debounce": "0.0.3",
     "reflux": "^0.2.5"
   },
   "devDependencies": {

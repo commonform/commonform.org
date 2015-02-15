@@ -1,18 +1,8 @@
-var iconLI = function(icon, text) {
-  return React.DOM.li({}, [
-    React.DOM.a({
-      href: '#'
-    }, [
-      React.DOM.span({
-        className: 'glyphicon glyphicon-' + icon
-      }),
-      ' ' + text
-    ])
-  ]);
-};
+var DeleteButton = require('./delete-button');
 
 module.exports = React.createClass({
   render: function() {
+    var path = this.props.path;
     return React.DOM.div({
       className: 'btn-group',
     }, [
@@ -27,7 +17,7 @@ module.exports = React.createClass({
         className: 'dropdown-menu',
         role: 'menu'
       }, [
-        iconLI('trash', 'Delete')
+        React.createElement(DeleteButton, {path: path})
       ])
     ]);
   }

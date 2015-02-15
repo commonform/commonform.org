@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
         case 'set':
           indepth.set(this.form, path, value);
           break;
+        case 'del':
+          indepth.del(this.form, path);
+          break;
       }
       this.trigger(this.form);
     }
