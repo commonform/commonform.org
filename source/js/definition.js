@@ -6,6 +6,6 @@ module.exports = React.createClass({
       id: idOf('definition', this.props.term),
       className: 'definition'
     };
-    return React.DOM.dfn(attributes, this.props.term);
+    return React.DOM.dfn(attributes, '""' + this.props.term + '""');
   }
 });

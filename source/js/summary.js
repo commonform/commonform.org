@@ -13,11 +13,18 @@ module.exports = React.createClass({
     this.debouncedOnChange = debounce(function() {
       var sanitized = sanitize(this.state.summary);
       this.setState({summary: sanitized});
-      formChange({
-        type: 'set',
-        path: this.props.path,
-        value: sanitized
-      });
+      if (sanitized.length > 0) {
+        formChange({
+          type: 'set',
+          path: this.props.path,
+          value: sanitized
+        });
+      } else {
+        formChange({
+          type: 'del',
+          path: this.props.path
+        });
+      }
     }, 500);
   },
   onChange: function(event) {
@@ -33,6 +40,8 @@ module.exports = React.createClass({
       ref: 'inputBox',
       value: this.state.summary
     };
-    return React.DOM.input(attributes);
+    return React.DOM.form({className: 'form-inline'},
+        React.DOM.input(attributes)
+    );
   }
 });

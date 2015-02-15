@@ -2,6 +2,7 @@ var Form = require('./form');
 var Navigation = require('./navigation');
 var indepth = require('indepth');
 var formChange = require('./form-change');
+var combineStrings = require('./combine-strings');
 
 document.addEventListener('DOMContentLoaded', function() {
   var formStore = Reflux.createStore({
@@ -20,7 +21,13 @@ document.addEventListener('DOMContentLoaded', function() {
         case 'del':
           indepth.del(this.form, path);
           break;
+        case 'insert':
+          indepth.insert(this.form, path, value);
+          break;
+        default:
+          throw new Error('Unrecognized instruction "' + type + '"');
       }
+      combineStrings(this.form);
       this.trigger(this.form);
     }
   });

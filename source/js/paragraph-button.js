@@ -4,7 +4,8 @@ var SiblingButton = require('./sibling-button');
 module.exports = React.createClass({
   render: function() {
     var path = this.props.path;
-    var followed = this.props.followed;
+    var offset = this.props.offset;
+    var length = this.props.length;
     return React.DOM.div({
       className: 'btn-group col-sm-1',
     }, [
@@ -13,25 +14,18 @@ module.exports = React.createClass({
         type: 'button',
         'data-toggle': 'dropdown'
       }, [
-        React.DOM.strong({}, '§')
+        React.DOM.strong({}, '¶')
       ]),
       React.DOM.ul({
         className: 'dropdown-menu',
         role: 'menu'
       }, [
         React.createElement(SiblingButton, {
-          path: path,
-          form: true,
+          path: path.concat(offset),
           above: true
         }),
         React.createElement(SiblingButton, {
-          path: path,
-          form: true,
-          above: false
-        }),
-        followed || React.createElement(SiblingButton, {
-          path: path,
-          form: false,
+          path: path.concat(offset + length),
           above: false
         }),
         React.DOM.li({className: 'divider'}),

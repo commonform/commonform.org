@@ -6,6 +6,6 @@ module.exports = React.createClass({
       className: 'use',
       href: '#' + idOf('definition', this.props.term)
     };
-    return React.DOM.a(attributes, this.props.term);
+    return React.DOM.a(attributes, '<' + this.props.term + '>');
   }
 });

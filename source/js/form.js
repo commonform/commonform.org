@@ -4,6 +4,10 @@ var validate = require('commonform-validate');
 var Paragraph = require('./paragraph');
 var Series = require('./series');
 
+var notLastInArray = function(index, array) {
+  return index < (array.length - 1);
+};
+
 module.exports = React.createClass({
   propTypes: {
     path: React.PropTypes.array.isRequired,
@@ -18,12 +22,20 @@ module.exports = React.createClass({
     var form = this.props.form;
     var pathCounter = 0;
     var groups = group({content: form.content});
-    var children = groups.map(function(group) {
+    var children = groups.map(function(group, index, groups) {
       var childAttributes = {
         content: group.content,
         path: path.concat('content'),
         offset: pathCounter
       };
+
+      if (group.type === 'series') {
+        childAttributes.followed = notLastInArray(index, groups) &&
+          groups.slice(index).some(function(laterGroup) {
+            return laterGroup.type === 'paragraph';
+          });
+      }
+
       pathCounter = pathCounter + group.content.length;
       return group.type === 'paragraph' ?
         React.createElement(Paragraph, childAttributes) :
