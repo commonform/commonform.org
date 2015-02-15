@@ -8,6 +8,7 @@ module.exports = React.createClass({
     var path = this.props.path;
     var subForm = this.props.subForm;
     var followed = this.props.followed;
+    var preceded = this.props.preceded;
     return React.DOM.div(attributes, [
       React.DOM.div({className: 'row'}, [
         React.DOM.div({className: 'col-sm-12'}, [
@@ -15,6 +16,8 @@ module.exports = React.createClass({
             React.createElement(FormButton, {
               subForm: subForm,
               followed: followed,
+              preceded: preceded,
+              only: this.props.only,
               path: this.props.path
             }),
             React.createElement(Summary, {

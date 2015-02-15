@@ -22,6 +22,8 @@ module.exports = React.createClass({
     var form = this.props.form;
     var pathCounter = 0;
     var groups = group({content: form.content});
+    var groupsLength = groups.length;
+    var haveSeenParagraph = false;
     var children = groups.map(function(group, index, groups) {
       var childAttributes = {
         content: group.content,
@@ -34,7 +36,12 @@ module.exports = React.createClass({
           groups.slice(index).some(function(laterGroup) {
             return laterGroup.type === 'paragraph';
           });
+        childAttributes.preceded = haveSeenParagraph;
+      } else {
+        haveSeenParagraph = true;
       }
+
+      childAttributes.only = (groupsLength === 1);
 
       pathCounter = pathCounter + group.content.length;
       return group.type === 'paragraph' ?

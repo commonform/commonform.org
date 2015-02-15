@@ -45,9 +45,9 @@ module.exports = React.createClass({
           className: 'glyphicon glyphicon-menu-' +
             (above ? 'up' : 'down')
         }),
-        ' Add a ' +
-          (form ? 'Form' : 'Paragraph') + ' ' +
-          (above ? 'Above' : 'Below')
+        ' Add ' +
+          (form ? '§' : '¶') + ' ' +
+          (above ? 'above' : 'below')
       ])
     ]);
   }

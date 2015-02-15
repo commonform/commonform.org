@@ -5,7 +5,6 @@ module.exports = React.createClass({
   render: function() {
     var path = this.props.path;
     var offset = this.props.offset;
-    var length = this.props.content.length;
     var children = this.props.content.map(function(element, index) {
       return componentFor(element, path.concat(offset + index));
     });
@@ -18,7 +17,8 @@ module.exports = React.createClass({
       React.createElement(ParagraphButton, {
         path: path,
         offset: offset,
-        length: length
+        length: this.props.content.length,
+        only: this.props.only
       }),
       React.DOM.p(attributes, children)
     );

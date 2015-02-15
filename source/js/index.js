@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', function() {
         case 'insert':
           indepth.insert(this.form, path, value);
           break;
+        case 'splice':
+          var array = indepth.get(this.form, path);
+          array.splice(instruction.offset, instruction.length);
+          break;
         default:
           throw new Error('Unrecognized instruction "' + type + '"');
       }

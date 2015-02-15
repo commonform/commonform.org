@@ -5,6 +5,7 @@ module.exports = React.createClass({
   render: function() {
     var path = this.props.path;
     var followed = this.props.followed;
+    var preceded = this.props.preceded;
     return React.DOM.div({
       className: 'btn-group col-sm-1',
     }, [
@@ -19,6 +20,11 @@ module.exports = React.createClass({
         className: 'dropdown-menu',
         role: 'menu'
       }, [
+        preceded || React.createElement(SiblingButton, {
+          path: path,
+          form: false,
+          above: true
+        }),
         React.createElement(SiblingButton, {
           path: path,
           form: true,
@@ -34,8 +40,12 @@ module.exports = React.createClass({
           form: false,
           above: false
         }),
-        React.DOM.li({className: 'divider'}),
-        React.createElement(DeleteButton, {path: path})
+        this.props.only || React.DOM.li({
+          className: 'divider'
+        }),
+        this.props.only || React.createElement(DeleteButton, {
+          path: path
+        })
       ])
     ]);
   }

@@ -1,4 +1,4 @@
-var DeleteButton = require('./delete-button');
+var SpliceButton = require('./splice-button');
 var SiblingButton = require('./sibling-button');
 
 module.exports = React.createClass({
@@ -28,8 +28,14 @@ module.exports = React.createClass({
           path: path.concat(offset + length),
           above: false
         }),
-        React.DOM.li({className: 'divider'}),
-        React.createElement(DeleteButton, {path: path})
+        this.props.only || React.DOM.li({
+          className: 'divider'
+        }),
+        this.props.only || React.createElement(SpliceButton, {
+          path: path,
+          offset: offset,
+          length: length
+        })
       ])
     ]);
   }
