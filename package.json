@@ -3,6 +3,8 @@
   "version": "0.0.0-prerelease",
   "dependencies": {
     "commonform-group-series": "0.1.x",
+    "commonform-hash": "^0.1.2",
+    "commonform-normalize": "^0.1.1",
     "commonform-validate": "0.1.x",
     "indepth": "^0.1.3",
     "just-debounce": "0.0.3",

@@ -77,11 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
     value: [
       'This ',
       {definition: 'Agreement'},
-      ' has defined the term ',
-      {use: 'Agreement'},
-      ' with a field ',
-      {field: 'Some Value'},
-      ' and a reference ',
+      // ' has defined the term ',
+      // {use: 'Agreement'},
+      // ' with a field ',
+      // {field: 'Some Value'},
+      // ' and a reference ',
       {
         summary: 'A Summary',
         form: {

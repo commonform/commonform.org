@@ -9,25 +9,25 @@ var Use = require('./use');
 var mapping = {
   definition: function(element, path) {
     return React.createElement(Definition, {
-      key: path.join('.'),
+      key: element,
       term: element.definition
     });
   },
   field: function(element, path) {
     return React.createElement(Field, {
-      key: path.join('.'),
+      key: element,
       value: element.field
     });
   },
   reference: function(element, path) {
     return React.createElement(Reference, {
-      key: path.join('.'),
+      key: element,
       summary: element.reference
     });
   },
   use: function(element, path) {
     return React.createElement(Use, {
-      key: path.join('.'),
+      key: element,
       term: element.use
     });
   },

@@ -4,8 +4,8 @@ module.exports = React.createClass({
   render: function() {
     var attributes = {
       className: 'reference',
-      href: '#' + idOf('summary', this.props.summary)
+      'data-summary': '#' + idOf('summary', this.props.summary)
     };
-    return React.DOM.a(attributes, this.props.summary);
+    return React.DOM.span(attributes, '{' + this.props.summary + '}');
   }
 });

@@ -1,8 +1,10 @@
 var formChange = require('./form-change');
 
-var defaultForm = {
-  summary: 'Click to Type',
-  form: {content: ['Click to type']}
+var defaultForm = function() {
+  return {
+    summary: 'Click to Type',
+    form: {content: ['Added ' + new Date().toISOString()]}
+  };
 };
 
 var defaultParagraph = 'Click to type';
@@ -25,7 +27,7 @@ module.exports = React.createClass({
       newPath[newPath.length - 1] = last + 1;
     }
     var newValue = this.props.form ?
-      JSON.parse(JSON.stringify(defaultForm)) :
+      JSON.parse(JSON.stringify(defaultForm())) :
       defaultParagraph;
     formChange({
       type: 'insert',
