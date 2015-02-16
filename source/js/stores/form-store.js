@@ -28,8 +28,6 @@ module.exports = Reflux.createStore({
     var type = instruction.type;
     var path = instruction.path;
     var value = instruction.value;
-    console.log(path);
-    console.log(JSON.stringify(instruction, null, 2));
     switch (type) {
       case 'set':
         indepth.set(this.form, path, value);
