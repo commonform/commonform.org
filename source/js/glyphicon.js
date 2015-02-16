@@ -1,3 +1,4 @@
+var React = require('react');
 module.exports = React.createClass({
   propTypes: {
     icon: React.PropTypes.string.isRequired

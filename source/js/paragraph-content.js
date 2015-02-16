@@ -1,3 +1,4 @@
+var React = require('react');
 var markup = require('commonform-markup');
 var componentFor = require('./component-for-content');
 var formChange = require('./form-change');

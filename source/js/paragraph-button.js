@@ -1,3 +1,4 @@
+var React = require('react');
 var SpliceButton = require('./splice-button');
 var SiblingButton = require('./sibling-button');
 

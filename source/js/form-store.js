@@ -1,3 +1,4 @@
+var Reflux = require('reflux');
 var combineStrings = require('./combine-strings');
 var formChange = require('./form-change');
 var indepth = require('indepth');

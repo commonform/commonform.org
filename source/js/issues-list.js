@@ -1,3 +1,4 @@
+var React = require('react');
 var DOM = React.DOM;
 var panel = React.createFactory(require('./bootstrap-panel'));
 

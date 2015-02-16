@@ -1,3 +1,4 @@
+var React = require('react');
 var idOf = require('./id-of');
 
 module.exports = React.createClass({

@@ -1,3 +1,4 @@
+var React = require('react');
 var Types = React.PropTypes;
 var DOM = React.DOM;
 

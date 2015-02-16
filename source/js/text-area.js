@@ -1,3 +1,4 @@
+var React = require('react');
 // Based on Andrey Popp's react-textarea-resize
 // Licensed per The MIT License
 var objectAssign = require('object-assign');

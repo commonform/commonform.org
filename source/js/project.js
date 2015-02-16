@@ -1,3 +1,5 @@
+var React = require('react');
+var Reflux = require('reflux');
 var ButtonsBar = require('./buttons-bar');
 var Form = require('./form');
 var IssuesList = require('./issues-list');

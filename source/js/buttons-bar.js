@@ -1,3 +1,4 @@
+var React = require('react');
 var glyphicon = React.createFactory(require('./glyphicon'));
 var docx = require('commonform-docx');
 var saveAs = require('filesaver.js');

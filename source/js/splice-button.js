@@ -1,3 +1,4 @@
+var React = require('react');
 var formChange = require('./form-change');
 
 module.exports = React.createClass({

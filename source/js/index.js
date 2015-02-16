@@ -1,3 +1,4 @@
+var React = require('react');
 var Project = require('./project');
 
 document.addEventListener('DOMContentLoaded', function() {

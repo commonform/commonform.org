@@ -1,3 +1,4 @@
+var React = require('react');
 var formChange = require('./form-change');
 var idOf = require('./id-of');
 var sanitize = require('./sanitize-string');

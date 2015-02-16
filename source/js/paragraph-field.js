@@ -1,3 +1,4 @@
+var React = require('react');
 var debounce = require('just-debounce');
 
 module.exports = React.createClass({

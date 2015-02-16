@@ -1,3 +1,4 @@
+var React = require('react');
 var group = require('commonform-group-series');
 var validate = require('commonform-validate');
 
