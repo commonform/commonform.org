@@ -17,6 +17,7 @@ module.exports = React.createClass({
       }
     }
   },
+
   render: function() {
     var path = this.props.path;
     var form = this.props.form;

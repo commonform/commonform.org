@@ -1,7 +1,7 @@
 var DOM = React.DOM;
 
-var p = function(argument) {
-  return DOM.p(null, argument);
+var kbd = function(argument) {
+  return DOM.kbd(null, argument);
 };
 
 module.exports = React.createClass({
@@ -11,14 +11,22 @@ module.exports = React.createClass({
     }, [
       DOM.div({className: 'panel-heading'}, 'Typing Guide'),
       DOM.div({className: 'panel-body'},
-        p('Define terms by surrounding them in double-double quotes, ' +
-          'like ""Agreement"".'),
-        p('Use defined terms by surrounding them in angle brackets, ' +
-          'like  <Consideration>.'),
-        p('Insert fill-in-the-blanks with square brackets, ' +
-          'like [Company Name].'),
-        p('Reference other forms by summary with braces, ' +
-          'like {Indemnification}.')
+        DOM.p(null,
+          'Define terms by surrounding them in double-double quotes, ' +
+          'like ', kbd('""Agreement""'), '.'
+        ),
+        DOM.p(null,
+          'Use defined terms by surrounding them in angle brackets, ' +
+          'like ', kbd('<Consideration>'), '.'
+        ),
+        DOM.p(null,
+          'Insert fill-in-the-blanks with square brackets, ' +
+          'like ', kbd('[Company Name]'), '.'
+        ),
+        DOM.p(null,
+          'Reference other forms by summary with braces, ' +
+          'like ', kbd('{Indemnification}'), '.'
+        )
       )
     ]);
   }
