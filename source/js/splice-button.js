@@ -6,7 +6,6 @@ module.exports = React.createClass({
   },
   onClick: function(event) {
     event.preventDefault();
-    console.log(this.props);
     formChange({
       type: 'splice',
       path: this.props.path,

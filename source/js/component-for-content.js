@@ -9,37 +9,34 @@ var Use = require('./use');
 var mapping = {
   definition: function(element, path) {
     return React.createElement(Definition, {
-      key: element,
+      key: path.join('.') + 'definition' + '.' + element.definition,
       term: element.definition
     });
   },
   field: function(element, path) {
     return React.createElement(Field, {
-      key: element,
+      key: path.join('.') + 'field' + '.' + element.field,
       value: element.field
     });
   },
   reference: function(element, path) {
     return React.createElement(Reference, {
-      key: element,
+      key: path.join('.') + 'reference' + '.' + element.reference,
       summary: element.reference
     });
   },
   use: function(element, path) {
     return React.createElement(Use, {
-      key: element,
+      key: path.join('.') + 'use' + '.' + element.use,
       term: element.use
     });
-  },
-  form: function(element, path) {
-    // TODO: Pull series detection logic out of other module
   }
 };
 
 module.exports = function(contentElement, path) {
   if (typeof contentElement === 'string') {
     return React.createElement(TextString, {
-      key: path,
+      key: path.join('.'),
       string: contentElement
     });
   } else {

@@ -26,7 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
           break;
         case 'splice':
           var array = indepth.get(this.form, path);
-          array.splice(instruction.offset, instruction.length);
+          // array.splice(instruction.offset, instruction.length);
+          var args = [instruction.offset, instruction.length];
+          if (instruction.value) {
+            args = args.concat(instruction.value);
+          }
+          array.splice.apply(array, args);
           break;
         default:
           throw new Error('Unrecognized instruction "' + type + '"');
