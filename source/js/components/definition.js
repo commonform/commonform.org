@@ -6,11 +6,11 @@ module.exports = React.createClass({
   text: function() {
     return '""' + this.props.term + '""';
   },
+
   render: function() {
-    var attributes = {
+    return React.DOM.dfn({
       id: idOf('definition', this.props.term),
       className: 'definition'
-    };
-    return React.DOM.dfn(attributes, this.text());
+    }, this.text());
   }
 });

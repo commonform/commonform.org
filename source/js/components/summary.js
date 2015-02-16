@@ -35,14 +35,16 @@ module.exports = React.createClass({
   render: function() {
     var summary = this.props.summary;
     var attributes = {
+      key: 'summary',
       className: 'summary form-control',
       id: idOf('summary', summary),
       onBlur: this.handleBlur,
       onChange: this.handleChange,
       value: this.state.summary
     };
-    return React.DOM.form({className: 'form col-sm-11'},
-        React.DOM.input(attributes)
-    );
+    return React.DOM.form({
+      key: 'form',
+      className: 'form col-sm-11'
+    }, [React.DOM.input(attributes)]);
   }
 });

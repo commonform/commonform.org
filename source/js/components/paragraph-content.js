@@ -50,18 +50,24 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    var path = this.props.path;
-    return React.DOM.div({className: 'paragraph col-sm-11'},
-      React.DOM.div({className: 'row'},
+    return React.DOM.div({
+      key: 'width',
+      className: 'paragraph col-sm-11'
+    }, [
+      React.DOM.div({
+        key: 'row',
+        className: 'row'
+      }, [
         React.DOM.p({
-          ref: 'p',
+          key: 'p',
           className: 'col-sm-12' +
             (!this.state.editing ? '' : ' hidden'),
           onClick: this.handleClick,
-        }, this.state.content.map(function(element, index) {
-          return componentFor(element, path.concat(index));
-        }).concat(' ')),
+        }, this.state.content.map(function(element) {
+          return componentFor(element);
+        })),
         React.createElement(TextArea, {
+          key: 'textarea',
           className: 'col-sm-12' + (this.state.editing ? '' : ' hidden'),
           onBlur: this.handleBlur,
           onChange: this.handleChange,
@@ -69,10 +75,11 @@ module.exports = React.createClass({
           spellCheck: 'true',
           value: this.state.textContent
         })
-      ),
-      !this.state.editing || React.DOM.div({className: 'row'},
-        React.createElement(TypingGuide)
-      )
-    );
+      ]),
+      !this.state.editing || React.DOM.div({
+        key: 'guide',
+        className: 'row'
+      }, [React.createElement(TypingGuide, {key: 'guide'})])
+    ]);
   }
 });

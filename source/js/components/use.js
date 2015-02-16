@@ -6,6 +6,7 @@ module.exports = React.createClass({
   text: function() {
     return '<' + this.props.term + '>';
   },
+
   render: function() {
     var attributes = {
       className: 'use',

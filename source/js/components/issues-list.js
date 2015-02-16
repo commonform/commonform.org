@@ -7,25 +7,35 @@ module.exports = React.createClass({
   render: function() {
     var issues = this.props.issues;
     if (issues.length === 0) {
-      return DOM.div({className: 'container'}, [
+      return DOM.div({
+        key: 'container',
+        className: 'container'
+      }, [
         panel({
+          key: 'panel',
           type: 'success',
           heading: 'Execution-Ready'
         }, [
-          DOM.p(null,
+          DOM.p({key: 'p'},
             'This project is ready to sign. ' +
             'There are no technical errors or blanks to be filled.'
           )
         ])
       ]);
     } else {
-      return DOM.div({className: 'container'},
+      return DOM.div({
+        key: 'container',
+        className: 'container'
+      },
         panel({
+          key: 'panel',
           heading: 'Issues',
           type: 'danger'
         }, [
           issues.map(function(issue) {
-            return DOM.p(null, issue.message);
+            return DOM.p({
+              key: JSON.stringify(issue)
+            }, issue.message);
           })
         ])
       );

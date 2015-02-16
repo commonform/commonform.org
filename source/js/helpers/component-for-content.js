@@ -8,42 +8,42 @@ var Reference = require('../components/reference');
 var Use = require('../components/use');
 
 var mapping = {
-  definition: function(element, path) {
+  definition: function(element) {
     return React.createElement(Definition, {
-      key: path.join('.') + 'definition' + '.' + element.definition,
+      key: 'definition' + '-' + element.definition,
       term: element.definition
     });
   },
-  field: function(element, path) {
+  field: function(element) {
     return React.createElement(Field, {
-      key: path.join('.') + 'field' + '.' + element.field,
+      key: 'field' + '-' + element.field,
       value: element.field
     });
   },
-  reference: function(element, path) {
+  reference: function(element) {
     return React.createElement(Reference, {
-      key: path.join('.') + 'reference' + '.' + element.reference,
+      key: 'reference' + '-' + element.reference,
       summary: element.reference
     });
   },
-  use: function(element, path) {
+  use: function(element) {
     return React.createElement(Use, {
-      key: path.join('.') + 'use' + '.' + element.use,
+      key: 'use' + '-' + element.use,
       term: element.use
     });
   }
 };
 
-module.exports = function(contentElement, path) {
+module.exports = function(contentElement) {
   if (typeof contentElement === 'string') {
     return React.createElement(TextString, {
-      key: path.join('.'),
+      key: contentElement,
       string: contentElement
     });
   } else {
     for (var type in mapping) {
       if (validate[type](contentElement)) {
-        return mapping[type](contentElement, path);
+        return mapping[type](contentElement);
       }
     }
   }

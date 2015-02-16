@@ -1,6 +1,7 @@
 var React = require('react');
+
 var Types = React.PropTypes;
-var DOM = React.DOM;
+var div = React.DOM.div;
 
 module.exports = React.createClass({
   propTypes: {
@@ -9,14 +10,22 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    var type = this.props.type;
-    return DOM.div({
+    var props = this.props;
+    var type = props.type;
+    var heading = props.heading;
+    return div({
       className: 'panel' + (type ? ' panel-' + type : '')
     }, [
-      this.props.heading ?
-        DOM.div({className: 'panel-heading'}, this.props.heading) :
+      heading ?
+        div({
+          className: 'panel-heading',
+          key: 'heading'
+        }, [heading]) :
         null,
-      DOM.div({className: 'panel-body'}, this.props.children)
+      div({
+        className: 'panel-body',
+        key: 'body'
+      }, [this.props.children])
     ]);
   }
 });

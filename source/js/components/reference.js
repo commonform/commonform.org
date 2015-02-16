@@ -6,6 +6,7 @@ module.exports = React.createClass({
   text: function() {
     return '{' + this.props.summary + '}';
   },
+
   render: function() {
     var attributes = {
       className: 'reference',

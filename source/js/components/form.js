@@ -28,6 +28,7 @@ module.exports = React.createClass({
     var haveSeenParagraph = false;
     var children = groups.map(function(group, index, groups) {
       var childAttributes = {
+        key: group.type + '-' + index,
         content: group.content,
         path: path.concat('content'),
         offset: pathCounter
@@ -51,6 +52,7 @@ module.exports = React.createClass({
         React.createElement(Series, childAttributes);
     });
     return React.DOM.div({
+      key: 'div',
       className: 'form',
       path: path
     }, children);

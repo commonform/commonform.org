@@ -5,6 +5,8 @@ var saveAs = require('filesaver.js');
 var glyphicon = React.createFactory(require('./glyphicon'));
 
 var DOM = React.DOM;
+var a = DOM.a;
+var div = DOM.div;
 
 var jsonBlob = function(object) {
   return new Blob([JSON.stringify(object)], {type: 'application/json'});
@@ -32,26 +34,42 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    return DOM.div({className: 'container'}, [
-      DOM.div({className: 'row'}, [
-        DOM.div({className: 'btn-group btn-group-justified'}, [
-          DOM.a({
+    return div({
+      key: 'container',
+      className: 'container'
+    }, [
+      div({
+        key: 'row',
+        className: 'row'
+      }, [
+        div({
+          key: 'buttonGroup',
+          className: 'btn-group btn-group-justified'
+        }, [
+          a({
+            key: 'docx',
             className: 'btn btn-default',
             onClick: this.handleSaveDOCX
           }, [
-            glyphicon({icon: 'floppy-save'}),
-            ' Save .docx'
+            glyphicon({
+              key: 'icon',
+              icon: 'floppy-save'
+            }),
+            React.DOM.span({key: 'text'}, [' Save .docx'])
           ]),
-          DOM.a({
+          a({
+            key: 'json',
             className: 'btn btn-default',
             onClick: this.handleSaveCommonForm
           }, [
-            glyphicon({icon: 'floppy-save'}),
-            ' Save .form'
+            glyphicon({
+              key: 'icon',
+              icon: 'floppy-save'
+            }),
+            React.DOM.span({key: 'text'}, [' Save .form'])
           ])
-          // DOM.a({className: 'btn btn-default'}, [
-          //   glyphicon({icon: 'cloud-upload'}),
-          //   ' Share to library'
+          // a({className: 'btn btn-default'}, [
+          //   glyphicon({icon: 'cloud-upload'}), ' Share to library'
           // ])
         ])
       ])

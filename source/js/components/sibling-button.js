@@ -2,6 +2,8 @@ var React = require('react');
 
 var formChange = require('../actions/form-change');
 
+var glyphicon = React.createFactory(require('./glyphicon'));
+
 var defaultForm = function() {
   return {
     summary: 'Click to Type',
@@ -12,15 +14,19 @@ var defaultForm = function() {
 var defaultParagraph = 'Click to type';
 
 module.exports = React.createClass({
+  displayName: 'SiblingButton',
+
   getDefaultProps: function() {
     return {
       form: true,
       above: true
     };
   },
+
   propTypes: {
     path: React.PropTypes.array.isRequired
   },
+
   onClick: function(event) {
     event.preventDefault();
     var newPath = JSON.parse(JSON.stringify(this.props.path));
@@ -37,21 +43,29 @@ module.exports = React.createClass({
       value: newValue
     });
   },
+
   render: function() {
     var form = this.props.form;
     var above = this.props.above;
-    return React.DOM.li({href: '#'}, [
+    return React.DOM.li({
+      key: 'li',
+      href: '#'
+    }, [
       React.DOM.a({
+        key: 'a',
         href: '#',
         onClick: this.onClick
       }, [
-        React.DOM.span({
-          className: 'glyphicon glyphicon-menu-' +
-            (above ? 'up' : 'down')
+        glyphicon({
+          key: 'icon',
+          icon: above ? 'up' : 'down'
         }),
-        ' Add ' +
-          (form ? '§' : '¶') + ' ' +
-          (above ? 'above' : 'below')
+        React.DOM.span(
+          {key: 'text'},
+          ' Add ' +
+            (form ? '§' : '¶') + ' ' +
+            (above ? 'above' : 'below')
+        )
       ])
     ]);
   }

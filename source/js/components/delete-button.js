@@ -1,11 +1,15 @@
 var React = require('react');
 
 var formChange = require('../actions/form-change');
+var glyphicon = React.createFactory(require('./glyphicon'));
+
+var DOM = React.DOM;
 
 module.exports = React.createClass({
   propTypes: {
     path: React.PropTypes.array.isRequired
   },
+
   onClick: function(event) {
     event.preventDefault();
     formChange({
@@ -13,19 +17,25 @@ module.exports = React.createClass({
       path: this.props.path
     });
   },
+
   render: function() {
-    return React.DOM.li({
+    return DOM.li({
+      key: 'deleteButton',
       className: 'delete-button',
       href: '#'
     }, [
-      React.DOM.a({
+      DOM.a({
+        key: 'a',
         href: '#',
         onClick: this.onClick
       }, [
-        React.DOM.span({
-          className: 'glyphicon glyphicon-trash'
+        glyphicon({
+          key: 'icon',
+          icon: 'trash'
         }),
-        ' Delete'
+        DOM.span({
+          key: 'text'
+        }, ' Delete')
       ])
     ]);
   }

@@ -10,12 +10,14 @@ module.exports = React.createClass({
     var content = this.props.content;
     return React.DOM.div({className: 'row'}, [
       React.createElement(ParagraphButton, {
+        key: 'button',
         length: this.props.content.length,
         offset: offset,
         only: this.props.only,
         path: path
       }),
       React.createElement(ParagraphContent, {
+        key: 'content',
         content: content,
         length: content.length,
         offset: offset,
