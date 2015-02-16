@@ -1,3 +1,4 @@
+var ButtonsBar = require('./buttons-bar');
 var Form = require('./form');
 var IssuesList = require('./issues-list');
 var Navigation = require('./navigation');
@@ -32,6 +33,9 @@ module.exports = React.createClass({
       className: 'project'
     }, [
       React.createElement(Navigation),
+      React.createElement(ButtonsBar, {
+        project: this.props
+      }),
       React.createElement(IssuesList, {
         issues: lint(this.props)
       }),

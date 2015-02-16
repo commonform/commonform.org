@@ -1,5 +1,4 @@
 var debounce = require('just-debounce');
-var formChange = require('./form-change');
 
 module.exports = React.createClass({
   componentWillMount: function() {
