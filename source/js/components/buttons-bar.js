@@ -2,10 +2,9 @@ var React = require('react');
 var docx = require('commonform-docx');
 var saveAs = require('filesaver.js');
 
-var glyphicon = React.createFactory(require('./glyphicon'));
+var buttonLink = React.createFactory(require('./button-link'));
 
 var DOM = React.DOM;
-var a = DOM.a;
 var div = DOM.div;
 
 var jsonBlob = function(object) {
@@ -46,31 +45,18 @@ module.exports = React.createClass({
           key: 'buttonGroup',
           className: 'btn-group btn-group-justified'
         }, [
-          a({
+          buttonLink({
             key: 'docx',
-            className: 'btn btn-default',
+            text: 'Save .docx',
+            icon: 'floppy-save',
             onClick: this.handleSaveDOCX
-          }, [
-            glyphicon({
-              key: 'icon',
-              icon: 'floppy-save'
-            }),
-            React.DOM.span({key: 'text'}, [' Save .docx'])
-          ]),
-          a({
+          }),
+          buttonLink({
             key: 'json',
-            className: 'btn btn-default',
+            text: 'Save .form',
+            icon: 'floppy-save',
             onClick: this.handleSaveCommonForm
-          }, [
-            glyphicon({
-              key: 'icon',
-              icon: 'floppy-save'
-            }),
-            React.DOM.span({key: 'text'}, [' Save .form'])
-          ])
-          // a({className: 'btn btn-default'}, [
-          //   glyphicon({icon: 'cloud-upload'}), ' Share to library'
-          // ])
+          })
         ])
       ])
     ]);
