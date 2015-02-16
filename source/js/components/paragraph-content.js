@@ -1,10 +1,11 @@
 var React = require('react');
 var markup = require('commonform-markup');
-var componentFor = require('./component-for-content');
-var formChange = require('./form-change');
-var sanitize = require('./sanitize-string');
+
 var TextArea = require('./text-area');
 var TypingGuide = require('./typing-guide');
+var componentFor = require('../helpers/component-for-content');
+var formChange = require('../actions/form-change');
+var sanitize = require('../helpers/sanitize-string');
 
 module.exports = React.createClass({
   getInitialState: function() {

@@ -1,6 +1,7 @@
 var React = require('react');
 var hash = require('commonform-hash');
 var normalize = require('commonform-normalize');
+
 var SubForm = require('./sub-form');
 
 var attributes = {className: 'series'};

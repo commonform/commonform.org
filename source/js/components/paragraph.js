@@ -1,4 +1,5 @@
 var React = require('react');
+
 var ParagraphButton = require('./paragraph-button');
 var ParagraphContent = require('./paragraph-content');
 

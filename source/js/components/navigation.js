@@ -1,5 +1,5 @@
 var React = require('react');
-var version = require('../../package.json').version;
+var version = require('../../../package.json').version;
 
 var HELP = 'https://commonform.github.io';
 

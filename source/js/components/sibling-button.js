@@ -1,5 +1,6 @@
 var React = require('react');
-var formChange = require('./form-change');
+
+var formChange = require('../actions/form-change');
 
 var defaultForm = function() {
   return {

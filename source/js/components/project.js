@@ -1,11 +1,12 @@
 var React = require('react');
 var Reflux = require('reflux');
+var lint = require('commonform-lint');
+
 var ButtonsBar = require('./buttons-bar');
 var Form = require('./form');
 var IssuesList = require('./issues-list');
 var Navigation = require('./navigation');
-var formStore = require('./form-store');
-var lint = require('commonform-lint');
+var formStore = require('../stores/form-store');
 
 module.exports = React.createClass({
   mixins: [Reflux.listenTo(formStore, 'onFormChange', 'onFormChange')],

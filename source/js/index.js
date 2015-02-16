@@ -1,5 +1,5 @@
 var React = require('react');
-var Project = require('./project');
+var Project = require('./components/project');
 
 document.addEventListener('DOMContentLoaded', function() {
   React.initializeTouchEvents(true);

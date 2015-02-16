@@ -1,7 +1,8 @@
 var React = require('react');
-var formChange = require('./form-change');
-var idOf = require('./id-of');
-var sanitize = require('./sanitize-string');
+
+var formChange = require('../actions/form-change');
+var idOf = require('../helpers/id-of');
+var sanitize = require('../helpers/sanitize-string');
 
 module.exports = React.createClass({
   getInitialState: function() {

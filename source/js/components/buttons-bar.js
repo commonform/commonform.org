@@ -1,7 +1,9 @@
 var React = require('react');
-var glyphicon = React.createFactory(require('./glyphicon'));
 var docx = require('commonform-docx');
 var saveAs = require('filesaver.js');
+
+var glyphicon = React.createFactory(require('./glyphicon'));
+
 var DOM = React.DOM;
 
 var jsonBlob = function(object) {

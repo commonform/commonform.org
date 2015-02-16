@@ -1,7 +1,8 @@
 var Reflux = require('reflux');
-var combineStrings = require('./combine-strings');
-var formChange = require('./form-change');
 var indepth = require('indepth');
+
+var combineStrings = require('../helpers/combine-strings');
+var formChange = require('../actions/form-change');
 
 module.exports = Reflux.createStore({
   init: function() {

@@ -1,11 +1,11 @@
 var React = require('react');
 var validate = require('commonform-validate');
 
-var Definition = require('./definition');
-var TextString = require('./text-string');
-var Field = require('./field');
-var Reference = require('./reference');
-var Use = require('./use');
+var Definition = require('../components/definition');
+var TextString = require('../components/text-string');
+var Field = require('../components/field');
+var Reference = require('../components/reference');
+var Use = require('../components/use');
 
 var mapping = {
   definition: function(element, path) {
