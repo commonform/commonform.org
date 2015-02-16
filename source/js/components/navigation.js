@@ -58,19 +58,19 @@ module.exports = React.createClass({
             key: 'ul',
             className: 'nav navbar-nav navbar-right'
           }, [
-            React.DOM.li({key: 'settings'}, [
-              React.DOM.a({
-                key: 'settings',
-                className: 'settings',
-                href: '#settings'
-              }, [
-                glyphicon({
-                  key: 'icon',
-                  icon: 'cog'
-                }),
-                React.DOM.span({key: 'text'}, [' Settings'])
-              ])
-            ]),
+            // React.DOM.li({key: 'settings'}, [
+            //   React.DOM.a({
+            //     key: 'settings',
+            //     className: 'settings',
+            //     href: '#settings'
+            //   }, [
+            //     glyphicon({
+            //       key: 'icon',
+            //       icon: 'cog'
+            //     }),
+            //     React.DOM.span({key: 'text'}, [' Settings'])
+            //   ])
+            // ]),
             React.DOM.li({key: 'help'}, [
               React.DOM.a({
                 key: 'help',
@@ -81,7 +81,7 @@ module.exports = React.createClass({
                   key: 'icon',
                   icon: 'question-sign'
                 }),
-                React.DOM.span({key: 'text'}, [' Help'])
+                React.DOM.span({key: 'text'}, [' About'])
               ])
             ])
           ])

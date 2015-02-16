@@ -63,8 +63,8 @@ module.exports = React.createClass({
           className: 'col-sm-12' +
             (!this.state.editing ? '' : ' hidden'),
           onClick: this.handleClick,
-        }, this.state.content.map(function(element) {
-          return componentFor(element);
+        }, this.state.content.map(function(element, index) {
+          return componentFor(element, index);
         })),
         React.createElement(TextArea, {
           key: 'textarea',

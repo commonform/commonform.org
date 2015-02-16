@@ -6,17 +6,25 @@ var ButtonsBar = require('./buttons-bar');
 var Form = require('./form');
 var IssuesList = require('./issues-list');
 var Navigation = require('./navigation');
+var ProjectTitle = require('./project-title');
+
 var formStore = require('../stores/form-store');
+var metaStore = require('../stores/metadata-store');
 
 module.exports = React.createClass({
   displayName: 'Project',
 
-  mixins: [Reflux.listenTo(formStore, 'onFormChange', 'onFormChange')],
+  mixins: [
+    Reflux.listenTo(formStore, 'handleFormChange', 'handleFormChange'),
+    Reflux.listenTo(metaStore, 'handleMetaChange', 'handleMetaChange')
+  ],
 
-  onFormChange: function(form) {
-    this.setProps({
-      form: form
-    });
+  handleFormChange: function(form) {
+    this.setProps({form: form});
+  },
+
+  handleMetaChange: function(metadata) {
+    this.setProps({metadata: metadata});
   },
 
   getDefaultProps: function() {
@@ -40,6 +48,10 @@ module.exports = React.createClass({
     }, [
       React.createElement(Navigation, {
         key: 'navigation'
+      }),
+      React.createElement(ProjectTitle, {
+        key: 'title',
+        title: this.props.metadata.title
       }),
       React.createElement(ButtonsBar, {
         key: 'buttons',

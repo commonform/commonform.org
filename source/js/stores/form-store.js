@@ -6,7 +6,7 @@ var formChange = require('../actions/form-change');
 
 module.exports = Reflux.createStore({
   init: function() {
-    this.listenTo(formChange, this.onFormChange);
+    this.listenTo(formChange, this.handleFormChange);
     this.form = this.getInitialState();
   },
 
@@ -24,7 +24,7 @@ module.exports = Reflux.createStore({
     };
   },
 
-  onFormChange: function(instruction) {
+  handleFormChange: function(instruction) {
     var type = instruction.type;
     var path = instruction.path;
     var value = instruction.value;
