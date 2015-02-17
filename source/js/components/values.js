@@ -21,19 +21,19 @@ module.exports = React.createClass({
       }, [
         DOM.table({
           key: 'valuesTable table table-condensed',
-          className: 'table'
+          className: 'table valuesTable'
         }, [
-          DOM.thead({
-            key: 'head'
-          }, [
-            DOM.tr({
-              key: 'tr'
-            }, [
-              DOM.th({key: 'blank'}, 'Blank'),
-              DOM.th({key: 'value'},  'Value'),
-              DOM.th({key: 'action'},  'Action')
-            ])
-          ]),
+          // DOM.thead({
+          //   key: 'head'
+          // }, [
+          //   DOM.tr({
+          //     key: 'tr'
+          //   }, [
+          //     DOM.th({key: 'blank'}, 'Blank'),
+          //     DOM.th({key: 'value'},  'Value'),
+          //     DOM.th({key: 'action'},  'Action')
+          //   ])
+          // ]),
           DOM.tbody({
             key: 'body'
           },
