@@ -5,7 +5,9 @@ var div = React.DOM.div;
 
 module.exports = React.createClass({
   propTypes: {
-    type: Types.oneOf(['success', 'info', 'warning', 'danger']),
+    type: Types.oneOf([
+      'default', 'success', 'info', 'warning', 'danger'
+    ]),
     heading: Types.string
   },
 
