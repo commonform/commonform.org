@@ -16,7 +16,7 @@ module.exports = React.createClass({
         key: 'button',
         length: length,
         offset: offset,
-        only: this.props.only,
+        only: props.only,
         path: path
       }),
       React.createElement(ParagraphContent, {

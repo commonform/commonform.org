@@ -3,7 +3,7 @@
   "version": "0.0.0-prerelease",
   "dependencies": {
     "commonform-docx": "^0.1.1",
-    "commonform-group-series": "0.1.x",
+    "commonform-group-series": "^0.2.0",
     "commonform-hash": "^0.1.2",
     "commonform-lint": "^0.2.0",
     "commonform-markup": "^0.1.1",
