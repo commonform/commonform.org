@@ -39,7 +39,7 @@ module.exports = React.createClass({
       id: idOf('summary', summary),
       onBlur: this.handleBlur,
       onChange: this.handleChange,
-      placeholder: 'Click to add a summary',
+      // placeholder: 'Click to add a summary',
       value: this.state.summary
     };
     return React.DOM.form({
