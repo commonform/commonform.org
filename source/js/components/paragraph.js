@@ -9,20 +9,17 @@ module.exports = React.createClass({
     var path = props.path;
     var offset = props.offset;
     var content = props.content;
-    // TODO: Children derive content.length
-    var length = content.count();
     return React.DOM.div({className: 'row'}, [
       React.createElement(ParagraphButton, {
         key: 'button',
-        length: length,
+        length: content.count(),
         offset: offset,
         only: props.only,
         path: path
       }),
       React.createElement(ParagraphContent, {
-        key: 'content',
         content: content,
-        length: length,
+        key: 'content',
         offset: offset,
         path: path
       })

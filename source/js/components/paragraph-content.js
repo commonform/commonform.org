@@ -10,10 +10,12 @@ var sanitize = require('../helpers/sanitize-string');
 
 module.exports = React.createClass({
   getInitialState: function() {
+    var props = this.props;
     return {
       editing: false,
-      content: this.props.content,
-      textContent: markup.toMarkup({content: this.props.content.toJS()})
+      content: props.content,
+      length: props.content.count(),
+      textContent: markup.toMarkup({content: props.content.toJS()})
     };
   },
 
@@ -35,7 +37,7 @@ module.exports = React.createClass({
         type: 'splice',
         path: props.path,
         offset: props.offset,
-        length: props.length,
+        length: this.state.length,
         value: newContent
       });
     });
@@ -48,6 +50,7 @@ module.exports = React.createClass({
   componentWillReceiveProps: function(newProps) {
     this.setState({
       content: newProps.content,
+      length: newProps.content.count(),
       textContent: markup.toMarkup({content: newProps.content.toJS()})
     });
   },
