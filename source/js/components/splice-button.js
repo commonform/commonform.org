@@ -9,11 +9,12 @@ var DOM = React.DOM;
 module.exports = React.createClass({
   onClick: function(event) {
     event.preventDefault();
+    var props = this.props;
     formChange({
       type: 'splice',
-      path: this.props.path,
-      offset: this.props.offset,
-      length: this.props.length,
+      path: props.path,
+      offset: props.offset,
+      length: props.length,
       value: Immutable.List()
     });
   },

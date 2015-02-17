@@ -1,3 +1,4 @@
+var Immutable = require('immutable');
 var React = require('react');
 var docx = require('commonform-docx');
 var markup = require('commonform-markup');
@@ -53,8 +54,8 @@ module.exports = React.createClass({
       // TODO: Load other parts of project, too
       formChange({
         type: 'set',
-        path: ['content'],
-        value: project.form.content
+        path: Immutable.List(),
+        value: Immutable.fromJS(project.form)
       });
     });
   },
@@ -65,8 +66,8 @@ module.exports = React.createClass({
       var form = markup.parseLines(fileContent);
       formChange({
         type: 'set',
-        path: ['content'],
-        value: form.content
+        path: Immutable.List(),
+        value: Immutable.fromJS(form)
       });
     });
   },
