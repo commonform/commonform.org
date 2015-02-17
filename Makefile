@@ -21,7 +21,7 @@ all: ${jspackage} ${stylepackage} ${index}
 
 ${jspackage}: ${jssources}
 	mkdir -p ${build}
-	${browserify} -g uglifyify ${jsindex} -d | ${exorcist} ${build}/index.js.map > ${jspackage}
+	NODE_ENV=production ${browserify} -g uglifyify ${jsindex} -d | ${exorcist} ${build}/index.js.map > ${jspackage}
 
 ${stylepackage}: ${stylesources}
 	mkdir -p ${build}
