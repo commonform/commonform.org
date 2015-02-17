@@ -5,6 +5,8 @@ var Summary = require('./summary');
 var FormButton = require('./form-button');
 
 module.exports = React.createClass({
+  displayName: 'SubForm',
+
   mixins: [ImmutableMixin],
 
   render: function() {

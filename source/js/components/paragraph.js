@@ -4,6 +4,8 @@ var ParagraphButton = require('./paragraph-button');
 var ParagraphContent = require('./paragraph-content');
 
 module.exports = React.createClass({
+  displayName: 'Paragraph',
+
   render: function() {
     var props = this.props;
     var path = props.path;

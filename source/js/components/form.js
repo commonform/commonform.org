@@ -10,6 +10,8 @@ var notLastInArray = function(index, array) {
 };
 
 module.exports = React.createClass({
+  displayName: 'Form',
+
   mixins: [ImmutableMixin],
 
   render: function() {

@@ -4,6 +4,8 @@ var DOM = React.DOM;
 var panel = React.createFactory(require('./bootstrap-panel'));
 
 module.exports = React.createClass({
+  displayName: 'IssuesList',
+
   render: function() {
     var issues = this.props.issues;
     if (issues.length === 0) {

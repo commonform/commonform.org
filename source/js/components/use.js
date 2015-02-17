@@ -4,6 +4,8 @@ var React = require('react');
 var idOf = require('../helpers/id-of');
 
 module.exports = React.createClass({
+  displayName: 'Use',
+
   mixins: [ImmutableMixin],
 
   text: function() {

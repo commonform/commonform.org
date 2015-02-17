@@ -7,6 +7,8 @@ var glyphicon = React.createFactory(require('./glyphicon'));
 var DOM = React.DOM;
 
 module.exports = React.createClass({
+  displayName: 'SpliceButton',
+
   onClick: function(event) {
     event.preventDefault();
     var props = this.props;

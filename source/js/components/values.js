@@ -7,6 +7,8 @@ var panel = React.createFactory(require('./bootstrap-panel'));
 var DOM = React.DOM;
 
 module.exports = React.createClass({
+  displayName: 'Values',
+
   mixins: [ImmutableMixin],
 
   render: function() {

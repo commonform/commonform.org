@@ -6,6 +6,8 @@ var glyphicon = React.createFactory(require('./glyphicon'));
 var DOM = React.DOM;
 
 module.exports = React.createClass({
+  displayName: 'DeleteButton',
+
   onClick: function(event) {
     event.preventDefault();
     formChange({

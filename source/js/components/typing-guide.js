@@ -5,6 +5,12 @@ var span = DOM.span;
 var kbd = DOM.kbd;
 
 module.exports = React.createClass({
+  displayName: 'TypingGuide',
+
+  shouldComponentUpdate: function() {
+    return false;
+  },
+
   render: function() {
     return DOM.div({
       key: 'typingGuide',

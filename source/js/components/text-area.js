@@ -4,6 +4,8 @@ var React = require('react');
 var objectAssign = require('object-assign');
 
 module.exports = React.createClass({
+  displayName: 'TextArea',
+
   render: function() {
     var props = objectAssign({}, this.props, {
       onChange: this.onChange,

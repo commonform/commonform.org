@@ -6,6 +6,8 @@ var SiblingButton = require('./sibling-button');
 var DOM = React.DOM;
 
 module.exports = React.createClass({
+  displayName: 'FormButton',
+
   render: function() {
     var props = this.props;
     var path = props.path;

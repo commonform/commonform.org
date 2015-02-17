@@ -5,6 +5,8 @@ var titleChange = require('../actions/title-change');
 var DOM = React.DOM;
 
 module.exports = React.createClass({
+  displayName: 'ProjectTitle',
+
   getInitialState: function() {
     return {
       title: this.props.title

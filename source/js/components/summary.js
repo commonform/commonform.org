@@ -5,6 +5,8 @@ var idOf = require('../helpers/id-of');
 var sanitize = require('../helpers/sanitize-string');
 
 module.exports = React.createClass({
+  displayName: 'Summary',
+
   getInitialState: function() {
     return {
       summary: this.props.summary

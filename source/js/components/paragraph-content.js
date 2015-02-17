@@ -9,6 +9,8 @@ var formChange = require('../actions/form-change');
 var sanitize = require('../helpers/sanitize-string');
 
 module.exports = React.createClass({
+  displayName: 'ParagraphContent',
+
   getInitialState: function() {
     var props = this.props;
     return {

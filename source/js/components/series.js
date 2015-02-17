@@ -5,6 +5,8 @@ var normalize = require('commonform-normalize');
 var SubForm = require('./sub-form');
 
 module.exports = React.createClass({
+  displayName: 'Series',
+
   render: function() {
     var props = this.props;
     var path = props.path;

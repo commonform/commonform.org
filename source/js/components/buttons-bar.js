@@ -37,6 +37,8 @@ var openLocal = function(callback) {
 };
 
 module.exports = React.createClass({
+  displayName: 'ButtonsBar',
+
   fileName: function(extension) {
     var title = this.props.project.get('metadata').get('title');
     var date = new Date().toISOString();

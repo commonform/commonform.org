@@ -11,6 +11,8 @@ var span = DOM.span;
 var HELP = 'https://commonform.github.io';
 
 module.exports = React.createClass({
+  displayName: 'Navigation',
+
   shouldComponentUpdate: function() {
     return false;
   },

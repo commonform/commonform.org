@@ -5,6 +5,8 @@ var DOM = React.DOM;
 var Types = React.PropTypes;
 
 module.exports = React.createClass({
+  displayName: 'ButtonLink',
+
   propTypes: {
     icon: Types.string.isRequired,
     text: Types.string.isRequired,

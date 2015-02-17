@@ -4,6 +4,8 @@ var valueChange = require('../actions/value-change');
 var DOM = React.DOM;
 
 module.exports = React.createClass({
+  displayName: 'AddValueRow',
+
   getInitialState: function() {
     return {
       field: '',

@@ -4,6 +4,8 @@ var Types = React.PropTypes;
 var div = React.DOM.div;
 
 module.exports = React.createClass({
+  displayName: 'BootstrapPanel',
+
   propTypes: {
     type: Types.oneOf([
       'default', 'success', 'info', 'warning', 'danger'

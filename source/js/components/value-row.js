@@ -1,3 +1,4 @@
+var ImmutableMixin = require('react-immutable-render-mixin');
 var React = require('react');
 
 var valueChange = require('../actions/value-change');
@@ -6,6 +7,10 @@ var valueDelete = require('../actions/value-delete');
 var DOM = React.DOM;
 
 module.exports = React.createClass({
+  displayName: 'ValueRow',
+
+  mixins: [ImmutableMixin],
+
   onChange: function(event) {
     var object = {};
     object[this.props.field] = event.target.value;

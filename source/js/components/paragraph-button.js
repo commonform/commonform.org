@@ -4,6 +4,8 @@ var SpliceButton = require('./splice-button');
 var SiblingButton = require('./sibling-button');
 
 module.exports = React.createClass({
+  displayName: 'ParagraphButton',
+
   render: function() {
     var props = this.props;
     var path = props.path;
