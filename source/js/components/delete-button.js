@@ -6,10 +6,6 @@ var glyphicon = React.createFactory(require('./glyphicon'));
 var DOM = React.DOM;
 
 module.exports = React.createClass({
-  propTypes: {
-    path: React.PropTypes.array.isRequired
-  },
-
   onClick: function(event) {
     event.preventDefault();
     formChange({

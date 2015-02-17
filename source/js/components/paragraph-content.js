@@ -1,3 +1,4 @@
+var Immutable = require('immutable');
 var React = require('react');
 var markup = require('commonform-markup');
 
@@ -12,7 +13,7 @@ module.exports = React.createClass({
     return {
       editing: false,
       content: this.props.content,
-      textContent: markup.toMarkup({content: this.props.content})
+      textContent: markup.toMarkup({content: this.props.content.toJS()})
     };
   },
 
@@ -26,7 +27,9 @@ module.exports = React.createClass({
   handleBlur: function(event) {
     var props = this.props;
     var text = event.target.value;
-    var newContent = markup.parseMarkup(sanitize(text)).content;
+    var newContent = Immutable.fromJS(
+      markup.parseMarkup(sanitize(text)).content
+    );
     this.setState({editing: false}, function() {
       formChange({
         type: 'splice',
@@ -45,11 +48,12 @@ module.exports = React.createClass({
   componentWillReceiveProps: function(newProps) {
     this.setState({
       content: newProps.content,
-      textContent: markup.toMarkup({content: newProps.content})
+      textContent: markup.toMarkup({content: newProps.content.toJS()})
     });
   },
 
   render: function() {
+    var content = this.state.content;
     return React.DOM.div({
       key: 'width',
       className: 'paragraph col-sm-11'
@@ -63,9 +67,9 @@ module.exports = React.createClass({
           className: 'col-sm-12' +
             (!this.state.editing ? '' : ' hidden'),
           onDoubleClick: this.handleClick,
-        }, this.state.content.map(function(element, index) {
+        }, content.map(function(element, index) {
           return componentFor(element, index);
-        })),
+        }).toArray()),
         React.createElement(TextArea, {
           key: 'textarea',
           className: 'col-sm-12' + (this.state.editing ? '' : ' hidden'),

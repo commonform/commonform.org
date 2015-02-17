@@ -1,6 +1,7 @@
+var Immutable = require('immutable');
+var ImmutableMixin = require('react-immutable-render-mixin');
 var React = require('react');
 var group = require('commonform-group-series');
-var validate = require('commonform-validate');
 
 var Paragraph = require('./paragraph');
 var Series = require('./series');
@@ -10,27 +11,24 @@ var notLastInArray = function(index, array) {
 };
 
 module.exports = React.createClass({
-  propTypes: {
-    path: React.PropTypes.array.isRequired,
-    form: function(props, propName) {
-      if (!validate.nestedForm(props[propName])) {
-        throw new Error('Invalid form');
-      }
-    }
-  },
+  mixins: [ImmutableMixin],
 
   render: function() {
-    var path = this.props.path;
-    var form = this.props.form;
+    var props = this.props;
+    var path = props.path;
+    var form = props.form;
     var pathCounter = 0;
-    var groups = group({content: form.content});
+    var groups = group({
+      content: form.get('content').toJS()
+    });
     var groupsLength = groups.length;
     var haveSeenParagraph = false;
     var children = groups.map(function(group, index, groups) {
       var childAttributes = {
         key: group.type + '-' + index,
-        content: group.content,
-        path: path.concat('content'),
+        // TODO: Can avoid re-casting to immutable type?
+        content: Immutable.fromJS(group.content),
+        path: path.push('content'),
         offset: pathCounter
       };
 

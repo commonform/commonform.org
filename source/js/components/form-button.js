@@ -3,24 +3,27 @@ var React = require('react');
 var DeleteButton = require('./delete-button');
 var SiblingButton = require('./sibling-button');
 
+var DOM = React.DOM;
+
 module.exports = React.createClass({
   render: function() {
-    var path = this.props.path;
-    var followed = this.props.followed;
-    var preceded = this.props.preceded;
-    return React.DOM.div({
+    var props = this.props;
+    var path = props.path;
+    var followed = props.followed;
+    var preceded = props.preceded;
+    return DOM.div({
       key: 'buttonGroup',
       className: 'btn-group col-sm-1',
     }, [
-      React.DOM.button({
+      DOM.button({
         key: 'button',
         className: 'btn btn-default dropdown-toggle',
         type: 'button',
         'data-toggle': 'dropdown'
       }, [
-        React.DOM.strong({key: 'sigil'}, '§')
+        DOM.strong({key: 'sigil'}, '§')
       ]),
-      React.DOM.ul({
+      DOM.ul({
         key: 'menu',
         className: 'dropdown-menu',
         role: 'menu'
@@ -49,11 +52,11 @@ module.exports = React.createClass({
           form: false,
           above: false
         }),
-        this.props.only || React.DOM.li({
+        props.only || DOM.li({
           key: 'divider',
           className: 'divider'
         }),
-        this.props.only || React.createElement(DeleteButton, {
+        props.only || React.createElement(DeleteButton, {
           key: 'delete',
           path: path
         })

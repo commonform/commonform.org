@@ -1,5 +1,5 @@
+var Immutable = require('immutable');
 var React = require('react');
-var Reflux = require('reflux');
 var lint = require('commonform-lint');
 
 var ButtonsBar = require('./buttons-bar');
@@ -8,49 +8,26 @@ var IssuesList = require('./issues-list');
 var Navigation = require('./navigation');
 var ProjectTitle = require('./project-title');
 var Values = require('./values');
-
-var formStore = require('../stores/form-store');
-var metaStore = require('../stores/metadata-store');
-var valuesStore = require('../stores/values-store');
+var projectStore = require('../stores/project-store');
 
 module.exports = React.createClass({
   displayName: 'Project',
 
-  mixins: [
-    Reflux.listenTo(formStore, 'onFormChange', 'onFormChange'),
-    Reflux.listenTo(metaStore, 'onMetaChange', 'onMetaChange'),
-    Reflux.listenTo(valuesStore, 'onValueChange', 'onValueChange')
-  ],
-
-  onFormChange: function(form) {
-    this.setProps({form: form});
+  componentWillMount: function() {
+    var component = this;
+    this.stopListening = projectStore.listen(function(newProject) {
+      component.setState({project: newProject});
+    });
+    this.setState({project: projectStore.getInitialState()});
   },
 
-  onMetaChange: function(metadata) {
-    this.setProps({metadata: metadata});
-  },
-
-  onValueChange: function(values) {
-    this.setProps({values: values});
-  },
-
-  getDefaultProps: function() {
-    return {
-      commonform: '0.0.0',
-      form: {
-        content: ['Initial text']
-      },
-      metadata: {
-        title: 'Untitled Project'
-      },
-      preferences: {},
-      values: {}
-    };
+  componentWillUnmount: function() {
+    this.stopListening();
   },
 
   render: function() {
-    var props = this.props;
-    var issues = lint(props);
+    var project = this.state.project;
+    var issues = lint(project.toJS());
     return React.DOM.div({
       key: 'project',
       className: 'project'
@@ -60,11 +37,11 @@ module.exports = React.createClass({
       }),
       React.createElement(ButtonsBar, {
         key: 'buttons',
-        project: props
+        project: project
       }),
       React.createElement(ProjectTitle, {
         key: 'title',
-        title: props.metadata.title
+        title: project.get('metadata').get('title')
       }),
       React.createElement(IssuesList, {
         key: 'issues',
@@ -72,7 +49,7 @@ module.exports = React.createClass({
       }),
       React.createElement(Values, {
         key: 'values',
-        values: props.values
+        values: project.get('values')
       }),
       React.DOM.div({
         key: 'container',
@@ -80,8 +57,8 @@ module.exports = React.createClass({
       }, [
         React.createElement(Form, {
           key: 'form',
-          form: props.form,
-          path: []
+          form: project.get('form'),
+          path: Immutable.List()
         })
       ])
     ]);

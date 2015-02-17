@@ -1,27 +1,32 @@
+var Immutable = require('immutable');
 var Reflux = require('reflux');
-var objectAssign = require('object-assign');
 
 var valueChange = require('../actions/value-change');
 var valueDelete = require('../actions/value-delete');
 
 module.exports = Reflux.createStore({
   init: function() {
+    this.values = this.getInitialState();
     this.listenTo(valueChange, this.handleChange);
     this.listenTo(valueDelete, this.handleDelete);
-    this.values = this.getInitialState();
   },
 
   getInitialState: function() {
-    return {};
+    return Immutable.Map();
   },
 
   handleDelete: function(field) {
-    delete this.values[field];
+    this.values = this.values.delete(field);
     this.trigger(this.values);
   },
 
   handleChange: function(change) {
-    objectAssign(this.values, change);
+    this.values = this.values.withMutations(function(values) {
+      Object.keys(change).forEach(function(key) {
+        var value = change[key];
+        values.set(key, value);
+      });
+    });
     this.trigger(this.values);
   }
 });

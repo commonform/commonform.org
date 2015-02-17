@@ -24,10 +24,6 @@ module.exports = React.createClass({
     };
   },
 
-  propTypes: {
-    path: React.PropTypes.array.isRequired
-  },
-
   onClick: function(event) {
     event.preventDefault();
     var newPath = JSON.parse(JSON.stringify(this.props.path));

@@ -9,27 +9,31 @@ var Use = require('../components/use');
 
 var mapping = {
   definition: function(element, index) {
+    var term = element.get('definition');
     return React.createElement(Definition, {
-      key: 'definition' + '-' + element.definition + '@' + index,
-      term: element.definition
+      key: 'definition' + '-' + term + '@' + index,
+      term: term
     });
   },
   field: function(element, index) {
+    var field = element.get('field');
     return React.createElement(Field, {
-      key: 'field' + '-' + element.field + '@' + index,
-      value: element.field
+      key: 'field' + '-' + field + '@' + index,
+      value: field
     });
   },
   reference: function(element, index) {
+    var summary = element.get('reference');
     return React.createElement(Reference, {
-      key: 'reference' + '-' + element.reference + '@' + index,
-      summary: element.reference
+      key: 'reference' + '-' + summary + '@' + index,
+      summary: summary
     });
   },
   use: function(element, index) {
+    var term = element.get('use');
     return React.createElement(Use, {
-      key: 'use' + '-' + element.use + '@' + index,
-      term: element.use
+      key: 'use' + '-' + term + '@' + index,
+      term: term
     });
   }
 };
@@ -42,7 +46,7 @@ module.exports = function(contentElement, index) {
     });
   } else {
     for (var type in mapping) {
-      if (validate[type](contentElement)) {
+      if (validate[type](contentElement.toJS())) {
         return mapping[type](contentElement, index);
       }
     }

@@ -5,13 +5,16 @@ var ParagraphContent = require('./paragraph-content');
 
 module.exports = React.createClass({
   render: function() {
-    var path = this.props.path;
-    var offset = this.props.offset;
-    var content = this.props.content;
+    var props = this.props;
+    var path = props.path;
+    var offset = props.offset;
+    var content = props.content;
+    // TODO: Children derive content.length
+    var length = content.count();
     return React.DOM.div({className: 'row'}, [
       React.createElement(ParagraphButton, {
         key: 'button',
-        length: this.props.content.length,
+        length: length,
         offset: offset,
         only: this.props.only,
         path: path
@@ -19,7 +22,7 @@ module.exports = React.createClass({
       React.createElement(ParagraphContent, {
         key: 'content',
         content: content,
-        length: content.length,
+        length: length,
         offset: offset,
         path: path
       })

@@ -1,17 +1,19 @@
+var ImmutableMixin = require('react-immutable-render-mixin');
 var React = require('react');
 
 var Summary = require('./summary');
 var FormButton = require('./form-button');
 
-var attributes = {className: 'subForm'};
-
 module.exports = React.createClass({
+  mixins: [ImmutableMixin],
+
   render: function() {
-    var path = this.props.path;
-    var subForm = this.props.subForm;
-    var followed = this.props.followed;
-    var preceded = this.props.preceded;
-    return React.DOM.div(attributes, [
+    var props = this.props;
+    var path = props.path;
+    var subForm = props.subForm;
+    return React.DOM.div({
+      className: 'subForm'
+    }, [
       React.DOM.div({
         key: 'first',
         className: 'row'
@@ -27,15 +29,15 @@ module.exports = React.createClass({
             React.createElement(FormButton, {
               key: 'button',
               subForm: subForm,
-              followed: followed,
-              preceded: preceded,
-              only: this.props.only,
-              path: this.props.path
+              followed: props.followed,
+              preceded: props.preceded,
+              only: props.only,
+              path: props.path
             }),
             React.createElement(Summary, {
               key: 'summary',
-              summary: subForm.summary,
-              path: this.props.path.concat('summary')
+              summary: subForm.get('summary'),
+              path: props.path.push('summary')
             })
           ]),
         ]),
@@ -50,8 +52,8 @@ module.exports = React.createClass({
         }, [
           React.createElement(require('./form'), {
             key: 'form',
-            form: subForm.form,
-            path: path.concat('form')
+            form: subForm.get('form'),
+            path: path.push('form')
           })
         ])
       ])

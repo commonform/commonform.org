@@ -20,7 +20,7 @@ module.exports = React.createClass({
         }, [
           issues.map(function(issue) {
             return DOM.p({
-              key: JSON.stringify(issue)
+              key: issue
             }, issue.message);
           })
         ])

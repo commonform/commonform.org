@@ -1,11 +1,14 @@
-var React = require('react');
 var AddValueRow = require('./add-value-row');
+var ImmutableMixin = require('react-immutable-render-mixin');
+var React = require('react');
 var ValueRow = require('./value-row');
 var panel = React.createFactory(require('./bootstrap-panel'));
 
 var DOM = React.DOM;
 
 module.exports = React.createClass({
+  mixins: [ImmutableMixin],
+
   render: function() {
     var values = this.props.values;
     return DOM.div({
@@ -34,12 +37,11 @@ module.exports = React.createClass({
           DOM.tbody({
             key: 'body'
           },
-            Object.keys(values).sort().map(function(fieldName) {
-              console.log(fieldName, values);
+            values.keySeq().toArray().sort().map(function(fieldName) {
               return React.createElement(ValueRow, {
                 key: fieldName,
                 field: fieldName,
-                value: values[fieldName]
+                value: values.get(fieldName)
               });
             }).concat(React.createElement(AddValueRow, {key: 'add'}))
           )

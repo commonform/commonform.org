@@ -5,9 +5,10 @@ var SiblingButton = require('./sibling-button');
 
 module.exports = React.createClass({
   render: function() {
-    var path = this.props.path;
-    var offset = this.props.offset;
-    var length = this.props.length;
+    var props = this.props;
+    var path = props.path;
+    var offset = props.offset;
+    var length = props.length;
     return React.DOM.div({
       key: 'div',
       className: 'btn-group col-sm-1',
@@ -25,12 +26,12 @@ module.exports = React.createClass({
       }, [
         React.createElement(SiblingButton, {
           key: 'formAbove',
-          path: path.concat(offset),
+          path: path.push(offset),
           above: true
         }),
         React.createElement(SiblingButton, {
           key: 'formBelow',
-          path: path.concat(offset + length),
+          path: path.push(offset + length),
           above: false
         }),
         this.props.only || React.DOM.li({

@@ -1,3 +1,4 @@
+var Immutable = require('immutable');
 var React = require('react');
 
 var formChange = require('../actions/form-change');
@@ -6,17 +7,14 @@ var glyphicon = React.createFactory(require('./glyphicon'));
 var DOM = React.DOM;
 
 module.exports = React.createClass({
-  propTypes: {
-    path: React.PropTypes.array.isRequired
-  },
-
   onClick: function(event) {
     event.preventDefault();
     formChange({
       type: 'splice',
       path: this.props.path,
       offset: this.props.offset,
-      length: this.props.length
+      length: this.props.length,
+      value: Immutable.List()
     });
   },
 
