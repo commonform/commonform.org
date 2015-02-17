@@ -55,7 +55,7 @@ module.exports = React.createClass({
       className: 'paragraph col-sm-11'
     }, [
       React.DOM.div({
-        key: 'row',
+        key: 'contentRow',
         className: 'row'
       }, [
         React.DOM.p({
@@ -77,9 +77,11 @@ module.exports = React.createClass({
         })
       ]),
       !this.state.editing || React.DOM.div({
-        key: 'guide',
+        key: 'guideRow',
         className: 'row'
-      }, [React.createElement(TypingGuide, {key: 'guide'})])
+      }, [
+        React.createElement(TypingGuide, {key: 'guide'})
+      ])
     ]);
   }
 });
