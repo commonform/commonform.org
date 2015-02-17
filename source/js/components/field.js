@@ -1,6 +1,9 @@
+var ImmutableMixin = require('react-immutable-render-mixin');
 var React = require('react');
 
 module.exports = React.createClass({
+  mixins: [ImmutableMixin],
+
   text: function() {
     return '[' + this.props.value + ']';
   },

@@ -1,8 +1,11 @@
+var ImmutableMixin = require('react-immutable-render-mixin');
 var React = require('react');
 
 var idOf = require('../helpers/id-of');
 
 module.exports = React.createClass({
+  mixins: [ImmutableMixin],
+
   text: function() {
     return '""' + this.props.term + '""';
   },
