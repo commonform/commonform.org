@@ -16,7 +16,11 @@ module.exports = React.createClass({
   },
 
   handleChange: function(event) {
-    this.setState({title: event.target.value});
+    var value = event.target.value;
+    if (value.length === 0) {
+      value = 'Untitled Project';
+    }
+    this.setState({title: value});
   },
 
   handleSubmit: function(event) {

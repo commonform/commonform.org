@@ -12,7 +12,8 @@ module.exports = React.createClass({
   },
 
   handleBlur: function() {
-    var sanitized = sanitize(this.state.summary);
+    var sanitized = sanitize(this.state.summary || '');
+    this.setState({summary: sanitized});
     if (sanitized.length > 0) {
       formChange({
         type: 'set',
@@ -45,7 +46,7 @@ module.exports = React.createClass({
       onBlur: this.handleBlur,
       onChange: this.handleChange,
       onKeyDown: this.handleKeyDown,
-      value: this.state.summary
+      value: this.state.summary || ''
     };
     return React.DOM.form({
       className: 'form col-sm-11',
