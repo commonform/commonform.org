@@ -7,21 +7,7 @@ module.exports = React.createClass({
   render: function() {
     var issues = this.props.issues;
     if (issues.length === 0) {
-      return DOM.div({
-        key: 'container',
-        className: 'container'
-      }, [
-        panel({
-          key: 'panel',
-          type: 'success',
-          heading: 'Execution-Ready'
-        }, [
-          DOM.p({key: 'p'},
-            'This project is ready to sign. ' +
-            'There are no technical errors or blanks to be filled.'
-          )
-        ])
-      ]);
+      return null;
     } else {
       return DOM.div({
         key: 'container',
