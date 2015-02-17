@@ -31,20 +31,26 @@ module.exports = React.createClass({
     this.setState({summary: event.target.value});
   },
 
+  handleSubmit: function(event) {
+    event.preventDefault();
+    this.handleBlur();
+  },
+
   render: function() {
     var summary = this.props.summary;
     var attributes = {
-      key: 'summary',
       className: 'summary form-control',
       id: idOf('summary', summary),
+      key: 'summary',
       onBlur: this.handleBlur,
       onChange: this.handleChange,
-      // placeholder: 'Click to add a summary',
+      onKeyDown: this.handleKeyDown,
       value: this.state.summary
     };
     return React.DOM.form({
+      className: 'form col-sm-11',
       key: 'form',
-      className: 'form col-sm-11'
+      onSubmit: this.handleSubmit
     }, [React.DOM.input(attributes)]);
   }
 });

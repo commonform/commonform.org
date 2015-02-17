@@ -1,5 +1,8 @@
 var React = require('react');
+
 var titleChange = require('../actions/title-change');
+
+var DOM = React.DOM;
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -8,27 +11,34 @@ module.exports = React.createClass({
     };
   },
 
-  handleBlur: function(event) {
-    titleChange(event.target.value);
+  handleBlur: function() {
+    titleChange(this.state.title);
   },
 
   handleChange: function(event) {
     this.setState({title: event.target.value});
   },
 
+  handleSubmit: function(event) {
+    event.preventDefault();
+    this.handleBlur();
+  },
+
   render: function() {
-    return React.DOM.div({
-      key: 'titleDiv',
-      className: 'container'
+    return DOM.div({
+      className: 'container',
+      key: 'titleDiv'
     }, [
-      React.DOM.form({
-        key: 'form'
+      DOM.form({
+        key: 'form',
+        onSubmit: this.handleSubmit
       }, [
-        React.DOM.input({
-          key: 'title',
+        DOM.input({
           className: 'pageTitle form-control',
-          onChange: this.handleChange,
+          key: 'title',
           onBlur: this.handleBlur,
+          onChange: this.handleChange,
+          onKeyDown: this.handleKeyDown,
           value: this.state.title
         })
       ])
