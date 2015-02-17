@@ -63,19 +63,6 @@ module.exports = React.createClass({
             key: 'ul',
             className: 'nav navbar-nav navbar-right'
           }, [
-            // DOM.li({key: 'settings'}, [
-            //   a({
-            //     key: 'settings',
-            //     className: 'settings',
-            //     href: '#settings'
-            //   }, [
-            //     glyphicon({
-            //       key: 'icon',
-            //       icon: 'cog'
-            //     }),
-            //     span({key: 'text'}, [' Settings'])
-            //   ])
-            // ]),
             DOM.li({key: 'help'}, [
               a({
                 key: 'help',
