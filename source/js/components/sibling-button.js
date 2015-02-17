@@ -4,6 +4,7 @@ var formChange = require('../actions/form-change');
 
 var glyphicon = React.createFactory(require('./glyphicon'));
 
+var DOM = React.DOM;
 var defaultForm = function() {
   return {
     summary: 'Click to Type',
@@ -47,11 +48,11 @@ module.exports = React.createClass({
   render: function() {
     var form = this.props.form;
     var above = this.props.above;
-    return React.DOM.li({
+    return DOM.li({
       key: 'li',
       href: '#'
     }, [
-      React.DOM.a({
+      DOM.a({
         key: 'a',
         href: '#',
         onClick: this.onClick
@@ -60,7 +61,7 @@ module.exports = React.createClass({
           key: 'icon',
           icon: above ? 'up' : 'down'
         }),
-        React.DOM.span(
+        DOM.span(
           {key: 'text'},
           ' Add ' +
             (form ? '§' : '¶') + ' ' +

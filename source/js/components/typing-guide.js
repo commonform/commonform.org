@@ -1,10 +1,13 @@
 var React = require('react');
 
 var DOM = React.DOM;
+var span = DOM.span;
+var kbd = DOM.kbd;
 
 module.exports = React.createClass({
   render: function() {
     return DOM.div({
+      key: 'typingGuide',
       className: 'typingGuide panel panel-info'
     }, [
       DOM.div({
@@ -16,32 +19,24 @@ module.exports = React.createClass({
         className: 'panel-body'
       },
         DOM.p({key: 'definition'}, [
-          DOM.span({key: 'lead'},
-            'Define terms with double-double quotes, like '
-          ),
-          DOM.kbd({key: 'keys'}, ['""Agreement""']),
-          DOM.span({key: 'period'}, ['.'])
+          span({key: 'lead'}, 'Define terms with double quotes, like '),
+          kbd({key: 'keys'}, '""Agreement""'),
+          span({key: 'period'}, '.')
         ]),
         DOM.p({key: 'use'},
-          DOM.span({key: 'lead'}, [
-            'Use defined terms with angle brackets, like '
-          ]),
-          DOM.kbd({key: 'keys'}, ['<Consideration>']),
-          DOM.span({key: 'period'}, ['.'])
+          span({key: 'lead'}, 'Use defined terms with chevrons, like '),
+          kbd({key: 'keys'}, '<Consideration>'),
+          span({key: 'period'}, '.')
         ),
         DOM.p({key: 'field'},
-          DOM.span({key: 'lead'}, [
-            'Insert fill-in-the-blanks with square brackets, like ',
-          ]),
-          DOM.kbd({key: 'keys'}, ['[Company Name]']),
-          DOM.span({key: 'period'}, ['.'])
+          span({key: 'lead'}, 'Insert blanks with brackets, like '),
+          kbd({key: 'keys'}, ['[Company Name]']),
+          span({key: 'period'}, '.')
         ),
         DOM.p({key: 'reference'},
-          DOM.span({key: 'lead'}, [
-            'Reference other forms by summary with braces, like '
-          ]),
-          DOM.kbd({key: 'keys'}, ['{Indemnification}']),
-          DOM.span({key: 'period'}, ['.'])
+          span({key: 'lead'}, 'Reference forms with braces, like '),
+          kbd({key: 'keys'}, ['{Indemnification}']),
+          span({key: 'period'}, '.')
         )
       )
     ]);

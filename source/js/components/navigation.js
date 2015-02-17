@@ -3,6 +3,11 @@ var version = require('../../../package.json').version;
 
 var glyphicon = React.createFactory(require('./glyphicon'));
 
+var DOM = React.DOM;
+var a = DOM.a;
+var div = DOM.div;
+var span = DOM.span;
+
 var HELP = 'https://commonform.github.io';
 
 module.exports = React.createClass({
@@ -12,54 +17,54 @@ module.exports = React.createClass({
 
   render: function() {
     var classes = 'navbar navbar-default';
-    return React.DOM.div({
+    return div({
       key: 'navbar',
       className: classes
     }, [
-      React.DOM.div({
+      div({
         key: 'container',
         className: 'container'
       }, [
-        React.DOM.div({
+        div({
           key: 'header',
           className: 'navbar-header'
         }, [
-          React.DOM.button({
+          DOM.button({
             key: 'button',
             className: 'navbar-toggle collapsed',
             type: 'button',
             'data-toggle':'collapse',
             'data-target':'#navbar'
           }, [
-            React.DOM.span({
+            span({
               key: 'toggle',
               className: 'sr-only'
-            }, ['Toggle navigation']),
-            React.DOM.span({key:'bar-1'}, ['icon-bar']),
-            React.DOM.span({key:'bar-2'}, ['icon-bar']),
-            React.DOM.span({key:'bar-3'}, ['icon-bar'])
+            }, 'Toggle navigation'),
+            span({key:'bar-1', className: 'icon-bar'}),
+            span({key:'bar-2', className: 'icon-bar'}),
+            span({key:'bar-3', className: 'icon-bar'})
           ]),
-          React.DOM.a({
+          a({
             key: 'a',
             className: 'navbar-brand',
             href: '#'
-          }, ['Common Form'])
+          }, 'Common Form')
         ]),
-        React.DOM.div({
+        div({
           key: 'collapse',
           className: 'collapse navbar-collapse',
           id: 'navbar'
         }, [
-          React.DOM.p({
+          DOM.p({
             key: 'version',
             className: 'navbar-text'
-          }, ['version ' + version]),
-          React.DOM.ul({
+          }, 'version ' + version),
+          DOM.ul({
             key: 'ul',
             className: 'nav navbar-nav navbar-right'
           }, [
-            // React.DOM.li({key: 'settings'}, [
-            //   React.DOM.a({
+            // DOM.li({key: 'settings'}, [
+            //   a({
             //     key: 'settings',
             //     className: 'settings',
             //     href: '#settings'
@@ -68,11 +73,11 @@ module.exports = React.createClass({
             //       key: 'icon',
             //       icon: 'cog'
             //     }),
-            //     React.DOM.span({key: 'text'}, [' Settings'])
+            //     span({key: 'text'}, [' Settings'])
             //   ])
             // ]),
-            React.DOM.li({key: 'help'}, [
-              React.DOM.a({
+            DOM.li({key: 'help'}, [
+              a({
                 key: 'help',
                 className: 'help',
                 href: HELP
@@ -81,7 +86,7 @@ module.exports = React.createClass({
                   key: 'icon',
                   icon: 'question-sign'
                 }),
-                React.DOM.span({key: 'text'}, [' About'])
+                span({key: 'text'}, ' About')
               ])
             ])
           ])

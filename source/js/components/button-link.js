@@ -2,11 +2,12 @@ var React = require('react');
 var glyphicon = React.createFactory(require('./glyphicon'));
 
 var DOM = React.DOM;
+var Types = React.PropTypes;
 
 module.exports = React.createClass({
   propTypes: {
-    icon: React.PropTypes.string.isRequired,
-    text: React.PropTypes.string.isRequired,
+    icon: Types.string.isRequired,
+    text: Types.string.isRequired,
   },
 
   render: function() {
