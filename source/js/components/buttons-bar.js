@@ -37,13 +37,13 @@ var openLocal = function(callback) {
 
 module.exports = React.createClass({
   fileName: function(extension) {
-    var title = this.props.project.metadata.title;
+    var title = this.props.project.get('metadata').get('title');
     var date = new Date().toISOString();
     return '' + title + ' ' + date + '.' + extension;
   },
 
   handleSaveJSON: function() {
-    var blob = jsonBlob(this.props.project);
+    var blob = jsonBlob(this.props.project.toJS());
     saveAs(blob, this.fileName('json'));
   },
 
@@ -73,7 +73,7 @@ module.exports = React.createClass({
 
   handleSaveDOCX: function() {
     // TODO: Remove terrible hack
-    var zip = docx(JSON.parse(JSON.stringify(this.props.project)));
+    var zip = docx(this.props.project.toJS());
     saveAs(zip.generate({type: 'blob'}), this.fileName('docx'));
   },
 

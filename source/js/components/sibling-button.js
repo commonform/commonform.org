@@ -1,18 +1,22 @@
+var Immutable = require('immutable');
 var React = require('react');
 
 var formChange = require('../actions/form-change');
-
 var glyphicon = React.createFactory(require('./glyphicon'));
 
 var DOM = React.DOM;
-var defaultForm = function() {
-  return {
-    summary: 'Click to Type',
-    form: {content: ['Added ' + new Date().toISOString()]}
-  };
+
+var defaultParagraph = function() {
+  return 'Added ' + new Date().toISOString();
 };
 
-var defaultParagraph = 'Click to type';
+var defaultForm = function() {
+  return Immutable.fromJS({
+    form: {
+      content: [defaultParagraph()]
+    }
+  });
+};
 
 module.exports = React.createClass({
   displayName: 'SiblingButton',
@@ -26,17 +30,18 @@ module.exports = React.createClass({
 
   onClick: function(event) {
     event.preventDefault();
-    var newPath = JSON.parse(JSON.stringify(this.props.path));
-    var last = newPath[newPath.length - 1];
+    var path = this.props.path;
+    var index = path.last();
     if (!this.props.above) {
-      newPath[newPath.length - 1] = last + 1;
+      index++;
     }
     var newValue = this.props.form ?
-      JSON.parse(JSON.stringify(defaultForm())) :
-      defaultParagraph;
+      defaultForm() : defaultParagraph();
     formChange({
-      type: 'insert',
-      path: newPath,
+      type: 'splice',
+      offset: index,
+      length: 0,
+      path: path.pop(),
       value: newValue
     });
   },

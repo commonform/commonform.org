@@ -28,27 +28,24 @@ module.exports = Reflux.createStore({
     var type = instruction.type;
     var path = instruction.path;
     var value = instruction.value;
-    var head;
     var newForm;
     switch (type) {
       case 'set':
-        newForm = this.form.setIn(path, value);
+        newForm = this.form.setIn(path.toArray(), value);
         break;
       case 'del':
-        newForm = this.form.deleteIn(path);
-        break;
-      case 'insert':
-        head = path.slice(0, path.length - 1);
-        newForm = this.form.updateIn(head, function(current) {
-          return current.splice(path[path.length - 1], 0, value);
-        });
+        newForm = this.form.deleteIn(path.toArray());
         break;
       case 'splice':
         newForm = this.form.updateIn(path, function(current) {
           var offset = instruction.offset;
           var before = current.slice(0, offset);
           var after = current.slice(offset + instruction.length);
-          return before.concat(instruction.value).concat(after);
+          var value = instruction.value;
+          if (!Immutable.List.isList(value)) {
+            value = Immutable.List([value]);
+          }
+          return before.concat(value).concat(after);
         });
         break;
       default:
