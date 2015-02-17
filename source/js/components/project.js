@@ -7,24 +7,31 @@ var Form = require('./form');
 var IssuesList = require('./issues-list');
 var Navigation = require('./navigation');
 var ProjectTitle = require('./project-title');
+var Values = require('./values');
 
 var formStore = require('../stores/form-store');
 var metaStore = require('../stores/metadata-store');
+var valuesStore = require('../stores/values-store');
 
 module.exports = React.createClass({
   displayName: 'Project',
 
   mixins: [
-    Reflux.listenTo(formStore, 'handleFormChange', 'handleFormChange'),
-    Reflux.listenTo(metaStore, 'handleMetaChange', 'handleMetaChange')
+    Reflux.listenTo(formStore, 'onFormChange', 'onFormChange'),
+    Reflux.listenTo(metaStore, 'onMetaChange', 'onMetaChange'),
+    Reflux.listenTo(valuesStore, 'onValueChange', 'onValueChange')
   ],
 
-  handleFormChange: function(form) {
+  onFormChange: function(form) {
     this.setProps({form: form});
   },
 
-  handleMetaChange: function(metadata) {
+  onMetaChange: function(metadata) {
     this.setProps({metadata: metadata});
+  },
+
+  onValueChange: function(values) {
+    this.setProps({values: values});
   },
 
   getDefaultProps: function() {
@@ -42,6 +49,8 @@ module.exports = React.createClass({
   },
 
   render: function() {
+    var props = this.props;
+    var issues = lint(props);
     return React.DOM.div({
       key: 'project',
       className: 'project'
@@ -49,17 +58,21 @@ module.exports = React.createClass({
       React.createElement(Navigation, {
         key: 'navigation'
       }),
-      React.createElement(ProjectTitle, {
-        key: 'title',
-        title: this.props.metadata.title
-      }),
       React.createElement(ButtonsBar, {
         key: 'buttons',
-        project: this.props
+        project: props
+      }),
+      React.createElement(ProjectTitle, {
+        key: 'title',
+        title: props.metadata.title
       }),
       React.createElement(IssuesList, {
         key: 'issues',
-        issues: lint(this.props)
+        issues: issues
+      }),
+      React.createElement(Values, {
+        key: 'values',
+        values: props.values
       }),
       React.DOM.div({
         key: 'container',
@@ -67,7 +80,7 @@ module.exports = React.createClass({
       }, [
         React.createElement(Form, {
           key: 'form',
-          form: this.props.form,
+          form: props.form,
           path: []
         })
       ])
