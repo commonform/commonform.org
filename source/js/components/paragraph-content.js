@@ -62,7 +62,7 @@ module.exports = React.createClass({
           key: 'p',
           className: 'col-sm-12' +
             (!this.state.editing ? '' : ' hidden'),
-          onClick: this.handleClick,
+          onDoubleClick: this.handleClick,
         }, this.state.content.map(function(element, index) {
           return componentFor(element, index);
         })),
