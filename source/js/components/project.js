@@ -10,6 +10,9 @@ var ProjectTitle = require('./project-title');
 var Values = require('./values');
 var projectStore = require('../stores/project-store');
 
+var noPreferences = Immutable.Map();
+var rootPath = Immutable.List();
+
 module.exports = React.createClass({
   displayName: 'Project',
 
@@ -27,7 +30,9 @@ module.exports = React.createClass({
 
   render: function() {
     var project = this.state.project;
-    var issues = lint(project.toJS());
+    var form = project.get('form');
+    var values = project.get('values');
+    var issues = lint(form, values, noPreferences);
     return React.DOM.div({
       key: 'project',
       className: 'project'
@@ -49,7 +54,7 @@ module.exports = React.createClass({
       }),
       React.createElement(Values, {
         key: 'values',
-        values: project.get('values')
+        values: values
       }),
       React.DOM.div({
         key: 'container',
@@ -57,8 +62,8 @@ module.exports = React.createClass({
       }, [
         React.createElement(Form, {
           key: 'form',
-          form: project.get('form'),
-          path: Immutable.List()
+          form: form,
+          path: rootPath
         })
       ])
     ]);

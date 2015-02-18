@@ -8,7 +8,7 @@ module.exports = React.createClass({
 
   render: function() {
     var issues = this.props.issues;
-    if (issues.length === 0) {
+    if (issues.count() === 0) {
       return null;
     } else {
       return DOM.div({

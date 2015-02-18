@@ -65,7 +65,7 @@ module.exports = React.createClass({
   handleOpenMarkup: function() {
     // TODO: Load other parts of project, too
     openLocal(function(fileContent) {
-      var form = markup.parseLines(fileContent);
+      var form = markup.parse(fileContent);
       formChange({
         type: 'set',
         path: Immutable.List(),

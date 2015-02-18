@@ -17,7 +17,9 @@ module.exports = React.createClass({
       editing: false,
       content: props.content,
       length: props.content.count(),
-      textContent: markup.toMarkup({content: props.content.toJS()})
+      textContent: markup.stringify(Immutable.Map({
+        content: props.content
+      }))
     };
   },
 
@@ -31,9 +33,7 @@ module.exports = React.createClass({
   handleBlur: function(event) {
     var props = this.props;
     var text = event.target.value;
-    var newContent = Immutable.fromJS(
-      markup.parseMarkup(sanitize(text)).content
-    );
+    var newContent = markup.parse(sanitize(text)).get('content');
     this.setState({editing: false}, function() {
       formChange({
         type: 'splice',
@@ -53,12 +53,16 @@ module.exports = React.createClass({
     this.setState({
       content: newProps.content,
       length: newProps.content.count(),
-      textContent: markup.toMarkup({content: newProps.content.toJS()})
+      textContent: markup.stringify(Immutable.Map({
+        content: newProps.content
+      }))
     });
   },
 
   render: function() {
-    var content = this.state.content;
+    var state = this.state;
+    var content = state.content;
+    var editing = state.editing;
     return React.DOM.div({
       key: 'width',
       className: 'paragraph col-sm-11'
@@ -70,22 +74,22 @@ module.exports = React.createClass({
         React.DOM.p({
           key: 'p',
           className: 'col-sm-12' +
-            (!this.state.editing ? '' : ' hidden'),
+            (!editing ? '' : ' hidden'),
           onDoubleClick: this.handleClick,
         }, content.map(function(element, index) {
           return componentFor(element, index);
         }).toArray()),
         React.createElement(TextArea, {
+          className: 'col-sm-12' + (editing ? '' : ' hidden'),
           key: 'textarea',
-          className: 'col-sm-12' + (this.state.editing ? '' : ' hidden'),
           onBlur: this.handleBlur,
           onChange: this.handleChange,
           ref: 'textarea',
           spellCheck: 'true',
-          value: this.state.textContent
+          value: state.textContent
         })
       ]),
-      !this.state.editing || React.DOM.div({
+      !editing || React.DOM.div({
         key: 'guideRow',
         className: 'row'
       }, [
