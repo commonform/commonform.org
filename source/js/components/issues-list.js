@@ -23,8 +23,8 @@ module.exports = React.createClass({
           issues.map(function(issue) {
             return DOM.p({
               key: issue
-            }, issue.message);
-          })
+            }, issue.get('message'));
+          }).toJS()
         ])
       );
     }
