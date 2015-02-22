@@ -32,9 +32,10 @@
   "private": true,
   "scripts": {
     "build": "make",
+    "coverage": "istanbul cover _mocha && istanbul check-coverage coverage/coverage.json",
     "lint": "jshint source test && jscs source test",
     "pre-commit": "npm run lint && npm run coverage",
     "test": "mocha",
-    "coverage": "istanbul cover _mocha && istanbul check-coverage coverage/coverage.json"
+    "travis-ci": "npm run pre-commit"
   }
 }
