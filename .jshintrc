@@ -1,6 +1,7 @@
 {
   "bitwise": true,
   "browser": true,
+  "browserify": true,
   "camelcase": true,
   "curly": true,
   "eqeqeq": true,
@@ -9,7 +10,6 @@
   "latedef": true,
   "newcap": true,
   "noarg": true,
-  "node": true,
   "quotmark": "single",
   "regexp": true,
   "smarttabs": true,
