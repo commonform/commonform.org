@@ -28,9 +28,6 @@
     "uglifyify": "^3.0.1",
     "watchify": "^2.3.0"
   },
-  "engines": {
-    "node": "0.10.x"
-  },
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
