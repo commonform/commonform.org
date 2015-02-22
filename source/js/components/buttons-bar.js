@@ -46,7 +46,7 @@ module.exports = React.createClass({
   },
 
   handleSaveJSON: function() {
-    var blob = jsonBlob(this.props.project.toJS());
+    var blob = jsonBlob(this.props.project);
     saveAs(blob, this.fileName('json'));
   },
 
@@ -75,8 +75,7 @@ module.exports = React.createClass({
   },
 
   handleSaveDOCX: function() {
-    // TODO: Remove terrible hack
-    var zip = docx(this.props.project.toJS());
+    var zip = docx(this.props.project);
     saveAs(zip.generate({type: 'blob'}), this.fileName('docx'));
   },
 
