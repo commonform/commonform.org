@@ -16,7 +16,8 @@ module.exports = React.createClass({
     var children = content.toArray().map(function(subForm, index, a) {
       var subFormPath = path.push(offset + index);
       // TODO: Check API
-      var digest = hash(normalize(subForm.get('form').toJS()));
+      var normalized = normalize(subForm.get('form'));
+      var digest = hash(normalized.last());
       var childAttributes = {
         key: '' + index + ':' + subForm.get('summary') + ':' + digest,
         only: props.only,

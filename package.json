@@ -4,10 +4,10 @@
   "dependencies": {
     "commonform-docx": "^0.2.0",
     "commonform-group-series": "^0.2.0",
-    "commonform-hash": "^0.1.2",
+    "commonform-hash": "^0.2.0",
     "commonform-lint": "^0.3.0",
     "commonform-markup": "^0.2.1",
-    "commonform-normalize": "^0.1.1",
+    "commonform-normalize": "^0.2.1",
     "commonform-predicate": "^0.1.0",
     "commonform-validate": "^0.1.2",
     "filesaver.js": "^0.1.1",
