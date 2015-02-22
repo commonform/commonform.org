@@ -1,10 +1,10 @@
 var React = require('react');
-var validate = require('commonform-validate');
+var predicate = require('commonform-predicate');
 
 var Definition = require('../components/definition');
-var TextString = require('../components/text-string');
 var Field = require('../components/field');
 var Reference = require('../components/reference');
+var TextString = require('../components/text-string');
 var Use = require('../components/use');
 
 var mapping = {
@@ -46,7 +46,7 @@ module.exports = function(contentElement, index) {
     });
   } else {
     for (var type in mapping) {
-      if (validate[type](contentElement.toJS())) {
+      if (predicate[type](contentElement)) {
         return mapping[type](contentElement, index);
       }
     }
