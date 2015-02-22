@@ -1,9 +1,11 @@
 var Immutable = require('immutable');
 var React = require('react');
 var lint = require('commonform-lint');
+var merkleize = require('commonform-merkleize');
 
 var ButtonsBar = require('./buttons-bar');
 var Form = require('./form');
+var InfoPanel = require('./info-panel');
 var IssuesList = require('./issues-list');
 var Navigation = require('./navigation');
 var ProjectTitle = require('./project-title');
@@ -16,12 +18,30 @@ var rootPath = Immutable.List();
 module.exports = React.createClass({
   displayName: 'Project',
 
+  computeDigestTree: function(newProject) {
+    var state = this.state;
+    return merkleize(
+      newProject.get('form'),
+      state && state.hasOwnProperty('project') ?
+        state.project.get('form', false) : false,
+      state && state.hasOwnProperty('digestTree') ?
+        state.digestTree : false
+    );
+  },
+
   componentWillMount: function() {
     var component = this;
     this.stopListening = projectStore.listen(function(newProject) {
-      component.setState({project: newProject});
+      component.setState({
+        project: newProject,
+        digestTree: component.computeDigestTree(newProject)
+      });
     });
-    this.setState({project: projectStore.getInitialState()});
+    var initialProject = projectStore.getInitialState();
+    this.setState({
+      project: initialProject,
+      digestTree: component.computeDigestTree(initialProject)
+    });
   },
 
   componentWillUnmount: function() {
@@ -47,6 +67,10 @@ module.exports = React.createClass({
       React.createElement(ProjectTitle, {
         key: 'title',
         title: project.get('metadata').get('title')
+      }),
+      React.createElement(InfoPanel, {
+        key: 'info',
+        digest: this.state.digestTree.get('digest')
       }),
       React.createElement(IssuesList, {
         key: 'issues',
