@@ -12,6 +12,7 @@ var ProjectTitle = require('./project-title');
 var Values = require('./values');
 var projectStore = require('../stores/project-store');
 
+var createElement = React.createElement.bind(React);
 var noPreferences = Immutable.Map();
 var rootPath = Immutable.List();
 
@@ -31,17 +32,15 @@ module.exports = React.createClass({
 
   componentWillMount: function() {
     var component = this;
-    this.stopListening = projectStore.listen(function(newProject) {
+    var newProjectHandler = function(newProject) {
       component.setState({
         project: newProject,
         digestTree: component.computeDigestTree(newProject)
       });
-    });
+    };
+    this.stopListening = projectStore.listen(newProjectHandler);
     var initialProject = projectStore.getInitialState();
-    this.setState({
-      project: initialProject,
-      digestTree: component.computeDigestTree(initialProject)
-    });
+    newProjectHandler(initialProject);
   },
 
   componentWillUnmount: function() {
@@ -57,26 +56,26 @@ module.exports = React.createClass({
       key: 'project',
       className: 'project'
     }, [
-      React.createElement(Navigation, {
+      createElement(Navigation, {
         key: 'navigation'
       }),
-      React.createElement(ButtonsBar, {
+      createElement(ButtonsBar, {
         key: 'buttons',
         project: project
       }),
-      React.createElement(ProjectTitle, {
+      createElement(ProjectTitle, {
         key: 'title',
         title: project.get('metadata').get('title')
       }),
-      React.createElement(InfoPanel, {
+      createElement(InfoPanel, {
         key: 'info',
         digest: this.state.digestTree.get('digest')
       }),
-      React.createElement(IssuesList, {
+      createElement(IssuesList, {
         key: 'issues',
         issues: issues
       }),
-      React.createElement(Values, {
+      createElement(Values, {
         key: 'values',
         values: values
       }),
@@ -84,7 +83,7 @@ module.exports = React.createClass({
         key: 'container',
         className: 'container'
       }, [
-        React.createElement(Form, {
+        createElement(Form, {
           key: 'form',
           form: form,
           path: rootPath
