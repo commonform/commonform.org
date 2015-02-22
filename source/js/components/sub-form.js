@@ -55,7 +55,8 @@ module.exports = React.createClass({
           React.createElement(require('./form'), {
             key: 'form',
             form: subForm.get('form'),
-            path: path.push('form')
+            path: path.push('form'),
+            digestTree: props.digestTree.get('form')
           })
         ])
       ])

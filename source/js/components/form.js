@@ -38,6 +38,7 @@ module.exports = React.createClass({
           groups.slice(index).some(function(laterGroup) {
             return laterGroup.get('type') === 'paragraph';
           });
+        childAttributes.digestTree = props.digestTree;
         childAttributes.preceded = haveSeenParagraph;
       } else {
         haveSeenParagraph = true;

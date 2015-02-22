@@ -52,6 +52,7 @@ module.exports = React.createClass({
     var form = project.get('form');
     var values = project.get('values');
     var issues = lint(form, values, noPreferences);
+    var digestTree = this.state.digestTree;
     return React.DOM.div({
       key: 'project',
       className: 'project'
@@ -69,7 +70,7 @@ module.exports = React.createClass({
       }),
       createElement(InfoPanel, {
         key: 'info',
-        digest: this.state.digestTree.get('digest')
+        digest: digestTree.get('digest')
       }),
       createElement(IssuesList, {
         key: 'issues',
@@ -86,7 +87,8 @@ module.exports = React.createClass({
         createElement(Form, {
           key: 'form',
           form: form,
-          path: rootPath
+          path: rootPath,
+          digestTree: digestTree
         })
       ])
     ]);

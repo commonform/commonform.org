@@ -1,6 +1,4 @@
 var React = require('react');
-var hash = require('commonform-hash');
-var normalize = require('commonform-normalize');
 
 var SubForm = require('./sub-form');
 
@@ -14,14 +12,15 @@ module.exports = React.createClass({
     var followed = props.followed;
     var content = props.content;
     var children = content.toArray().map(function(subForm, index, a) {
-      var subFormPath = path.push(offset + index);
-      // TODO: Check API
-      var normalized = normalize(subForm.get('form'));
-      var digest = hash(normalized.last());
+      var parentIndex = offset + index;
+      var subFormPath = path.push(parentIndex);
+      var digestTree = props.digestTree.getIn(['content', parentIndex]);
+      var digest = digestTree.getIn(['form', 'digest']);
       var childAttributes = {
         key: '' + index + ':' + subForm.get('summary') + ':' + digest,
         only: props.only,
         path: subFormPath,
+        digestTree: digestTree,
         subForm: subForm
       };
       childAttributes.followed = (index === a.length - 1) && followed;
