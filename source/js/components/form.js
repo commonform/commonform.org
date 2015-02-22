@@ -2,6 +2,7 @@ var ImmutableMixin = require('react-immutable-render-mixin');
 var React = require('react');
 var group = require('commonform-group-series');
 
+var DigestLine = require('./digest-line');
 var Paragraph = require('./paragraph');
 var Series = require('./series');
 
@@ -16,6 +17,7 @@ module.exports = React.createClass({
 
   render: function() {
     var props = this.props;
+    var digestTree = props.digestTree;
     var path = props.path;
     var form = props.form;
     var pathCounter = 0;
@@ -38,7 +40,7 @@ module.exports = React.createClass({
           groups.slice(index).some(function(laterGroup) {
             return laterGroup.get('type') === 'paragraph';
           });
-        childAttributes.digestTree = props.digestTree;
+        childAttributes.digestTree = digestTree;
         childAttributes.preceded = haveSeenParagraph;
       } else {
         haveSeenParagraph = true;
@@ -50,11 +52,17 @@ module.exports = React.createClass({
       return type === 'paragraph' ?
         React.createElement(Paragraph, childAttributes) :
         React.createElement(Series, childAttributes);
-    }).toArray();
+    });
     return React.DOM.div({
       key: 'div',
       className: 'form',
       path: path
-    }, children);
+    },
+      children.unshift(
+        React.createElement(
+          DigestLine,
+          {digest: digestTree.get('digest')}
+        )
+      ).toArray());
   }
 });

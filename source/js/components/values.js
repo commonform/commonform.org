@@ -18,7 +18,7 @@ module.exports = React.createClass({
     }, [
       panel({
         key: 'panel',
-        type: 'default',
+        type: 'success',
         heading: 'Fill in the Blanks'
       }, [
         DOM.table({

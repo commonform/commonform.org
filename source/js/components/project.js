@@ -5,7 +5,6 @@ var merkleize = require('commonform-merkleize');
 
 var ButtonsBar = require('./buttons-bar');
 var Form = require('./form');
-var InfoPanel = require('./info-panel');
 var IssuesList = require('./issues-list');
 var Navigation = require('./navigation');
 var ProjectTitle = require('./project-title');
@@ -67,10 +66,6 @@ module.exports = React.createClass({
       createElement(ProjectTitle, {
         key: 'title',
         title: project.get('metadata').get('title')
-      }),
-      createElement(InfoPanel, {
-        key: 'info',
-        digest: digestTree.get('digest')
       }),
       createElement(IssuesList, {
         key: 'issues',
