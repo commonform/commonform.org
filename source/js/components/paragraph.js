@@ -5,7 +5,7 @@ var ParagraphContent = require('./paragraph-content');
 var ParagraphIssues = require('./paragraph-issues');
 var depthOfPath = require('../helpers/depth-of-path');
 
-var ANNOTATIONS_WIDTH = 5;
+var ANNOTATION_WIDTH = require('../helpers/constants').ANNOTATION_WIDTH;
 
 module.exports = React.createClass({
   displayName: 'Paragraph',
@@ -15,7 +15,7 @@ module.exports = React.createClass({
     var path = props.path;
     var depth = depthOfPath(path);
     var issuesTree = props.issuesTree;
-    var width = 12 - ANNOTATIONS_WIDTH - depth;
+    var width = 12 - ANNOTATION_WIDTH - depth;
     var offset = props.offset;
     var content = props.content;
     return React.DOM.div({className: 'row'}, [
@@ -36,7 +36,7 @@ module.exports = React.createClass({
       }),
       React.DOM.div({
         key: 'marginalia',
-        className: 'marginalia col-sm-' + ANNOTATIONS_WIDTH
+        className: 'marginalia col-sm-' + ANNOTATION_WIDTH
       }, [
         React.createElement(ParagraphIssues, {
           key: 'issues',

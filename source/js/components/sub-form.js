@@ -6,6 +6,8 @@ var Summary = require('./summary');
 var FormButton = require('./form-button');
 var depthOfPath = require('../helpers/depth-of-path');
 
+var ANNOTATION_WIDTH = require('../helpers/constants').ANNOTATION_WIDTH;
+
 module.exports = React.createClass({
   displayName: 'SubForm',
 
@@ -17,7 +19,7 @@ module.exports = React.createClass({
     var subForm = props.subForm;
     var depth = depthOfPath(path);
     var issuesTree = props.issuesTree;
-    var width = 12 - 5 - depth;
+    var width = 12 - ANNOTATION_WIDTH - depth;
     var digestTree = props.digestTree.get('form');
     return React.DOM.div({
       className: 'subForm'
@@ -43,7 +45,7 @@ module.exports = React.createClass({
         }),
         React.DOM.div({
           key: 'marginalia',
-          className: 'marginalia col-sm-5'
+          className: 'marginalia col-sm-' + ANNOTATION_WIDTH
         }, [
           React.createElement(Annotations, {
             key: 'annotations',
