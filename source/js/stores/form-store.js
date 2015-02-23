@@ -11,21 +11,7 @@ module.exports = Reflux.createStore({
   },
 
   getInitialState: function() {
-    return Immutable.fromJS({
-      content: [
-        'This ',
-        {definition: 'Agreement'},
-        {
-          summary: 'A Summary',
-          form: {content: [
-            'The ',
-            {use: 'Parties'},
-            '...'
-          ]}
-        },
-        {reference: 'Another Summary'}
-      ]
-    });
+    return require('../data/SAFE.js');
   },
 
   handleFormChange: function(instruction) {
