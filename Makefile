@@ -34,7 +34,8 @@ ${build}/%.html: %.html
 .PHONY: clean watch
 
 clean:
-	rm -rf ${build}
+	rm -rf ./${build}
 
 watch:
+	mkdir -p ${build}
 	watchify --verbose --debug source/js/index.js -o application/index.js
