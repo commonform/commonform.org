@@ -2,7 +2,6 @@ var ImmutableMixin = require('react-immutable-render-mixin');
 var React = require('react');
 var group = require('commonform-group-series');
 
-var DigestLine = require('./digest-line');
 var Paragraph = require('./paragraph');
 var Series = require('./series');
 
@@ -55,14 +54,8 @@ module.exports = React.createClass({
     });
     return React.DOM.div({
       key: 'div',
-      className: 'form',
+      className: 'form col-sm-12',
       path: path
-    },
-      children.unshift(
-        React.createElement(DigestLine, {
-          key: 'digest',
-          digest: digestTree.get('digest')
-        })
-      ).toArray());
+    }, children.toArray());
   }
 });
