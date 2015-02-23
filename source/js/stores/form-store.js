@@ -17,7 +17,11 @@ module.exports = Reflux.createStore({
         {definition: 'Agreement'},
         {
           summary: 'A Summary',
-          form: {content: ['Text in a sub-form!']}
+          form: {content: [
+            'The ',
+            {use: 'Parties'},
+            '...'
+          ]}
         },
         {reference: 'Another Summary'}
       ]

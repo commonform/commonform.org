@@ -16,6 +16,7 @@ module.exports = React.createClass({
     var path = props.path;
     var subForm = props.subForm;
     var depth = depthOfPath(path);
+    var issuesTree = props.issuesTree;
     var width = 12 - 5 - depth;
     var digestTree = props.digestTree.get('form');
     return React.DOM.div({
@@ -25,24 +26,21 @@ module.exports = React.createClass({
         key: 'first',
         className: 'row'
       }, [
-        React.DOM.div({
-          key: 'buttonAndSummary',
-          className: 'col-sm-offset-' + depth + ' col-sm-' + width
-        }, [
-          React.createElement(FormButton, {
-            key: 'button',
-            subForm: subForm,
-            followed: props.followed,
-            preceded: props.preceded,
-            only: props.only,
-            path: props.path
-          }),
-          React.createElement(Summary, {
-            key: 'summary',
-            summary: subForm.get('summary'),
-            path: props.path.push('summary')
-          })
-        ]),
+        React.createElement(FormButton, {
+          key: 'button',
+          subForm: subForm,
+          followed: props.followed,
+          preceded: props.preceded,
+          depth: depth,
+          only: props.only,
+          path: props.path
+        }),
+        React.createElement(Summary, {
+          key: 'summary',
+          summary: subForm.get('summary'),
+          path: props.path.push('summary'),
+          width: width - 1
+        }),
         React.DOM.div({
           key: 'marginalia',
           className: 'marginalia col-sm-5'
@@ -61,6 +59,7 @@ module.exports = React.createClass({
           key: 'form',
           form: subForm.get('form'),
           path: path.push('form'),
+          issuesTree: issuesTree,
           digestTree: digestTree
         })
       ])

@@ -65,7 +65,7 @@ module.exports = React.createClass({
     var editing = state.editing;
     return React.DOM.div({
       key: 'width',
-      className: 'paragraph col-sm-11'
+      className: 'paragraph col-sm-' + this.props.width
     }, [
       React.DOM.div({
         key: 'contentRow',

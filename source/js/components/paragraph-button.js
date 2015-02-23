@@ -2,7 +2,6 @@ var React = require('react');
 
 var SiblingButton = require('./sibling-button');
 var SpliceButton = require('./splice-button');
-var depthOfPath = require('../helpers/depth-of-path');
 var MAX_DEPTH = require('../helpers/constants').MAX_DEPTH;
 
 module.exports = React.createClass({
@@ -11,8 +10,8 @@ module.exports = React.createClass({
   render: function() {
     var props = this.props;
     var path = props.path;
-    var depth = depthOfPath(path);
     var offset = props.offset;
+    var depth = props.depth;
     var length = props.length;
     var children = [];
 
@@ -48,7 +47,7 @@ module.exports = React.createClass({
 
     return React.DOM.div({
       key: 'div',
-      className: 'btn-group col-sm-1',
+      className: 'btn-group col-sm-1 col-sm-offset-' + depth,
     }, [
       React.DOM.button({
         key: 'toggle',

@@ -62,7 +62,7 @@ module.exports = React.createClass({
 
     return DOM.div({
       key: 'buttonGroup',
-      className: 'btn-group col-sm-1',
+      className: 'btn-group col-sm-1 col-sm-offset-' + this.props.depth,
     }, [
       DOM.button({
         key: 'button',

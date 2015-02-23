@@ -51,7 +51,7 @@ module.exports = React.createClass({
       value: this.state.summary || ''
     };
     return React.DOM.form({
-      className: 'form col-sm-11',
+      className: 'form col-sm-' + this.props.width,
       key: 'form',
       onSubmit: this.handleSubmit
     }, [React.DOM.input(attributes)]);
