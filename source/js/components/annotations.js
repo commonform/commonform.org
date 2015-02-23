@@ -7,6 +7,11 @@ module.exports = React.createClass({
   mixins: [ImmutableMixin],
 
   render: function() {
-    return React.DOM.span({}, '(Form annotations)');
+    return React.DOM.span({}, [
+      React.DOM.p({
+        className: 'digest',
+        key: 'digest'
+      }, this.props.digest)
+    ]);
   }
 });

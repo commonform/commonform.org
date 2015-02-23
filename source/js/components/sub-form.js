@@ -17,6 +17,7 @@ module.exports = React.createClass({
     var subForm = props.subForm;
     var depth = depthOfPath(path);
     var width = 12 - 5 - depth;
+    var digestTree = props.digestTree.get('form');
     return React.DOM.div({
       className: 'subForm'
     }, [
@@ -46,7 +47,10 @@ module.exports = React.createClass({
           key: 'marginalia',
           className: 'marginalia col-sm-5'
         }, [
-          React.createElement(Annotations, {key: 'annotations'})
+          React.createElement(Annotations, {
+            key: 'annotations',
+            digest: digestTree.get('digest')
+          })
         ])
       ]),
       React.DOM.div({
@@ -57,7 +61,7 @@ module.exports = React.createClass({
           key: 'form',
           form: subForm.get('form'),
           path: path.push('form'),
-          digestTree: props.digestTree.get('form')
+          digestTree: digestTree
         })
       ])
     ]);
