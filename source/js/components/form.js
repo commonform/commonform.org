@@ -59,10 +59,10 @@ module.exports = React.createClass({
       path: path
     },
       children.unshift(
-        React.createElement(
-          DigestLine,
-          {digest: digestTree.get('digest')}
-        )
+        React.createElement(DigestLine, {
+          key: 'digest',
+          digest: digestTree.get('digest')
+        })
       ).toArray());
   }
 });
