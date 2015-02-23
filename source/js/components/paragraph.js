@@ -41,8 +41,13 @@ module.exports = React.createClass({
         key: 'marginalia',
         className: 'marginalia col-sm-' + ANNOTATIONS_WIDTH
       }, [
-        React.createElement(TermsDefined),
-        React.createElement(ParagraphIssues)
+        React.createElement(TermsDefined, {
+          key: 'terms',
+          content: content
+        }),
+        React.createElement(ParagraphIssues, {
+          key: 'issues'
+        })
       ])
     ]);
   }
