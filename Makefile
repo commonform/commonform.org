@@ -25,7 +25,7 @@ ${jspackage}: ${jssources}
 
 ${stylepackage}: ${stylesources}
 	mkdir -p ${build}
-	cat ${stylesources} | ${lessc} - | cssmin > ${stylepackage}
+	cat ${stylesources} | ${lessc} - | ${cssmin} > ${stylepackage}
 
 ${build}/%.html: %.html
 	mkdir -p ${build}
