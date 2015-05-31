@@ -1,0 +1,7 @@
+{
+  "removeComments": true,
+  "collapseWhitespace": true,
+  "removeAttributeQuotes": true,
+  "useShortDoctype": true,
+  "removeScriptTypeAttributes": true
+}

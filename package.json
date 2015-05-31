@@ -1,0 +1,35 @@
+{
+  "name": "commonform.org",
+  "version": "0.0.0-prerelease",
+  "dependencies": {
+    "react": "~0.13.3",
+    "reflux": "~0.2.7"
+  },
+  "devDependencies": {
+    "browserify": "~10.2.3",
+    "cssmin": "~0.4.3",
+    "exorcist": "~0.4.0",
+    "fixpack": "~2.2.0",
+    "html-minifier": "~0.7.2",
+    "jscs": "~1.13.1",
+    "jshint": "~2.7.0",
+    "less": "~2.5.1",
+    "phantomjs": "~1.9.17",
+    "tape": "~4.0.0",
+    "testling": "~1.7.1",
+    "uglifyify": "~3.0.1",
+    "watchify": "~3.2.1"
+  },
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "analyze": "fixpack && jshint source test && jscs source test",
+    "build": "npm run styles && npm run scripts && npm run documents",
+    "documents": "html-minifier -c .html-minifier.json --o build/index.html source/index.html",
+    "precommit": "npm run analyze && npm run test",
+    "scripts": "NODE_ENV=production browserify -g uglifyify source/onload.js -d | exorcist build/commonform.js.map > build/commonform.js",
+    "styles": "cat source/*.less | lessc - | cssmin > build/commonform.css",
+    "test": "tape test/*.test.js",
+    "watch": "watchify --verbose --debug source/onload.js -o build/commonform.js"
+  }
+}
