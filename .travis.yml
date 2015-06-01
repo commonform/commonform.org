@@ -10,3 +10,5 @@ script:
 after_script:
   - npm run stop
   - npm run stopphantom
+  - cat .http.log
+  - cat .phantom.log
