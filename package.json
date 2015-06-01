@@ -28,25 +28,26 @@
   },
 
   "scripts": {
-    "analyze": "jshint source test && jscs source test",
+    "analyze": "jshint source test && jscs source test # Static analysis for logic and style errors",
 
-    "build": "npm run scripts && npm run styles && npm run documents",
-    "scripts": "NODE_ENV=production browserify -g uglifyify source/onload.js -d | exorcist build/commonform.js.map > build/commonform.js",
-    "styles": "cat source/*.less | lessc - | cssmin > build/commonform.css",
-    "documents": "html-minifier -c .html-minifier.json --o build/index.html source/index.html",
+    "build": "npm run scripts && npm run styles && npm run documents # Generate production distribution",
+    "scripts": "NODE_ENV=production browserify -g uglifyify source/onload.js -d | exorcist build/commonform.js.map > build/commonform.js # Generate production JavaScript bundle",
+    "styles": "cat source/*.less | lessc - | cssmin > build/commonform.css # Generate production CSS bundle",
+    "documents": "html-minifier -c .html-minifier.json --o build/index.html source/index.html # Generate production HTML documents",
 
-    "watch": "watchify --verbose --debug source/onload.js -o build/commonform.js",
+    "watch": "watchify --verbose --debug source/onload.js -o build/commonform.js # Regenerate developer JavaScript bundle on source change",
 
     "start": "if [ ! -f .http.pid ] ; then http-server -p 8080 build > .http.log 2>&1 & echo $! > .http.pid ; fi # Start an HTTP server, saving PID",
-    "stop": "kill $(cat .http.pid) ; rm .http.pid # Stop the test HTTP server",
+    "stop": "kill $(cat .http.pid) ; rm .http.pid # Stop the HTTP server",
 
     "startphantom": "if [ ! -f .phantom.pid ] ; then phantomjs --webdriver=4444 > .phantom.log 2>&1 & echo $! > .phantom.pid ; fi # Start a PhantomJS WebDriver server, saving PID",
     "stopphantom": "kill $(cat .phantom.pid) ; rm .phantom.pid # Stop the PhantomJS WebDriver server",
 
-    "test": "tape test/*.test.js",
+    "test": "tape test/*.test.js # Run tests",
 
     "precommit": "npm run analyze && npm run build && npm run test # Git pre-commit hook",
+    "travis": "npm run precommit # Run by Travis CI",
 
-    "travis": "npm run precommit # Run by Travis CI"
+    "deploy": "./deploy.sh HEAD # Deploy to production"
   }
 }
