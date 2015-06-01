@@ -6,6 +6,7 @@
   "license": "Apache-2.0",
 
   "dependencies": {
+    "function-bind": "~1.0.2",
     "react": "~0.13.3",
     "reflux": "~0.2.7"
   },
