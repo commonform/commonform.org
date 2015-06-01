@@ -31,11 +31,11 @@
     "analyze": "jshint source test && jscs source test # Static analysis for logic and style errors",
 
     "build": "npm run scripts && npm run styles && npm run documents # Generate production distribution",
-    "scripts": "NODE_ENV=production browserify -g uglifyify source/onload.js -d | exorcist build/commonform.js.map > build/commonform.js # Generate production JavaScript bundle",
+    "scripts": "NODE_ENV=production browserify -g uglifyify source/index.js -d | exorcist build/commonform.js.map > build/commonform.js # Generate production JavaScript bundle",
     "styles": "cat source/*.less | lessc - | cssmin > build/commonform.css # Generate production CSS bundle",
     "documents": "html-minifier -c .html-minifier.json --o build/index.html source/index.html # Generate production HTML documents",
 
-    "watch": "watchify --verbose --debug source/onload.js -o build/commonform.js # Regenerate developer JavaScript bundle on source change",
+    "watch": "watchify --verbose --debug source/index.js -o build/commonform.js # Regenerate developer JavaScript bundle on source change",
 
     "start": "if [ ! -f .http.pid ] ; then http-server -p 8080 build > .http.log 2>&1 & echo $! > .http.pid ; fi # Start an HTTP server, saving PID",
     "stop": "kill $(cat .http.pid) ; rm .http.pid # Stop the HTTP server",
