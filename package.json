@@ -44,7 +44,9 @@
     "startphantom": "if [ ! -f phantom.pid ] ; then phantomjs --webdriver=4444 > phantom.log 2>&1 & echo $! > phantom.pid ; fi # Start a PhantomJS WebDriver server, saving PID",
     "stopphantom": "kill $(cat phantom.pid) ; rm phantom.pid # Stop the PhantomJS WebDriver server",
 
+    "pretest": "npm run start && npm run startphantom",
     "test": "tape test/*.test.js # Run tests",
+    "done": "npm run stop && npm run stopphantom",
 
     "precommit": "npm run analyze && npm run build && npm run test # Git pre-commit hook",
     "travis": "npm run precommit # Run by Travis CI",

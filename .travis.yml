@@ -1,14 +1,10 @@
 ---
-language: node_js
+language: "node_js"
 node_js:
   - "0.10"
-before_script:
-  - npm run start
-  - npm run startphantom
 script:
-  - npm run travis
+  - "npm run travis"
 after_script:
-  - npm run stop
-  - npm run stopphantom
-  - cat http.log
-  - cat phantom.log
+  - "npm run done"
+  - "cat http.log"
+  - "cat phantom.log"
