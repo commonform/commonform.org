@@ -38,11 +38,11 @@
 
     "watch": "watchify --verbose --debug source/index.js -o build/commonform.js # Regenerate developer JavaScript bundle on source change",
 
-    "start": "if [ ! -f .http.pid ] ; then http-server -p 8081 build > .http.log 2>&1 & echo $! > .http.pid ; fi # Start an HTTP server, saving PID",
-    "stop": "kill $(cat .http.pid) ; rm .http.pid # Stop the HTTP server",
+    "start": "if [ ! -f http.pid ] ; then http-server -p 8081 build > http.log 2>&1 & echo $! > http.pid ; fi # Start an HTTP server, saving PID",
+    "stop": "kill $(cat http.pid) ; rm http.pid # Stop the HTTP server",
 
-    "startphantom": "if [ ! -f .phantom.pid ] ; then phantomjs --webdriver=4444 > .phantom.log 2>&1 & echo $! > .phantom.pid ; fi # Start a PhantomJS WebDriver server, saving PID",
-    "stopphantom": "kill $(cat .phantom.pid) ; rm .phantom.pid # Stop the PhantomJS WebDriver server",
+    "startphantom": "if [ ! -f phantom.pid ] ; then phantomjs --webdriver=4444 > phantom.log 2>&1 & echo $! > phantom.pid ; fi # Start a PhantomJS WebDriver server, saving PID",
+    "stopphantom": "kill $(cat phantom.pid) ; rm phantom.pid # Stop the PhantomJS WebDriver server",
 
     "test": "tape test/*.test.js # Run tests",
 
