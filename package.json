@@ -22,7 +22,6 @@
     "less": "~2.5.1",
     "phantomjs": "~1.9.17",
     "tape": "~4.0.0",
-    "testling": "~1.7.1",
     "uglifyify": "~3.0.1",
     "watchify": "~3.2.1",
     "webdriverio": "~2.4.5"
