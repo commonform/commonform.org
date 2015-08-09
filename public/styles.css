@@ -1,0 +1,20 @@
+.definition { 
+	font-weight: bold; }
+
+.use {
+	font-style: italic; }
+
+.reference {
+	text-decoration: underline; }
+
+.blank {
+	color: #ccc; }
+
+.heading {
+	font-weight: bold;
+	display: block;
+	margin-bottom: 1em; }
+
+.child {
+	display: block;
+	margin: 1em 0 1em 1em; }

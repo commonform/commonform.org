@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "array-find": "^1.0.0",
+    "commonform-predicate": "^0.4.0",
+    "main-loop": "~3.1.0",
+    "virtual-dom": "~2.1.1"
+  },
+  "scripts": {
+    "build": "browserify index.js | uglifyjs -cm > public/browser.js",
+    "start": "ecstatic -p 8000 public",
+    "watch": "watchify index.js -o public/browser.js -dv",
+    "phantom": "phantomjs --webdriver=4444",
+    "test": "tape test/*.test.js"
+  },
+  "devDependencies": {
+    "browserify": "~11.0.1",
+    "ecstatic": "~0.8.0",
+    "function-bind": "~1.0.2",
+    "phantomjs": "~1.9.17",
+    "tape": "~4.0.3",
+    "uglifyjs": "~2.4.10",
+    "watchify": "^3.3.1",
+    "webdriverio": "~3.1.0"
+  }
+}
