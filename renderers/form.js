@@ -33,6 +33,7 @@ function form(state) {
           return renderer.renderer({
             path: state.path.concat([ 'content', index ]),
             update: state.update,
+            annotations: state.annotations,
             data: child }) } } }) ]) }
 
 module.exports = form

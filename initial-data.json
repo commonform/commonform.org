@@ -1,0 +1,22 @@
+{ "content": [
+    "Some text ",
+    { "blank": "blank placeholder" },
+    " ",
+    { "definition": "Defined Term" },
+    " ",
+    { "use": "Defined Term" },
+    "Text Before Child",
+    { "heading": "Heading",
+      "form": {
+        "conspicuous": "yes",
+        "content": [
+          "Conspicuous Text" ] } },
+    "Text Between Children",
+    " ",
+    { "use": "Undefined Term" },
+    { "form": {
+        "content": [
+          { "reference": "Heading" },
+          " ",
+          { "use": "Another Undefined Term" } ] } },
+    "Text After Child" ] }
