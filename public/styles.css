@@ -19,18 +19,33 @@
 	display: block;
 	margin: 1em 0 1em 1em; }
 
-.menu, .annotations {
+.form, .menu, .annotations, .blanks {
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid black;
 	display: block; }
 
+.form:before {
+	font-weight: bold;
+	color: green;
+	content: '[Form] '; }
+
 .menu:before {
 	font-weight: bold;
-	color: #111;
+	color: green;
 	content: '[Menu] '; }
 
 .annotations:before {
 	font-weight: bold;
-	color: #111;
+	color: green;
 	content: '[Annotations] '; }
+
+.heading:before {
+	font-weight: bold;
+	color: green;
+	content: '[Heading] '; }
+
+.blanks:before {
+	font-weight: bold;
+	color: green;
+	content: '[Blanks] '; }

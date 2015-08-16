@@ -20,6 +20,7 @@ var annotations = require('./annotations')
 var menu = require('./menu')
 
 function form(state) {
+  console.log(state)
   return h('div.form', [
     menu(state),
     annotations(state),

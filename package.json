@@ -2,6 +2,7 @@
   "dependencies": {
     "array-find": "^1.0.0",
     "commonform": "^1.0.1",
+    "commonform-analyze": "^0.4.1",
     "commonform-annotations": "^1.0.0",
     "commonform-lint": "^0.5.1",
     "commonform-predicate": "^0.4.0",
