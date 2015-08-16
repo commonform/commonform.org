@@ -1,7 +1,6 @@
 var h = require('virtual-dom/h')
 
 function blanks(state) {
-  console.log(state)
   return h('div.blanks', 
     h('li', 
       Object.keys(state.analysis)
