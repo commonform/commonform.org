@@ -1,4 +1,6 @@
+var h = require('virtual-dom/h')
+
 function reference(state) {
-  return require('virtual-dom/h')('span.reference', state.reference) }
+  return h('span.reference', state.data.reference) }
 
 module.exports = reference

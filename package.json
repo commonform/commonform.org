@@ -2,6 +2,7 @@
   "dependencies": {
     "array-find": "^1.0.0",
     "commonform-predicate": "^0.4.0",
+    "keyarray-delete": "^0.1.0",
     "main-loop": "~3.1.0",
     "virtual-dom": "~2.1.1"
   },

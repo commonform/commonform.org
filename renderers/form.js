@@ -16,14 +16,23 @@ var renderers = [
   { predicate: predicates.use,
     renderer: require('./use') } ]
 
+var annotations = require('./annotations')
+var menu = require('./menu')
+
 function form(state) {
-  return h('div.form', state.content.map(function(child) {
-    if (predicates.text(child)) {
-      return h('span', child) }
-    else {
-      var renderer = find(renderers, function(renderer) {
-        return renderer.predicate(child) })
-      if (renderer) {
-        return renderer.renderer(child) } } })) }
+  return h('div.form', [
+    menu(state),
+    annotations(state),
+    state.data.content.map(function(child, index) {
+      if (predicates.text(child)) {
+        return h('span', child) }
+      else {
+        var renderer = find(renderers, function(renderer) {
+          return renderer.predicate(child) })
+        if (renderer) {
+          return renderer.renderer({
+            path: state.path.concat([ 'content', index ]),
+            update: state.update,
+            data: child }) } } }) ]) }
 
 module.exports = form

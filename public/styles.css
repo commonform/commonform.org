@@ -18,3 +18,19 @@
 .child {
 	display: block;
 	margin: 1em 0 1em 1em; }
+
+.menu, .annotations {
+	margin: 1em;
+	padding: 1em;
+	border: 1px solid black;
+	display: block; }
+
+.menu:before {
+	font-weight: bold;
+	color: #111;
+	content: '[Menu] '; }
+
+.annotations:before {
+	font-weight: bold;
+	color: #111;
+	content: '[Annotations] '; }
