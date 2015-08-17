@@ -24,7 +24,7 @@ function mainMenu(state) {
           var date = new Date().toISOString()
           filesaver(
             zip.generate({ type: 'blob' }),
-            filename(title, 'docx')) } },
+            fileName(title, 'docx')) } },
       'Save DOCX'),
     h('a.saveJSON',
       { href: '#',
