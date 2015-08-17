@@ -1,4 +1,6 @@
+var h = require('virtual-dom/h')
+
 function blank(state) {
-  return require('virtual-dom/h')('span.blank', state.data.blank) }
+  return h('span.blank', state.data.blank) }
 
 module.exports = blank
