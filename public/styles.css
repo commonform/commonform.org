@@ -1,51 +1,64 @@
-.definition { 
+.form .definition {
 	font-weight: bold; }
 
-.use {
+.form .definition:before {
+	content: "“"; }
+
+.form .definition:after {
+	content: "”"; }
+
+.form .use {
 	font-style: italic; }
 
-.reference {
+.form .reference {
 	text-decoration: underline; }
 
-.blank {
-	color: #ccc; }
+.form .blank:before {
+	content: "["; }
 
-.heading {
+.form .blank:after {
+	content: "]"; }
+
+.child .heading {
 	font-weight: bold;
 	display: block;
 	margin-bottom: 1em; }
 
-.child {
+.form .child {
 	display: block;
 	margin: 1em 0 1em 1em; }
 
-.form, .menu, .annotations, .blanks {
+div.form, div.menu, div.annotations, div.blanks {
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid black;
 	display: block; }
 
-.form:before {
+div.form:before {
 	font-weight: bold;
 	color: green;
 	content: '[Form] '; }
 
-.menu:before {
+div.menu:before {
 	font-weight: bold;
 	color: green;
 	content: '[Menu] '; }
 
-.annotations:before {
+div.annotations:before {
 	font-weight: bold;
 	color: green;
 	content: '[Annotations] '; }
 
-.heading:before {
+div.heading:before {
 	font-weight: bold;
 	color: green;
 	content: '[Heading] '; }
 
-.blanks:before {
+div.blanks:before {
 	font-weight: bold;
 	color: green;
 	content: '[Blanks] '; }
+
+table.blanks th,
+table.blanks td {
+	text-align: left; }
