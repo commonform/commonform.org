@@ -31,7 +31,7 @@
 	display: block;
 	margin: 1em 0 1em 1em; }
 
-.form.conspicuous > span {
+.conspicuous > span {
 	font-weight: bold;
 	font-style: italic; }
 
@@ -40,7 +40,7 @@ div.blanks,
 div.form,
 div.mainMenu,
 div.menu,
-div.title {
+.title {
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid #ddd;
