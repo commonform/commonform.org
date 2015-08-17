@@ -8,10 +8,12 @@ var bus = new (require('events').EventEmitter)
 
 var loop
 
+var defaultTitle = 'Untitled Document'
+
 var state = {
   path: [ ],
   blanks: { },
-  title: 'Agreement',
+  title: defaultTitle,
   emit: bus.emit.bind(bus),
   data: require('./initial-data.json') }
 
@@ -24,6 +26,12 @@ bus
       delete state.blanks[blank] }
     else {
       state.blanks[blank] = value }
+    loop.update(state) })
+  .on('title', function(newTitle) {
+    if (!newTitle || newTitle.length === 0) {
+      state.title = defaultTitle }
+    else {
+      state.title = newTitle }
     loop.update(state) })
 
 loop = require('main-loop')(

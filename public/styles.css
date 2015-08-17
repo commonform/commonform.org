@@ -35,7 +35,12 @@
 	font-weight: bold;
 	font-style: italic; }
 
-div.form, div.menu, div.mainMenu, div.annotations, div.blanks {
+div.annotations,
+div.blanks,
+div.form,
+div.mainMenu,
+div.menu,
+div.title {
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid #ddd;
@@ -69,3 +74,6 @@ div.blanks:before {
 table.blanks th,
 table.blanks td {
 	text-align: left; }
+
+input {
+	width: 100%; }
