@@ -4,9 +4,11 @@
     "commonform": "^1.0.1",
     "commonform-analyze": "^0.4.1",
     "commonform-annotations": "^1.0.0",
+    "commonform-docx": "^0.5.1",
     "commonform-lint": "^0.5.1",
     "commonform-predicate": "^0.4.0",
     "deep-equal": "^1.0.0",
+    "filesaver.js": "^0.2.0",
     "keyarray-delete": "^0.1.0",
     "main-loop": "~3.1.0",
     "virtual-dom": "~2.1.1"

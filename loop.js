@@ -12,7 +12,8 @@ function deriveData(state) {
 
 var state = {
   path: [ ],
-  blanks: {},
+  blanks: { },
+  title: 'Agreement',
   update: function(mutation) {
     mutation(state)
     deriveData(state)

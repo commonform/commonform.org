@@ -28,7 +28,7 @@
 	display: block;
 	margin: 1em 0 1em 1em; }
 
-div.form, div.menu, div.annotations, div.blanks {
+div.form, div.menu, div.mainMenu, div.annotations, div.blanks {
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid black;
@@ -38,6 +38,11 @@ div.form:before {
 	font-weight: bold;
 	color: green;
 	content: '[Form] '; }
+
+div.mainMenu:before {
+	font-weight: bold;
+	color: green;
+	content: '[Main Menu] '; }
 
 div.menu:before {
 	font-weight: bold;
