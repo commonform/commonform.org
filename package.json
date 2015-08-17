@@ -29,5 +29,6 @@
     "uglifyjs": "~2.4.10",
     "watchify": "^3.3.1",
     "webdriverio": "~3.1.0"
-  }
+  },
+  "private": "true"
 }
