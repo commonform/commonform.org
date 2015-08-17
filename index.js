@@ -2,6 +2,7 @@ Function.prototype.bind = (
   Function.prototype.bind || require('function-bind') )
 
 var analyze = require('commonform-analyze')
+var critique = require('commonform-critique')
 var lint = require('commonform-lint')
 
 var bus = new (require('events').EventEmitter)
@@ -17,7 +18,11 @@ var state = {
   emit: bus.emit.bind(bus),
   data: require('./initial-data.json') }
 
-state.annotations = lint(state.data)
+state.annotations = []
+  .concat(lint(state.data))
+  .concat(critique(state.data))
+
+state.analysis = analyze(state.data)
 state.analysis = analyze(state.data)
 
 bus
