@@ -38,7 +38,7 @@
 div.form, div.menu, div.mainMenu, div.annotations, div.blanks {
 	margin: 1em;
 	padding: 1em;
-	border: 1px solid black;
+	border: 1px solid #ddd;
 	display: block; }
 
 div.mainMenu:before {
