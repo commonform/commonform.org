@@ -1,6 +1,11 @@
 var h = require('virtual-dom/h')
 
 function annotation(state) {
-  return h('div.annotation', state.data.message) }
+  var data = state.data
+  return h('div.annotation', [
+    ( data.url ?
+      h('a', { href: data.url }, data.message) :
+      data.message ),
+    ' (' + data.source + ')' ]) }
 
 module.exports = annotation
