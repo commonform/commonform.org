@@ -19,8 +19,11 @@ var renderers = [
 var annotations = require('./annotations')
 
 function form(state) {
-  return h('div.form', [
-    annotations(state),
+  return h('div',
+   { className: (
+     'conspicuous' in state.data ?
+       'form conspicuous' : 'form' ) },
+   [ annotations(state),
     state.data.content.map(function(child, index) {
       if (predicates.text(child)) {
         return h('span', child) }
