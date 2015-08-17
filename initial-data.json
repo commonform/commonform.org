@@ -5,6 +5,7 @@
     { "definition": "Defined Term" },
     " ",
     { "use": "Defined Term" },
+    " ",
     "Text Before Child",
     { "heading": "Heading",
       "form": {
