@@ -17,11 +17,9 @@ var renderers = [
     renderer: require('./use') } ]
 
 var annotations = require('./annotations')
-var menu = require('./menu')
 
 function form(state) {
   return h('div.form', [
-    menu(state),
     annotations(state),
     state.data.content.map(function(child, index) {
       if (predicates.text(child)) {
