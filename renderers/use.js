@@ -1,6 +1,7 @@
 var h = require('virtual-dom/h')
 
 function use(state) {
-  return h('span.use', state.data.use) }
+  var term = state.data.use
+  return h('a.use', { href: '#definition:' + term }, term) }
 
 module.exports = use
