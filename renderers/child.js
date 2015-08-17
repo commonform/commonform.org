@@ -4,12 +4,12 @@ function child(state) {
     [ require('./heading')({
         path: state.path.concat('heading'),
         annotations: state.annotations,
-        update: state.update,
+        emit: state.emit,
         data: state.data.heading}),
       require('./form')({
         path: state.path.concat('form'),
         annotations: state.annotations,
-        update: state.update,
+        emit: state.emit,
         data: state.data.form }) ]) }
 
 module.exports = child

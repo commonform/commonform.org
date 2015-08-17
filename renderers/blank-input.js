@@ -1,18 +1,12 @@
 var h = require('virtual-dom/h')
 
 function blankInput(state) {
+  var blank = state.blank
+  var values = state.values
   return h('input.blank', {
     placeholder: 'Enter a value',
-    value: (
-      state.blank in state.values ?
-        state.values[state.blank] :
-        '' ),
+    value: ( blank in state.values ? values[blank] : '' ),
     onchange: function(event) {
-      state.update(function(current) {
-        var newValue = event.target.value
-        if (newValue.length > 0) {
-          current.blanks[state.blank] = event.target.value }
-        else {
-          delete current.blanks[state.blank] } }) } }) }
+      state.emit('blank', blank, event.target.value) } }) }
 
 module.exports = blankInput

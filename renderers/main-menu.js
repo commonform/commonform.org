@@ -1,6 +1,7 @@
 var h = require('virtual-dom/h')
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
+var pick = require('object-pick')
 
 function jsonBlob(object) {
   return new Blob(
@@ -33,11 +34,7 @@ function mainMenu(state) {
           var title = state.title
           var date = new Date().toISOString()
           filesaver(
-            jsonBlob({
-              path: [ ],
-              title: state.title,
-              blanks: state.blanks,
-              data: state.data }),
+            jsonBlob(pick(state, [ 'path', 'title', 'blanks', 'data' ])),
             fileName(title, 'json')) } },
       'Save JSON') ]) }
 

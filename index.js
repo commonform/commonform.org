@@ -4,26 +4,32 @@ Function.prototype.bind = (
 var analyze = require('commonform-analyze')
 var lint = require('commonform-lint')
 
-var loop
+var bus = new (require('events').EventEmitter)
 
-function deriveData(state) {
-  state.annotations = lint(state.data)
-  state.analysis = analyze(state.data) }
+var loop
 
 var state = {
   path: [ ],
   blanks: { },
   title: 'Agreement',
-  update: function(mutation) {
-    mutation(state)
-    deriveData(state)
-    loop.update(state) },
+  emit: bus.emit.bind(bus),
   data: require('./initial-data.json') }
 
-deriveData(state)
+state.annotations = lint(state.data)
+state.analysis = analyze(state.data)
+
+bus
+  .on('blank', function(blank, value) {
+    if (!value || value.length === 0) {
+      delete state.blanks[blank] }
+    else {
+      state.blanks[blank] = value }
+    loop.update(state) })
 
 loop = require('main-loop')(
-  state, require('./renderers'), require('virtual-dom'))
+  state,
+  require('./renderers'),
+  require('virtual-dom'))
 
 document
   .querySelector('#browser')

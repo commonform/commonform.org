@@ -1,5 +1,5 @@
-var h = require('virtual-dom/h')
 var deepEqual = require('deep-equal')
+var h = require('virtual-dom/h')
 var renderAnnotation = require('./annotation')
 
 function annotations(state) {

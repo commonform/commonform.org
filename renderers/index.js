@@ -8,7 +8,7 @@ function browser(state) {
     mainMenu(state),
     blanks({
       values: state.blanks,
-      update: state.update,
+      emit: state.emit,
       analysis: state.analysis.blanks }),
     form(state) ]) }
 

@@ -24,17 +24,17 @@ function form(state) {
      'conspicuous' in state.data ?
        'form conspicuous' : 'form' ) },
    [ annotations(state),
-    state.data.content.map(function(child, index) {
-      if (predicates.text(child)) {
-        return h('span', child) }
-      else {
-        var renderer = find(renderers, function(renderer) {
-          return renderer.predicate(child) })
-        if (renderer) {
-          return renderer.renderer({
-            path: state.path.concat([ 'content', index ]),
-            update: state.update,
-            annotations: state.annotations,
-            data: child }) } } }) ]) }
+     state.data.content.map(function(child, index) {
+       if (predicates.text(child)) {
+         return h('span', child) }
+       else {
+         var renderer = find(renderers, function(renderer) {
+           return renderer.predicate(child) })
+         if (renderer) {
+           return renderer.renderer({
+             path: state.path.concat([ 'content', index ]),
+             emit: state.emit,
+             annotations: state.annotations,
+             data: child }) } } }) ]) }
 
 module.exports = form
