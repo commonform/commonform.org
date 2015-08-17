@@ -1,5 +1,5 @@
 .form .definition {
-	font-weight: bold; }
+	color: blue; }
 
 .form .definition:before {
 	content: "“"; }
@@ -8,16 +8,19 @@
 	content: "”"; }
 
 .form .use {
-	font-style: italic; }
+	color: green; }
 
 .form .reference {
-	text-decoration: underline; }
+	color: red; }
 
 .form .blank:before {
 	content: "["; }
 
 .form .blank:after {
 	content: "]"; }
+
+.form .blank {
+	color: orange; }
 
 .child .heading {
 	font-weight: bold;
