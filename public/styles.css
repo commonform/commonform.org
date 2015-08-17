@@ -34,11 +34,6 @@ div.form, div.menu, div.mainMenu, div.annotations, div.blanks {
 	border: 1px solid black;
 	display: block; }
 
-div.form:before {
-	font-weight: bold;
-	color: green;
-	content: '[Form] '; }
-
 div.mainMenu:before {
 	font-weight: bold;
 	color: green;
