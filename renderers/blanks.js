@@ -12,6 +12,7 @@ function blanks(state) {
            .map(function(blank) {
              return blankEntryRow({
                blank: blank,
+               update: state.update,
                values: state.values }) })) ])) }
 
 module.exports = blanks

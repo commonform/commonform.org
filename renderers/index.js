@@ -6,6 +6,7 @@ function browser(state) {
   return h('div.browser', [
     blanks({
       values: state.blanks,
+      update: state.update,
       analysis: state.analysis.blanks }),
     form(state) ]) }
 
