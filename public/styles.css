@@ -46,34 +46,9 @@ div.menu,
 	border: 1px solid #ddd;
 	display: block; }
 
-div.mainMenu:before {
-	font-weight: bold;
-	color: green;
-	content: '[Main Menu] '; }
-
-div.menu:before {
-	font-weight: bold;
-	color: green;
-	content: '[Menu] '; }
-
-div.annotations:before {
-	font-weight: bold;
-	color: green;
-	content: '[Annotations] '; }
-
-div.heading:before {
-	font-weight: bold;
-	color: green;
-	content: '[Heading] '; }
-
-div.blanks:before {
-	font-weight: bold;
-	color: green;
-	content: '[Blanks] '; }
-
 table.blanks th,
 table.blanks td {
 	text-align: left; }
 
 input {
-	width: 100%; }
+	width: auto; }
