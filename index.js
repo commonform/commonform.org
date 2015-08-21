@@ -5,6 +5,7 @@ var analyze = require('commonform-analyze')
 var critique = require('commonform-critique')
 var lint = require('commonform-lint')
 var downloadForm = require('./download-form')
+var isSHA256 = require('is-sha-256-hex-digest')
 
 var bus = new (require('events').EventEmitter)
 
@@ -57,8 +58,15 @@ document
   .querySelector('#browser')
   .appendChild(loop.target)
 
-downloadForm(require('./initial'), function(error, response) {
+var hash = window.location.hash
+
+var initial = (
+  ( hash && hash.length >= 65 && isSHA256(hash.slice(1, 65)) ) ?
+  ( initial = hash.slice(1, 65) ) :
+  require('./initial') )
+
+downloadForm(initial, function(error, response) {
   if (error) {
-    console.error(error) }
+    alert(error.message) }
   else {
     bus.emit('form', response.form) } })
