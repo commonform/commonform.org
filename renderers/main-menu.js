@@ -9,12 +9,12 @@ function jsonBlob(object) {
     { type: 'application/json' }) }
 
 function fileName(title, extension) {
-  var date = new Date().toISOString();
+  var date = new Date().toISOString()
   return ( '' + title + ' ' + date + '.' + extension ) }
 
 function mainMenu(state) {
   return h('div.mainMenu', [
-    h('a.saveDOCX',
+    h('button.saveDOCX',
       { href: '/#',
         onclick: function(event) {
           event.preventDefault()
@@ -27,7 +27,8 @@ function mainMenu(state) {
             zip.generate({ type: 'blob' }),
             fileName(title, 'docx')) } },
       'Save DOCX'),
-    h('a.saveJSON',
+    ' ',
+    h('button.saveJSON',
       { href: '/#',
         onclick: function(event) {
           event.preventDefault()
