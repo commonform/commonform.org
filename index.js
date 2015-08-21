@@ -18,9 +18,11 @@ var state = {
   emit: bus.emit.bind(bus),
   data: require('./initial-data.json') }
 
-state.annotations = [ ]
-  .concat(lint(state.data))
-  .concat(critique(state.data))
+state.errors = lint(state.data)
+state.critiques = critique(state.data)
+
+state.annotations = state.errors
+  .concat(state.critiques)
 
 state.analysis = analyze(state.data)
 

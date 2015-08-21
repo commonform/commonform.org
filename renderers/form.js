@@ -1,5 +1,6 @@
 var find = require('array-find')
 var h = require('virtual-dom/h')
+var pathID = require('../path-id')
 var predicates = require('commonform-predicate')
 
 var renderers = [
@@ -22,7 +23,8 @@ function form(state) {
   return h('div',
    { className: (
      'conspicuous' in state.data ?
-       'form conspicuous' : 'form' ) },
+       'form conspicuous' : 'form' ),
+     id: pathID(state.path) },
    [ annotations(state),
      state.data.content
        .map(function(child, index) {

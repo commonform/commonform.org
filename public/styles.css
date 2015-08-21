@@ -40,11 +40,15 @@ div.blanks,
 div.form,
 div.mainMenu,
 div.menu,
+.errors,
 .title {
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid #ddd;
 	display: block; }
+
+.errors {
+	background: #ffcccc; }
 
 table.blanks th,
 table.blanks td {
