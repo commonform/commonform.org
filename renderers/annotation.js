@@ -1,8 +1,12 @@
 var h = require('virtual-dom/h')
 
-var SOURCE_URLS = {
-  'commonform-critique': 'https://npmjs.com/packages/commonform-critique',
-  'commonform-lint': 'https://npmjs.com/packages/commonform-lint' }
+var URL_PREFIX = 'https://npmjs.com/packages/commonform-'
+var SOURCE_URLS = [ 'archaic', 'critique', 'lint' ]
+  .reduce(
+    function(urls, module) {
+      urls['commonform-' + module] = URL_PREFIX + module
+      return urls },
+    { })
 
 function annotation(state) {
   var data = state.data
