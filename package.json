@@ -13,7 +13,8 @@
     "keyarray-delete": "^0.1.0",
     "main-loop": "~3.1.0",
     "object-pick": "^0.1.1",
-    "virtual-dom": "~2.1.1"
+    "virtual-dom": "~2.1.1",
+    "xhr": "^2.0.3"
   },
   "scripts": {
     "build": "browserify index.js | uglifyjs -cm > public/browser.js",
