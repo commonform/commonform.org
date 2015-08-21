@@ -44,6 +44,7 @@ div.blanks,
 div.form,
 div.mainMenu,
 div.menu,
+.search,
 .errors,
 .title {
 	margin: 1em;
@@ -58,5 +59,10 @@ table.blanks th,
 table.blanks td {
 	text-align: left; }
 
-input {
-	width: auto; }
+.search form,
+.title form {
+	display: flex; }
+
+.search input[type=text],
+.title input[type=text] {
+	flex: 1; }
