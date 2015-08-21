@@ -57,9 +57,7 @@ document
   .querySelector('#browser')
   .appendChild(loop.target)
 
-var initialDigest = 'b8db30d573fbf7ac65c40960cb6301b58087694b0fcc7663897834c22a861dfc'
-
-downloadForm(initialDigest, function(error, response) {
+downloadForm(require('./initial'), function(error, response) {
   if (error) {
     console.error(error) }
   else {
