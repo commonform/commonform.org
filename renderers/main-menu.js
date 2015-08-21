@@ -15,7 +15,7 @@ function fileName(title, extension) {
 function mainMenu(state) {
   return h('div.mainMenu', [
     h('a.saveDOCX',
-      { href: '#',
+      { href: '/#',
         onclick: function(event) {
           event.preventDefault()
           var title = state.title
@@ -28,7 +28,7 @@ function mainMenu(state) {
             fileName(title, 'docx')) } },
       'Save DOCX'),
     h('a.saveJSON',
-      { href: '#',
+      { href: '/#',
         onclick: function(event) {
           event.preventDefault()
           var title = state.title

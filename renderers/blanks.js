@@ -2,7 +2,7 @@ var h = require('virtual-dom/h')
 var blankEntryRow = require('./blank-entry-row')
 
 function blanks(state) {
-  return h('div.blanks', 
+  return h('div.blanks',
     h('table.blanks',
       [ h('thead', [
           h('th', 'Blank'),
