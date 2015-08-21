@@ -20,7 +20,7 @@ var renderers = [
 var annotations = require('./annotations')
 
 function form(state) {
-  return h('div',
+  return h('section',
    { className: (
      'conspicuous' in state.data ?
        'form conspicuous' : 'form' ),

@@ -39,11 +39,11 @@
 	font-weight: bold;
 	font-style: italic; }
 
-div.annotations,
-div.blanks,
-div.form,
-div.mainMenu,
-div.menu,
+.annotations,
+.blanks,
+.form,
+.mainMenu,
+.menu,
 .search,
 .errors,
 .title {
