@@ -4,7 +4,7 @@
     "commonform": "^1.0.1",
     "commonform-analyze": "^0.4.1",
     "commonform-annotations": "^1.0.0",
-    "commonform-critique": "^0.5.1",
+    "commonform-critique": "^0.5.7",
     "commonform-docx": "^0.5.1",
     "commonform-lint": "^0.5.1",
     "commonform-predicate": "^0.4.0",
