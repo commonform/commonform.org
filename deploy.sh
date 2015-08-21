@@ -3,7 +3,7 @@
 BUILD=public
 ROOT=/var/www/commonform.org
 FLAGS="--verbose --checksum --recursive --sparse --compress --human-readable --progress"
-REF=${1:=HEAD}
+REF=${1:-HEAD}
 
 (
 	set -e
