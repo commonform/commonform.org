@@ -45,9 +45,8 @@
 .search,
 .errors,
 .title {
-	margin: 1em;
-	padding: 1em;
-	border: 1px solid #ddd;
+	margin: 0.5em 0;
+	padding: 0.5em 0;
 	display: block; }
 
 .errors {
@@ -70,7 +69,7 @@
 .form .child {
 	position: relative;
 	padding-left: 1em;
-	margin: 2em 0 2em 1em;
+	margin: 1.5em 0 1.5em 1em;
 	text-align: left; }
 
 .browser > .form > .child {
