@@ -56,8 +56,8 @@ footer {
 .errors {
 	background: #ffcccc; }
 
-table.blanks th,
-table.blanks td {
+.blanks table th,
+.blanks table td {
 	text-align: left; }
 
 .search form,
