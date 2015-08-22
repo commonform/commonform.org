@@ -84,15 +84,24 @@ bus
   .on('set', function(path, value) {
     keyarray.set(state.data, path, value)
     state.digest = hash(state.data)
+    state.focused = null
+    compute()
+    loop.update(state)
+    updateHash() })
+
+  .on('remove', function(path) {
+    var containing = keyarray.get(state.data, path.slice(0, -1))
+    containing.splice(path[path.length - 1], 1)
+    if (containing.length === 0) {
+      containing.push(defaultForm) }
+    state.digest = hash(state.data)
+    state.focused = null
     compute()
     loop.update(state)
     updateHash() })
 
   .on('delete', function(path) {
-    var containing = keyarray.get(state.data, path.slice(0, -1))
-    containing.splice(path[path.length - 1], 1)
-    if (containing.length === 0) {
-      containing.push(defaultForm) }
+    keyarray.delete(state.data, path)
     state.digest = hash(state.data)
     state.focused = null
     compute()
