@@ -6,6 +6,7 @@ var critique = require('commonform-critique')
 var lint = require('commonform-lint')
 var downloadForm = require('./download-form')
 var isSHA256 = require('is-sha-256-hex-digest')
+var requestAnimationFrame = require('raf')
 
 var bus = new (require('events').EventEmitter)
 
@@ -32,13 +33,21 @@ function compute() {
 
 compute()
 
+var initialDigest
+var additionalHash
+
 bus
   .on('form', function(digest, form) {
     state.digest = digest
     state.data = form
     compute()
-    history.pushState(null, null, '#' + state.digest)
-    loop.update(state) })
+    loop.update(state)
+    requestAnimationFrame(function() {
+      if (additionalHash) {
+        window.location.hash = digest + additionalHash
+        additionalHash = undefined }
+      else {
+        history.pushState(null, null, '#' + state.digest) } }) })
   .on('blank', function(blank, value) {
     if (!value || value.length === 0) {
       delete state.blanks[blank] }
@@ -63,12 +72,13 @@ document
 
 var hash = window.location.hash
 
-var initial = (
-  ( hash && hash.length >= 65 && isSHA256(hash.slice(1, 65)) ) ?
-  ( initial = hash.slice(1, 65) ) :
-  require('./initial') )
+if ( hash && hash.length >= 65 && isSHA256(hash.slice(1, 65)) ) {
+  initialDigest = hash.slice(1, 65)
+  additionalHash = hash.slice(65) }
+else {
+  initialDigest = require('./initial') }
 
-downloadForm(initial, function(error, response) {
+downloadForm(initialDigest, function(error, response) {
   if (error) {
     alert(error.message) }
   else {
