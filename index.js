@@ -42,6 +42,8 @@ bus
     state.data = form
     compute()
     loop.update(state)
+    // main-loop uses raf. This should ensure our callback is invoked
+    // after the rendering pass.
     requestAnimationFrame(function() {
       if (additionalHash) {
         window.location.hash = digest + additionalHash
