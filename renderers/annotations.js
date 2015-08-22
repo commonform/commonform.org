@@ -8,9 +8,9 @@ function annotations(state) {
     .filter(function(annotation) {
       return deepEqual(annotation.path.slice(0, -1), path) })
   if (matchingAnnotations.length > 0) {
-    return h('div.annotations',
-      matchingAnnotations
-        .map(function(annotation) {
-          return renderAnnotation({ data: annotation }) })) } }
+    return h('ul.annotations',
+        matchingAnnotations
+          .map(function(annotation) {
+            return h('li', renderAnnotation({ data: annotation })) })) } }
 
 module.exports = annotations

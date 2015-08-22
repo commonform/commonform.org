@@ -1,7 +1,12 @@
+var heading = require('./heading')
+var form = require('./form')
+var childButton = require('./child-button')
+
 function child(state) {
   return require('virtual-dom/h')(
     'div.child',
-    [ require('./heading')({
+    [ childButton(state),
+      heading({
         digest: state.digest,
         path: state.path.concat('heading'),
         annotations: state.annotations,

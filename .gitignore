@@ -1,1 +1,2 @@
-public/**/*.js
+public/browser.js
+public/styles.css

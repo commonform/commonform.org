@@ -7,6 +7,7 @@ var lint = require('commonform-lint')
 var downloadForm = require('./download-form')
 var isSHA256 = require('is-sha-256-hex-digest')
 var requestAnimationFrame = require('raf')
+var persistedProperties = require('./persisted-properties')
 
 var bus = new (require('events').EventEmitter)
 
@@ -36,26 +37,38 @@ compute()
 var initialDigest
 var additionalHash
 
+function updateHash() {
+  // main-loop uses raf. This should ensure our callback is invoked
+  // after the rendering pass.
+  requestAnimationFrame(function() {
+    if (additionalHash) {
+      window.location.hash = state.digest + additionalHash
+      additionalHash = undefined }
+    else {
+      history.pushState(null, null, '#' + state.digest) } }) }
+
 bus
   .on('form', function(digest, form) {
     state.digest = digest
     state.data = form
     compute()
     loop.update(state)
-    // main-loop uses raf. This should ensure our callback is invoked
-    // after the rendering pass.
-    requestAnimationFrame(function() {
-      if (additionalHash) {
-        window.location.hash = digest + additionalHash
-        additionalHash = undefined }
-      else {
-        history.pushState(null, null, '#' + state.digest) } }) })
+    updateHash() })
+
+  .on('state', function(newState) {
+    persistedProperties.forEach(function(key) {
+      state[key] = newState[key] })
+    compute()
+    loop.update(state)
+    updateHash() })
+
   .on('blank', function(blank, value) {
     if (!value || value.length === 0) {
       delete state.blanks[blank] }
     else {
       state.blanks[blank] = value }
     loop.update(state) })
+
   .on('title', function(newTitle) {
     if (!newTitle || newTitle.length === 0) {
       state.title = defaultTitle }
@@ -69,7 +82,7 @@ loop = require('main-loop')(
   require('virtual-dom'))
 
 document
-  .querySelector('#browser')
+  .querySelector('.container')
   .appendChild(loop.target)
 
 var hash = window.location.hash
