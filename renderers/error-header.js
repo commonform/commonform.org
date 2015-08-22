@@ -1,13 +1,13 @@
 var h = require('virtual-dom/h')
 var pathID = require('../path-id')
 
-function errorHeader(fingerprint, errors) {
+function errorHeader(digest, errors) {
   if (errors.length > 0) {
     return h('div.errors', [
       h('ul', errors.map(function(error) {
         return h('li', [
           h('a',
-            { href: '/#' + pathID(fingerprint, error.path.slice(0, -1)) },
+            { href: '/#' + pathID(digest, error.path.slice(0, -1)) },
             error.message) ]) })) ]) } }
 
 module.exports = errorHeader

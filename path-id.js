@@ -1,6 +1,6 @@
-function pathID(fingerprint, path) {
+function pathID(digest, path) {
   return (
-    fingerprint +
+    digest +
     '/' +
     path
       .filter(function(key) {
