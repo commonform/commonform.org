@@ -35,6 +35,7 @@ function form(state) {
              return renderer.predicate(child) })
            if (renderer) {
              return renderer.renderer({
+               focused: state.focused,
                digest: state.digest,
                path: state.path.concat([ 'content', index ]),
                emit: state.emit,

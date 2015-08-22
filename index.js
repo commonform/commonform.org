@@ -6,10 +6,10 @@ var critique = require('commonform-critique')
 var downloadForm = require('./download-form')
 var hash = require('commonform-hash')
 var isSHA256 = require('is-sha-256-hex-digest')
+var keyarray = require('keyarray')
 var lint = require('commonform-lint')
 var persistedProperties = require('./persisted-properties')
 var requestAnimationFrame = require('raf')
-var set = require('keyarray-set')
 
 var bus = new (require('events').EventEmitter)
 
@@ -20,6 +20,7 @@ var defaultTitle = 'Untitled Document'
 var state = {
   path: [ ],
   blanks: { },
+  focused: null,
   digest: 'f99a86c2e3318e9bd974c24a813d35ff493d1487e9b2ee1b2919027df8049ef6',
   title: defaultTitle,
   emit: bus.emit.bind(bus),
@@ -79,11 +80,26 @@ bus
     loop.update(state) })
 
   .on('set', function(path, value) {
-    set(state.data, path, value)
+    keyarray.set(state.data, path, value)
     state.digest = hash(state.data)
     compute()
     loop.update(state)
     updateHash() })
+
+  .on('delete', function(path) {
+    keyarray.delete(state.data, path)
+    state.digest = hash(state.data)
+    compute()
+    loop.update(state)
+    updateHash() })
+
+  .on('focus', function(path) {
+    state.focused = path
+    loop.update(state) })
+
+  .on('unfocus', function(path) {
+    state.focused = null
+    loop.update(state) })
 
 loop = require('main-loop')(
   state,

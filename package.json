@@ -12,8 +12,7 @@
     "deep-equal": "^1.0.0",
     "filesaver.js": "^0.2.0",
     "is-sha-256-hex-digest": "^1.0.0",
-    "keyarray-delete": "^0.1.0",
-    "keyarray-set": "^0.1.0",
+    "keyarray": "^0.1.2",
     "main-loop": "~3.1.0",
     "object-pick": "^0.1.1",
     "raf": "^3.1.0",
@@ -26,7 +25,7 @@
     "build": "npm run build-javascript && npm run build-css",
     "start": "ecstatic -p 8000 public",
     "watch": "watchify index.js -o public/browser.js -dv",
-    "phantom": "phantomjs --webdriver=4444",
+    "phantom": "phantomjs --ssl-protocol=any --webdriver=4444",
     "test": "tape test/*.test.js"
   },
   "devDependencies": {

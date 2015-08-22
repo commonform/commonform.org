@@ -79,6 +79,8 @@
 	margin-right: 0; }
 
 .childButton {
+	text-decoration: none;
+	color: black;
 	padding: 0;
 	display: block;
 	position: absolute;
@@ -92,3 +94,6 @@
 
 footer {
 	border-top: 1px solid black; }
+
+.childMenu {
+	padding-bottom: 0.5em; }
