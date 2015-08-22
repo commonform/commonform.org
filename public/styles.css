@@ -46,7 +46,8 @@
 .menu,
 .search,
 .errors,
-.title {
+.title,
+footer {
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid #ddd;

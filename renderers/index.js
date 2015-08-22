@@ -1,5 +1,6 @@
 var blanks = require('./blanks')
 var errorHeader = require('./error-header')
+var footer = require('./footer')
 var form = require('./form')
 var h = require('virtual-dom/h')
 var mainMenu = require('./main-menu')
@@ -18,6 +19,7 @@ function browser(state) {
       emit: state.emit,
       analysis: state.analysis.blanks }),
     errorHeader(state.digest, state.errors),
-    form(state) ]) }
+    form(state),
+    footer() ]) }
 
 module.exports = browser
