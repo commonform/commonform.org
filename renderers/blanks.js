@@ -14,6 +14,7 @@ function blanks(state) {
             [ h('th', 'Document Title'),
               titleInput(pick(state, [ 'title', 'emit' ])) ]),
             Object.keys(state.analysis)
+              .sort()
               .map(function(blank) {
                 return blankEntryRow({
                   digest: state.digest,
