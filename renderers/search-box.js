@@ -15,7 +15,7 @@ function searchBox(emit) {
                 if (error) {
                   alert(error.message) }
                 else {
-                  emit('form', response.form) } }) }},
+                  emit('form', response.digest, response.form) } }) }},
           pattern: '[a-f0-9]{64,64}' },
       [ h('input',
           { type: 'text', placeholder: 'Type a form fingerprint' }),

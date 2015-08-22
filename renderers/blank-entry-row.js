@@ -5,7 +5,7 @@ function blankEntry(state) {
   var blank = state.blank
   var values = state.values
   return h('tr.blank',
-    { id: 'blank:' + blank },
+    { id: state.digest + '/blank/' + blank },
     [ h('th.name', blank),
       h('td.value', blankInput(state)) ]) }
 

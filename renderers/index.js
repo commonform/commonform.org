@@ -13,10 +13,11 @@ function browser(state) {
     titleInput(pick(state, [ 'title', 'emit' ])),
     mainMenu(state),
     blanks({
+      digest: state.digest,
       values: state.blanks,
       emit: state.emit,
       analysis: state.analysis.blanks }),
-    errorHeader(state.errors),
+    errorHeader(state.digest, state.errors),
     form(state) ]) }
 
 module.exports = browser

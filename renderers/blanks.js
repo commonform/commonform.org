@@ -11,6 +11,7 @@ function blanks(state) {
          Object.keys(state.analysis)
            .map(function(blank) {
              return blankEntryRow({
+               digest: state.digest,
                blank: blank,
                emit: state.emit,
                values: state.values }) })) ])) }

@@ -24,7 +24,7 @@ function form(state) {
    { className: (
      'conspicuous' in state.data ?
        'form conspicuous' : 'form' ),
-     id: pathID(state.path) },
+     id: pathID(state.digest, state.path) },
    [ annotations(state),
      state.data.content
        .map(function(child, index) {
@@ -35,6 +35,7 @@ function form(state) {
              return renderer.predicate(child) })
            if (renderer) {
              return renderer.renderer({
+               digest: state.digest,
                path: state.path.concat([ 'content', index ]),
                emit: state.emit,
                annotations: state.annotations,

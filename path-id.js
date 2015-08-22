@@ -1,6 +1,7 @@
-function pathID(path) {
+function pathID(fingerprint, path) {
   return (
-    'form:' +
+    fingerprint +
+    '/' +
     path
       .filter(function(key) {
         return key !== 'content' && key !== 'form' })
