@@ -33,7 +33,9 @@
 
 .heading {
 	font-weight: bold;
-	display: inline-block; }
+	display: block;
+	width: 100%;
+	border: 1px solid white; }
 
 .conspicuous > span {
 	font-weight: bold;

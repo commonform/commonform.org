@@ -3,11 +3,13 @@ Function.prototype.bind = (
 
 var analyze = require('commonform-analyze')
 var critique = require('commonform-critique')
-var lint = require('commonform-lint')
 var downloadForm = require('./download-form')
+var hash = require('commonform-hash')
 var isSHA256 = require('is-sha-256-hex-digest')
-var requestAnimationFrame = require('raf')
+var lint = require('commonform-lint')
 var persistedProperties = require('./persisted-properties')
+var requestAnimationFrame = require('raf')
+var set = require('keyarray-set')
 
 var bus = new (require('events').EventEmitter)
 
@@ -76,6 +78,13 @@ bus
       state.title = newTitle }
     loop.update(state) })
 
+  .on('set', function(path, value) {
+    set(state.data, path, value)
+    state.digest = hash(state.data)
+    compute()
+    loop.update(state)
+    updateHash() })
+
 loop = require('main-loop')(
   state,
   require('./renderers'),
@@ -85,11 +94,13 @@ document
   .querySelector('.container')
   .appendChild(loop.target)
 
-var hash = window.location.hash
+var windowHash = window.location.hash
 
-if ( hash && hash.length >= 65 && isSHA256(hash.slice(1, 65)) ) {
-  initialDigest = hash.slice(1, 65)
-  additionalHash = hash.slice(65) }
+if (
+  windowHash && windowHash.length >= 65 &&
+  isSHA256(windowHash.slice(1, 65)) )
+{ initialDigest = windowHash.slice(1, 65)
+  additionalHash = windowHash.slice(65) }
 else {
   initialDigest = require('./initial') }
 
