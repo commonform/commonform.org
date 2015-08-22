@@ -1,5 +1,7 @@
 var h = require('virtual-dom/h')
 var blankEntryRow = require('./blank-entry-row')
+var titleInput = require('./title-input')
+var pick = require('object-pick')
 
 function blanks(state) {
   return h('div.blanks',
@@ -8,12 +10,15 @@ function blanks(state) {
           [ h('th', 'Blank'),
             h('th', 'Value') ]),
         h('tbody',
-          Object.keys(state.analysis)
-            .map(function(blank) {
-              return blankEntryRow({
-                digest: state.digest,
-                blank: blank,
-                emit: state.emit,
-                values: state.values }) })) ])) }
+          [ h('tr',
+            [ h('th', 'Document Title'),
+              titleInput(pick(state, [ 'title', 'emit' ])) ]),
+            Object.keys(state.analysis)
+              .map(function(blank) {
+                return blankEntryRow({
+                  digest: state.digest,
+                  blank: blank,
+                  emit: state.emit,
+                  values: state.values }) }) ]) ])) }
 
 module.exports = blanks

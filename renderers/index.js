@@ -11,7 +11,6 @@ var titleInput = require('./title-input')
 function browser(state) {
   return h('div.browser', [
     searchBox(state.emit),
-    titleInput(pick(state, [ 'title', 'emit' ])),
     mainMenu(state),
     blanks({
       digest: state.digest,

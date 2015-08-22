@@ -1,16 +1,12 @@
 var h = require('virtual-dom/h')
 
 function titleInput(state) {
-  return h('div.title', [
-    h('form',
-      { onsubmit: function(event) {
-          event.preventDefault() } },
-      [ h('input',
-          { type: 'text',
-            value: state.title,
-            onchange: function(event) {
-              state.emit('title', event.target.value) } }),
-        ' ',
-        h('input', { type: 'submit', value: 'Change Title' }) ]) ]) }
+  function onChange(event) {
+    state.emit('title', event.target.value) }
+  return h('input',
+    { type: 'text',
+      value: state.title,
+      onchange: onChange,
+      onblur: onChange }) }
 
 module.exports = titleInput
