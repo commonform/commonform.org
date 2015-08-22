@@ -50,6 +50,8 @@ function updateHash() {
     else {
       history.pushState(null, null, '#' + state.digest) } }) }
 
+var defaultForm = { form: { content: [ 'New form' ] } }
+
 bus
   .on('form', function(digest, form) {
     state.digest = digest
@@ -87,8 +89,22 @@ bus
     updateHash() })
 
   .on('delete', function(path) {
-    keyarray.delete(state.data, path)
+    var containing = keyarray.get(state.data, path.slice(0, -1))
+    containing.splice(path[path.length - 1], 1)
+    if (containing.length === 0) {
+      containing.push(defaultForm) }
     state.digest = hash(state.data)
+    state.focused = null
+    compute()
+    loop.update(state)
+    updateHash() })
+
+  .on('insert', function(path) {
+    var containingPath = path.slice(0, -1)
+    var containing = keyarray.get(state.data, containingPath)
+    var offset = path[path.length - 1]
+    containing.splice(offset, 0, defaultForm)
+    state.focused = null
     compute()
     loop.update(state)
     updateHash() })
