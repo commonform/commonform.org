@@ -1,11 +1,13 @@
 {
   "dependencies": {
     "array-find": "^1.0.0",
+    "clone": "^1.0.2",
     "commonform": "^1.0.1",
     "commonform-analyze": "^0.4.1",
     "commonform-annotations": "^1.0.0",
     "commonform-critique": "^0.5.7",
     "commonform-docx": "^0.5.1",
+    "commonform-group-series": "^0.5.0",
     "commonform-hash": "^0.4.0",
     "commonform-lint": "^0.5.1",
     "commonform-predicate": "^0.4.0",

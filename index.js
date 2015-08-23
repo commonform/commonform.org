@@ -56,6 +56,7 @@ bus
   .on('form', function(digest, form) {
     state.digest = digest
     state.data = form
+    state.focused = [ 'content', 0 ]
     compute()
     loop.update(state)
     updateHash() })
@@ -113,7 +114,7 @@ bus
     var containing = keyarray.get(state.data, containingPath)
     var offset = path[path.length - 1]
     containing.splice(offset, 0, defaultForm)
-    state.focused = null
+    state.focused = path
     compute()
     loop.update(state)
     updateHash() })

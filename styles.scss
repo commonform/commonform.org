@@ -1,6 +1,16 @@
+@mixin unselectable {
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none; }
+
 * {
 	font-size: 12pt;
 	line-height: 140%; }
+
+a {
+	text-decoration: none; }
 
 .browser {
 	margin: 0 auto;
@@ -11,16 +21,28 @@
 	color: blue; }
 
 .form .definition:before {
-	content: "“"; }
+	content: "\"\""; }
 
 .form .definition:after {
-	content: "”"; }
+	content: "\"\""; }
 
 .form .use {
 	color: green; }
 
+.form .use:before {
+	content: "<"; }
+
+.form .use:after {
+	content: ">"; }
+
 .form .reference {
 	color: red; }
+
+.form .reference:before {
+	content: "{"; }
+
+.form .reference:after {
+	content: "}"; }
 
 .form .blank:before {
 	content: "["; }
@@ -58,7 +80,15 @@
 
 .blanks table th,
 .blanks table td {
+	padding: 1ex;
 	text-align: left; }
+
+.blanks table tbody th {
+	font-weight: normal; }
+
+.blanks table ul {
+	margin-top: 0;
+	margin-bottom: 0;}
 
 .search form,
 .title form {
@@ -79,6 +109,7 @@
 	margin-right: 0; }
 
 .childButton {
+	@include unselectable;
 	text-decoration: none;
 	color: black;
 	padding: 0;
@@ -96,4 +127,11 @@ footer {
 	border-top: 1px solid black; }
 
 .childMenu {
+	@include unselectable;
 	padding-bottom: 0.5em; }
+
+.pilcrow {
+	@include unselectable;
+	color: #ddd; }
+.pilcrow:before {
+	content: " "; }
