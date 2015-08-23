@@ -17,7 +17,7 @@ function blankEntry(state) {
             .map(function(path) {
               return h('li',
                 h('a',
-                  { href: '#' + pathID(digest, path.slice(0, -2)) },
+                  { href: '/#' + pathID(digest, path.slice(0, -2)) },
                   'Here')) }))) ]) }
 
 module.exports = blankEntry

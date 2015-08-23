@@ -45,10 +45,10 @@ function updateHash() {
   // after the rendering pass.
   requestAnimationFrame(function() {
     if (additionalHash) {
-      window.location.hash = state.digest + additionalHash
+      window.location.hash = '/' + state.digest + additionalHash
       additionalHash = undefined }
     else {
-      history.pushState(null, null, '#' + state.digest) } }) }
+      history.pushState(null, null, '/#' + state.digest) } }) }
 
 var defaultForm = { form: { content: [ 'New form' ] } }
 

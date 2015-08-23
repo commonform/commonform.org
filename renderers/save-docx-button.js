@@ -5,7 +5,7 @@ var h = require('virtual-dom/h')
 
 function saveDOCXButton(state) {
   return h('button.saveDOCX',
-    { href: '#',
+    { href: '/#',
       onclick: function(event) {
         event.preventDefault()
         var title = state.title

@@ -3,7 +3,7 @@ var openFile = require('../open-file')
 
 function openJSONButton(emit) {
   return h('button.openJSON',
-    { href: '#',
+    { href: '/#',
       onclick: function(event) {
         openFile(function(content) {
           var state = JSON.parse(content)

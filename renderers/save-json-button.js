@@ -11,7 +11,7 @@ function jsonBlob(object) {
 
 function saveJSONButton(state) {
   return h('button.saveJSON',
-    { href: '#',
+    { href: '/#',
       onclick: function(event) {
         event.preventDefault()
         var title = state.title
