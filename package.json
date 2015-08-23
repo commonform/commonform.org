@@ -27,7 +27,7 @@
     "build": "npm run build-javascript && npm run build-css",
     "start": "ecstatic -p 8000 public",
     "watch": "watchify index.js -o public/browser.js -dv",
-    "phantom": "phantomjs --ssl-protocol=any --webdriver=4444",
+    "phantom": "phantomjs --local-to-remote-url-access=yes --ignore-ssl-errors=yes --ssl-protocol=any --webdriver=4444",
     "test": "tape test/*.test.js"
   },
   "devDependencies": {
