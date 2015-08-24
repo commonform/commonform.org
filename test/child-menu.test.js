@@ -2,13 +2,13 @@ require('tape')('Child Button', function(test) {
   test.test('... toggles child menu.', function(test) {
     test.plan(2)
     require('./driver')()
-      .waitForExist('.childButton')
-      .click('.childButton')
-      .isVisible('button.delete')
+      .timeoutsImplicitWait(2000)
+      .waitForExist('.childButton', 10000)
+      .isVisible('.delete')
       .then(function(isVisible) {
-        test.assert(isVisible, 'child button shows delete button') })
+        test.assert(isVisible, 'delete button starts visible') })
       .click('.childButton')
-      .isVisible('button.delete')
+      .isVisible('.delete', 10000)
       .then(function(isVisible) {
         test.assert(!isVisible, 'child button hides delete button') })
       .end() })

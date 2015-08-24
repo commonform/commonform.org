@@ -6,7 +6,9 @@ before_script:
   - "gzip < public/browser.js > public/browser.js.gz"
   - "du -hc public/*"
   - "npm run start 2>&1 > http.log &"
+  - "sleep 3"
   - "npm run phantom 2>&1 > phantom.log &"
+  - "sleep 3"
 after_script:
   - "cat http.log"
   - "cat phantom.log"
