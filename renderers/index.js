@@ -1,5 +1,4 @@
 var blanks = require('./blanks')
-var errorHeader = require('./error-header')
 var footer = require('./footer')
 var form = require('./form')
 var h = require('virtual-dom/h')
@@ -15,7 +14,6 @@ function browser(state) {
       values: state.blanks,
       emit: state.emit,
       analysis: state.analysis.blanks }),
-    errorHeader(state.digest, state.errors),
     form(state),
     footer() ]) }
 
