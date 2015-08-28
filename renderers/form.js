@@ -1,5 +1,6 @@
 var annotations = require('./annotations')
 var clone = require('clone')
+var get = require('keyarray-get')
 var group = require('commonform-group-series')
 var h = require('virtual-dom/h')
 var paragraph = require('./paragraph')
@@ -10,6 +11,7 @@ var series = require('./series')
 function form(state) {
   var groups = group(clone(state.data))
   var offset = 0
+  var annotationsHere = get(state.annotationsTree, [ 'annotations' ])
   return h('section',
     { className: (
       'conspicuous' in state.data ?
@@ -18,7 +20,7 @@ function form(state) {
     [ groups
         .map(function(group) {
           var groupState = pick(state,
-            [ 'annotations', 'digest', 'emit', 'focused', 'path' ])
+            [ 'annotationsTree', 'digest', 'emit', 'focused', 'path' ])
           groupState.data = group
           groupState.offset = offset
           var renderer
@@ -30,6 +32,8 @@ function form(state) {
           var result = renderer(groupState)
           offset += group.content.length
           return result }),
-      annotations(state) ]) }
+      ( annotations ?
+          annotations(annotationsHere) :
+          null ) ]) }
 
 module.exports = form

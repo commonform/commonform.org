@@ -10,6 +10,7 @@ var keyarray = require('keyarray')
 var lint = require('commonform-lint')
 var persistedProperties = require('./persisted-properties')
 var requestAnimationFrame = require('raf')
+var treeify = require('commonform-treeify-annotations')
 
 var bus = new (require('events').EventEmitter)
 
@@ -29,10 +30,15 @@ var state = {
 function compute() {
   state.merkle = merkleize(state.data)
   state.digest = state.merkle.digest
-  state.errors = lint(state.data)
-  state.critiques = critique(state.data)
-  state.annotations = state.errors
-    .concat(state.critiques)
+  state.annotationsTree = treeify(
+    critique(state.data)
+      .concat(lint(state.data))
+      .map(function(annotation) {
+        // Annotation paths are specific to individual content array elements,
+        // but are displayed by containing forms, which are two keys up the key
+        // arrays from their content elements.
+        annotation.path = annotation.path.slice(0, -2)
+        return annotation }))
   state.analysis = analyze(state.data) }
 
 compute()

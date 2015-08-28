@@ -2,6 +2,7 @@ var childButton = require('./child-button')
 var childMenu = require('./child-menu')
 var deepEqual = require('deep-equal')
 var form = require('./form')
+var get = require('keyarray-get')
 var heading = require('./heading')
 
 function child(state) {
@@ -22,7 +23,8 @@ function child(state) {
         merkle: state.merkle,
         focused: state.focused,
         path: state.path.concat('form'),
-        annotations: state.annotations,
+        annotationsTree: (
+          get(state.annotationsTree, [ 'form' ]) || { } ),
         emit: state.emit,
         data: state.data.form }) ]) }
 
