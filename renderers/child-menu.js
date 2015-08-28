@@ -13,6 +13,9 @@ function childMenu(state) {
         addHeadingButton(state) ),
       addAboveButton(state),
       addBelowButton(state),
-      h('span.fingerprint', state.merkle.digest) ] ) }
+      h('a.fingerprint',
+        { href: '/#' + state.merkle.digest,
+          target: '_blank' },
+        state.merkle.digest) ] ) }
 
 module.exports = childMenu
