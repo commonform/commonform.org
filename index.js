@@ -22,7 +22,7 @@ var state = {
   path: [ ],
   blanks: { },
   focused: null,
-  digest: 'f99a86c2e3318e9bd974c24a813d35ff493d1487e9b2ee1b2919027df8049ef6',
+  digest: '',
   title: defaultTitle,
   emit: bus.emit.bind(bus),
   data: { content: [ 'No content loaded' ] } }
