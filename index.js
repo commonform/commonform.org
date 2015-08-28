@@ -4,7 +4,7 @@ Function.prototype.bind = (
 var analyze = require('commonform-analyze')
 var critique = require('commonform-critique')
 var downloadForm = require('./download-form')
-var hash = require('commonform-hash')
+var merkleize = require('commonform-merkleize')
 var isSHA256 = require('is-sha-256-hex-digest')
 var keyarray = require('keyarray')
 var lint = require('commonform-lint')
@@ -27,12 +27,12 @@ var state = {
   data: { content: [ 'No content loaded' ] } }
 
 function compute() {
+  state.merkle = merkleize(state.data)
+  state.digest = state.merkle.digest
   state.errors = lint(state.data)
   state.critiques = critique(state.data)
-
   state.annotations = state.errors
     .concat(state.critiques)
-
   state.analysis = analyze(state.data) }
 
 compute()
@@ -54,7 +54,6 @@ var defaultForm = { form: { content: [ 'New form' ] } }
 
 bus
   .on('form', function(digest, form) {
-    state.digest = digest
     state.data = form
     state.focused = [ 'content', 0 ]
     compute()
@@ -84,7 +83,6 @@ bus
 
   .on('set', function(path, value) {
     keyarray.set(state.data, path, value)
-    state.digest = hash(state.data)
     state.focused = null
     compute()
     loop.update(state)
@@ -95,7 +93,6 @@ bus
     containing.splice(path[path.length - 1], 1)
     if (containing.length === 0) {
       containing.push(defaultForm) }
-    state.digest = hash(state.data)
     state.focused = null
     compute()
     loop.update(state)
@@ -103,7 +100,6 @@ bus
 
   .on('delete', function(path) {
     keyarray.delete(state.data, path)
-    state.digest = hash(state.data)
     state.focused = null
     compute()
     loop.update(state)

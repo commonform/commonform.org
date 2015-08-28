@@ -8,7 +8,6 @@
     "commonform-critique": "^0.5.7",
     "commonform-docx": "~0.7.2",
     "commonform-group-series": "^0.5.0",
-    "commonform-hash": "^0.4.0",
     "commonform-lint": "^0.5.1",
     "commonform-predicate": "^0.4.0",
     "deep-equal": "^1.0.0",
