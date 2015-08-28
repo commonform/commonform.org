@@ -8,10 +8,13 @@ var h = require('virtual-dom/h')
 function childMenu(state) {
   return h('div.childMenu',
     [ deleteButton(state),
+      ' ',
       ( state.data.hasOwnProperty('heading') ?
         deleteHeadingButton(state) :
         addHeadingButton(state) ),
+      ' ',
       addAboveButton(state),
+      ' ',
       addBelowButton(state),
       h('a.fingerprint',
         { href: '/#' + state.merkle.digest,
