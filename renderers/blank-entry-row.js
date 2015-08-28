@@ -12,12 +12,10 @@ function blankEntry(state) {
     [ h('th.name', blank),
       h('td.value', blankInput(state)),
       h('td',
-        h('ul',
-          state.analysis
-            .map(function(path) {
-              return h('li',
-                h('a',
-                  { href: '/#' + pathID(digest, path.slice(0, -2)) },
-                  'Here')) }))) ]) }
+        state.analysis
+          .map(function(path) {
+            return h('a',
+              { href: '/#' + pathID(digest, path.slice(0, -2)) },
+              'Here') })) ]) }
 
 module.exports = blankEntry
