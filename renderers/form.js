@@ -15,8 +15,7 @@ function form(state) {
       'conspicuous' in state.data ?
         'form conspicuous' : 'form' ),
       id: pathID(state.digest, state.path) },
-    [ annotations(state),
-      groups
+    [ groups
         .map(function(group) {
           var renderer = ( group.type === 'series' ?
             series : paragraph )
@@ -26,6 +25,7 @@ function form(state) {
           groupState.offset = offset
           var result = renderer(groupState)
           offset += group.content.length
-          return result }) ]) }
+          return result }),
+      annotations(state) ]) }
 
 module.exports = form
