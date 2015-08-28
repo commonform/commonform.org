@@ -6,7 +6,8 @@ var heading = require('./heading')
 
 function child(state) {
   return require('virtual-dom/h')(
-    'div.child',
+    ( deepEqual(state.focused, state.path) ?
+      'div.child.focused' : 'div.child' ),
     [ childButton(state),
       ( deepEqual(state.focused, state.path) ?
         childMenu(state) : undefined ),
