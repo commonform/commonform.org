@@ -110,6 +110,7 @@ a {
 
 .childButton {
 	@include unselectable;
+	font-weight: bold;
 	text-decoration: none;
 	color: black;
 	padding: 0;
@@ -117,6 +118,31 @@ a {
 	position: absolute;
 	left: -0.5em;
 	top: 0; }
+
+.browser > .form > .child {
+	&> .childButton {
+		color: red; }
+	& > .form > .child {
+		&> .childButton {
+			color: orange; }
+		& > .form > .child {
+			&> .childButton {
+				color: yellow; }
+			& > .form > .child {
+				&> .childButton {
+					color: green; }
+				& > .form > .child {
+					&> .childButton {
+						color: blue; }
+					& > .form > .child {
+						&> .childButton {
+							color: indigo; }
+						& > .form > .child {
+							&> .childButton {
+								color: violet; }
+							& > .form > .child {
+								.childButton {
+									color: black; } } } } } } } } }
 
 .annotations {
 	color: #aaa;
