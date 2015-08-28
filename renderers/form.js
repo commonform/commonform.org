@@ -17,12 +17,16 @@ function form(state) {
       id: pathID(state.digest, state.path) },
     [ groups
         .map(function(group) {
-          var renderer = ( group.type === 'series' ?
-            series : paragraph )
           var groupState = pick(state,
             [ 'annotations', 'digest', 'emit', 'focused', 'path' ])
           groupState.data = group
           groupState.offset = offset
+          var renderer
+          if (group.type === 'series') {
+            renderer = series
+            groupState.merkle = state.merkle }
+          else {
+            renderer = paragraph }
           var result = renderer(groupState)
           offset += group.content.length
           return result }),

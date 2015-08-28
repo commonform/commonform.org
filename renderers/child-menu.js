@@ -12,6 +12,7 @@ function childMenu(state) {
         deleteHeadingButton(state) :
         addHeadingButton(state) ),
       addAboveButton(state),
-      addBelowButton(state) ] ) }
+      addBelowButton(state),
+      h('span.fingerprint', state.merkle.digest) ] ) }
 
 module.exports = childMenu

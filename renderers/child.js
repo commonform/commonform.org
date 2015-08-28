@@ -18,6 +18,7 @@ function child(state) {
         data: state.data.heading}),
       require('./form')({
         digest: state.digest,
+        merkle: state.merkle,
         focused: state.focused,
         path: state.path.concat('form'),
         annotations: state.annotations,

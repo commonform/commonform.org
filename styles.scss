@@ -153,11 +153,21 @@ footer {
 	border-top: 1px solid black; }
 
 .childMenu {
-	@include unselectable;
-	padding-bottom: 0.5em; }
+	padding-bottom: 0.5em;
+	margin-bottom: 1em;
+	border-bottom: 1px solid #ddd; }
 
 .pilcrow {
 	@include unselectable;
 	color: #ddd; }
 .pilcrow:before {
 	content: " "; }
+
+.fingerprint {
+	display: block;
+	clear: both;
+	color: #777;
+	padding: 1ex 0 0 0;
+	&:before {
+		@include unselectable;
+		content: 'Fingerprint: '; } }
