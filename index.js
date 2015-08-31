@@ -98,7 +98,7 @@ bus
     var containing = keyarray.get(state.data, path.slice(0, -1))
     containing.splice(path[path.length - 1], 1)
     if (containing.length === 0) {
-      containing.push(defaultForm) }
+      containing.push(JSON.parse(JSON.stringify(defaultForm))) }
     state.focused = null
     compute()
     loop.update(state)
@@ -115,7 +115,7 @@ bus
     var containingPath = path.slice(0, -1)
     var containing = keyarray.get(state.data, containingPath)
     var offset = path[path.length - 1]
-    containing.splice(offset, 0, defaultForm)
+    containing.splice(offset, 0, JSON.parse(JSON.stringify(defaultForm)))
     state.focused = path
     compute()
     loop.update(state)
