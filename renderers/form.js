@@ -24,7 +24,8 @@ function form(state) {
       'conspicuous' in form ?
         'form conspicuous' :
         undefined ),
-      id: state.merkle.digest },
+      attributes: {
+        'data-digest': state.merkle.digest } },
     [ ( hasHeading ?
           heading({
             digest: state.digest,

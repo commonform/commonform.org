@@ -1,20 +1,21 @@
 var blankInput = require('./blank-input')
 var h = require('virtual-dom/h')
-var nameID = require('../name-id')
-var pathID = require('../path-id')
+var scrollTo = require('../scroll-to')
 
 function blankEntry(state) {
   var blank = state.blank
-  var digest = state.digest
   return h('tr.blank',
-    { id: nameID(state.digest, 'blank', blank) },
+    { attributes: { 'data-blank': blank } },
     [ h('th.name', blank),
       h('td.value', blankInput(state)),
       h('td',
-        state.analysis
-          .map(function(path) {
+        Array.apply(0, Array(state.insertions))
+          .map(function(_, index) {
             return h('a',
-              { href: '/#' + pathID(digest, path.slice(0, -2)) },
+              { href: '#',
+                onclick: function(event) {
+                  event.preventDefault()
+                  scrollTo('insert', blank, index) } },
               'Here') })) ]) }
 
 module.exports = blankEntry

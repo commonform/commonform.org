@@ -1,5 +1,4 @@
 var h = require('virtual-dom/h')
-var nameID = require('../name-id')
 
 function heading(state) {
   var text = state.data
@@ -9,7 +8,7 @@ function heading(state) {
       ( 'span.h' + ( state.depth + 1 ) ) )
   return h(
     name,
-    { id: nameID(state.digest, 'heading', text) },
+    { attributes: { 'data-heading': text } },
     text) }
 
 module.exports = heading
