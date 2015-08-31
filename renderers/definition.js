@@ -3,7 +3,7 @@ var nameID = require('../name-id')
 
 function definition(state) {
   var term = state.data.definition
-  return h('a.definition',
+  return h('dfn.definition',
     { id: nameID(state.digest, 'definition', term) },
     term) }
 

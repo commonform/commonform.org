@@ -4,7 +4,7 @@ function addWithinButton(state) {
   var emit = state.emit
   var path = state.path
   return h('button.addWithin',
-    { onclick: function(event) {
+    { onclick: function() {
         var after = path
           .concat('form')
           .concat('content')

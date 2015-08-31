@@ -6,7 +6,6 @@ var pathID = require('../path-id')
 function blankEntry(state) {
   var blank = state.blank
   var digest = state.digest
-  var values = state.values
   return h('tr.blank',
     { id: nameID(state.digest, 'blank', blank) },
     [ h('th.name', blank),

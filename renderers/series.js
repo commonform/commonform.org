@@ -1,6 +1,4 @@
 var get = require('keyarray-get')
-var h = require('virtual-dom/h')
-var renderChild = require('./child')
 
 function series(state) {
   return state.data.content
@@ -11,7 +9,7 @@ function series(state) {
       var annotationsTree = (
         get(state.annotationsTree, [ 'content', absoluteIndex ]) ||
         { } )
-      var result = renderChild({
+      var result = require('./form')({
         annotationsTree: annotationsTree,
         data: child,
         digest: state.digest,

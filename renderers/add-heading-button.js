@@ -4,7 +4,7 @@ function addHeadingButton(state) {
   var emit = state.emit
   var path = state.path
   return h('button.addHeading',
-    { onclick: function(event) {
+    { onclick: function() {
         var headingPath = path.concat('heading')
         emit('set', headingPath, 'New Heading') } },
     'Add Heading') }

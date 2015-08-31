@@ -15,7 +15,7 @@ function saveDOCXButton(state) {
         var date = new Date().toISOString()
         filesaver(
           zip.generate({ type: 'blob' }),
-          fileName(title, 'docx')) } },
+          fileName(( title + ' ' + date ), 'docx')) } },
     'Save DOCX') }
 
 module.exports = saveDOCXButton

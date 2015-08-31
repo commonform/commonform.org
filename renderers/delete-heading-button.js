@@ -4,7 +4,7 @@ function deleteHeadingButton(state) {
   var emit = state.emit
   var path = state.path
   return h('button.deleteHeading',
-    { onclick: function(event) {
+    { onclick: function() {
         var headingPath = path.concat('heading')
         emit('delete', headingPath) } },
     'Delete Heading') }

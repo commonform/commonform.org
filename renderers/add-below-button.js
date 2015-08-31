@@ -4,7 +4,7 @@ function addBelowButton(state) {
   var emit = state.emit
   var path = state.path
   return h('button.addBelow',
-    { onclick: function(event) {
+    { onclick: function() {
         var after = path.slice(0, -1)
           .concat(path[path.length - 1] + 1)
         emit('insert', after) } },

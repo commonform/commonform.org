@@ -1,184 +1,42 @@
-@mixin unselectable {
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-o-user-select: none;
-	user-select: none; }
-
-* {
-	line-height: 140%; }
-
-a {
-	text-decoration: none; }
-
-.browser {
+.container {
 	margin: 0 auto;
-	padding: 1em;
 	max-width: 960px; }
 
-.form .definition {
-	color: blue; }
+.commonform {
+	line-height: 140%;
+	padding: 1em;
+	dfn {
+		color: blue;
+		&:before {
+			content: "\"\""; }
+		&:after {
+			content: "\"\""; } }
+	.use {
+		color: green;
+		&:before {
+			content: "<"; }
 
-.form .definition:before {
-	content: "\"\""; }
+		&:after {
+			content: ">"; } }
+	.reference {
+		color: red;
+		&:before {
+			content: "{"; }
+		&:after {
+			content: "}"; }
+	.blank {
+		color: orange; }
+		&:before {
+			content: "["; }
+		&:after {
+			content: "]"; } } }
 
-.form .definition:after {
-	content: "\"\""; }
-
-.form .use {
-	color: green; }
-
-.form .use:before {
-	content: "<"; }
-
-.form .use:after {
-	content: ">"; }
-
-.form .reference {
-	color: red; }
-
-.form .reference:before {
-	content: "{"; }
-
-.form .reference:after {
-	content: "}"; }
-
-.form .blank:before {
-	content: "["; }
-
-.form .blank:after {
-	content: "]"; }
-
-.form .blank {
-	color: orange; }
-
-.form p {
-	margin: 0; }
-
-.heading {
-	font-weight: bold;
-	display: block;
-	width: 100%;
-	border: 1px solid white; }
-
-.conspicuous > span {
+.conspicuous > p > span {
 	font-weight: bold;
 	font-style: italic; }
 
-.blanks,
-.mainMenu,
-.menu,
-.search,
-.errors,
-.title {
-	margin: 0.5em 0;
-	padding: 0.5em 0;
-	display: block; }
-
-.errors {
-	background: #ffcccc;
-	ul {
-		margin: 0; } }
-
-.blanks table th,
-.blanks table td {
-	padding: 1ex;
-	text-align: left; }
-
-.blanks table tbody th {
-	font-weight: normal; }
-
-.blanks table ul {
-	margin-top: 0;
-	margin-bottom: 0;}
-
-.search form,
-.title form {
-	display: flex; }
-
-.search input[type=text],
-.title input[type=text] {
-	flex: 1; }
-
-.child {
-	padding: 14px 7px 14px 14px;
-	border: 1px solid black; }
-
-.form .child {
-	position: relative;
-	padding-left: 0.5em;
-	margin: 1.5em 0 1.5em 0.5em;
-	text-align: left; }
-
-.browser > .form > .child {
-	padding-left: 0.5em;
-	margin-right: 0; }
-
-.childButton {
-	@include unselectable;
-	font-weight: bold;
-	text-decoration: none;
-	color: black;
-	padding: 0;
-	display: block;
-	position: absolute;
-	left: -0.5em;
-	top: 0; }
-
-.browser > .form > .child {
-	&> .childButton {
-		color: red; }
-	& > .form > .child {
-		&> .childButton {
-			color: orange; }
-		& > .form > .child {
-			&> .childButton {
-				color: yellow; }
-			& > .form > .child {
-				&> .childButton {
-					color: green; }
-				& > .form > .child {
-					&> .childButton {
-						color: blue; }
-					& > .form > .child {
-						&> .childButton {
-							color: indigo; }
-						& > .form > .child {
-							&> .childButton {
-								color: violet; }
-							& > .form > .child {
-								.childButton {
-									color: black; } } } } } } } } }
-
-.annotations {
-	color: #aaa;
-	display: block;
-	text-indent: 0; }
-
-footer {
-	border-top: 1px solid black; }
-
-.childMenu {
-	padding-bottom: 0.5em;
-	margin-bottom: 1em;
-	border-bottom: 1px solid #ddd; }
-
-.pilcrow {
-	@include unselectable;
-	color: #ddd; }
-.pilcrow:before {
-	content: " "; }
-
-.fingerprint {
-	display: block;
-	clear: both;
-	color: #777;
-	&:before {
-		@include unselectable;
-		content: 'Fingerprint: '; } }
-
 section {
-	padding: 14px 0 14px 14px; }
+	padding: 0px 0 0px 14px; }
 
 aside {
 	font-size: 75%;

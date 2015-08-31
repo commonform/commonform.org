@@ -5,7 +5,7 @@ var predicates = require('commonform-predicate')
 var renderers = [
   { predicate: predicates.text,
     renderer: require('./text') },
-  { predicate: predicates.form,
+  { predicate: predicates.child,
     renderer: require('./form') },
   { predicate: predicates.blank,
     renderer: require('./blank') },
@@ -29,7 +29,6 @@ function paragraph(state) {
               data: child,
               digest: state.digest,
               emit: state.emit,
-              path: state.path.concat(childPath) }) }),
-      h('span.pilcrow', '¶') ]) }
+              path: state.path.concat(childPath) }) }) ]) }
 
 module.exports = paragraph
