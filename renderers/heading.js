@@ -7,10 +7,13 @@ function heading(state) {
     state.emit('set', state.path, newValue) }
   var text = state.data
   if (state.data) {
-    return h('input.heading',
-      { id: nameID(state.digest, 'heading', text),
-        value: text,
-        onchange: onChange,
-        onblug: onChange }) } }
+    if (state.isFocused) {
+      return h('input.heading',
+        { id: nameID(state.digest, 'heading', text),
+          value: text,
+          onchange: onChange,
+          onblug: onChange }) }
+    else {
+      return h('span.heading', text) } } }
 
 module.exports = heading

@@ -6,15 +6,14 @@ var get = require('keyarray-get')
 var heading = require('./heading')
 
 function child(state) {
+  var isFocused = deepEqual(state.focused, state.path)
   return require('virtual-dom/h')(
-    ( deepEqual(state.focused, state.path) ?
-      'div.child.focused' : 'div.child' ),
+    ( isFocused ? 'div.child.focused' : 'div.child' ),
     [ childButton(state),
-      ( deepEqual(state.focused, state.path) ?
-        childMenu(state) : undefined ),
+      ( isFocused ? childMenu(state) : undefined ),
       heading({
         digest: state.digest,
-        focused: state.focused,
+        isFocused: isFocused,
         path: state.path.concat('heading'),
         emit: state.emit,
         data: state.data.heading}),
