@@ -6,7 +6,6 @@
 	user-select: none; }
 
 * {
-	font-size: 12pt;
 	line-height: 140%; }
 
 a {
@@ -53,6 +52,9 @@ a {
 .form .blank {
 	color: orange; }
 
+.form p {
+	margin: 0; }
+
 .heading {
 	font-weight: bold;
 	display: block;
@@ -97,6 +99,10 @@ a {
 .search input[type=text],
 .title input[type=text] {
 	flex: 1; }
+
+.child {
+	padding: 14px 7px 14px 14px;
+	border: 1px solid black; }
 
 .form .child {
 	position: relative;
@@ -167,7 +173,13 @@ footer {
 	display: block;
 	clear: both;
 	color: #777;
-	padding: 1ex 0 0 0;
 	&:before {
 		@include unselectable;
 		content: 'Fingerprint: '; } }
+
+section {
+	padding: 14px 0 14px 14px; }
+
+aside {
+	font-size: 75%;
+	color: #ccc; }

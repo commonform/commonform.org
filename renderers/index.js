@@ -7,6 +7,7 @@ var pick = require('object-pick')
 var titleInput = require('./title-input')
 
 function browser(state) {
+  state.root = true
   return h('div.browser', [
     mainMenu(state),
     blanks({

@@ -4,11 +4,13 @@ var addHeadingButton = require('./add-heading-button')
 var addWithinButton = require('./add-within-button')
 var deleteButton = require('./delete-button')
 var deleteHeadingButton = require('./delete-heading-button')
+var fingerprintLink = require('./fingerprint-link')
 var h = require('virtual-dom/h')
 
 function childMenu(state) {
   return h('div.childMenu',
-    [ deleteButton(state),
+    [ fingerprintLink({ digest: state.merkle.digest }),
+      deleteButton(state),
       ' ',
       ( state.data.hasOwnProperty('heading') ?
         deleteHeadingButton(state) :
@@ -18,10 +20,6 @@ function childMenu(state) {
       ' ',
       addBelowButton(state),
       ' ',
-      addWithinButton(state),
-      h('a.fingerprint',
-        { href: '/#' + state.merkle.digest,
-          target: '_blank' },
-        state.merkle.digest) ] ) }
+      addWithinButton(state) ] ) }
 
 module.exports = childMenu

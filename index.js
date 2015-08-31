@@ -21,7 +21,6 @@ var defaultTitle = 'Untitled Document'
 var state = {
   path: [ ],
   blanks: { },
-  focused: null,
   digest: '',
   title: defaultTitle,
   emit: bus.emit.bind(bus),
@@ -56,12 +55,11 @@ function updateHash() {
     else {
       history.pushState(null, null, '/#' + state.digest) } }) }
 
-var defaultForm = { form: { content: [ 'New form' ] } }
+var defaultForm = { content: [ 'New form' ] }
 
 bus
   .on('form', function(digest, form) {
     state.data = form
-    state.focused = [ 'content', 0 ]
     compute()
     loop.update(state)
     updateHash() })
@@ -89,7 +87,6 @@ bus
 
   .on('set', function(path, value) {
     keyarray.set(state.data, path, value)
-    state.focused = null
     compute()
     loop.update(state)
     updateHash() })
@@ -99,14 +96,12 @@ bus
     containing.splice(path[path.length - 1], 1)
     if (containing.length === 0) {
       containing.push(JSON.parse(JSON.stringify(defaultForm))) }
-    state.focused = null
     compute()
     loop.update(state)
     updateHash() })
 
   .on('delete', function(path) {
     keyarray.delete(state.data, path)
-    state.focused = null
     compute()
     loop.update(state)
     updateHash() })
@@ -116,18 +111,9 @@ bus
     var containing = keyarray.get(state.data, containingPath)
     var offset = path[path.length - 1]
     containing.splice(offset, 0, JSON.parse(JSON.stringify(defaultForm)))
-    state.focused = path
     compute()
     loop.update(state)
     updateHash() })
-
-  .on('focus', function(path) {
-    state.focused = path
-    loop.update(state) })
-
-  .on('unfocus', function(path) {
-    state.focused = null
-    loop.update(state) })
 
 loop = require('main-loop')(
   state,

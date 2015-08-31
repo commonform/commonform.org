@@ -29,7 +29,6 @@ function paragraph(state) {
               data: child,
               digest: state.digest,
               emit: state.emit,
-              focused: state.focused,
               path: state.path.concat(childPath) }) }),
       h('span.pilcrow', '¶') ]) }
 

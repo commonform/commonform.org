@@ -17,7 +17,6 @@ function series(state) {
         digest: state.digest,
         merkle: state.merkle.content[absoluteIndex],
         emit: state.emit,
-        focused: state.focused,
         path: childPath })
       return result }) }
 

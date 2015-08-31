@@ -11,7 +11,7 @@ var SOURCE_URLS = [ 'archaic', 'critique', 'lint' ]
 function annotation(state) {
   var data = state.data
   var source = data.source
-  return h('div.annotation', [
+  return h('p', [
     ( data.url ?
       h('a', { href: data.url }, data.message) :
       data.message ),
