@@ -7,10 +7,10 @@ function childButton(state) {
       title: 'Focus on this form',
       onclick: function(event) {
         event.preventDefault()
-          if (deepEqual(state.focused, state.path)) {
-            state.emit('unfocus') }
-          else {
-            state.emit('focus', state.path) } } },
+        if (deepEqual(state.focused, state.path)) {
+          state.emit('unfocus') }
+        else {
+          state.emit('focus', state.path) } } },
       '§') }
 
 module.exports = childButton
