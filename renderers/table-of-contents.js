@@ -6,16 +6,16 @@ function list(state) {
     Object.keys(state)
       .map(function(key) {
         var value = state[key]
-        return h('ol', [
-          ( ( 'heading' in value ) ?
-              h(
-                'a',
-                { href: '#',
-                  onclick: function(event) {
-                    event.preventDefault()
-                    scrollTo('digest', value.digest) } },
-                value.heading) :
-              undefined ),
+        return h('li', [
+            h(
+              'a',
+              { href: '#',
+                onclick: function(event) {
+                  event.preventDefault()
+                  scrollTo('digest', value.digest) } },
+              ( ( 'heading' in value ) ?
+                  value.heading :
+                  '(No heading)' )),
           list(value.content) ]) })) }
 
 function tableOfContents(state) {

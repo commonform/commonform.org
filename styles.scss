@@ -36,8 +36,16 @@
 	font-style: italic; }
 
 section {
-	padding: 0px 0 0px 2em; }
+	padding: 0 0 0 2em; }
+
+.commonform > section {
+	padding: 0; }
 
 aside {
 	font-size: 75%;
 	color: #777; }
+
+nav {
+	border: 1px solid black;
+	padding: 1em;
+}
