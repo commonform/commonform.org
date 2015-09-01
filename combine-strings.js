@@ -10,7 +10,9 @@ function combineStrings(form) {
         else {
           var last = combined[combined.length - 1]
           if (isString(element) && isString(last)) {
-            combined[combined.length - 1] = last + element } }
+            combined[combined.length - 1] = last + element }
+          else {
+            combined.push(element) } }
         return combined },
       [ ])
   return form }
