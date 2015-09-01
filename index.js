@@ -2,12 +2,13 @@ Function.prototype.bind = (
   Function.prototype.bind || require('function-bind') )
 
 var analyze = require('commonform-analyze')
+var combineStrings = require('./combine-strings')
 var critique = require('commonform-critique')
 var downloadForm = require('./download-form')
-var merkleize = require('commonform-merkleize')
 var isSHA256 = require('is-sha-256-hex-digest')
 var keyarray = require('keyarray')
 var lint = require('commonform-lint')
+var merkleize = require('commonform-merkleize')
 var persistedProperties = require('./persisted-properties')
 var requestAnimationFrame = require('raf')
 var treeify = require('commonform-treeify-annotations')
@@ -57,6 +58,7 @@ function updateHash() {
       history.pushState(null, null, '/#' + state.digest) } }) }
 
 var defaultForm = { form: { content: [ 'New form' ] } }
+var defaultParagraph = "New text"
 
 bus
   .on('form', function(digest, form) {
@@ -92,11 +94,20 @@ bus
     loop.update(state)
     updateHash() })
 
+  // Remove a content element from a content array.
   .on('remove', function(path) {
-    var containing = keyarray.get(state.data, path.slice(0, -1))
-    containing.splice(path[path.length - 1], 1)
-    if (containing.length === 0) {
-      containing.push(JSON.parse(JSON.stringify(defaultForm))) }
+    var containing = keyarray.get(state.data, path.slice(0, -2))
+    containing.content.splice(path[path.length - 1], 1)
+
+    // By deleting a content, we may end up with a content array that has
+    // contiguous strings. Common forms cannot have contiguous strings, so we
+    // need to combine them.
+    combineStrings(containing)
+
+    // We might also end up with an empty content array. If so, throw in some
+    // placehodler text.
+    if (containing.content.length === 0) {
+      containing.content.push(defaultParagraph) }
     compute()
     loop.update(state)
     updateHash() })
@@ -107,11 +118,20 @@ bus
     loop.update(state)
     updateHash() })
 
-  .on('insert', function(path) {
+  .on('insertForm', function(path) {
     var containingPath = path.slice(0, -1)
     var containing = keyarray.get(state.data, containingPath)
     var offset = path[path.length - 1]
     containing.splice(offset, 0, JSON.parse(JSON.stringify(defaultForm)))
+    compute()
+    loop.update(state)
+    updateHash() })
+
+  .on('insertParagraph', function(path) {
+    var containingPath = path.slice(0, -1)
+    var containing = keyarray.get(state.data, containingPath)
+    var offset = path[path.length - 1]
+    containing.splice(offset, 0, defaultParagraph)
     compute()
     loop.update(state)
     updateHash() })

@@ -5,7 +5,7 @@ function addAboveButton(state) {
   var path = state.path
   return h('button.addAbove',
     { onclick: function() {
-        emit('insert', path) } },
+        emit('insertForm', path) } },
     'Add § Above') }
 
 module.exports = addAboveButton

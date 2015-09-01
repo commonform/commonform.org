@@ -1,15 +1,16 @@
 var h = require('virtual-dom/h')
 
-function addWithinButton(state) {
+function addFormWithinButton(state) {
   var emit = state.emit
   var path = state.path
-  return h('button.addWithin',
-    { onclick: function() {
+  return h('button.addFormWithin',
+    { onclick: function(event) {
+        event.stopPropagation()
         var after = path
           .concat('form')
           .concat('content')
           .concat(state.data.form.content.length)
-        emit('insert', after) } },
+        emit('insertForm', after) } },
     'Add § Within') }
 
-module.exports = addWithinButton
+module.exports = addFormWithinButton
