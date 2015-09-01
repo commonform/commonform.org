@@ -1,4 +1,4 @@
-var get = require('keyarray-get')
+var get = require('keyarray').get
 
 function series(state) {
   return state.data.content
