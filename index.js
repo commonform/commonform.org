@@ -21,6 +21,7 @@ var defaultTitle = 'Untitled Document'
 var state = {
   path: [ ],
   blanks: { },
+  focused: null,
   digest: '',
   title: defaultTitle,
   emit: bus.emit.bind(bus),
@@ -55,7 +56,7 @@ function updateHash() {
     else {
       history.pushState(null, null, '/#' + state.digest) } }) }
 
-var defaultForm = { content: [ 'New form' ] }
+var defaultForm = { form: { content: [ 'New form' ] } }
 
 bus
   .on('form', function(digest, form) {
@@ -114,6 +115,14 @@ bus
     compute()
     loop.update(state)
     updateHash() })
+
+  .on('focus', function(path) {
+    state.focused = path
+    loop.update(state) })
+
+  .on('unfocus', function() {
+    state.focused = null
+    loop.update(state) })
 
 loop = require('main-loop')(
   state,

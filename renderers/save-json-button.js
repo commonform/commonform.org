@@ -14,6 +14,7 @@ function saveJSONButton(state) {
     { href: '/#',
       onclick: function(event) {
         event.preventDefault()
+        event.stopPropagation()
         var title = state.title
         filesaver(
           jsonBlob(pick(state, persistedProperties)),

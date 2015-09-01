@@ -15,6 +15,7 @@ function blankEntry(state) {
               { href: '#',
                 onclick: function(event) {
                   event.preventDefault()
+                  event.stopPropagation()
                   scrollTo('insert', blank, index) } },
               'Here') })) ]) }
 

@@ -5,9 +5,10 @@ var h = require('virtual-dom/h')
 
 function saveDOCXButton(state) {
   return h('button.saveDOCX',
-    { href: '/#',
+    { href: '#',
       onclick: function(event) {
         event.preventDefault()
+        event.stopPropagation()
         var title = state.title
         var form = state.data
         var blanks = state.blanks

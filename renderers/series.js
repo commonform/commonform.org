@@ -13,6 +13,7 @@ function series(state) {
         annotationsTree: annotationsTree,
         data: child,
         digest: state.digest,
+        focused: state.focused,
         merkle: state.merkle.content[absoluteIndex],
         emit: state.emit,
         path: childPath })

@@ -7,6 +7,7 @@ function addBelowButton(state) {
     { onclick: function() {
         var after = path.slice(0, -1)
           .concat(path[path.length - 1] + 1)
+        console.log(after)
         emit('insert', after) } },
     'Add § Below') }
 

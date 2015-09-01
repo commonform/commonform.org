@@ -8,6 +8,7 @@ function blank(state) {
       attributes: { 'data-insert': blank },
       onclick: function(event) {
         event.preventDefault()
+        event.stopPropagation()
         scrollTo('blank', blank) } },
     blank) }
 

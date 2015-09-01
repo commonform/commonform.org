@@ -38,6 +38,9 @@
 section {
 	padding: 0 0 0 2em; }
 
+.focused {
+	background: rgb(250,245,245); }
+
 .commonform > section {
 	padding: 0; }
 
@@ -48,4 +51,21 @@ aside {
 nav {
 	border: 1px solid black;
 	padding: 1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin-top: 0;
+}
+
+.digest {
+	display: block;
+	width: 100%;
+	font-size: 75%;
+	color: #777;
+}
+
+.buttons {
+	display: block;
+	width: 100%;
+	padding: 0.5em 0;
 }

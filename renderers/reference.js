@@ -7,6 +7,7 @@ function reference(state) {
     { href: '#',
       onclick: function(event) {
         event.preventDefault()
+        event.stopPropagation()
         scrollTo('heading', heading) } },
     heading) }
 

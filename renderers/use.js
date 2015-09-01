@@ -7,6 +7,7 @@ function use(state) {
     { href: '#',
       onclick: function(event) {
         event.preventDefault()
+        event.stopPropagation()
         scrollTo('definition', term) } },
     term) }
 

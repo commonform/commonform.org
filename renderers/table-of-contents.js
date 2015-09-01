@@ -12,6 +12,7 @@ function list(state) {
               { href: '#',
                 onclick: function(event) {
                   event.preventDefault()
+                  event.stopPropagation()
                   scrollTo('digest', value.digest) } },
               ( ( 'heading' in value ) ?
                   value.heading :
