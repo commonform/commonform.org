@@ -5,7 +5,6 @@
     "clone": "^1.0.2",
     "commonform": "^1.0.1",
     "commonform-analyze": "^0.4.1",
-    "commonform-annotations": "^1.0.0",
     "commonform-critique": "~0.6.0",
     "commonform-docx": "~0.7.2",
     "commonform-group-series": "^0.5.0",
@@ -21,7 +20,6 @@
     "main-loop": "~3.1.0",
     "object-pick": "^0.1.1",
     "raf": "^3.1.0",
-    "setp": "~1.0.0",
     "virtual-dom": "~2.1.1",
     "xhr": "^2.0.3"
   },

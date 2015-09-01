@@ -12,7 +12,7 @@ var isSHA256 = require('is-sha-256-hex-digest')
 var keyarray = require('keyarray')
 var lint = require('commonform-lint')
 var merkleize = require('commonform-merkleize')
-var persistedProperties = require('./persisted-properties')
+var persistedProperties = require('./persisted-properties.json')
 var requestAnimationFrame = require('raf')
 var treeify = require('commonform-treeify-annotations')
 
@@ -240,7 +240,7 @@ if (
 
 // Otherwise, load a default form.
 else {
-  initialDigest = require('./initial') }
+  initialDigest = require('./initial.json') }
 
 // Download from the public library.
 downloadForm(initialDigest, function(error, response) {
