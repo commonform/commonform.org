@@ -1,6 +1,9 @@
+// Current versions of PhantomJS, the headless web browser used for automated
+// testing, require a shim for Function.prototype.bind.
 Function.prototype.bind = (
   Function.prototype.bind || require('function-bind') )
 
+// Lots of imports.
 var analyze = require('commonform-analyze')
 var combineStrings = require('./combine-strings')
 var critique = require('commonform-critique')
@@ -13,42 +16,92 @@ var persistedProperties = require('./persisted-properties')
 var requestAnimationFrame = require('raf')
 var treeify = require('commonform-treeify-annotations')
 
+// Changes to application state are handled via syntheic events. This is the
+// global event bus.
 var bus = new (require('events').EventEmitter)
 
 var loop
 
+// Defualt content of various kinds, used as placeholder values.
 var defaultTitle = 'Untitled Document'
+var defaultForm = { form: { content: [ 'New form' ] } }
+var defaultParagraph = 'New text'
 
+// The application global's state. This is modified only on initialization and
+// via event handlers on the global event bus.
 var state = {
+
+  // An array of string and number keys denoting the current position in the
+  // tree of forms. This property is expanded as renderers descend down the
+  // tree.
   path: [ ],
+
+  // Fill-in-the-blank values.
   blanks: { },
+
+  // The path of the currently focused form, if any.
   focused: null,
+
+  // The root digest of the current form. Initially, this is empty, but it will
+  // be set immediately when a form is loaded from the public library.
   digest: '',
+
+  // The title of this project. Passed to to the .docx and other renderers on
+  // export.
   title: defaultTitle,
+
+  // The global event bus' emit function. Passing this down to renderers gives
+  // them a way to emit events that alter the global state.
   emit: bus.emit.bind(bus),
+
+  // The property that holds the tree of forms. This is just a default value to
+  // render until we load the introductory message from the public library.
   data: { content: [ 'No content loaded' ] } }
 
+// compute() does all of the analysis required whenever a change is made to the
+// global state.
 function compute() {
+  // Create a tree of objects of the same shape as state.data that contains the
+  // common form digests of each form.
   state.merkle = merkleize(state.data)
+
+  // The root digest of the form tree.
   state.digest = state.merkle.digest
+
+  // Create a tree of objects of the same shape as state.data that contains
+  // lists of annotations at the same place in the tree as the forms they
+  // pertain to. treeify() takes a list of of annotations.
   state.annotationsTree = treeify(
+
+    // Run commonform-critique on the form.
     critique(state.data)
+
+      // Run commonform-lint as well.
       .concat(lint(state.data))
+
+      // Annotation paths are specific to individual content array elements,
+      // but are displayed by containing forms, which are two keys up---like
+      // ['content', X]---from the their content elements. Go ahead and slice
+      // off the last two elements of each annotation's key array so its key is
+      // the key of the containing form.
       .map(function(annotation) {
-        // Annotation paths are specific to individual content array elements,
-        // but are displayed by containing forms, which are two keys up the key
-        // arrays from their content elements.
         annotation.path = annotation.path.slice(0, -2)
         return annotation }))
+
+  // Run commonform-analyze on the form.
   state.analysis = analyze(state.data) }
 
+// Since we've set an initial state, go ahead and run the computations.
 compute()
 
 var initialDigest
 var additionalHash
 
+// Update window.location.hash with a new root digest.
 function updateHash() {
-  // main-loop uses raf. This should ensure our callback is invoked
+
+  // main-loop, which handles rerendering our interface with new global state,
+  // uses requestAnimationFrame. This should ensure our callback is invoked
   // after the rendering pass.
   requestAnimationFrame(function() {
     if (additionalHash) {
@@ -57,16 +110,22 @@ function updateHash() {
     else {
       history.pushState(null, null, '/#' + state.digest) } }) }
 
-var defaultForm = { form: { content: [ 'New form' ] } }
-var defaultParagraph = "New text"
-
+// Event bus handlers
 bus
+
+  // When a new form is loaded, say from the public library.
   .on('form', function(digest, form) {
     state.data = form
     compute()
+
+    // Have main-loop rerender the interface.
     loop.update(state)
+
+    // Update window.location.hash.
     updateHash() })
 
+  // When an entirely new state object is loaded, say when the user loads a
+  // saved JSON project.
   .on('state', function(newState) {
     persistedProperties.forEach(function(key) {
       state[key] = newState[key] })
@@ -74,6 +133,7 @@ bus
     loop.update(state)
     updateHash() })
 
+  // When the value of a fill-in-the-blank changes.
   .on('blank', function(blank, value) {
     if (!value || value.length === 0) {
       delete state.blanks[blank] }
@@ -81,6 +141,7 @@ bus
       state.blanks[blank] = value }
     loop.update(state) })
 
+  // When the title of the project changes.
   .on('title', function(newTitle) {
     if (!newTitle || newTitle.length === 0) {
       state.title = defaultTitle }
@@ -88,6 +149,7 @@ bus
       state.title = newTitle }
     loop.update(state) })
 
+  // Some direct state mutation by key array.
   .on('set', function(path, value) {
     keyarray.set(state.data, path, value)
     compute()
@@ -112,13 +174,17 @@ bus
     loop.update(state)
     updateHash() })
 
+  // Directly delete some part of the global state by key array.
   .on('delete', function(path) {
     keyarray.delete(state.data, path)
     compute()
     loop.update(state)
     updateHash() })
 
+  // Insert a child form somewhere in the tree.
   .on('insertForm', function(path) {
+
+    // Splice it in.
     var containingPath = path.slice(0, -1)
     var containing = keyarray.get(state.data, containingPath)
     var offset = path[path.length - 1]
@@ -127,6 +193,7 @@ bus
     loop.update(state)
     updateHash() })
 
+  // Insert a new bit of text somewhere in the tree.
   .on('insertParagraph', function(path) {
     var containingPath = path.slice(0, -1)
     var containing = keyarray.get(state.data, containingPath)
@@ -136,33 +203,46 @@ bus
     loop.update(state)
     updateHash() })
 
+  // Focus a particular form, by path.
   .on('focus', function(path) {
     state.focused = path
     loop.update(state) })
 
-  .on('unfocus', function() {
-    state.focused = null
-    loop.update(state) })
-
+// The main application loop. main-loop handles rerendering on calls to
+// loop.update(state).
 loop = require('main-loop')(
+
+  // Use the global state object.
   state,
+
+  // Use the root renderer function
   require('./renderers'),
+
+  // The JavaScript virtual DOM implementation.
   require('virtual-dom'))
 
+// Hook main-loop's rendering up to the DOM.
 document
+
+  // The element to shadow and rerender.
   .querySelector('.container')
   .appendChild(loop.target)
 
 var windowHash = window.location.hash
 
+// On load, check if we have a digest in window.location.hash. If we do, load
+// it from the public library.
 if (
   windowHash && windowHash.length >= 65 &&
   isSHA256(windowHash.slice(1, 65)) )
 { initialDigest = windowHash.slice(1, 65)
   additionalHash = windowHash.slice(65) }
+
+// Otherwise, load a default form.
 else {
   initialDigest = require('./initial') }
 
+// Download from the public library.
 downloadForm(initialDigest, function(error, response) {
   if (error) {
     alert(error.message) }
