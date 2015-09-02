@@ -9,6 +9,7 @@ var combineStrings = require('./combine-strings')
 var critique = require('commonform-critique')
 var downloadForm = require('./download-form')
 var isSHA256 = require('is-sha-256-hex-digest')
+var jsonClone = require('./json-clone')
 var keyarray = require('keyarray')
 var lint = require('commonform-lint')
 var merkleize = require('commonform-merkleize')
@@ -169,7 +170,7 @@ bus
     // We might also end up with an empty content array. If so, throw in a
     // placehodler form.
     if (containing.content.length === 0) {
-      containing.content.push(JSON.stringify(JSON.parse(defaultForm)))}
+      containing.content.push(jsonClone(defaultForm))}
     compute()
     loop.update(state)
     updateHash() })
@@ -188,7 +189,7 @@ bus
     var containingPath = path.slice(0, -1)
     var containing = keyarray.get(state.data, containingPath)
     var offset = path[path.length - 1]
-    containing.splice(offset, 0, JSON.parse(JSON.stringify(defaultForm)))
+    containing.splice(offset, 0, jsonClone(defaultForm))
     compute()
     loop.update(state)
     updateHash() })
