@@ -166,10 +166,10 @@ bus
     // need to combine them.
     combineStrings(containing)
 
-    // We might also end up with an empty content array. If so, throw in some
-    // placehodler text.
+    // We might also end up with an empty content array. If so, throw in a
+    // placehodler form.
     if (containing.content.length === 0) {
-      containing.content.push(defaultParagraph) }
+      containing.content.push(JSON.stringify(JSON.parse(defaultForm)))}
     compute()
     loop.update(state)
     updateHash() })
