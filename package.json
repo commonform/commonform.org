@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build-css": "node-sass styles.scss public/styles.css",
-    "build-javascript": "browserify -g uglifyify index.js > public/browser.js",
+    "build-javascript": "browserify -t uglifyify index.js > public/browser.js",
     "build": "npm run build-javascript && npm run build-css",
     "start": "ecstatic -p 8000 public",
     "watch": "watchify index.js -o public/browser.js -dv",
