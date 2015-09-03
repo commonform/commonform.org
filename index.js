@@ -12,6 +12,7 @@ var isSHA256 = require('is-sha-256-hex-digest')
 var jsonClone = require('./json-clone')
 var keyarray = require('keyarray')
 var lint = require('commonform-lint')
+var lru = require('lru-cache')
 var merkleize = require('commonform-merkleize')
 var persistedProperties = require('./persisted-properties.json')
 var requestAnimationFrame = require('raf')
@@ -59,6 +60,14 @@ var state = {
   // render until we load the introductory message from the public library.
   data: { content: [ 'No content loaded' ] } }
 
+// A size-bounded cache for past states of the form. Used to enable undo using
+// the pushState.
+var formCache = lru({
+  max: 200,
+  length: function(item) {
+    return JSON.stringify(item).length },
+  maxAge: Infinity })
+
 // compute() does all of the analysis required whenever a change is made to the
 // global state.
 function compute() {
@@ -90,7 +99,10 @@ function compute() {
         return annotation }))
 
   // Run commonform-analyze on the form.
-  state.analysis = analyze(state.data) }
+  state.analysis = analyze(state.data)
+
+  // Cache the form
+  formCache.set(state.digest, state.data) }
 
 // Since we've set an initial state, go ahead and run the computations.
 compute()
