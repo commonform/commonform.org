@@ -131,7 +131,7 @@ function cacheForm(fromHistory) {
       history.pushState(
         { digest: state.digest },
         null,
-        '/form/' + state.digest) } }) }
+        ( forms + state.digest )) } }) }
 
 // Event bus handlers
 bus
@@ -253,12 +253,16 @@ document
 
 var path = window.location.pathname
 
+var forms = '/forms/'
+var formsLength = forms.length
+var digestLength = 64
+
 // On load, check if we have a digest in window.location.hash. If we do, load
 // it from the public library.
 if (
-  path && ( path.length === ( 64 + 6 ) ) &&
-  isSHA256(path.slice(6, ( 64 + 6 ))) )
-{ initialDigest = path.slice(6, ( 64 + 6 )) }
+  path && ( path.length === ( digestLength + formsLength ) ) &&
+  isSHA256(path.slice(formsLength, ( digestLength + formsLength ))) )
+{ initialDigest = path.slice(formsLength, ( digestLength + formsLength )) }
 
 // Otherwise, load a default form.
 else {
