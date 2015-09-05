@@ -8,7 +8,7 @@ function heading(state) {
       ( 'span.h' + ( state.depth + 1 ) ) )
   return h(
     name,
-    { id: ( 'heading' + text ) },
+    { id: ( 'heading:' + text ) },
     text) }
 
 module.exports = heading
