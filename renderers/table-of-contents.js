@@ -1,5 +1,4 @@
 var h = require('virtual-dom/h')
-var scrollTo = require('../scroll-to')
 
 function list(state) {
   return h('ol',

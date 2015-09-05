@@ -8,6 +8,7 @@ var h = require('virtual-dom/h')
 var heading = require('./heading')
 var menu = require('./menu')
 var paragraph = require('./paragraph')
+var pathID = require('../path-id')
 var pick = require('object-pick')
 var series = require('./series')
 
@@ -24,7 +25,8 @@ function form(state) {
   var offset = 0
   return h(
     'section',
-    { className: classnames({
+    { id: ( 'path:' + pathID(state.path) ),
+      className: classnames({
         conspicuous: ( 'conspicuous' in form ),
         focused: isFocused }),
       onclick: function(event) {

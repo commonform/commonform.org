@@ -18,7 +18,7 @@ function blanks(state) {
               .sort()
               .map(function(blank) {
                 return blankEntryRow({
-                  insertions: state.analysis[blank].length,
+                  insertions: state.analysis[blank],
                   digest: state.digest,
                   blank: blank,
                   emit: state.emit,

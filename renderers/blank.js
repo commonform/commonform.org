@@ -1,15 +1,11 @@
 var h = require('virtual-dom/h')
-var scrollTo = require('../scroll-to')
+var pathID = require('../path-id')
 
 function blank(state) {
   var blank = state.data.blank
   return h('a.blank',
-    { href: '#',
-      attributes: { 'data-insert': blank },
-      onclick: function(event) {
-        event.preventDefault()
-        event.stopPropagation()
-        scrollTo('blank', blank) } },
+    { id: ( 'path:' + pathID(state.path) ),
+      href: ( '#blank:' + blank ) },
     blank) }
 
 module.exports = blank
