@@ -62,11 +62,7 @@ var state = {
 
 // A size-bounded cache for past states of the form. Used to enable undo using
 // the pushState.
-var formCache = lru({
-  max: 64 * 100,
-  length: function() {
-    return 64 },
-  maxAge: Infinity })
+var formCache = lru({ max: 100, maxAge: Infinity })
 
 window.addEventListener('popstate', function(event) {
   if (event.state) {
