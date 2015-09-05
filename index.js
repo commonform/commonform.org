@@ -73,7 +73,7 @@ window.addEventListener('popstate', function(event) {
     var digest = event.state.digest
     var cached = formCache.get(digest)
     if (cached) {
-      bus.emit('form', digest, cached) }
+      bus.emit('form', digest, cached, true) }
     else {
       alert('Could not load') } } })
 
@@ -117,7 +117,7 @@ compute()
 var initialDigest
 
 // Update window.location.hash with a new root digest.
-function cacheForm() {
+function cacheForm(fromHistory) {
 
   // main-loop, which handles rerendering our interface with new global state,
   // uses requestAnimationFrame. This should ensure our callback is invoked
@@ -128,16 +128,17 @@ function cacheForm() {
     formCache.set(state.merkle.digest, jsonClone(state.data))
 
     // Include the form digest in the push state.
-    history.pushState(
-      { digest: state.digest },
-      null,
-      '/form/' + state.digest) }) }
+    if (!fromHistory) {
+      history.pushState(
+        { digest: state.digest },
+        null,
+        '/form/' + state.digest) } }) }
 
 // Event bus handlers
 bus
 
   // When a new form is loaded, say from the public library.
-  .on('form', function(digest, form) {
+  .on('form', function(digest, form, fromHistory) {
     state.data = form
     compute()
 
@@ -145,7 +146,7 @@ bus
     loop.update(state)
 
     // Update window.location.hash.
-    cacheForm() })
+    cacheForm(fromHistory) })
 
   // When an entirely new state object is loaded, say when the user loads a
   // saved JSON project.
