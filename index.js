@@ -75,8 +75,11 @@ window.addEventListener('popstate', function(event) {
     if (cached) {
       bus.emit('form', digest, cached, true) }
     else {
-      alert('Could not load') } } })
-
+      downloadForm(digest, function(error, response) {
+        if (error) {
+          alert('Could not load') }
+        else {
+          bus.emit(digest, response.form, true) } }) } } })
 
 // compute() does all of the analysis required whenever a change is made to the
 // global state.
