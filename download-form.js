@@ -7,11 +7,11 @@ function downloadForm(digest, callback) {
       if (error) {
         callback(error) }
       else {
-        var response
+        var jsonResponse
         try {
-          response = JSON.parse(body) }
+          jsonResponse = JSON.parse(body) }
         catch (e) {
           return callback(e) }
-        callback(null, response) } }) }
+        callback(null, jsonResponse) } }) }
 
 module.exports = downloadForm
