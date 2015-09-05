@@ -12,7 +12,9 @@ var isSHA256 = require('is-sha-256-hex-digest')
 var jsonClone = require('./json-clone')
 var keyarray = require('keyarray')
 var lint = require('commonform-lint')
-var lru = require('lru-cache')
+var Cache = require('level-lru-cache')
+var levelup = require('levelup')
+var leveljs = require('level-js')
 var merkleize = require('commonform-merkleize')
 var persistedProperties = require('./persisted-properties.json')
 var requestAnimationFrame = require('raf')
@@ -62,20 +64,21 @@ var state = {
 
 // A size-bounded cache for past states of the form. Used to enable undo using
 // the pushState.
-var formCache = lru({ max: 100, maxAge: Infinity })
+var level = levelup('commonform', { db: leveljs })
+var formCache = new Cache(level, 100)
 
 window.addEventListener('popstate', function(event) {
   if (event.state) {
     var digest = event.state.digest
-    var cached = formCache.get(digest)
-    if (cached) {
-      bus.emit('form', digest, cached, true) }
-    else {
-      downloadForm(digest, function(error, response) {
-        if (error) {
-          alert('Could not load') }
-        else {
-          bus.emit(digest, response.form, true) } }) } } })
+    formCache.get(digest, function(error, cached) {
+      if (cached) {
+        bus.emit('form', digest, JSON.parse(cached), true) }
+      else {
+        downloadForm(digest, function(error, response) {
+          if (error) {
+            alert('Could not load') }
+          else {
+            bus.emit(digest, response.form, true) } }) } }) } })
 
 // compute() does all of the analysis required whenever a change is made to the
 // global state.
@@ -124,14 +127,16 @@ function cacheForm(fromHistory) {
   requestAnimationFrame(function() {
 
     // Cache the form
-    formCache.set(state.merkle.digest, jsonClone(state.data))
-
-    // Include the form digest in the push state.
-    if (!fromHistory) {
-      history.pushState(
-        { digest: state.digest },
-        null,
-        ( forms + state.digest )) } }) }
+    formCache.put(
+      state.merkle.digest,
+      JSON.stringify(state.data),
+      function() {
+        // Include the form digest in the push state.
+        if (!fromHistory) {
+          history.pushState(
+            { digest: state.digest },
+            null,
+            ( forms + state.digest )) } }) }) }
 
 // Event bus handlers
 bus
