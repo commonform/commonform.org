@@ -63,10 +63,20 @@ var state = {
 // A size-bounded cache for past states of the form. Used to enable undo using
 // the pushState.
 var formCache = lru({
-  max: 200,
-  length: function(item) {
-    return JSON.stringify(item).length },
+  max: 64 * 100,
+  length: function() {
+    return 64 },
   maxAge: Infinity })
+
+window.addEventListener('popstate', function(event) {
+  if (event.state) {
+    var digest = event.state.digest
+    var cached = formCache.get(digest)
+    if (cached) {
+      bus.emit('form', digest, cached) }
+    else {
+      alert('Could not load') } } })
+
 
 // compute() does all of the analysis required whenever a change is made to the
 // global state.
@@ -99,29 +109,29 @@ function compute() {
         return annotation }))
 
   // Run commonform-analyze on the form.
-  state.analysis = analyze(state.data)
-
-  // Cache the form
-  formCache.set(state.digest, state.data) }
+  state.analysis = analyze(state.data) }
 
 // Since we've set an initial state, go ahead and run the computations.
 compute()
 
 var initialDigest
-var additionalHash
 
 // Update window.location.hash with a new root digest.
-function updateHash() {
+function cacheForm() {
 
   // main-loop, which handles rerendering our interface with new global state,
   // uses requestAnimationFrame. This should ensure our callback is invoked
   // after the rendering pass.
   requestAnimationFrame(function() {
-    if (additionalHash) {
-      window.location.hash = '/' + state.digest + additionalHash
-      additionalHash = undefined }
-    else {
-      history.pushState(null, null, '/#' + state.digest) } }) }
+
+    // Cache the form
+    formCache.set(state.merkle.digest, jsonClone(state.data))
+
+    // Include the form digest in the push state.
+    history.pushState(
+      { digest: state.digest },
+      null,
+      '/form/' + state.digest) }) }
 
 // Event bus handlers
 bus
@@ -135,7 +145,7 @@ bus
     loop.update(state)
 
     // Update window.location.hash.
-    updateHash() })
+    cacheForm() })
 
   // When an entirely new state object is loaded, say when the user loads a
   // saved JSON project.
@@ -144,7 +154,7 @@ bus
       state[key] = newState[key] })
     compute()
     loop.update(state)
-    updateHash() })
+    cacheForm() })
 
   // When the value of a fill-in-the-blank changes.
   .on('blank', function(blank, value) {
@@ -167,7 +177,7 @@ bus
     keyarray.set(state.data, path, value)
     compute()
     loop.update(state)
-    updateHash() })
+    cacheForm() })
 
   // Remove a content element from a content array.
   .on('remove', function(path) {
@@ -185,14 +195,14 @@ bus
       containing.content.push(jsonClone(defaultForm))}
     compute()
     loop.update(state)
-    updateHash() })
+    cacheForm() })
 
   // Directly delete some part of the global state by key array.
   .on('delete', function(path) {
     keyarray.delete(state.data, path)
     compute()
     loop.update(state)
-    updateHash() })
+    cacheForm() })
 
   // Insert a child form somewhere in the tree.
   .on('insertForm', function(path) {
@@ -204,7 +214,7 @@ bus
     containing.splice(offset, 0, jsonClone(defaultForm))
     compute()
     loop.update(state)
-    updateHash() })
+    cacheForm() })
 
   // Insert a new bit of text somewhere in the tree.
   .on('insertParagraph', function(path) {
@@ -214,7 +224,7 @@ bus
     containing.splice(offset, 0, defaultParagraph)
     compute()
     loop.update(state)
-    updateHash() })
+    cacheForm() })
 
   // Focus a particular form, by path.
   .on('focus', function(path) {
@@ -241,15 +251,14 @@ document
   .querySelector('.container')
   .appendChild(loop.target)
 
-var windowHash = window.location.hash
+var path = window.location.pathname
 
 // On load, check if we have a digest in window.location.hash. If we do, load
 // it from the public library.
 if (
-  windowHash && windowHash.length >= 65 &&
-  isSHA256(windowHash.slice(1, 65)) )
-{ initialDigest = windowHash.slice(1, 65)
-  additionalHash = windowHash.slice(65) }
+  path && ( path.length === ( 64 + 6 ) ) &&
+  isSHA256(path.slice(6, ( 64 + 6 ))) )
+{ initialDigest = path.slice(6, ( 64 + 6 )) }
 
 // Otherwise, load a default form.
 else {
