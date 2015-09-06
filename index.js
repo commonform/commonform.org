@@ -17,7 +17,7 @@ var leveljs = require('level-js')
 var levelup = require('levelup')
 var lint = require('commonform-lint')
 var merkleize = require('commonform-merkleize')
-var persistedProperties = require('./persisted-properties.json')
+var persistedProperties = require('./utility/persisted-properties.json')
 var resizeTextarea = require('./utility/resize-textarea')
 var treeify = require('commonform-treeify-annotations')
 

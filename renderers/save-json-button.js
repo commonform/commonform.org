@@ -2,7 +2,7 @@ var fileName = require('../utility/file-name')
 var filesaver = require('filesaver.js').saveAs
 var h = require('virtual-dom/h')
 var pick = require('object-pick')
-var persistedProperties = require('../persisted-properties.json')
+var persistedProperties = require('../utility/persisted-properties.json')
 
 function jsonBlob(object) {
   return new Blob(
