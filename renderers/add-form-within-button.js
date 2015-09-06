@@ -12,6 +12,6 @@ function addFormWithinButton(state) {
           .concat('content')
           .concat(data.form.content.length)
         emit('insertForm', after) } },
-    'Add § Within') }
+    'Add Sub-§') }
 
 module.exports = addFormWithinButton

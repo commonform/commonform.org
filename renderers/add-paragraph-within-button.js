@@ -17,6 +17,6 @@ function addParagraphWithinButton(state) {
             .concat('content')
             .concat(data.form.content.length)
           emit('insertParagraph', after) } },
-      'Add ¶ Within') } }
+      'Add Sub-¶') } }
 
 module.exports = addParagraphWithinButton

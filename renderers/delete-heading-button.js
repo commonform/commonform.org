@@ -7,6 +7,6 @@ function deleteHeadingButton(state) {
     { onclick: function() {
         var headingPath = path.concat('heading')
         emit('delete', headingPath) } },
-    'Delete Heading') }
+    'No Heading') }
 
 module.exports = deleteHeadingButton

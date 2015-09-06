@@ -6,6 +6,6 @@ function deleteButton(state) {
   return h('button.delete',
     { onclick: function() {
         emit('remove', path) } },
-    'Delete this §') }
+    'Delete') }
 
 module.exports = deleteButton
