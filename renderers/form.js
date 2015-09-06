@@ -1,6 +1,6 @@
 var annotationsList = require('./annotations-list')
 var classnames = require('classnames')
-var clone = require('clone')
+var jsonClone = require('../utility/json-clone')
 var deepEqual = require('deep-equal')
 var get = require('keyarray').get
 var group = require('commonform-group-series')
@@ -28,7 +28,7 @@ function form(state) {
   var hasHeading = ( !root && ( 'heading' in data ) )
   var formObject = ( root ? data : data.form )
   var isFocused = deepEqual(focused, path)
-  var groups = group(clone(formObject))
+  var groups = group(jsonClone(formObject))
   var offset = 0
   return h(
     'section',
