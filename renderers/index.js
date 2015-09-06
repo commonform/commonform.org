@@ -24,7 +24,7 @@ function browser(state) {
     form({
       data: state.data,
       emit: state.emit,
-      forcused: state.focused,
+      focused: state.focused,
       path: state.path,
       derived: {
         annotations: state.derived.annotations,
