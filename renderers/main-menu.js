@@ -9,14 +9,14 @@ function mainMenu(state) {
   var data = state.data
   var emit = state.emit
   var title = state.title
-  var persistedState = {
+  var saveState = {
     blanks: blanks,
     title: title,
     data: data }
   return h('menu', [
     shareButton({ form: data }), ' ',
-    saveDOCXButton(persistedState), ' ',
-    saveJSONButton(persistedState), ' ',
+    saveDOCXButton(saveState), ' ',
+    saveJSONButton(saveState), ' ',
     openJSONButton({
       blanks: blanks,
       data: data,

@@ -17,7 +17,6 @@ var leveljs = require('level-js')
 var levelup = require('levelup')
 var lint = require('commonform-lint')
 var merkleize = require('commonform-merkleize')
-var persistedProperties = require('./utility/persisted-properties.json')
 var resizeTextarea = require('./utility/resize-textarea')
 var treeify = require('commonform-treeify-annotations')
 
@@ -166,8 +165,9 @@ handle('form', function(digest, form, fromHistory) {
 // When an entirely new state object is loaded, say when the user loads a
 // saved JSON project.
 handle('state', function(newState) {
-  persistedProperties.forEach(function(key) {
-    state[key] = newState[key] })
+  Object.keys(newState)
+    .forEach(function(key) {
+      state[key] = newState[key] })
   compute()
   updateLoop(state)
   cacheForm() })
