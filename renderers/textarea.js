@@ -12,7 +12,10 @@ function textarea(state) {
   var length = state.data.content.length
   return h('textarea',
     { value: markup.stringify(state.data),
-      onkeydown: resizeTarget,
+      onkeydown: function(event) {
+        resizeTarget(event)
+        if (event.keyCode === 13) {
+          event.target.blur() } },
       onpaste: resizeTarget,
       onchange: function(event) {
         resizeTarget(event)
