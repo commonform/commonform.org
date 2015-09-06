@@ -4,7 +4,8 @@ var pathID = require('../path-id')
 function blank(state) {
   var blank = state.data.blank
   return h('a.blank',
-    { id: ( 'path:' + pathID(state.path) ),
+    { title: ( 'Jump to fill-in-the-blank "' + blank + '"' ),
+      id: ( 'path:' + pathID(state.path) ),
       href: ( '#blank:' + blank ) },
     blank) }
 
