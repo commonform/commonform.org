@@ -2,34 +2,49 @@
 	margin: 0 auto;
 	max-width: 960px; }
 
+$fadedText: #bbb;
+
 .commonform {
 	line-height: 140%;
 	padding: 1em;
-	dfn {
-		color: blue;
-		&:before {
-			content: "\"\""; }
-		&:after {
-			content: "\"\""; } }
-	.use {
-		color: green;
-		&:before {
-			content: "<"; }
-
-		&:after {
-			content: ">"; } }
-	.reference {
-		color: red;
-		&:before {
-			content: "{"; }
-		&:after {
-			content: "}"; }
-	.blank {
-		color: orange; }
-		&:before {
-			content: "["; }
-		&:after {
-			content: "]"; } } }
+	p {
+		dfn {
+			font-style: normal;
+			font-weight: bold;
+			&:before {
+				color: $fadedText;
+				content: "\"\""; }
+			&:after {
+				color: $fadedText;
+				content: "\"\""; } }
+		.use {
+			text-decoration: none;
+			color: black;
+			&:before {
+				color: $fadedText;
+				content: "<"; }
+			&:after {
+				color: $fadedText;
+				content: ">"; } }
+		.reference {
+			color: black;
+			text-decoration: underline;
+			&:before {
+				color: $fadedText;
+				content: "{"; }
+			&:after {
+				color: $fadedText;
+				content: "}"; } }
+		.blank {
+			color: black;
+			text-decoration: none;
+			background: yellow;
+			&:before {
+				color: $fadedText;
+				content: "["; }
+			&:after {
+				color: $fadedText;
+				content: "]"; } } } }
 
 .conspicuous > p > span {
 	font-weight: bold;

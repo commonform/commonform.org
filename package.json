@@ -28,7 +28,7 @@
     "build-css": "node-sass styles.scss public/styles.css",
     "build-javascript": "browserify -t uglifyify index.js | uglifyjs -c > public/browser.js",
     "build": "npm run build-javascript && npm run build-css",
-    "start": "ecstatic -p 8000 public",
+    "start": "ecstatic -p 8000 --cache 0 public",
     "watch": "watchify index.js -o public/browser.js -dv",
     "phantom": "phantomjs --local-to-remote-url-access=yes --ignore-ssl-errors=yes --ssl-protocol=any --webdriver=4444",
     "test": "tape test/*.test.js"
