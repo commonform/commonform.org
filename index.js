@@ -313,7 +313,7 @@ if (
 
 // Otherwise, load a default form.
 else {
-  initialDigest = require('./initial.json') }
+  initialDigest = require('./initial-form.json') }
 
 // Download from the public library.
 downloadForm(initialDigest, function(error, response) {
