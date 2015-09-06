@@ -1,4 +1,4 @@
-var fileName = require('../file-name')
+var fileName = require('../utility/file-name')
 var filesaver = require('filesaver.js').saveAs
 var h = require('virtual-dom/h')
 var pick = require('object-pick')

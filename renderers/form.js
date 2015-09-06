@@ -8,7 +8,7 @@ var h = require('virtual-dom/h')
 var heading = require('./heading')
 var menu = require('./menu')
 var paragraph = require('./paragraph')
-var pathID = require('../path-id')
+var pathID = require('../utility/path-id')
 var pick = require('object-pick')
 var series = require('./series')
 

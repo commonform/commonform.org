@@ -1,6 +1,6 @@
 var h  = require('virtual-dom/h')
 var markup = require('commonform-markup')
-var resizeTextarea = require('../resize-textarea')
+var resizeTextarea = require('../utility/resize-textarea')
 
 function resizeTarget(event) {
   // Delay a tiny amount so the new character, if any, will be added to the

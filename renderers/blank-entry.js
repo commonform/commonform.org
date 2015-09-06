@@ -1,6 +1,6 @@
 var blankInput = require('./blank-input')
 var h = require('virtual-dom/h')
-var pathID = require('../path-id')
+var pathID = require('../utility/path-id')
 
 function blankEntry(state) {
   var blank = state.blank

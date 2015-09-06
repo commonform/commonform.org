@@ -1,5 +1,5 @@
 var h = require('virtual-dom/h')
-var postForm = require('../post-form')
+var postForm = require('../utility/post-form')
 
 var message = 'Are you sure you want to share this form with commonform.org?'
 

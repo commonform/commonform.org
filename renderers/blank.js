@@ -1,5 +1,5 @@
 var h = require('virtual-dom/h')
-var pathID = require('../path-id')
+var pathID = require('../utility/path-id')
 
 function blank(state) {
   var blank = state.data.blank

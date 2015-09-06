@@ -1,5 +1,5 @@
 var h = require('virtual-dom/h')
-var openFile = require('../open-file')
+var openFile = require('../utility/open-file')
 
 function openJSONButton(emit) {
   return h('button.openJSON',
