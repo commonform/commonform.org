@@ -4,6 +4,7 @@ Function.prototype.bind = (
   Function.prototype.bind || require('function-bind') )
 
 // Lots of imports.
+var Cache = require('level-lru-cache')
 var analyze = require('commonform-analyze')
 var asap = require('asap')
 var combineStrings = require('./combine-strings')
@@ -12,12 +13,12 @@ var downloadForm = require('./download-form')
 var isSHA256 = require('is-sha-256-hex-digest')
 var jsonClone = require('./json-clone')
 var keyarray = require('keyarray')
-var lint = require('commonform-lint')
-var Cache = require('level-lru-cache')
-var levelup = require('levelup')
 var leveljs = require('level-js')
+var levelup = require('levelup')
+var lint = require('commonform-lint')
 var merkleize = require('commonform-merkleize')
 var persistedProperties = require('./persisted-properties.json')
+var resizeTextarea = require('./resize-textarea')
 var treeify = require('commonform-treeify-annotations')
 
 // Changes to application state are handled via syntheic events. This is the
@@ -264,9 +265,23 @@ loop = require('main-loop')(
   // The JavaScript virtual DOM implementation.
   require('virtual-dom'))
 
+function resizeTextareas(){
+  var textareas = document
+    .querySelector('.commonform')
+    .getElementsByTagName('textarea')
+  Array.prototype.slice.call(textareas)
+    .forEach(function(textarea) {
+      resizeTextarea(textarea) }) }
+
+window.resizeTextareas = resizeTextareas
+
 function updateLoop(state) {
   unlock()
-  loop.update(state) }
+  loop.update(state)
+  // TODO: Hook into the rendering system to trigger <textarea> resize.
+  setTimeout(resizeTextareas, 100) }
+
+window.addEventListener('resize', resizeTextareas)
 
 // Hook main-loop's rendering up to the DOM.
 document

@@ -1,5 +1,6 @@
 var find = require('array-find')
 var h = require('virtual-dom/h')
+var markup = require('commonform-markup')
 var predicates = require('commonform-predicate')
 
 var renderers = [
@@ -15,15 +16,19 @@ var renderers = [
     renderer: require('./reference') } ]
 
 function paragraph(state) {
-  return h('p',
-    [ state.data.content
-        .map(function(child, index) {
-          var childPath = state.path
-            .concat([ 'content', state.offset + index ])
-          return find(renderers, function(renderer) {
-            return renderer.predicate(child) })
-          .renderer({
-              data: child,
-              path: childPath }) }) ]) }
+  if (state.isFocused) {
+    return h('textarea',
+      { value: markup.stringify(state.data) }) }
+  else {
+    return h('p',
+      [ state.data.content
+          .map(function(child, index) {
+            var childPath = state.path
+              .concat([ 'content', state.offset + index ])
+            return find(renderers, function(renderer) {
+              return renderer.predicate(child) })
+            .renderer({
+                data: child,
+                path: childPath }) }) ]) } }
 
 module.exports = paragraph

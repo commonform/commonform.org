@@ -10,6 +10,18 @@ $subFormIndent: 14px;
 	padding: 1em;
 	&> section {
 		padding: 14px 0; }
+	textarea {
+		width: 100%;
+		border: none;
+		margin: 1em 0;
+		padding: 0;
+		display: block;
+		background: inherit;
+		resize: none;
+		box-shadow: 0;
+		-webkit-box-shadow: none;
+		-mox-box-shadow: none;
+	}
 	p {
 		dfn {
 			font-style: normal;

@@ -48,6 +48,7 @@ function form(state) {
       groups
         .map(function(group) {
           var groupState = pick(state, [ 'digest', 'emit', 'focused' ])
+          groupState.isFocused = isFocused
           groupState.path = state.path.concat(annotationsKey)
           groupState.annotationsTree = (
             get(state.annotationsTree, annotationsKey) ||
