@@ -1,7 +1,7 @@
 var find = require('array-find')
 var h = require('virtual-dom/h')
-var markup = require('commonform-markup')
 var predicates = require('commonform-predicate')
+var textarea = require('./textarea')
 
 var renderers = [
   { predicate: predicates.text,
@@ -17,8 +17,7 @@ var renderers = [
 
 function paragraph(state) {
   if (state.isFocused) {
-    return h('textarea',
-      { value: markup.stringify(state.data) }) }
+    return textarea(state) }
   else {
     return h('p',
       [ state.data.content
