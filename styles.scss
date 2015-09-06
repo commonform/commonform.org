@@ -3,6 +3,7 @@
 	max-width: 640px; }
 
 $fadedText: #bbb;
+$subFormIndent: 14px;
 
 .commonform {
 	line-height: 140%;
@@ -53,7 +54,7 @@ $fadedText: #bbb;
 	font-style: italic; }
 
 section {
-	padding: 0 0 0 2em; }
+	padding: 0 0 0 $subFormIndent; }
 
 .focused {
 	background: rgb(250,245,245); }

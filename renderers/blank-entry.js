@@ -4,11 +4,11 @@ var pathID = require('../path-id')
 
 function blankEntry(state) {
   var blank = state.blank
-  return h('tr.blank',
+  return h('p.blank',
     { id: ( 'blank:' + blank ) },
-    [ h('th.name', blank),
-      h('td.value', blankInput(state)),
-      h('td',
+    [ h('div.name', blank),
+      h('div.value', blankInput(state)),
+      h('div.appearances',
         state.insertions
           .map(function(insertion) {
             return h('a',
