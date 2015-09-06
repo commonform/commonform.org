@@ -1,12 +1,14 @@
 .container {
 	margin: 0 auto;
-	max-width: 960px; }
+	max-width: 640px; }
 
 $fadedText: #bbb;
 
 .commonform {
 	line-height: 140%;
 	padding: 1em;
+	&> section {
+		padding: 14px 0; }
 	p {
 		dfn {
 			font-style: normal;
@@ -56,12 +58,11 @@ section {
 .focused {
 	background: rgb(250,245,245); }
 
-.commonform > section {
-	padding: 0; }
-
 aside {
 	font-size: 75%;
-	color: #777; }
+	color: #777;
+	p {
+		margin: 6px 0; } }
 
 nav {
 	border: 1px solid black;
@@ -95,4 +96,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .info {
 	color: blue;
+}
+
+menu {
+	padding: 0;
 }
