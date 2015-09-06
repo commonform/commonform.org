@@ -5,6 +5,7 @@ Function.prototype.bind = (
 
 // Lots of imports.
 var analyze = require('commonform-analyze')
+var asap = require('asap')
 var combineStrings = require('./combine-strings')
 var critique = require('commonform-critique')
 var downloadForm = require('./download-form')
@@ -17,7 +18,6 @@ var levelup = require('levelup')
 var leveljs = require('level-js')
 var merkleize = require('commonform-merkleize')
 var persistedProperties = require('./persisted-properties.json')
-var requestAnimationFrame = require('raf')
 var treeify = require('commonform-treeify-annotations')
 
 // Changes to application state are handled via syntheic events. This is the
@@ -122,10 +122,8 @@ var initialDigest
 // Update window.location.hash with a new root digest.
 function cacheForm(fromHistory) {
 
-  // main-loop, which handles rerendering our interface with new global state,
-  // uses requestAnimationFrame. This should ensure our callback is invoked
-  // after the rendering pass.
-  requestAnimationFrame(function() {
+  // This should ensure our callback is invoked after the rendering pass.
+  asap(function() {
 
     // Cache the form
     formCache.put(
