@@ -5,7 +5,7 @@ var pathID = require('../path-id')
 function blankEntry(state) {
   var blank = state.blank
   return h('tr.blank',
-    { attributes: { 'data-blank': blank } },
+    { id: ( 'blank:' + blank ) },
     [ h('th.name', blank),
       h('td.value', blankInput(state)),
       h('td',
