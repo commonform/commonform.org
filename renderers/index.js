@@ -3,7 +3,6 @@ var footer = require('./footer')
 var form = require('./form')
 var h = require('virtual-dom/h')
 var mainMenu = require('./main-menu')
-var omit = require('object-omit')
 var persistedProperties = require('../utility/persisted-properties.json')
 var pick = require('object-pick')
 
@@ -18,7 +17,14 @@ function browser(state) {
       analysis: analysis.blanks,
       emit: emit,
       values: blanks }),
-    form(omit(state, 'title')),
+    form({
+      data: state.data,
+      emit: state.emit,
+      forcused: state.focused,
+      path: state.path,
+      derived: {
+        annotations: state.derived.annotations,
+        merkle: state.derived.merkle } }),
     footer() ]) }
 
 module.exports = browser
