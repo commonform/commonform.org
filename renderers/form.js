@@ -49,9 +49,11 @@ function form(state) {
           undefined ),
       ( hasHeading ?
           heading({
+            data: data.heading,
             depth: ( path.length / 2 ),
             emit: emit,
-            data: data.heading }) :
+            isFocused: isFocused,
+            path: path }) :
           undefined ),
       ( annotationsHere ?
           annotationsList(annotationsHere) : undefined ),

@@ -10,17 +10,25 @@ $subFormIndent: 14px;
 	padding: 1em;
 	&> section {
 		padding: 14px 0; }
-	textarea {
+	h1, h2, h3, h4, h5, h6, .heading {
+		font-weight: bold;
+		margin-bottom: 1em;
+		font-size: 120%; }
+	input.heading {
+		margin-top: 0.5em; }
+	input.heading, textarea {
 		width: 100%;
 		border: none;
-		margin: 1em 0;
-		padding: 0;
 		display: block;
 		background: inherit;
 		resize: none;
 		box-shadow: 0;
 		-webkit-box-shadow: none;
 		-mox-box-shadow: none;
+	}
+	textarea {
+		margin: 1em 0;
+		padding: 0;
 	}
 	p {
 		dfn {
