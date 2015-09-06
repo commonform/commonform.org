@@ -41,8 +41,11 @@ function form(state) {
             depth: ( state.path.length / 2 ),
             emit: state.emit,
             data: state.data.heading }) :
-          null ),
-     groups
+          undefined ),
+      ( annotationsHere ?
+          annotations(annotationsHere) :
+          undefined ),
+      groups
         .map(function(group) {
           var groupState = pick(state, [ 'digest', 'emit', 'focused' ])
           groupState.path = state.path.concat(annotationsKey)
@@ -59,9 +62,6 @@ function form(state) {
             renderer = paragraph }
           var result = renderer(groupState)
           offset += group.content.length
-          return result }),
-      ( annotationsHere ?
-          annotations(annotationsHere) :
-          null ) ]) }
+          return result }) ]) }
 
 module.exports = form
