@@ -21,7 +21,6 @@
     "level-lru-cache": "~0.1.2",
     "levelup": "~1.2.1",
     "main-loop": "~3.2.0",
-    "object-pick": "^0.1.1",
     "virtual-dom": "~2.1.1",
     "xhr": "^2.0.3"
   },

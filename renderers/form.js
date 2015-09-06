@@ -9,7 +9,6 @@ var heading = require('./heading')
 var menu = require('./menu')
 var paragraph = require('./paragraph')
 var pathID = require('../utility/path-id')
-var pick = require('object-pick')
 var series = require('./series')
 
 function form(state) {
@@ -58,7 +57,7 @@ function form(state) {
           annotationsList(annotationsHere) : undefined ),
       groups
         .map(function(group) {
-          var groupState = pick(state, [ 'digest', 'emit', 'focused' ])
+          var groupState = { emit: emit, focused: focused }
           groupState.isFocused = isFocused
           groupState.path = path.concat(annotationsKey)
           groupState.derived = {

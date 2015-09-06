@@ -1,17 +1,26 @@
 var h = require('virtual-dom/h')
 var openJSONButton = require('./open-json-button')
-var persistedProperties = require('../utility/persisted-properties.json')
-var pick = require('object-pick')
 var saveDOCXButton = require('./save-docx-button')
 var saveJSONButton = require('./save-json-button')
 var shareButton = require('./share-button')
 
 function mainMenu(state) {
-  var persistedState = pick(state, persistedProperties)
+  var blanks = state.blanks
+  var data = state.data
+  var emit = state.emit
+  var title = state.title
+  var persistedState = {
+    blanks: blanks,
+    title: title,
+    data: data }
   return h('menu', [
-    shareButton({ form: state.data }), ' ',
+    shareButton({ form: data }), ' ',
     saveDOCXButton(persistedState), ' ',
     saveJSONButton(persistedState), ' ',
-    openJSONButton(pick(state, [ 'emit' ])) ]) }
+    openJSONButton({
+      blanks: blanks,
+      data: data,
+      emit: emit,
+      title: title }) ]) }
 
 module.exports = mainMenu
