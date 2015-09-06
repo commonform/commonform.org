@@ -76,6 +76,7 @@ window.addEventListener('popstate', function(event) {
       else {
         downloadForm(digest, function(error, response) {
           if (error) {
+            unlock()
             alert('Could not load') }
           else {
             bus.emit(digest, response.form, true) } }) } }) } })
@@ -138,106 +139,122 @@ function cacheForm(fromHistory) {
             null,
             ( forms + state.digest )) } }) }) }
 
+// Global lock to prevent one event handler driving the main loop from acting
+// while another is working.
+var dataEventLock = false
+
+function unlock() {
+  dataEventLock = false }
+
+function withGlobalLock(callback) {
+  return function() {
+    if (dataEventLock) { return }
+    else {
+      dataEventLock = true
+      callback.apply(null, arguments) } } }
+
+function handle(event, callback) {
+  bus.on(event, withGlobalLock(callback)) }
+
 // Event bus handlers
-bus
 
-  // When a new form is loaded, say from the public library.
-  .on('form', function(digest, form, fromHistory) {
-    state.data = form
-    compute()
+// When a new form is loaded, say from the public library.
+handle('form', function(digest, form, fromHistory) {
+  state.data = form
+  compute()
 
-    // Have main-loop rerender the interface.
-    loop.update(state)
+  // Have main-loop rerender the interface.
+  updateLoop(state)
 
-    // Update window.location.hash.
-    cacheForm(fromHistory) })
+  // Update window.location.hash.
+  cacheForm(fromHistory) })
 
-  // When an entirely new state object is loaded, say when the user loads a
-  // saved JSON project.
-  .on('state', function(newState) {
-    persistedProperties.forEach(function(key) {
-      state[key] = newState[key] })
-    compute()
-    loop.update(state)
-    cacheForm() })
+// When an entirely new state object is loaded, say when the user loads a
+// saved JSON project.
+handle('state', function(newState) {
+  persistedProperties.forEach(function(key) {
+    state[key] = newState[key] })
+  compute()
+  updateLoop(state)
+  cacheForm() })
 
-  // When the value of a fill-in-the-blank changes.
-  .on('blank', function(blank, value) {
-    if (!value || value.length === 0) {
-      delete state.blanks[blank] }
-    else {
-      state.blanks[blank] = value }
-    loop.update(state) })
+// When the value of a fill-in-the-blank changes.
+handle('blank', function(blank, value) {
+  if (!value || value.length === 0) {
+    delete state.blanks[blank] }
+  else {
+    state.blanks[blank] = value }
+  updateLoop(state) })
 
-  // When the title of the project changes.
-  .on('title', function(newTitle) {
-    if (!newTitle || newTitle.length === 0) {
-      state.title = defaultTitle }
-    else {
-      state.title = newTitle }
-    loop.update(state) })
+// When the title of the project changes.
+handle('title', function(newTitle) {
+  if (!newTitle || newTitle.length === 0) {
+    state.title = defaultTitle }
+  else {
+    state.title = newTitle }
+  updateLoop(state) })
 
-  // Some direct state mutation by key array.
-  .on('set', function(path, value) {
-    keyarray.set(state.data, path, value)
-    compute()
-    loop.update(state)
-    cacheForm() })
+// Some direct state mutation by key array.
+handle('set', function(path, value) {
+  keyarray.set(state.data, path, value)
+  compute()
+  updateLoop(state)
+  cacheForm() })
 
-  // Remove a content element from a content array.
-  .on('remove', function(path) {
-    var containing = keyarray.get(state.data, path.slice(0, -2))
-    containing.content.splice(path[path.length - 1], 1)
+// Remove a content element from a content array.
+handle('remove', function(path) {
+  var containing = keyarray.get(state.data, path.slice(0, -2))
+  containing.content.splice(path[path.length - 1], 1)
 
-    // By deleting a content, we may end up with a content array that has
-    // contiguous strings. Common forms cannot have contiguous strings, so we
-    // need to combine them.
-    combineStrings(containing)
+  // By deleting a content, we may end up with a content array that has
+  // contiguous strings. Common forms cannot have contiguous strings, so we
+  // need to combine them.
+  combineStrings(containing)
 
-    // We might also end up with an empty content array. If so, throw in a
-    // placehodler form.
-    if (containing.content.length === 0) {
-      containing.content.push(jsonClone(defaultForm))}
-    compute()
-    loop.update(state)
-    cacheForm() })
+  // We might also end up with an empty content array. If so, throw in a
+  // placehodler form.
+  if (containing.content.length === 0) {
+    containing.content.push(jsonClone(defaultForm))}
+  compute()
+  updateLoop(state)
+  cacheForm() })
 
-  // Directly delete some part of the global state by key array.
-  .on('delete', function(path) {
-    keyarray.delete(state.data, path)
-    compute()
-    loop.update(state)
-    cacheForm() })
+// Directly delete some part of the global state by key array.
+handle('delete', function(path) {
+  keyarray.delete(state.data, path)
+  compute()
+  updateLoop(state)
+  cacheForm() })
 
-  // Insert a child form somewhere in the tree.
-  .on('insertForm', function(path) {
+// Insert a child form somewhere in the tree.
+handle('insertForm', function(path) {
 
-    // Splice it in.
-    var containingPath = path.slice(0, -1)
-    var containing = keyarray.get(state.data, containingPath)
-    var offset = path[path.length - 1]
-    containing.splice(offset, 0, jsonClone(defaultForm))
-    compute()
-    loop.update(state)
-    cacheForm() })
+  // Splice it in.
+  var containingPath = path.slice(0, -1)
+  var containing = keyarray.get(state.data, containingPath)
+  var offset = path[path.length - 1]
+  containing.splice(offset, 0, jsonClone(defaultForm))
+  compute()
+  updateLoop(state)
+  cacheForm() })
 
-  // Insert a new bit of text somewhere in the tree.
-  .on('insertParagraph', function(path) {
-    var containingPath = path.slice(0, -1)
-    var containing = keyarray.get(state.data, containingPath)
-    var offset = path[path.length - 1]
-    containing.splice(offset, 0, defaultParagraph)
-    compute()
-    loop.update(state)
-    cacheForm() })
+// Insert a new bit of text somewhere in the tree.
+handle('insertParagraph', function(path) {
+  var containingPath = path.slice(0, -1)
+  var containing = keyarray.get(state.data, containingPath)
+  var offset = path[path.length - 1]
+  containing.splice(offset, 0, defaultParagraph)
+  compute()
+  updateLoop(state)
+  cacheForm() })
 
-  // Focus a particular form, by path.
-  .on('focus', function(path) {
-    state.focused = path
-    loop.update(state) })
+// Focus a particular form, by path.
+handle('focus', function(path) {
+  state.focused = path
+  updateLoop(state) })
 
 // The main application loop. main-loop handles rerendering on calls to
-// loop.update(state).
+// updateLoop(state).
 loop = require('main-loop')(
 
   // Use the global state object.
@@ -248,6 +265,10 @@ loop = require('main-loop')(
 
   // The JavaScript virtual DOM implementation.
   require('virtual-dom'))
+
+function updateLoop(state) {
+  unlock()
+  loop.update(state) }
 
 // Hook main-loop's rendering up to the DOM.
 document
@@ -276,6 +297,7 @@ else {
 // Download from the public library.
 downloadForm(initialDigest, function(error, response) {
   if (error) {
+    unlock()
     alert(error.message) }
   else {
     bus.emit('form', response.digest, response.form) } })
