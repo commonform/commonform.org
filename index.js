@@ -284,9 +284,9 @@ function resizeTextareas(){
 window.resizeTextareas = resizeTextareas
 
 function updateLoop(state) {
-  unlock()
   loop.update(state)
-  // TODO: Hook into the rendering system to trigger <textarea> resize.
+  // TODO: Hook into renderer to trigger <textarea> resize and unlock.
+  setTimeout(unlock, 100)
   setTimeout(resizeTextareas, 100) }
 
 window.addEventListener('resize', resizeTextareas)
