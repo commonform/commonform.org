@@ -6,7 +6,6 @@ Function.prototype.bind = (
 // Lots of imports.
 var Cache = require('level-lru-cache')
 var analyze = require('commonform-analyze')
-var asap = require('asap')
 var combineStrings = require('./utility/combine-strings')
 var critique = require('commonform-critique')
 var downloadForm = require('./utility/download-form')
@@ -118,19 +117,21 @@ var initialDigest
 function cacheForm(fromHistory) {
 
   // This should ensure our callback is invoked after the rendering pass.
-  asap(function() {
-    // Cache the form
-    formCache.put(
-      state.derived.merkle.digest,
-      JSON.stringify(state.data),
-      function() {
-        // Include the form digest in the push state.
-        if (!fromHistory) {
-          var digest = state.derived.merkle.digest
-          history.pushState(
-            { digest: digest },
-            null,
-            ( forms + digest )) } }) }) }
+  setTimeout(
+    function() {
+      // Cache the form
+      formCache.put(
+        state.derived.merkle.digest,
+        JSON.stringify(state.data),
+        function() {
+          // Include the form digest in the push state.
+          if (!fromHistory) {
+            var digest = state.derived.merkle.digest
+            history.pushState(
+              { digest: digest },
+              null,
+              ( forms + digest )) } }) },
+    100) }
 
 // Global lock to prevent one event handler driving the main loop from acting
 // while another is working.
