@@ -26,7 +26,7 @@
   },
   "scripts": {
     "build-css": "node-sass styles.scss public/styles.css",
-    "build-javascript": "browserify -t uglifyify index.js > public/browser.js",
+    "build-javascript": "browserify -t uglifyify index.js | uglifyjs -c > public/browser.js",
     "build": "npm run build-javascript && npm run build-css",
     "start": "ecstatic -p 8000 public",
     "watch": "watchify index.js -o public/browser.js -dv",
@@ -41,6 +41,7 @@
     "phantomjs": "~1.9.17",
     "tape": "~4.2.0",
     "uglifyify": "~3.0.1",
+    "uglifyjs": "^2.4.10",
     "watchify": "^3.3.1",
     "webdriverio": "~3.2.1"
   },
