@@ -26,7 +26,7 @@
     "xhr": "^2.0.3"
   },
   "scripts": {
-    "build-css": "node-sass --output-style compressed css/styles.scss public/styles.css && node-sass --output-style compressed css/normalize.scss public/normalize.css",
+    "build-css": "cat css/normalize.scss css/styles.scss | node-sass --output-style compressed > public/styles.css",
     "build-javascript": "browserify -t uglifyify index.js | uglifyjs -c > public/browser.js",
     "build": "npm run build-javascript && npm run build-css",
     "start": "ecstatic -p 8000 --cache 0 public",
