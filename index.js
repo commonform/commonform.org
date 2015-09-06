@@ -237,6 +237,14 @@ handle('insertForm', function(path) {
   updateLoop(state)
   cacheForm() })
 
+handle('splice', function(path, start, deleteCount, elements) {
+  var containing = keyarray.get(state.data, path)
+  var spliceArguments = [ start, deleteCount ].concat(elements)
+  Array.prototype.splice.apply(containing, spliceArguments)
+  compute()
+  updateLoop(state)
+  cacheForm() })
+
 // Insert a new bit of text somewhere in the tree.
 handle('insertParagraph', function(path) {
   var containingPath = path.slice(0, -1)

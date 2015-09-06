@@ -8,10 +8,22 @@ function resizeTarget(event) {
   setTimeout(function() { resizeTextarea(event.target) }, 1) }
 
 function textarea(state) {
+  var offset = state.offset
+  var length = state.data.content.length
   return h('textarea',
     { value: markup.stringify(state.data),
       onkeydown: resizeTarget,
       onpaste: resizeTarget,
-      onchange: resizeTarget }) }
+      onchange: function(event) {
+        resizeTarget(event)
+        var elements
+        try {
+          elements = markup.parse(event.target.value).content }
+        catch (e) {
+          // TODO Address markup errors
+          return }
+        var contentPath = state.path.concat('content')
+        state.emit(
+          'splice', contentPath, offset, length, elements) } }) }
 
 module.exports = textarea
