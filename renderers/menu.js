@@ -5,22 +5,29 @@ var addHeadingButton = require('./add-heading-button')
 var addParagraphWithinButton = require('./add-paragraph-within-button')
 var deleteButton = require('./delete-button')
 var deleteHeadingButton = require('./delete-heading-button')
-var digest = require('./digest')
+var digestLine = require('./digest-line')
 var h = require('virtual-dom/h')
+var pick = require('object-pick')
 var shareButton = require('./share-button')
 
 function menu(state) {
+  // State
+  var digest = state.digest
+  var data = state.data
+  // Derivations
+  var pathEmit = pick(state, [ 'emit', 'path' ])
+  var pathEmitData = pick(state, [ 'path', 'emit', 'data' ])
   return h('div.menu',
-    [ digest({ digest: state.merkle.digest }),
+    [ digestLine({ digest: digest }),
       h('.buttons', [
-        shareButton({ form: state.data.form }), ' ',
-        deleteButton(state), ' ',
-        ( state.data.hasOwnProperty('heading') ?
-          deleteHeadingButton(state) :
-          addHeadingButton(state) ), ' ',
-        addAboveButton(state), ' ',
-        addBelowButton(state), ' ',
-        addParagraphWithinButton(state), ' ',
-        addFormWithinButton(state) ]) ]) }
+        shareButton({ form: data.form }), ' ',
+        deleteButton(pathEmit), ' ',
+        ( data.hasOwnProperty('heading') ?
+          deleteHeadingButton(pathEmit) :
+          addHeadingButton(pathEmit) ), ' ',
+        addAboveButton(pathEmit), ' ',
+        addBelowButton(pathEmit), ' ',
+        addParagraphWithinButton(pathEmitData), ' ',
+        addFormWithinButton(pathEmitData) ]) ]) }
 
 module.exports = menu

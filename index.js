@@ -47,10 +47,6 @@ var state = {
   // The path of the currently focused form, if any.
   focused: null,
 
-  // The root digest of the current form. Initially, this is empty, but it will
-  // be set immediately when a form is loaded from the public library.
-  digest: '',
-
   // The title of this project. Passed to to the .docx and other renderers on
   // export.
   title: defaultTitle,
@@ -85,17 +81,16 @@ window.addEventListener('popstate', function(event) {
 // compute() does all of the analysis required whenever a change is made to the
 // global state.
 function compute() {
+  state.derived = { }
+
   // Create a tree of objects of the same shape as state.data that contains the
   // common form digests of each form.
-  state.merkle = merkleize(state.data)
-
-  // The root digest of the form tree.
-  state.digest = state.merkle.digest
+  state.derived.merkle = merkleize(state.data)
 
   // Create a tree of objects of the same shape as state.data that contains
   // lists of annotations at the same place in the tree as the forms they
   // pertain to. treeify() takes a list of of annotations.
-  state.annotationsTree = treeify(
+  state.derived.annotations = treeify(
 
     // Run commonform-critique on the form.
     critique(state.data)
@@ -113,7 +108,7 @@ function compute() {
         return annotation }))
 
   // Run commonform-analyze on the form.
-  state.analysis = analyze(state.data) }
+  state.derived.analysis = analyze(state.data) }
 
 // Since we've set an initial state, go ahead and run the computations.
 compute()
@@ -125,18 +120,18 @@ function cacheForm(fromHistory) {
 
   // This should ensure our callback is invoked after the rendering pass.
   asap(function() {
-
     // Cache the form
     formCache.put(
-      state.merkle.digest,
+      state.derived.merkle.digest,
       JSON.stringify(state.data),
       function() {
         // Include the form digest in the push state.
         if (!fromHistory) {
+          var digest = state.derived.merkle.digest
           history.pushState(
-            { digest: state.digest },
+            { digest: digest },
             null,
-            ( forms + state.digest )) } }) }) }
+            ( forms + digest )) } }) }) }
 
 // Global lock to prevent one event handler driving the main loop from acting
 // while another is working.

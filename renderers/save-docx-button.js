@@ -4,14 +4,14 @@ var filesaver = require('filesaver.js').saveAs
 var h = require('virtual-dom/h')
 
 function saveDOCXButton(state) {
+  var title = state.title
+  var form = state.data
+  var blanks = state.blanks
   return h('button.saveDOCX',
     { href: '#',
       onclick: function(event) {
         event.preventDefault()
         event.stopPropagation()
-        var title = state.title
-        var form = state.data
-        var blanks = state.blanks
         var zip = docx(form, blanks, { title: title })
         var date = new Date().toISOString()
         filesaver(

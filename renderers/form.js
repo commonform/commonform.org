@@ -1,4 +1,4 @@
-var annotations = require('./annotations')
+var annotationsList = require('./annotations-list')
 var classnames = require('classnames')
 var clone = require('clone')
 var deepEqual = require('deep-equal')
@@ -13,52 +13,64 @@ var pick = require('object-pick')
 var series = require('./series')
 
 function form(state) {
-  var root = state.path.length === 0
+  // State properties
+  var annotations = state.derived.annotations
+  var data = state.data
+  var emit = state.emit
+  var focused = state.focused
+  var merkle = state.derived.merkle
+  var path = state.path
+  // Derivations from state
+  var root = path.length === 0
   var annotationsKey = ( root ? [ ] : [ 'form' ] )
   var annotationsHere = get(
-    state.annotationsTree,
+    annotations,
     annotationsKey.concat('annotations'))
-  var hasHeading = ( !root && ( 'heading' in state.data ) )
-  var formObject = ( root ? state.data : state.data.form )
-  var isFocused = deepEqual(state.focused, state.path)
+  var hasHeading = ( !root && ( 'heading' in data ) )
+  var formObject = ( root ? data : data.form )
+  var isFocused = deepEqual(focused, path)
   var groups = group(clone(formObject))
   var offset = 0
   return h(
     'section',
-    { id: ( 'path:' + pathID(state.path) ),
+    { id: ( 'path:' + pathID(path) ),
       className: classnames({
         conspicuous: ( 'conspicuous' in form ),
         focused: isFocused }),
       onclick: function(event) {
         event.stopPropagation()
-        state.emit('focus', state.path) },
-      attributes: {
-        'data-digest': state.merkle.digest } },
-    [ ( isFocused ? menu(state) : undefined ),
+        emit('focus', path) },
+      attributes: { 'data-digest': merkle.digest } },
+    [ ( isFocused ?
+          menu({
+            data: data,
+            digest: merkle.digest,
+            emit: emit,
+            path: path }) :
+          undefined ),
       ( hasHeading ?
           heading({
-            digest: state.digest,
-            depth: ( state.path.length / 2 ),
-            emit: state.emit,
-            data: state.data.heading }) :
+            depth: ( path.length / 2 ),
+            emit: emit,
+            data: data.heading }) :
           undefined ),
       ( annotationsHere ?
-          annotations(annotationsHere) :
-          undefined ),
+          annotationsList(annotationsHere) : undefined ),
       groups
         .map(function(group) {
           var groupState = pick(state, [ 'digest', 'emit', 'focused' ])
           groupState.isFocused = isFocused
-          groupState.path = state.path.concat(annotationsKey)
-          groupState.annotationsTree = (
-            get(state.annotationsTree, annotationsKey) ||
-            { } )
+          groupState.path = path.concat(annotationsKey)
+          groupState.derived = {
+            annotations: (
+              get(annotations, annotationsKey) ||
+              { } ) }
           groupState.data = group
           groupState.offset = offset
           var renderer
           if (group.type === 'series') {
             renderer = series
-            groupState.merkle = state.merkle }
+            groupState.derived.merkle = merkle }
           else {
             renderer = paragraph }
           var result = renderer(groupState)

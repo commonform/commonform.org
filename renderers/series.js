@@ -1,21 +1,28 @@
 var get = require('keyarray').get
 
 function series(state) {
-  return state.data.content
+  var annotations = state.derived.annotations
+  var data = state.data
+  var emit = state.emit
+  var focused = state.focused
+  var merkle = state.derived.merkle
+  var offset = state.offset
+  var path = state.path
+  return data.content
     .map(function(child, index) {
-      var absoluteIndex = ( index + state.offset )
-      var childPath = state.path
+      var absoluteIndex = ( index + offset )
+      var childPath = path
         .concat([ 'content', absoluteIndex ])
-      var annotationsTree = (
-        get(state.annotationsTree, [ 'content', absoluteIndex ]) ||
+      var childAnnotations = (
+        get(annotations, [ 'content', absoluteIndex ]) ||
         { } )
       var result = require('./form')({
-        annotationsTree: annotationsTree,
+        derived: {
+          annotations: childAnnotations,
+          merkle: merkle.content[absoluteIndex] },
         data: child,
-        digest: state.digest,
-        focused: state.focused,
-        merkle: state.merkle.content[absoluteIndex],
-        emit: state.emit,
+        focused: focused,
+        emit: emit,
         path: childPath })
       return result }) }
 

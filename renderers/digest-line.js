@@ -1,6 +1,6 @@
 var h = require('virtual-dom/h')
 
-function fingerprintLink(state) {
+function digestLine(state) {
   var digest = state.digest
   return h('a.digest',
     { href: ( '/forms/' + digest ),
@@ -13,4 +13,4 @@ function fingerprintLink(state) {
       h('wbr'),
       digest.slice(48) ]) }
 
-module.exports = fingerprintLink
+module.exports = digestLine

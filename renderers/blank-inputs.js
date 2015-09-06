@@ -10,10 +10,9 @@ function blankInputs(state) {
         .sort()
         .map(function(blank) {
           return blankEntry({
-            insertions: state.analysis[blank],
-            digest: state.digest,
             blank: blank,
             emit: state.emit,
+            insertions: state.analysis[blank],
             values: state.values }) }) ]) }
 
 module.exports = blankInputs

@@ -16,14 +16,18 @@ var renderers = [
     renderer: require('./reference') } ]
 
 function paragraph(state) {
-  if (state.isFocused) {
+  var data = state.data
+  var isFocused = state.isFocused
+  var offset = state.offset
+  var path = state.path
+  if (isFocused) {
     return textarea(state) }
   else {
     return h('p',
-      [ state.data.content
+      [ data.content
           .map(function(child, index) {
-            var childPath = state.path
-              .concat([ 'content', state.offset + index ])
+            var childPath = path
+              .concat([ 'content', offset + index ])
             return find(renderers, function(renderer) {
               return renderer.predicate(child) })
             .renderer({
