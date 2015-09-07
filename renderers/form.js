@@ -25,7 +25,6 @@ function form(state) {
   var annotationsHere = get(
     annotations,
     annotationsKey.concat('annotations'))
-  var hasHeading = ( !root && ( 'heading' in data ) )
   var formObject = ( root ? data : data.form )
   var isFocused = deepEqual(focused, path)
   var groups = group(jsonClone(formObject))
@@ -47,14 +46,12 @@ function form(state) {
             emit: emit,
             path: path }) :
           undefined ),
-      ( hasHeading ?
-          heading({
-            data: data.heading,
-            depth: ( path.length / 2 ),
-            emit: emit,
-            isFocused: isFocused,
-            path: path }) :
-          undefined ),
+      heading({
+        data: data.heading,
+        depth: ( path.length / 2 ),
+        emit: emit,
+        isFocused: isFocused,
+        path: path }),
       ( annotationsHere ?
           annotationsList(annotationsHere) : undefined ),
       groups

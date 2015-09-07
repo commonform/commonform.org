@@ -9,21 +9,26 @@ function heading(state) {
   if (isFocused) {
     return h('input.heading',
       { value: data,
+        placeholder: 'Click to add heading',
         onchange: function(event) {
           var headingPath = path.concat('heading')
           var newValue = event.target.value
-          emit('set', headingPath, newValue) },
+          if (newValue.length > 0) {
+            emit('set', headingPath, newValue) }
+          else {
+            emit('delete', headingPath) } },
         onkeydown: function(event) {
           if (event.keyCode === 13) {
             event.target.blur() } } }) }
   else {
-    var name = (
-      depth <= 5 ?
-        ( 'h' + ( depth + 1) ) :
-        ( 'span.heading.h' + ( depth + 1 ) ) )
-    return h(
-      name,
-      { id: ( 'heading:' + data ) },
-      data) } }
+    if (data) {
+      var name = (
+        depth <= 5 ?
+          ( 'h' + ( depth + 1) ) :
+          ( 'span.heading.h' + ( depth + 1 ) ) )
+      return h(
+        name,
+        { id: ( 'heading:' + data ) },
+        data) } } }
 
 module.exports = heading

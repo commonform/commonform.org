@@ -1,12 +1,11 @@
 var addAboveButton = require('./add-above-button')
 var addBelowButton = require('./add-below-button')
 var addFormWithinButton = require('./add-form-within-button')
-var addHeadingButton = require('./add-heading-button')
 var addParagraphWithinButton = require('./add-paragraph-within-button')
 var deleteButton = require('./delete-button')
-var deleteHeadingButton = require('./delete-heading-button')
 var digestLine = require('./digest-line')
 var h = require('virtual-dom/h')
+var openButton = require('./open-button')
 var replaceButton = require('./replace-button')
 var shareButton = require('./share-button')
 
@@ -30,12 +29,7 @@ function menu(state) {
             [ deleteButton(emitPath), ' ' ] :
             undefined ),
         replaceButton(emitPath), ' ',
-        ( !topForm ?
-            [ ( data.hasOwnProperty('heading') ?
-              deleteHeadingButton(emitPath) :
-              addHeadingButton(emitPath) ),
-              ' ' ] :
-            undefined ),
+        openButton({ digest: digest }), ' ',
         ( !topForm ?
             [ addAboveButton(emitPath), ' ' ] :
             undefined ),

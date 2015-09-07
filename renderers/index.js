@@ -6,15 +6,20 @@ var mainMenu = require('./main-menu')
 
 function browser(state) {
   var analysis = state.derived.analysis
-  var emit = state.emit
+  var annotations = state.derived.annotations
   var blanks = state.blanks
   var data = state.data
+  var emit = state.emit
+  var focused = state.focused
+  var merkle = state.derived.merkle
+  var path = state.path
   var title = state.title
   state.root = true
   return h('article.commonform', [
     mainMenu({
       blanks: blanks,
       data: data,
+      digest: merkle.digest,
       emit: emit,
       title: title }),
     blankInputs({
@@ -22,13 +27,13 @@ function browser(state) {
       emit: emit,
       values: blanks }),
     form({
-      data: state.data,
-      emit: state.emit,
-      focused: state.focused,
-      path: state.path,
+      data: data,
+      emit: emit,
+      focused: focused,
+      path: path,
       derived: {
-        annotations: state.derived.annotations,
-        merkle: state.derived.merkle } }),
+        annotations: annotations,
+        merkle: merkle } }),
     footer() ]) }
 
 module.exports = browser
