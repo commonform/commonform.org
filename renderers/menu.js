@@ -7,6 +7,7 @@ var deleteButton = require('./delete-button')
 var deleteHeadingButton = require('./delete-heading-button')
 var digestLine = require('./digest-line')
 var h = require('virtual-dom/h')
+var replaceButton = require('./replace-button')
 var shareButton = require('./share-button')
 
 function menu(state) {
@@ -28,6 +29,7 @@ function menu(state) {
         ( !topForm ?
             [ deleteButton(emitPath), ' ' ] :
             undefined ),
+        replaceButton(emitPath), ' ',
         ( !topForm ?
             [ ( data.hasOwnProperty('heading') ?
               deleteHeadingButton(emitPath) :
