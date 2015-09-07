@@ -1,4 +1,5 @@
 var h = require('virtual-dom/h')
+var keyarray = require('keyarray')
 var predicate = require('commonform-predicate')
 
 function addParagraphWithinButton(state) {
@@ -7,15 +8,19 @@ function addParagraphWithinButton(state) {
   var path = state.path
   var data = state.data
   // Derivations
-  var last = data.form.content[data.form.content.length - 1]
+  var contentKeys = (
+    path.length === 0 ?
+      [ 'content' ] :
+      [ 'form', 'content' ])
+  var content = keyarray.get(data, contentKeys)
+  var last = content[content.length - 1]
   if (predicate.child(last)) {
     return h('button.addParagraphWithin',
       { onclick: function(event) {
           event.stopPropagation()
           var after = path
-            .concat('form')
-            .concat('content')
-            .concat(data.form.content.length)
+            .concat(contentKeys)
+            .concat(content.length)
           emit('insertParagraph', after) } },
       'Add Sub-¶') } }
 

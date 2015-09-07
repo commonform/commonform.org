@@ -18,16 +18,28 @@ function menu(state) {
   // Derivations
   var emitPath = { emit: emit, path: path }
   var emitDataPath = { emit: emit, data: data, path: path }
+  var topForm = ( path.length === 0 )
   return h('div.menu',
     [ digestLine({ digest: digest }),
       h('.buttons', [
-        shareButton({ form: data.form }), ' ',
-        deleteButton(emitPath), ' ',
-        ( data.hasOwnProperty('heading') ?
-          deleteHeadingButton(emitPath) :
-          addHeadingButton(emitPath) ), ' ',
-        addAboveButton(emitPath), ' ',
-        addBelowButton(emitPath), ' ',
+        ( !topForm ?
+            [ shareButton({ form: data.form }), ' ' ] :
+            undefined ),
+        ( !topForm ?
+            [ deleteButton(emitPath), ' ' ] :
+            undefined ),
+        ( !topForm ?
+            [ ( data.hasOwnProperty('heading') ?
+              deleteHeadingButton(emitPath) :
+              addHeadingButton(emitPath) ),
+              ' ' ] :
+            undefined ),
+        ( !topForm ?
+            [ addAboveButton(emitPath), ' ' ] :
+            undefined ),
+        ( !topForm ?
+            [ addBelowButton(emitPath), ' ' ] :
+            undefined ),
         addParagraphWithinButton(emitDataPath), ' ',
         addFormWithinButton(emitDataPath) ]) ]) }
 
