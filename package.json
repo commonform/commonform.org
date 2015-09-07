@@ -26,7 +26,7 @@
     "build-css": "cat css/normalize.scss css/styles.scss | node-sass --output-style compressed > public/styles.css",
     "build-javascript": "browserify -t uglifyify index.js | uglifyjs -c > public/browser.js",
     "build": "npm run build-javascript && npm run build-css",
-    "start": "ecstatic -p 8000 --cache 0 public",
+    "start": "node server.js",
     "watch": "watchify index.js -o public/browser.js -dv",
     "phantom": "phantomjs --local-to-remote-url-access=yes --ignore-ssl-errors=yes --ssl-protocol=any --webdriver=4444",
     "test": "tape test/*.test.js"
@@ -37,6 +37,7 @@
     "function-bind": "^1.0.2",
     "node-sass": "^3.3.1",
     "phantomjs": "^1.9.17",
+    "stream-replace": "^1.0.0",
     "tape": "^4.2.0",
     "uglifyify": "^3.0.1",
     "uglifyjs": "^2.4.10",
