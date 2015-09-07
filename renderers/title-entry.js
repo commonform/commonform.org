@@ -3,7 +3,7 @@ var titleInput = require('./title-input')
 
 function titleEntry(state) {
   return h('p',
-    [ h('div.name', 'Document Title'),
-      h('div.value', titleInput(state)) ]) }
+    [ h('label', 'Document Title'),
+      titleInput(state) ]) }
 
 module.exports = titleEntry

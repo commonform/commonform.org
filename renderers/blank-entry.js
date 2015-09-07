@@ -7,8 +7,8 @@ function blankEntry(state) {
   var insertions = state.insertions
   return h('p.blank',
     { id: ( 'blank:' + blank ) },
-    [ h('div.name', blank),
-      h('div.value', blankInput(state)),
+    [ h('label.name', blank),
+      blankInput(state),
       h('div.appearances',
         insertions
           .map(function(insertion) {

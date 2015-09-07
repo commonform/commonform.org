@@ -8,6 +8,13 @@ $subFormIndent: 14px;
 .commonform {
 	line-height: 140%;
 	padding: 1em;
+	.blanks {
+		div {
+			display: inline-block; }
+		.appearances:before {
+			content: ' '; }
+		label:after {
+			content: ' '; } }
 	&> section {
 		padding: 14px 0; }
 	h1, h2, h3, h4, h5, h6, .heading {
