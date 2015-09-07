@@ -22,6 +22,6 @@ function saveJSONButton(state) {
             data: data,
             title: title }),
           fileName(title, 'json')) } },
-    'Save JSON') }
+    'Save Project') }
 
 module.exports = saveJSONButton

@@ -9,6 +9,6 @@ function openJSONButton(state) {
         openFile(function(content) {
           var state = JSON.parse(content)
           emit('state', state) }) } },
-    'Open JSON') }
+    'Open Project') }
 
 module.exports = openJSONButton
