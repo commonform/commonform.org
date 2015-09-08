@@ -128,6 +128,14 @@ a.button {
 	color: blue;
 }
 
+.addAbove {
+	margin: 0 0 1em 0;
+}
+
+.addBelow, .addFormWithin, .addSectionWithin {
+	margin: 1em 0 1em 0;
+}
+
 menu {
 	padding: 0;
 }

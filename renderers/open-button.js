@@ -7,4 +7,4 @@ function openButton(state) {
   return h('button.open',
     { onclick: function() {
         window.open('/forms/' + digest, '_blank') } },
-    'Open') }
+    'New Window') }

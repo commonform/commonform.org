@@ -8,6 +8,6 @@ function addBelowButton(state) {
         var after = path.slice(0, -1)
           .concat(path[path.length - 1] + 1)
         emit('insertForm', after) } },
-    '§ Below') }
+    'New § Here') }
 
 module.exports = addBelowButton
