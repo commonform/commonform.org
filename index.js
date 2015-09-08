@@ -33,7 +33,6 @@ var defaultParagraph = 'New text'
 // The application global's state. This is modified only on initialization and
 // via event handlers on the global event bus.
 var state = {
-
   // An array of string and number keys denoting the current position in the
   // tree of forms. This property is expanded as renderers descend down the
   // tree.
@@ -53,9 +52,8 @@ var state = {
   // them a way to emit events that alter the global state.
   emit: bus.emit.bind(bus),
 
-  // The property that holds the tree of forms. This is just a default value to
-  // render until we load the introductory message from the public library.
-  data: { content: [ 'No content loaded' ] } }
+  // The property that holds the tree of forms.
+  data: false }
 
 // A size-bounded cache for past states of the form. Used to enable undo using
 // the pushState.
@@ -107,9 +105,6 @@ function compute() {
 
   // Run commonform-analyze on the form.
   state.derived.analysis = analyze(state.data) }
-
-// Since we've set an initial state, go ahead and run the computations.
-compute()
 
 var initialDigest
 
