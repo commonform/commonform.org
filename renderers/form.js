@@ -58,7 +58,7 @@ function form(state) {
               path: path }) :
             undefined ),
         heading({
-          data: data.heading,
+          heading: data.heading,
           depth: ( path.length / 2 ),
           emit: emit,
           isFocused: isFocused,

@@ -1,14 +1,14 @@
 var h = require('virtual-dom/h')
 
 function heading(state) {
-  var data = state.data
+  var heading = state.heading
   var depth = state.depth
   var emit = state.emit
   var isFocused = state.isFocused
   var path = state.path
   if (isFocused) {
     return h('input.heading',
-      { value: data,
+      { value: ( heading ? heading : '' ),
         placeholder: 'Click to add heading',
         onchange: function(event) {
           var headingPath = path.concat('heading')
@@ -21,14 +21,14 @@ function heading(state) {
           if (event.keyCode === 13) {
             event.target.blur() } } }) }
   else {
-    if (data) {
+    if (heading) {
       var name = (
         depth <= 5 ?
           ( 'h' + ( depth + 1) ) :
           ( 'span.heading.h' + ( depth + 1 ) ) )
       return h(
         name,
-        { id: ( 'heading:' + data ) },
-        data) } } }
+        { id: ( 'heading:' + heading ) },
+        heading) } } }
 
 module.exports = heading
