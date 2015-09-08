@@ -8,7 +8,6 @@ REF=${1:-HEAD}
 (
 	set -e
 	COMMIT=`git rev-parse "$REF"`
-	BASE="s/<head>/<head><base href='https:\/\/commonform.org\/releases\/$COMMIT\/'>/"
 	GITDIR=`pwd`
 	TMPDIR=`mktemp -d`
 	trap "{ cd "$GITDIR" ; rm -rf "$TMPDIR"; exit 255; }" SIGINT EXIT
@@ -17,6 +16,6 @@ REF=${1:-HEAD}
 	npm install
 	npm run build
 	rsync $FLAGS $BUILD/* commonform.org:$ROOT/releases/$COMMIT
-	cat $BUILD/index.html | sed -e "$BASE" > index.html
+	cat $BUILD/index.html | sed -e "s/RELEASE\//https:\/\/commonform.org\/releases\/$COMMIT\//" > index.html
 	rsync $FLAGS index.html commonform.org:$ROOT/
 )
