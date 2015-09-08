@@ -1,3 +1,4 @@
+var conspicuousButton = require('./conspicuous-button')
 var deleteButton = require('./delete-button')
 var digestLine = require('./digest-line')
 var h = require('virtual-dom/h')
@@ -24,6 +25,10 @@ function menu(state) {
             [ deleteButton(emitPath), ' ' ] :
             undefined ),
         replaceButton(emitPath), ' ',
+        conspicuousButton({
+          emit: emit,
+          path: path,
+          conspicuous: ( 'conspicuous' in data.form ) }), ' ',
         openButton({ digest: digest }) ]) ]) }
 
 module.exports = menu

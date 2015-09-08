@@ -44,7 +44,7 @@ function form(state) {
     h('section',
       { id: ( 'path:' + pathID(path) ),
         className: classnames({
-          conspicuous: ( 'conspicuous' in form ),
+          conspicuous: ( 'conspicuous' in formObject ),
           focused: isFocused }),
         onclick: function(event) {
           event.stopPropagation()

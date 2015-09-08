@@ -17,6 +17,11 @@ $subFormIndent: 14px;
 			content: ' '; } }
 	&> section {
 		padding: 14px 0; }
+	section.conspicuous {
+		&> p,
+		&> textarea {
+			font-weight: bold;
+			font-style: italic; } }
 	h1, h2, h3, h4, h5, h6, .heading {
 		font-weight: bold;
 		margin-bottom: 1em;
