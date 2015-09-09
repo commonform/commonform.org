@@ -6,9 +6,9 @@ Function.prototype.bind = (
 // Lots of imports.
 var Cache = require('level-lru-cache')
 var analyze = require('commonform-analyze')
-var combineStrings = require('./utility/combine-strings')
 var critique = require('commonform-critique')
 var downloadForm = require('./utility/download-form')
+var fixStrings = require('commonform-fix-strings')
 var isSHA256 = require('is-sha-256-hex-digest')
 var jsonClone = require('./utility/json-clone')
 var keyarray = require('keyarray')
@@ -197,14 +197,14 @@ handle('remove', function(path) {
   containing.content.splice(path[path.length - 1], 1)
 
   // By deleting a content, we may end up with a content array that has
-  // contiguous strings. Common forms cannot have contiguous strings, so we
-  // need to combine them.
-  combineStrings(containing)
+  // contiguous strings or other issues.
+  fixStrings(containing)
 
   // We might also end up with an empty content array. If so, throw in a
   // placehodler form.
   if (containing.content.length === 0) {
     containing.content.push(jsonClone(defaultForm))}
+
   compute()
   updateLoop(state)
   cacheForm() })
@@ -218,12 +218,11 @@ handle('delete', function(path) {
 
 // Insert a child form somewhere in the tree.
 handle('insertForm', function(path) {
-
-  // Splice it in.
   var containingPath = path.slice(0, -1)
   var containing = keyarray.get(state.data, containingPath)
   var offset = path[path.length - 1]
   containing.splice(offset, 0, jsonClone(defaultForm))
+  fixStrings(containing)
   compute()
   updateLoop(state)
   cacheForm() })
@@ -232,6 +231,7 @@ handle('splice', function(path, start, deleteCount, elements) {
   var containing = keyarray.get(state.data, path)
   var spliceArguments = [ start, deleteCount ].concat(elements)
   Array.prototype.splice.apply(containing, spliceArguments)
+  fixStrings(containing)
   compute()
   updateLoop(state)
   cacheForm() })
@@ -242,6 +242,7 @@ handle('insertParagraph', function(path) {
   var containing = keyarray.get(state.data, containingPath)
   var offset = path[path.length - 1]
   containing.splice(offset, 0, defaultParagraph)
+  fixStrings(containing)
   compute()
   updateLoop(state)
   cacheForm() })
