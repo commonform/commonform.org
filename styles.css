@@ -27,60 +27,60 @@ body {
   text-align: left;
 }
 
-section > section > p { margin-left: 3rem; }
-section > section > section > p { margin-left: 6rem; }
-section > section > section > section > p { margin-left: 9rem; }
-section > section > section > section > section > p { margin-left: 12rem; }
+.commonform section > section > p { margin-left: 3rem; }
+.commonform section > section > section > p { margin-left: 6rem; }
+.commonform section > section > section > section > p { margin-left: 9rem; }
+.commonform section > section > section > section > section > p { margin-left: 12rem; }
 
-section > section > .heading { margin-left: 3rem; }
-section > section > section > .heading { margin-left: 6rem; }
-section > section > section > section > .heading { margin-left: 9rem; }
-section > section > section > section > section > .heading { margin-left: 12rem; }
+.commonform section > section > .heading { margin-left: 3rem; }
+.commonform section > section > section > .heading { margin-left: 6rem; }
+.commonform section > section > section > section > .heading { margin-left: 9rem; }
+.commonform section > section > section > section > section > .heading { margin-left: 12rem; }
 
-.heading {
+.commonform .heading {
   font-weight: bold;
   text-indent: 0;
 }
 
-.conspicuous > p {
+.commonform .conspicuous > p {
   font-weight: bold;
   font-style: italic;
 }
 
-.conspicuous > p > .term,
-.conspicuous > p > dfn {
+.commonform .conspicuous > p > .term,
+.commonform .conspicuous > p > dfn {
   font-style: normal;
 }
 
-section {
+.commonform section {
   position: relative;
 }
 
-.blank {
+.commonform .blank {
   display: inline-block;
   width: 5rem;
   border-bottom: 1px dashed black;
 }
 
-.reference {
+.commonform .reference {
   font-style: italic;
 }
 
-.reference:before {
+.commonform .reference:before {
   content: '☞';
 }
 
-.term {
+.commonform .term {
   text-decoration: none;
   color: inherit;
   font-style: italic;
 }
 
-.term:hover {
+.commonform .term:hover {
   text-decoration: underline;
 }
 
-dfn {
+.commonform dfn {
   font-weight: bold;
   font-style: normal;
 }
