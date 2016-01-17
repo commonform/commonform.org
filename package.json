@@ -16,6 +16,7 @@
     "ecstatic": "^1.4.0",
     "stream-replace": "^1.0.0",
     "tape": "^4.4.0",
+    "watchify": "^3.7.0",
     "webdriverio": "^3.4.0"
   },
   "private": true,
@@ -24,6 +25,7 @@
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "pretest": "npm run build",
     "start": "node server.js",
-    "test": "tape test/*.test.js"
+    "test": "tape test/*.test.js",
+    "watch": "watchify index.js -o build/browser.js -dv"
   }
 }
