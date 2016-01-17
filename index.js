@@ -4,7 +4,6 @@ var loadInitialForm = require('./utility/load-initial-form')
 var formPathPrefix = '/forms/'
 
 var applicationState = {
-  title: 'Untitled Document',
   path: [ ] }
 
 var eventBus = new (require('events').EventEmitter)

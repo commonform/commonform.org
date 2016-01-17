@@ -1,5 +1,6 @@
 module.exports = renderers
 
+var clone = require('../utility/json-clone')
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
 var footer = require('./footer')
@@ -11,7 +12,6 @@ var querystring = require('querystring')
 
 function renderers(state) {
   var data = state.data
-  var title = state.title
   var blanks = { }
   if (!data) {
     return h('p', 'Loading ...') }
@@ -22,6 +22,9 @@ function renderers(state) {
       h('form',
         { onsubmit: function(event) {
             event.preventDefault()
+            var title = prompt(
+              'Enter a document title',
+              'Untitled Form')
             filesaver(
               docx(data, blanks, { title:title, numbering: outline })
                 .generate({ type: 'blob' }),
