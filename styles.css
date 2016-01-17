@@ -22,9 +22,23 @@ body {
 
 .content {
   width: 37rem;
-  margin: auto;
+  margin: 2rem auto;
   line-height: 1.4;
   text-align: left;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid black;
+}
+
+h1 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+h1:before {
+  content: '[•]';
 }
 
 .commonform section > section > p { margin-left: 3rem; }
