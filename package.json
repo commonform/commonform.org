@@ -1,0 +1,10 @@
+{ "private": true,
+  "devDependencies": {
+    "ecstatic": "^1.4.0",
+    "stream-replace": "^1.0.0",
+    "tape": "^4.4.0",
+    "webdriverio": "^3.4.0" },
+  "scripts": {
+    "test": "tape test/*.test.js",
+    "chromedriver": "chromedriver --url-base=/wd/hub",
+    "start": "node server.js" } }
