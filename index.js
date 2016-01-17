@@ -1,6 +1,9 @@
 var isSHA256 = require('is-sha-256-hex-digest')
 var downloadForm = require('./utility/download-form')
 var merkleize = require('commonform-merkleize')
+var welcome = require('commonform-welcome-form')
+
+var welcomeDigest = merkleize(welcome).digest
 
 var bus = new (require('events').EventEmitter)
 var loop
@@ -43,10 +46,13 @@ if (
   path && ( path.length === ( digestLength + formsLength ) ) &&
   isSHA256(path.slice(formsLength, ( digestLength + formsLength ))) ) {
   initialDigest = path.slice(formsLength, ( digestLength + formsLength ))
-  downloadForm(initialDigest, function(error, response) {
-    if (error) {
-      alert(error.message) }
-    else {
-      bus.emit('form', response.form) } }) }
+  if (initialDigest === welcomeDigest) {
+    bus.emit('form', welcome) }
+  else {
+    downloadForm(initialDigest, function(error, response) {
+      if (error) {
+        alert(error.message) }
+      else {
+        bus.emit('form', response.form) } }) } }
 else {
-  bus.emit('form', require('commonform-welcome-form')) }
+  bus.emit('form', welcome) }
