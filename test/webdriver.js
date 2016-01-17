@@ -15,6 +15,7 @@ function configuration() {
           browserName: 'chrome',
           platform: 'Windows 7',
           version: '47.0',
+          build: process.env.TRAVIS_BUILD_NUMBER,
           'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER } } :
       { host: 'localhost',
         port: 9515,
