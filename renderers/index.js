@@ -26,7 +26,9 @@ function renderers(state) {
               'Enter a document title',
               'Untitled Form')
             filesaver(
-              docx(data, blanks, { title:title, numbering: outline })
+              docx(
+                clone(data), blanks,
+                { title: title, numbering: outline })
                 .generate({ type: 'blob' }),
               fileName(title, 'docx')) } },
         [ h('div.menu',
