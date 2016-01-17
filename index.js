@@ -5,34 +5,33 @@ var welcome = require('commonform-welcome-form')
 
 var welcomeDigest = merkleize(welcome).digest
 
-var bus = new (require('events').EventEmitter)
-var loop
+var eventBus = new (require('events').EventEmitter)
 
-var state = {
+var applicationState = {
   title: 'Untitled Document',
   path: [ ] }
 
-loop = require('main-loop')(
-  state,
+var mainLoop = require('main-loop')(
+  applicationState,
   require('./renderers'),
   require('virtual-dom'))
 
-bus.on('form', function(form) {
-  state.data = form
+eventBus.on('form', function(form) {
+  applicationState.data = form
   computeDerivedState()
-  loop.update(state)
+  mainLoop.update(applicationState)
   pushState() })
 
 function pushState() {
-  var digest = state.derived.merkle.digest
+  var digest = applicationState.derived.merkle.digest
   history.pushState({ digest: digest }, null, ( forms + digest )) }
 
 function computeDerivedState() {
-  state.derived = { merkle: merkleize(state.data) } }
+  applicationState.derived = { merkle: merkleize(applicationState.data) } }
 
 document
   .querySelector('.container')
-  .appendChild(loop.target)
+  .appendChild(mainLoop.target)
 
 var path = window.location.pathname
 
@@ -47,12 +46,12 @@ if (
   isSHA256(path.slice(formsLength, ( digestLength + formsLength ))) ) {
   initialDigest = path.slice(formsLength, ( digestLength + formsLength ))
   if (initialDigest === welcomeDigest) {
-    bus.emit('form', welcome) }
+    eventBus.emit('form', welcome) }
   else {
     downloadForm(initialDigest, function(error, response) {
       if (error) {
         alert(error.message) }
       else {
-        bus.emit('form', response.form) } }) } }
+        eventBus.emit('form', response.form) } }) } }
 else {
-  bus.emit('form', welcome) }
+  eventBus.emit('form', welcome) }
