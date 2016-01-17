@@ -1,10 +1,24 @@
 { "private": true,
   "devDependencies": {
+    "browserify": "^13.0.0",
     "ecstatic": "^1.4.0",
     "stream-replace": "^1.0.0",
     "tape": "^4.4.0",
     "webdriverio": "^3.4.0" },
   "scripts": {
+    "build": "browserify index.js > build/browser.js",
+    "pretest": "npm run build",
     "test": "tape test/*.test.js",
     "chromedriver": "chromedriver --url-base=/wd/hub",
-    "start": "node server.js" } }
+    "start": "node server.js" },
+  "dependencies": {
+    "array-find": "^1.0.0",
+    "classnames": "^2.2.3",
+    "commonform-group-series": "^0.5.1",
+    "commonform-merkleize": "^0.3.2",
+    "commonform-predicate": "^0.4.3",
+    "commonform-welcome-form": "^1.0.0",
+    "is-sha-256-hex-digest": "^1.0.0",
+    "main-loop": "^3.2.0",
+    "virtual-dom": "^2.1.1",
+    "xhr": "^2.2.0" } }

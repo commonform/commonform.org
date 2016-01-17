@@ -20,25 +20,38 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-.content {
+.container {
   width: 37rem;
   margin: 2rem auto;
   line-height: 1.4;
   text-align: left;
 }
 
-hr {
-  border: none;
+.commonform .digest:before {
+  content: '[•] ';
+}
+
+.commonform header {
+  border-bottom: 1px solid black;
+  padding: 0 0 1rem 0;
+  margin: 0 0 1rem 0;
+}
+
+.commonform footer {
   border-top: 1px solid black;
+  margin: 1rem 0;
+  padding: 1em 0;
+  font-size: 50%;
+  text-align: right;
 }
 
-h1 {
-  font-size: 100%;
-  font-weight: normal;
+.commonform footer a {
+  text-decoration: none;
+  color: inherit;
 }
 
-h1:before {
-  content: '[•]';
+.commonform footer a:hover {
+  text-decoration: underline;
 }
 
 .commonform section > section > p { margin-left: 3rem; }
@@ -51,6 +64,18 @@ h1:before {
 .commonform section > section > section > section > .heading { margin-left: 9rem; }
 .commonform section > section > section > section > section > .heading { margin-left: 12rem; }
 
+.commonform section,
+.commonform section > p {
+  position: relative;
+}
+
+.commonform section > p:first-child:before {
+  content: '§';
+  font-weight: normal;
+  position: absolute;
+  left: -2rem;
+}
+
 .commonform .heading {
   font-weight: bold;
   text-indent: 0;
@@ -61,19 +86,17 @@ h1:before {
   font-style: italic;
 }
 
-.commonform .conspicuous > p > .term,
+.commonform .conspicuous > p > .use,
 .commonform .conspicuous > p > dfn {
   font-style: normal;
-}
-
-.commonform section {
-  position: relative;
 }
 
 .commonform .blank {
   display: inline-block;
   width: 5rem;
   border-bottom: 1px dashed black;
+  position: relative;
+  bottom: -1px;
 }
 
 .commonform .reference {
@@ -84,13 +107,15 @@ h1:before {
   content: '☞';
 }
 
-.commonform .term {
+.commonform .use,
+.commonform .reference {
   text-decoration: none;
   color: inherit;
   font-style: italic;
 }
 
-.commonform .term:hover {
+.commonform .use:hover,
+.commonform .reference:hover {
   text-decoration: underline;
 }
 
