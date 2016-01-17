@@ -19,7 +19,6 @@ function renderers(state) {
     var merkle = state.derived.merkle
     var path = state.path
     return h('article.commonform', [
-      header({ digest: state.derived.merkle.digest }),
       h('form',
         { onsubmit: function(event) {
             event.preventDefault()
@@ -38,6 +37,7 @@ function renderers(state) {
                         subject: 'Link to Common Form',
                         body: 'https://commonform.org/forms/' + state.digest }) ) } },
                 [ 'E-Mail' ]) ]),
+          header({ digest: state.derived.merkle.digest }),
           form({
             data: data,
             path: path,
