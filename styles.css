@@ -1,0 +1,86 @@
+@media all                        { html { font-size: 23px; } }
+@media all and (max-width:1000px) { html { font-size: 23px; } }
+@media all and (max-width:960px)  { html { font-size: 22px; } }
+@media all and (max-width:920px)  { html { font-size: 21px; } }
+@media all and (max-width:880px)  { html { font-size: 20px; } }
+@media all and (max-width:840px)  { html { font-size: 19px; } }
+@media all and (max-width:800px)  { html { font-size: 18px; } }
+@media all and (max-width:760px)  { html { font-size: 17px; } }
+@media all and (max-width:720px)  { html { font-size: 16px; } }
+@media all and (max-width:680px)  { html { font-size: 15px; } }
+@media all and (max-width:640px)  { html { font-size: 14px; } }
+@media all and (max-width:600px)  { html { font-size: 13px; } }
+@media all and (max-width:560px)  { html { font-size: 12px; } }
+@media all and (max-width:520px)  { html { font-size: 11px; } }
+
+body {
+  text-align: center;
+  font-family: "Century Schoolbook", Georgia;
+  color: #444;
+  text-rendering: optimizeLegibility;
+}
+
+.content {
+  width: 37rem;
+  margin: auto;
+  line-height: 1.4;
+  text-align: left;
+}
+
+section > section > p { margin-left: 3rem; }
+section > section > section > p { margin-left: 6rem; }
+section > section > section > section > p { margin-left: 9rem; }
+section > section > section > section > section > p { margin-left: 12rem; }
+
+section > section > .heading { margin-left: 3rem; }
+section > section > section > .heading { margin-left: 6rem; }
+section > section > section > section > .heading { margin-left: 9rem; }
+section > section > section > section > section > .heading { margin-left: 12rem; }
+
+.heading {
+  font-weight: bold;
+  text-indent: 0;
+}
+
+.conspicuous > p {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.conspicuous > p > .term,
+.conspicuous > p > dfn {
+  font-style: normal;
+}
+
+section {
+  position: relative;
+}
+
+.blank {
+  display: inline-block;
+  width: 5rem;
+  border-bottom: 1px dashed black;
+}
+
+.reference {
+  font-style: italic;
+}
+
+.reference:before {
+  content: '☞';
+}
+
+.term {
+  text-decoration: none;
+  color: inherit;
+  font-style: italic;
+}
+
+.term:hover {
+  text-decoration: underline;
+}
+
+dfn {
+  font-weight: bold;
+  font-style: normal;
+}
