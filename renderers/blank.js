@@ -18,7 +18,7 @@ function blank(state) {
         [ h('a.clear',
             { title: 'Clear',
               onclick: function() {
-              emit('blank', path, undefined) } }),
+                emit('blank', path, undefined) } }),
           value ]) :
       h('input.blank',
         { direction: value,
