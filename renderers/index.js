@@ -12,10 +12,11 @@ var querystring = require('querystring')
 
 function renderers(state) {
   var data = state.data
-  var blanks = { }
   if (!data) {
     return h('p', 'Loading ...') }
   else {
+    var blanks = state.blanks
+    var emit = state.emit
     var merkle = state.derived.merkle
     var path = state.path
     return h('article.commonform', [
@@ -44,9 +45,11 @@ function renderers(state) {
                 [ 'E-Mail' ]) ]),
           header({ digest: state.derived.merkle.digest }),
           form({
+            blanks: blanks,
             data: data,
-            path: path,
-            derived: { merkle: merkle } }) ]),
+            derived: { merkle: merkle },
+            emit: emit,
+            path: path }) ]),
       footer() ]) } }
 
 function fileName(title, extension) {

@@ -121,6 +121,7 @@ body {
 .commonform .blank {
   display: inline-block;
   width: 5rem;
+  border: none;
   border-bottom: 1px dashed black;
   position: relative;
   bottom: -1px;

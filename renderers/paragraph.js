@@ -17,7 +17,9 @@ var renderers = [
     renderer: require('./reference') } ]
 
 function paragraph(state) {
+  var blanks = state.blanks
   var data = state.data
+  var emit = state.emit
   var offset = state.offset
   var path = state.path
   return h('p',
@@ -28,5 +30,7 @@ function paragraph(state) {
           return find(renderers, function(renderer) {
             return renderer.predicate(child) })
           .renderer({
+              blanks: blanks,
               data: child,
+              emit: emit,
               path: childPath }) }) ]) }

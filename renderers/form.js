@@ -1,3 +1,5 @@
+module.exports = form
+
 var classnames = require('classnames')
 var group = require('commonform-group-series')
 var h = require('virtual-dom/h')
@@ -8,7 +10,9 @@ var series = require('./series')
 
 function form(state) {
   // State
+  var blanks = state.blanks
   var data = state.data
+  var emit = state.emit
   var merkle = state.derived.merkle
   var path = state.path
 
@@ -29,10 +33,12 @@ function form(state) {
         groups
           .map(function(group) {
             var groupState = {
-              path: path.concat(annotationsKey),
-              derived: { },
+              blanks: blanks,
               data: group,
-              offset: offset }
+              derived: { },
+              emit: emit,
+              offset: offset,
+              path: path.concat(annotationsKey) }
             var renderer
             if (group.type === 'series') {
               renderer = series
@@ -42,5 +48,3 @@ function form(state) {
             var result = renderer(groupState)
             offset += group.content.length
             return result }) ]) ] }
-
-module.exports = form

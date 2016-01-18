@@ -7,6 +7,7 @@
     "commonform-merkleize": "^0.3.2",
     "commonform-predicate": "^0.4.3",
     "commonform-welcome-form": "^1.0.0",
+    "deep-equal": "^1.0.1",
     "filesaver.js": "^0.2.0",
     "is-sha-256-hex-digest": "^1.0.0",
     "main-loop": "^3.2.0",
