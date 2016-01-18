@@ -1,3 +1,4 @@
+var critique = require('commonform-critique')
 var deepEqual = require('deep-equal')
 var lint = require('commonform-lint')
 var loadInitialForm = require('./utility/load-initial-form')
@@ -54,9 +55,12 @@ function computeDerivedState() {
   var form = applicationState.form
   applicationState.derived = {
     annotations: treeify(
-      lint(form).map(function(annotation) {
-        annotation.path = annotation.path.slice(0, -2)
-        return annotation })),
+      [ ]
+        .concat(critique(form))
+        .concat(lint(form))
+        .map(function(annotation) {
+          annotation.path = annotation.path.slice(0, -2)
+          return annotation })),
     merkle: merkleize(form) } }
 
 document
