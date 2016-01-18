@@ -10,7 +10,7 @@ var header = require('./header')
 function renderers(state) {
   var data = state.data
   if (!data) {
-    return h('p', 'Loading ...') }
+    return h('div') }
   else {
     var blanks = state.blanks
     var emit = state.emit
