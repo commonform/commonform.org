@@ -14,7 +14,7 @@ function series(state) {
         .concat([ 'content', absoluteIndex ])
       var result = require('./form')({
         blanks: blanks,
-        data: child,
+        form: child,
         derived: { merkle: merkle.content[absoluteIndex] },
         emit: emit,
         path: childPath })

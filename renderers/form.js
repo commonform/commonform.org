@@ -3,23 +3,23 @@ module.exports = form
 var classnames = require('classnames')
 var group = require('commonform-group-series')
 var h = require('virtual-dom/h')
-var heading = require('./heading')
 var jsonClone = require('../utility/json-clone')
-var paragraph = require('./paragraph')
-var series = require('./series')
+var renderHeading = require('./heading')
+var renderParagraph = require('./paragraph')
+var renderSeries = require('./series')
 
 function form(state) {
   // State
   var blanks = state.blanks
-  var data = state.data
+  var form = state.form
   var emit = state.emit
   var merkle = state.derived.merkle
   var path = state.path
 
   // Derivations
   var root = path.length === 0
-  var annotationsKey = ( root ? [ ] : [ 'form' ] )
-  var formObject = ( root ? data : data.form )
+  var formKeyArraySuffix = ( root ? [ ] : [ 'form' ] )
+  var formObject = ( root ? form : form.form )
   var groups = group(jsonClone(formObject))
 
   // Rendering
@@ -29,7 +29,7 @@ function form(state) {
       { className: classnames({
           conspicuous: ( 'conspicuous' in formObject ) }),
         attributes: { 'data-digest': merkle.digest } },
-      [ heading({ heading: data.heading, path: path }),
+      [ renderHeading({ heading: form.heading, path: path }),
         groups
           .map(function(group) {
             var groupState = {
@@ -38,13 +38,13 @@ function form(state) {
               derived: { },
               emit: emit,
               offset: offset,
-              path: path.concat(annotationsKey) }
+              path: path.concat(formKeyArraySuffix) }
             var renderer
             if (group.type === 'series') {
-              renderer = series
+              renderer = renderSeries
               groupState.derived.merkle = merkle }
             else {
-              renderer = paragraph }
+              renderer = renderParagraph }
             var result = renderer(groupState)
             offset += group.content.length
             return result }) ]) ] }

@@ -1,15 +1,15 @@
 module.exports = renderers
 
-var downloadButton = require('./download-button')
-var eMailButton = require('./e-mail-button')
-var footer = require('./footer')
-var form = require('./form')
 var h = require('virtual-dom/h')
-var header = require('./header')
+var renderDownloadButton = require('./download-button')
+var renderEMailButton = require('./e-mail-button')
+var renderFooter = require('./footer')
+var renderHeader = require('./header')
+var renderRenderForm = require('./form')
 
 function renderers(state) {
-  var data = state.data
-  if (!data) {
+  var form = state.form
+  if (!form) {
     return h('div') }
   else {
     var blanks = state.blanks
@@ -18,16 +18,16 @@ function renderers(state) {
     var path = state.path
     return h('article.commonform', [
       h('div.menu',
-        [ downloadButton(state),
-          eMailButton(state) ]),
+        [ renderDownloadButton(state),
+          renderEMailButton(state) ]),
       h('form',
         { onsubmit: function(event) {
             event.preventDefault() } },
-        [ header({ digest: state.derived.merkle.digest }),
-          form({
+        [ renderHeader({ digest: state.derived.merkle.digest }),
+          renderRenderForm({
             blanks: blanks,
-            data: data,
+            form: form,
             derived: { merkle: merkle },
             emit: emit,
             path: path }) ]),
-      footer() ]) } }
+      renderFooter() ]) } }

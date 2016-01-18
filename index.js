@@ -13,7 +13,7 @@ var applicationState = {
 
 eventBus
   .on('form', function(form) {
-    applicationState.data = form
+    applicationState.form = form
     computeDerivedState()
     mainLoop.update(applicationState)
     pushState() })
@@ -45,7 +45,7 @@ function pushState() {
   history.pushState({ digest: digest }, null, ( formPathPrefix + digest )) }
 
 function computeDerivedState() {
-  applicationState.derived = { merkle: merkleize(applicationState.data) } }
+  applicationState.derived = { merkle: merkleize(applicationState.form) } }
 
 document
   .querySelector('.container')

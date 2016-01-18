@@ -7,7 +7,7 @@ var h = require('virtual-dom/h')
 var outline = require('outline-numbering')
 
 function downloadButton(state) {
-  var data = state.data
+  var form = state.form
   var blanks = state.blanks
   return h('button',
     { onclick: function(event) {
@@ -18,7 +18,7 @@ function downloadButton(state) {
         if (title !== null) {
           filesaver(
             docx(
-              clone(data), blanks,
+              clone(form), blanks,
               { title: title, numbering: outline })
               .generate({ type: 'blob' }),
             fileName(title, 'docx')) } } },
