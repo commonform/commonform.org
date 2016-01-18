@@ -10,7 +10,17 @@ function blank(state) {
   var path = state.path
   var direction = find(blanks, function(element) {
     return deepEqual(element.blank, path) })
-  return h('input.blank',
-    { direction: ( direction ? direction.value : '' ),
-      onchange: function(event) {
-        emit('blank', path, event.target.value) } }) }
+  var value = ( direction ? direction.value : '' )
+  return (
+    value.length > 0 ?
+      h('span.blank',
+        { },
+        [ h('a.clear',
+            { title: 'Clear',
+              onclick: function() {
+              emit('blank', path, undefined) } }),
+          value ]) :
+      h('input.blank',
+        { direction: value,
+          onchange: function(event) {
+            emit('blank', path, event.target.value) } }) ) }

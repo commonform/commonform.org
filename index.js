@@ -20,13 +20,20 @@ eventBus
   .on('blank', function(blank, value) {
     var index = applicationState.blanks.findIndex(function(record) {
       return deepEqual(record.blank, blank) })
-    if (index < 0) {
-      applicationState.blanks.unshift({ blank: blank })
-      index = 0 }
-    applicationState.blanks[index].value = value
-    computeDerivedState()
-    mainLoop.update(applicationState)
-    pushState() })
+    if (value === undefined) {
+      if (index > -1) {
+        applicationState.blanks.splice(index, 1)
+        computeDerivedState()
+        mainLoop.update(applicationState)
+        pushState() } }
+    else {
+      if (index < 0) {
+        applicationState.blanks.unshift({ blank: blank })
+        index = 0 }
+      applicationState.blanks[index].value = value
+      computeDerivedState()
+      mainLoop.update(applicationState)
+      pushState() } })
 
 var mainLoop = require('main-loop')(
   applicationState,

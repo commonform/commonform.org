@@ -120,11 +120,26 @@ body {
 
 .commonform .blank {
   display: inline-block;
-  width: 5rem;
   border: none;
   border-bottom: 1px dashed black;
   position: relative;
   bottom: -1px;
+}
+
+.commonform input.blank {
+  width: 10rem;
+}
+
+.commonform span.blank:after {
+  content: ' ';
+}
+
+.commonform .clear {
+  cursor: pointer;
+}
+
+.commonform .clear:before {
+  content: 'ⓧ ';
 }
 
 .commonform .reference {
