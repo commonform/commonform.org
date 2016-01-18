@@ -104,11 +104,27 @@ body {
   background: inherit;
 }
 
+aside > p:before {
+  content: '— ';
+}
+
 .commonform section > p:first-child:before {
   content: '§';
   font-weight: normal;
   position: absolute;
   left: -2rem;
+}
+
+.commonform .error {
+  color: darkred;
+}
+
+.commonform .warn {
+  color: darkorange;
+}
+
+.commonform .info {
+  color: darkblue;
 }
 
 .commonform .heading {

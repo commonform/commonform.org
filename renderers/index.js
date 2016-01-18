@@ -5,13 +5,14 @@ var renderDownloadButton = require('./download-button')
 var renderEMailButton = require('./e-mail-button')
 var renderFooter = require('./footer')
 var renderHeader = require('./header')
-var renderRenderForm = require('./form')
+var renderForm = require('./form')
 
 function renderers(state) {
   var form = state.form
   if (!form) {
     return h('div') }
   else {
+    var annotations = state.derived.annotations
     var blanks = state.blanks
     var emit = state.emit
     var focused = state.focused
@@ -25,11 +26,13 @@ function renderers(state) {
           { onsubmit: function(event) {
               event.preventDefault() } },
           [ renderHeader({ digest: state.derived.merkle.digest }),
-            renderRenderForm({
+            renderForm({
               blanks: blanks,
               focused: focused,
               form: form,
-              derived: { merkle: merkle },
+              derived: {
+                annotations: annotations,
+                merkle: merkle },
               emit: emit,
               path: path }) ]),
         renderFooter() ]) } }

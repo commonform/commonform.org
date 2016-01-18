@@ -1,6 +1,8 @@
 var deepEqual = require('deep-equal')
+var lint = require('commonform-lint')
 var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
+var treeify = require('commonform-treeify-annotations')
 
 var formPathPrefix = '/forms/'
 
@@ -49,7 +51,13 @@ function pushState() {
   history.pushState({ digest: digest }, null, ( formPathPrefix + digest )) }
 
 function computeDerivedState() {
-  applicationState.derived = { merkle: merkleize(applicationState.form) } }
+  var form = applicationState.form
+  applicationState.derived = {
+    annotations: treeify(
+      lint(form).map(function(annotation) {
+        annotation.path = annotation.path.slice(0, -2)
+        return annotation })),
+    merkle: merkleize(form) } }
 
 document
   .querySelector('.container')

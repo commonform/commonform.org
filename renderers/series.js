@@ -1,6 +1,9 @@
 module.exports = series
 
+var get = require('keyarray').get
+
 function series(state) {
+  var annotations = state.derived.annotations
   var blanks = state.blanks
   var data = state.data
   var emit = state.emit
@@ -11,13 +14,14 @@ function series(state) {
   return data.content
     .map(function(child, index) {
       var absoluteIndex = ( index + offset )
-      var childPath = path
-        .concat([ 'content', absoluteIndex ])
+      var pathSuffix = [ 'content', absoluteIndex ]
       var result = require('./form')({
         blanks: blanks,
         form: child,
-        derived: { merkle: merkle.content[absoluteIndex] },
+        derived: {
+          annotations: get(annotations, [ 'content', absoluteIndex ], { }),
+          merkle: merkle.content[absoluteIndex] },
         emit: emit,
         focused: focused,
-        path: childPath })
+        path: path.concat(pathSuffix) })
       return result }) }
