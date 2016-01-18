@@ -17,19 +17,19 @@ function renderers(state) {
     var focused = state.focused
     var merkle = state.derived.merkle
     var path = state.path
-    return h('article.commonform', [
-      h('div.menu',
-        [ renderDownloadButton(state),
-          renderEMailButton(state) ]),
-      h('form',
-        { onsubmit: function(event) {
-            event.preventDefault() } },
-        [ renderHeader({ digest: state.derived.merkle.digest }),
-          renderRenderForm({
-            blanks: blanks,
-            focused: focused,
-            form: form,
-            derived: { merkle: merkle },
-            emit: emit,
-            path: path }) ]),
-      renderFooter() ]) } }
+    return h('article.commonform',
+      [ h('div.menu',
+          [ renderDownloadButton(state),
+            renderEMailButton(state) ]),
+        h('form',
+          { onsubmit: function(event) {
+              event.preventDefault() } },
+          [ renderHeader({ digest: state.derived.merkle.digest }),
+            renderRenderForm({
+              blanks: blanks,
+              focused: focused,
+              form: form,
+              derived: { merkle: merkle },
+              emit: emit,
+              path: path }) ]),
+        renderFooter() ]) } }

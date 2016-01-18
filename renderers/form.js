@@ -5,6 +5,7 @@ var deepEqual = require('deep-equal')
 var group = require('commonform-group-series')
 var h = require('virtual-dom/h')
 var jsonClone = require('../utility/json-clone')
+var renderDigest = require('./digest')
 var renderHeading = require('./heading')
 var renderParagraph = require('./paragraph')
 var renderSeries = require('./series')
@@ -37,6 +38,9 @@ function form(state) {
           event.stopPropagation()
           emit('focus', path) } },
       [ renderHeading({ heading: form.heading, path: path }),
+        ( isFocused ?
+            h('p.details', renderDigest({ digest: merkle.digest })) :
+            null ),
         groups
           .map(function(group) {
             var groupState = {

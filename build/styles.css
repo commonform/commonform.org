@@ -45,8 +45,9 @@ body {
   text-align: left;
 }
 
-.commonform .digest:before {
-  content: '[•] ';
+.commonform .digest {
+  font-family: "Andale Mono";
+  font-size: 75%;
 }
 
 .commonform header,
@@ -72,31 +73,35 @@ body {
   text-decoration: underline;
 }
 
+.commonform section > section > .heading,
+.commonform section > section > .details,
 .commonform section > section > p { margin-left: 3rem; }
+.commonform section > section > section > .heading,
+.commonform section > section > section > .details,
 .commonform section > section > section > p { margin-left: 6rem; }
+.commonform section > section > section > section > .heading,
+.commonform section > section > section > section > .details,
 .commonform section > section > section > section > p { margin-left: 9rem; }
+.commonform section > section > section > section > section > .heading,
+.commonform section > section > section > section > section > .details,
 .commonform section > section > section > section > section > p { margin-left: 12rem; }
+.commonform section > section > section > section > section > section > .heading,
+.commonform section > section > section > section > section > section > .details,
 .commonform section > section > section > section > section > section > p { margin-left: 15rem; }
+.commonform section > section > section > section > section > section > section > .heading,
+.commonform section > section > section > section > section > section > section > .details,
 .commonform section > section > section > section > section > section > section > p { margin-left: 18rem; }
+.commonform section > section > section > section > section > section > section > section > .heading,
+.commonform section > section > section > section > section > section > section > section > .details,
 .commonform section > section > section > section > section > section > section > section > p { margin-left: 21rem; }
+.commonform section > section > section > section > section > section > section > section > section > .heading,
+.commonform section > section > section > section > section > section > section > section > section > .details,
 .commonform section > section > section > section > section > section > section > section > section > p { margin-left: 24rem; }
-
-.commonform section > section > .heading { margin-left: 3rem; }
-.commonform section > section > section > .heading { margin-left: 6rem; }
-.commonform section > section > section > section > .heading { margin-left: 9rem; }
-.commonform section > section > section > section > section > .heading { margin-left: 12rem; }
-.commonform section > section > section > section > section > section > .heading { margin-left: 15rem; }
-.commonform section > section > section > section > section > section > section > .heading { margin-left: 18rem; }
-.commonform section > section > section > section > section > section > section > section > .heading { margin-left: 21rem; }
-.commonform section > section > section > section > section > section > section > section > section > .heading { margin-left: 24rem; }
 
 .commonform section,
 .commonform section > p {
   position: relative;
-}
-
-.commonform .focused {
-  border: 1px solid red;
+  background: inherit;
 }
 
 .commonform section > p:first-child:before {
@@ -127,6 +132,7 @@ body {
   border-bottom: 1px dashed black;
   position: relative;
   bottom: -1px;
+  background: inherit;
 }
 
 .commonform input.blank {
