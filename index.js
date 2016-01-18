@@ -32,8 +32,7 @@ eventBus
         index = 0 }
       applicationState.blanks[index].value = value
       computeDerivedState()
-      mainLoop.update(applicationState)
-      pushState() } })
+      mainLoop.update(applicationState) } })
 
 var mainLoop = require('main-loop')(
   applicationState,
