@@ -15,12 +15,13 @@ function blank(state) {
     value.length > 0 ?
       h('span.blank',
         { },
-        [ h('a.clear',
+        [ value,
+          h('a.clear',
             { title: 'Clear',
               onclick: function() {
-                emit('blank', path, undefined) } }),
-          value ]) :
-      h('input.blank',
-        { direction: value,
-          onchange: function(event) {
-            emit('blank', path, event.target.value) } }) ) }
+                emit('blank', path, undefined) } }) ]) :
+      [ h('a.flag', '✍'),
+        h('input.blank',
+          { direction: value,
+            onchange: function(event) {
+              emit('blank', path, event.target.value) } }) ] ) }

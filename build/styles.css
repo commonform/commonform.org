@@ -129,7 +129,20 @@ body {
   width: 10rem;
 }
 
-.commonform span.blank:after {
+.commonform .flag {
+  position: absolute;
+  display: block;
+  top: 0;
+  right: -2rem;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.commonform span.blank:before {
   content: ' ';
 }
 
@@ -138,7 +151,7 @@ body {
 }
 
 .commonform .clear:before {
-  content: 'ⓧ ';
+  content: ' ⌫ ';
 }
 
 .commonform .reference {
@@ -146,7 +159,7 @@ body {
 }
 
 .commonform .reference:before {
-  content: '☞';
+  content: '☞ ';
 }
 
 .commonform .use,
