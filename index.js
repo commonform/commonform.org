@@ -1,9 +1,7 @@
-var critique = require('commonform-critique')
+var annotate = require('./utility/annotate')
 var deepEqual = require('deep-equal')
-var lint = require('commonform-lint')
 var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
-var treeify = require('commonform-treeify-annotations')
 
 var formPathPrefix = '/forms/'
 
@@ -54,13 +52,7 @@ function pushState() {
 function computeDerivedState() {
   var form = applicationState.form
   applicationState.derived = {
-    annotations: treeify(
-      [ ]
-        .concat(critique(form))
-        .concat(lint(form))
-        .map(function(annotation) {
-          annotation.path = annotation.path.slice(0, -2)
-          return annotation })),
+    annotations: annotate(form),
     merkle: merkleize(form) } }
 
 document
