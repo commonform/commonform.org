@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BUILD=public
+BUILD=build
 ROOT=/var/www/commonform.org
 FLAGS="--verbose --checksum --recursive --sparse --compress --human-readable --progress"
 REF=${1:-HEAD}
