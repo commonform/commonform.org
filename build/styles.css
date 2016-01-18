@@ -108,7 +108,7 @@ aside > p:before {
   content: '— ';
 }
 
-.commonform section > p:first-child:before {
+.commonform section > p:first-of-type:before {
   content: '§';
   font-weight: normal;
   position: absolute;
