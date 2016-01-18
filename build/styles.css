@@ -178,3 +178,13 @@ body {
   font-weight: bold;
   font-style: normal;
 }
+
+.commonform dfn:before {
+  font-weight: normal;
+  content: '“';
+}
+
+.commonform dfn:after {
+  font-weight: normal;
+  content: '”';
+}
