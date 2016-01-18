@@ -32,7 +32,23 @@ tape('Browser', function(test) {
       .then(function(existing) {
         test.assert(
           existing,
-          'Page displays digest of welcome form.') }) }) })
+          'Page displays digest of welcome form.') }) })
+
+  test.test('Load from API', function(test) {
+    test.plan(1)
+    var digest = (
+      '813203e4f775c681' +
+      'aee09075f0990e7e' +
+      '79b5037fcce9440b' +
+      '66b4bfb436206748')
+    webdriver
+      .url('http://localhost:8000/forms/' + digest)
+      .waitForExist('//*[contains(text(),"api.commonform.org")]')
+      .isExisting('//*[contains(text(),"api.commonform.org")]')
+      .then(function(existing) {
+        test.assert(
+          existing,
+          'Page displays form from API.') }) }) })
 
 tape.onFinish(function() {
   webdriver.end() })
