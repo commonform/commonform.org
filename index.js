@@ -9,6 +9,7 @@ var eventBus = new (require('events').EventEmitter)
 var applicationState = {
   blanks: [ ],
   path: [ ],
+  focused: null,
   emit: eventBus.emit.bind(eventBus) }
 
 eventBus
@@ -33,6 +34,10 @@ eventBus
       applicationState.blanks[index].value = value
       computeDerivedState()
       mainLoop.update(applicationState) } })
+  .on('focus', function(focused) {
+    applicationState.focused = focused
+    computeDerivedState()
+    mainLoop.update(applicationState) })
 
 var mainLoop = require('main-loop')(
   applicationState,

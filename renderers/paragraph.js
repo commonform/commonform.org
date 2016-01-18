@@ -20,6 +20,7 @@ function paragraph(state) {
   var blanks = state.blanks
   var data = state.data
   var emit = state.emit
+  var focused = state.focused
   var offset = state.offset
   var path = state.path
   return h('p',
@@ -33,4 +34,5 @@ function paragraph(state) {
               blanks: blanks,
               data: child,
               emit: emit,
+              focused: focused,
               path: childPath }) }) ]) }

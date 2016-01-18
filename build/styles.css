@@ -95,6 +95,10 @@ body {
   position: relative;
 }
 
+.commonform .focused {
+  border: 1px solid red;
+}
+
 .commonform section > p:first-child:before {
   content: '§';
   font-weight: normal;

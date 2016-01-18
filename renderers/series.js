@@ -4,6 +4,7 @@ function series(state) {
   var blanks = state.blanks
   var data = state.data
   var emit = state.emit
+  var focused = state.focused
   var merkle = state.derived.merkle
   var offset = state.offset
   var path = state.path
@@ -17,5 +18,6 @@ function series(state) {
         form: child,
         derived: { merkle: merkle.content[absoluteIndex] },
         emit: emit,
+        focused: focused,
         path: childPath })
       return result }) }

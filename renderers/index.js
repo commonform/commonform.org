@@ -14,6 +14,7 @@ function renderers(state) {
   else {
     var blanks = state.blanks
     var emit = state.emit
+    var focused = state.focused
     var merkle = state.derived.merkle
     var path = state.path
     return h('article.commonform', [
@@ -26,6 +27,7 @@ function renderers(state) {
         [ renderHeader({ digest: state.derived.merkle.digest }),
           renderRenderForm({
             blanks: blanks,
+            focused: focused,
             form: form,
             derived: { merkle: merkle },
             emit: emit,
