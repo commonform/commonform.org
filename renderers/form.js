@@ -44,8 +44,7 @@ function form(state) {
       { className: classnames({
           conspicuous: ( 'conspicuous' in formObject ),
           focused: isFocused }),
-        attributes: { 'data-digest': merkle.digest },
-        ondblclick: focusThisForm },
+        attributes: { 'data-digest': merkle.digest } },
       [ ( root ?
             undefined :
             h('a.sigil',
