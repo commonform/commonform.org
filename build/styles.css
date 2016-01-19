@@ -75,27 +75,35 @@ body {
 
 .commonform section > section > .heading,
 .commonform section > section > .details,
+.commonform section > section > .sigil,
 .commonform section > section > p { margin-left: 3rem; }
 .commonform section > section > section > .heading,
 .commonform section > section > section > .details,
+.commonform section > section > section > .sigil,
 .commonform section > section > section > p { margin-left: 6rem; }
 .commonform section > section > section > section > .heading,
 .commonform section > section > section > section > .details,
+.commonform section > section > section > section > .sigil,
 .commonform section > section > section > section > p { margin-left: 9rem; }
 .commonform section > section > section > section > section > .heading,
 .commonform section > section > section > section > section > .details,
+.commonform section > section > section > section > section > .sigil,
 .commonform section > section > section > section > section > p { margin-left: 12rem; }
 .commonform section > section > section > section > section > section > .heading,
 .commonform section > section > section > section > section > section > .details,
+.commonform section > section > section > section > section > section > .sigil,
 .commonform section > section > section > section > section > section > p { margin-left: 15rem; }
 .commonform section > section > section > section > section > section > section > .heading,
 .commonform section > section > section > section > section > section > section > .details,
+.commonform section > section > section > section > section > section > section > .sigil,
 .commonform section > section > section > section > section > section > section > p { margin-left: 18rem; }
 .commonform section > section > section > section > section > section > section > section > .heading,
 .commonform section > section > section > section > section > section > section > section > .details,
+.commonform section > section > section > section > section > section > section > section > .sigil,
 .commonform section > section > section > section > section > section > section > section > p { margin-left: 21rem; }
 .commonform section > section > section > section > section > section > section > section > section > .heading,
 .commonform section > section > section > section > section > section > section > section > section > .details,
+.commonform section > section > section > section > section > section > section > section > section > .sigil,
 .commonform section > section > section > section > section > section > section > section > section > p { margin-left: 24rem; }
 
 .commonform section,
@@ -108,11 +116,13 @@ body {
   content: '— ';
 }
 
-.commonform section > p:first-of-type:before {
+.commonform .sigil {
+  display: block;
   content: '§';
   font-weight: normal;
   position: absolute;
   left: -2rem;
+  cursor: pointer;
 }
 
 .commonform .marginalia {

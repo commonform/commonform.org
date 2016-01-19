@@ -46,7 +46,13 @@ function form(state) {
           focused: isFocused }),
         attributes: { 'data-digest': merkle.digest },
         ondblclick: focusThisForm },
-      [ ( form.heading ?
+      [ ( root ?
+            undefined :
+            h('a.sigil',
+              { title: 'Click to Focus',
+                onclick: focusThisForm },
+              '§') ),
+        ( form.heading ?
             thunk(renderHeading, form.heading) :
             undefined ),
         ( isFocused ?
