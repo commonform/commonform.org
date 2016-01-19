@@ -72,7 +72,7 @@ function form(state) {
             ( annotationsHere.some(function(annotation) {
                 return annotation.level !== 'error' }) ?
                 h('a.flag',
-                  { title: 'Click to Show Annotatios' },
+                  { title: 'Click to Show Annotations' },
                   '⚐') :
                 undefined ) ]),
         groups
