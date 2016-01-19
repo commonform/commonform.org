@@ -13,13 +13,11 @@ function renderers(state) {
   if (!form) {
     return h('div') }
   else {
-    var annotations = state.derived.annotations
     var blanks = state.blanks
+    var derived = state.derived
+    var digest = derived.merkle.digest
     var emit = state.emit
     var focused = state.focused
-    var merkle = state.derived.merkle
-    var path = state.path
-    var digest = state.derived.merkle.digest
     return h('article.commonform',
       [ h('div.menu',
           [ renderDownloadButton(state),
@@ -32,9 +30,7 @@ function renderers(state) {
               blanks: blanks,
               focused: focused,
               form: form,
-              derived: {
-                annotations: annotations,
-                merkle: merkle },
+              derived: derived,
               emit: emit,
-              path: path }) ]),
+              path: [ ] }) ]),
         thunk(renderFooter) ]) } }

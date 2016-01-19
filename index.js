@@ -3,62 +3,101 @@ var deepEqual = require('deep-equal')
 var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
 
+// The browser path prefix for specific Common Forms.
 var formPathPrefix = '/forms/'
 
+// An `EventEmitter` for sending and receiving changes to the global
+// application state.
 var eventBus = new (require('events').EventEmitter)
 
-var applicationState = {
+// The global application state.
+var state = {
+
+  // The Common Form to display.
+  form: null,
+
+  // Values of fill-in-the-blanks in the form.
+  // Matches the JSON Schema:
+  // { "type": "array",
+  //   "items": {
+  //     "type": "object",
+  //     "properties": {
+  //       "blank": {
+  //         "comment": "Array of keys locating the blank in the form.",
+  //         "type": "array" },
+  //       "value": {
+  //         "comment": "String to insert into the form.",
+  //         "type": "string" } } } }
   blanks: [ ],
-  path: [ ],
+
+  // A key array identifying the currently focused Common Form within the
+  // Common Form to display, or null if no form is focused.
   focused: null,
+
+  // The `emit` method of the global event bus, to be passed down and used in
+  // event handlers to update the global state.
   emit: eventBus.emit.bind(eventBus) }
 
+// Global event bus event handlers. Event listeners bound to user interface
+// elements fire these events to update the global state.
 eventBus
+
+  // Load a new Common Form.
   .on('form', function(form) {
-    applicationState.form = form
+    state.form = form
     computeDerivedState()
-    mainLoop.update(applicationState)
+    mainLoop.update(state)
     pushState() })
+
+  // Assign or remove a value from a fill-in-the-blank.
   .on('blank', function(blank, value) {
-    var index = applicationState.blanks.findIndex(function(record) {
+    var index = state.blanks.findIndex(function(record) {
       return deepEqual(record.blank, blank) })
     if (value === undefined) {
       if (index > -1) {
-        applicationState.blanks.splice(index, 1)
+        state.blanks.splice(index, 1)
         computeDerivedState()
-        mainLoop.update(applicationState)
+        mainLoop.update(state)
         pushState() } }
     else {
       if (index < 0) {
-        applicationState.blanks.unshift({ blank: blank })
+        state.blanks.unshift({ blank: blank })
         index = 0 }
-      applicationState.blanks[index].value = value
+      state.blanks[index].value = value
       computeDerivedState()
-      mainLoop.update(applicationState) } })
-  .on('focus', function(focused) {
-    applicationState.focused = focused
-    computeDerivedState()
-    mainLoop.update(applicationState) })
+      mainLoop.update(state) } })
 
+  // Focus a Common Form.
+  .on('focus', function(focused) {
+    state.focused = focused
+    computeDerivedState()
+    mainLoop.update(state) })
+
+// The main loop that rerenders the user interface on global state change.
 var mainLoop = require('main-loop')(
-  applicationState,
+  state,
   require('./renderers'),
   require('virtual-dom'))
 
+// Push a state of the application to the browser's `history`.
 function pushState() {
-  var digest = applicationState.derived.merkle.digest
+  var digest = state.derived.merkle.digest
   history.pushState({ digest: digest }, null, ( formPathPrefix + digest )) }
 
+// Compute various information about the displayed Common Form when it changes.
 function computeDerivedState() {
-  var form = applicationState.form
-  applicationState.derived = {
+  var form = state.form
+  state.derived = {
     annotations: annotate(form),
     merkle: merkleize(form) } }
 
+// Point the main rendering loop to an element on the page.
 document
   .querySelector('.container')
   .appendChild(mainLoop.target)
 
+// Load a form, either the default, "welcome" form, or the form indicated in
+// the browser's location path.
 loadInitialForm(
   window.location.pathname,
   formPathPrefix,
