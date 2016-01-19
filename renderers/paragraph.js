@@ -1,38 +1,35 @@
 module.exports = paragraph
 
-var find = require('array-find')
 var h = require('virtual-dom/h')
 var predicates = require('commonform-predicate')
-
-var renderers = [
-  { predicate: predicates.text,
-    renderer: require('./text') },
-  { predicate: predicates.use,
-    renderer: require('./use') },
-  { predicate: predicates.definition,
-    renderer: require('./definition') },
-  { predicate: predicates.blank,
-    renderer: require('./blank') },
-  { predicate: predicates.reference,
-    renderer: require('./reference') } ]
+var renderText = require('./text')
+var renderUse = require('./use')
+var renderDefinition = require('./definition')
+var renderBlank = require('./blank')
+var renderReference = require('./reference')
+var thunk = require('vdom-thunk')
 
 function paragraph(state) {
   var blanks = state.blanks
   var data = state.data
   var emit = state.emit
-  var focused = state.focused
   var offset = state.offset
   var path = state.path
   return h('p',
     [ data.content
         .map(function(child, index) {
-          var childPath = path
-            .concat([ 'content', offset + index ])
-          return find(renderers, function(renderer) {
-            return renderer.predicate(child) })
-          .renderer({
-              blanks: blanks,
-              data: child,
-              emit: emit,
-              focused: focused,
-              path: childPath }) }) ]) }
+          if (predicates.text(child)) {
+            return thunk(renderText, child) }
+          else if (predicates.use(child)) {
+            return thunk(renderUse, child.use) }
+          else if (predicates.definition(child)) {
+            return thunk(renderDefinition, child.definition) }
+          else if (predicates.blank(child)) {
+            var childPath = path
+              .concat([ 'content', ( offset + index ) ])
+            return renderBlank(
+              { blanks: blanks,
+                emit: emit,
+                path: childPath }) }
+          else if (predicates.reference(child)) {
+            return thunk(renderReference, child.reference) } }) ]) }

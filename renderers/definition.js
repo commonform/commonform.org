@@ -2,7 +2,6 @@ module.exports = definition
 
 var h = require('virtual-dom/h')
 
-function definition(state) {
-  var term = state.data.definition
+function definition(term) {
   var description = ( 'Definition of ' + term )
   return h('dfn', { id: description, title: description }, term) }

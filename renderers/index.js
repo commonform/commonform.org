@@ -6,6 +6,7 @@ var renderEMailButton = require('./e-mail-button')
 var renderFooter = require('./footer')
 var renderHeader = require('./header')
 var renderForm = require('./form')
+var thunk = require('vdom-thunk')
 
 function renderers(state) {
   var form = state.form
@@ -18,14 +19,15 @@ function renderers(state) {
     var focused = state.focused
     var merkle = state.derived.merkle
     var path = state.path
+    var digest = state.derived.merkle.digest
     return h('article.commonform',
       [ h('div.menu',
           [ renderDownloadButton(state),
-            renderEMailButton(state) ]),
+            thunk(renderEMailButton, digest) ]),
         h('form',
           { onsubmit: function(event) {
               event.preventDefault() } },
-          [ renderHeader(state.derived.merkle.digest),
+          [ thunk(renderHeader, digest),
             renderForm({
               blanks: blanks,
               focused: focused,
@@ -35,4 +37,4 @@ function renderers(state) {
                 merkle: merkle },
               emit: emit,
               path: path }) ]),
-        renderFooter() ]) } }
+        thunk(renderFooter) ]) } }

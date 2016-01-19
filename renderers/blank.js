@@ -5,6 +5,7 @@ var find = require('array-find')
 var h = require('virtual-dom/h')
 
 function blank(state) {
+  console.log(state)
   var blanks = state.blanks
   var emit = state.emit
   var path = state.path

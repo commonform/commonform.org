@@ -11,6 +11,7 @@ var renderDigest = require('./digest')
 var renderHeading = require('./heading')
 var renderParagraph = require('./paragraph')
 var renderSeries = require('./series')
+var thunk = require('vdom-thunk')
 
 function form(state) {
   // State
@@ -44,11 +45,15 @@ function form(state) {
         ondblclick: function(event) {
           event.stopPropagation()
           emit('focus', path) } },
-      [ renderHeading(form.heading),
+      [ ( form.heading ?
+            thunk(renderHeading, form.heading) :
+            undefined ),
         ( isFocused ?
             h('p.details',
-              [ renderDigest(merkle.digest),
-                renderAnnotations(annotationsHere) ]) :
+              [ thunk(renderDigest, merkle.digest),
+                ( annotationsHere.length > 0 ?
+                    thunk(renderAnnotations, annotationsHere) :
+                    undefined ) ]) :
             undefined ),
         ( annotationsHere.some(function(annotation) {
             return annotation.level === 'error' }) ?

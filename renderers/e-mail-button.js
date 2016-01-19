@@ -3,8 +3,7 @@ module.exports = eMailButton
 var h = require('virtual-dom/h')
 var querystring = require('querystring')
 
-function eMailButton(state) {
-  var digest = state.derived.merkle.digest
+function eMailButton(digest) {
   return h('button',
     { onclick: function(event) {
         event.preventDefault()

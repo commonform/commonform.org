@@ -3,8 +3,7 @@ module.exports = annotations
 var h = require('virtual-dom/h')
 
 function annotations(annotations) {
-  if (annotations && annotations.length > 0) {
-    return h('aside', annotations.map(annotation)) } }
+  return h('aside', annotations.map(annotation)) }
 
 function annotation(annotation) {
   return h('p.',
