@@ -44,10 +44,10 @@ function form(state) {
         ondblclick: function(event) {
           event.stopPropagation()
           emit('focus', path) } },
-      [ renderHeading({ heading: form.heading, path: path }),
+      [ renderHeading(form.heading),
         ( isFocused ?
             h('p.details',
-              [ renderDigest({ digest: merkle.digest }),
+              [ renderDigest(merkle.digest),
                 renderAnnotations(annotationsHere) ]) :
             undefined ),
         ( annotationsHere.some(function(annotation) {

@@ -2,8 +2,7 @@ module.exports = digest
 
 var h = require('virtual-dom/h')
 
-function digest(state) {
-  var digest = state.digest
+function digest(digest) {
   return h('span.digest',
     { title: ( 'The fingerprint of this Common Form') },
     [ digest.slice(0, 16),

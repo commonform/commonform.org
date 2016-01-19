@@ -25,7 +25,7 @@ function renderers(state) {
         h('form',
           { onsubmit: function(event) {
               event.preventDefault() } },
-          [ renderHeader({ digest: state.derived.merkle.digest }),
+          [ renderHeader(state.derived.merkle.digest),
             renderForm({
               blanks: blanks,
               focused: focused,
