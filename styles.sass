@@ -1,0 +1,230 @@
+@media all
+  html
+    font-size: 23px
+@media all and (max-width:1000px)
+  html
+    font-size: 23px
+@media all and (max-width:960px)
+  html
+    font-size: 22px
+@media all and (max-width:920px)
+  html
+    font-size: 21px
+@media all and (max-width:880px)
+  html
+    font-size: 20px
+@media all and (max-width:840px)
+  html
+    font-size: 19px
+@media all and (max-width:800px)
+  html
+    font-size: 18px
+@media all and (max-width:760px)
+  html
+    font-size: 17px
+@media all and (max-width:720px)
+  html
+    font-size: 16px
+@media all and (max-width:680px)
+  html
+    font-size: 15px
+@media all and (max-width:640px)
+  html
+    font-size: 14px
+@media all and (max-width:600px)
+  html
+    font-size: 13px
+@media all and (max-width:560px)
+  html
+    font-size: 12px
+@media all and (max-width:520px)
+  html
+    font-size: 11px
+
+body
+  text-align: center
+  font-family: "Century Schoolbook", Georgia
+  color: #444
+  text-rendering: optimizeLegibility
+
+.menu button
+  border-radius: 1000px
+  background: white
+  border: 1px solid #777
+  font-family: 'Verdana'
+  padding: 0 1ex
+  margin-right: 1ex
+
+.menu button:last-child
+  margin-right: 0
+
+.menu button:hover
+  border: 1px solid black
+  color: black
+
+.container
+  width: 37rem
+  margin: 2rem auto
+  line-height: 1.4
+  text-align: left
+
+.commonform
+  .digest
+    font-family: "Andale Mono"
+    font-size: 75%
+
+  header,
+  .menu
+    padding: 0 0 1rem 0
+    margin: 0 0 1rem 0
+
+  footer
+    border-top: 1px solid black
+    margin: 1rem 0
+    padding: 1em 0
+    font-size: 75%
+    text-align: right
+
+  footer a
+    text-decoration: none
+    color: inherit
+
+  footer a:hover
+    text-decoration: underline
+
+  section > section > .heading,
+  section > section > .details,
+  section > section > .sigil,
+  section > section > p
+    margin-left: 3rem
+  section > section > section > .heading,
+  section > section > section > .details,
+  section > section > section > .sigil,
+  section > section > section > p
+    margin-left: 6rem
+  section > section > section > section > .heading,
+  section > section > section > section > .details,
+  section > section > section > section > .sigil,
+  section > section > section > section > p
+    margin-left: 9rem
+  section > section > section > section > section > .heading,
+  section > section > section > section > section > .details,
+  section > section > section > section > section > .sigil,
+  section > section > section > section > section > p
+    margin-left: 12rem
+  section > section > section > section > section > section > .heading,
+  section > section > section > section > section > section > .details,
+  section > section > section > section > section > section > .sigil,
+  section > section > section > section > section > section > p
+    margin-left: 15rem
+  section > section > section > section > section > section > section > .heading,
+  section > section > section > section > section > section > section > .details,
+  section > section > section > section > section > section > section > .sigil,
+  section > section > section > section > section > section > section > p
+    margin-left: 18rem
+  section > section > section > section > section > section > section > section > .heading,
+  section > section > section > section > section > section > section > section > .details,
+  section > section > section > section > section > section > section > section > .sigil,
+  section > section > section > section > section > section > section > section > p
+    margin-left: 21rem
+  section > section > section > section > section > section > section > section > section > .heading,
+  section > section > section > section > section > section > section > section > section > .details,
+  section > section > section > section > section > section > section > section > section > .sigil,
+  section > section > section > section > section > section > section > section > section > p
+    margin-left: 24rem
+
+  section,
+  section > p
+    position: relative
+    background: inherit
+
+  aside > p:before
+    content: '— '
+
+  .sigil
+    display: block
+    content: '§'
+    font-weight: normal
+    position: absolute
+    left: -2rem
+    cursor: pointer
+
+  .marginalia
+    display: block
+    cursor: pointer
+    position: absolute
+    right: -2rem
+
+  .marginalia .flag
+    display: block
+    clear: both
+    width: 100%
+
+  .error
+    color: darkred
+
+  .warn
+    color: darkorange
+
+  .info
+    color: darkblue
+
+  .heading
+    font-weight: bold
+    text-indent: 0
+
+  .conspicuous > p
+    font-weight: bold
+    font-style: italic
+
+  .conspicuous > p > .use,
+  .conspicuous > p > dfn
+    font-style: normal
+
+  .blank
+    display: inline-block
+    border: none
+    border-bottom: 1px dashed black
+    position: relative
+    bottom: -1px
+    background: inherit
+
+  input.blank
+    width: 10rem
+
+  span.blank:before
+    content: ' '
+
+  .clear
+    cursor: pointer
+
+  .clear:before
+    content: ' ⌫ '
+
+  .reference
+    font-style: italic
+
+  .reference:before
+    content: '☞ '
+
+  .use,
+  .reference
+    text-decoration: none
+    color: inherit
+    font-style: italic
+
+  .use:hover,
+  .reference:hover
+    text-decoration: underline
+
+  dfn
+    font-weight: bold
+    font-style: normal
+
+  dfn:before
+    font-weight: normal
+    content: '“'
+
+  dfn:after
+    font-weight: normal
+    content: '”'
