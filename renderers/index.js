@@ -18,9 +18,10 @@ function renderers(state) {
     var digest = derived.merkle.digest
     var emit = state.emit
     var focused = state.focused
+    var mobile = state.mobile
     return h('article.commonform',
       [ h('div.menu',
-          [ renderDownloadButton(state),
+          [ ( mobile ? renderDownloadButton(state) : undefined ),
             thunk(renderEMailButton, digest) ]),
         h('form',
           { onsubmit: function(event) {

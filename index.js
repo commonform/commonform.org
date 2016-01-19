@@ -1,3 +1,4 @@
+var MobileDetect = require('mobile-detect')
 var annotate = require('./utility/annotate')
 var deepEqual = require('deep-equal')
 var loadInitialForm = require('./utility/load-initial-form')
@@ -36,7 +37,10 @@ var state = {
 
   // The `emit` method of the global event bus, to be passed down and used in
   // event handlers to update the global state.
-  emit: eventBus.emit.bind(eventBus) }
+  emit: eventBus.emit.bind(eventBus),
+
+  // Detect mobile user agents, so we can conditionally render user interface.
+  mobile: new MobileDetect(window.navigator.userAgent).mobile() }
 
 // Global event bus event handlers. Event listeners bound to user interface
 // elements fire these events to update the global state.
