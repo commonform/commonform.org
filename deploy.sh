@@ -14,7 +14,9 @@ REF=${1:-HEAD}
 	git clone -s "$GITDIR" "$TMPDIR"
 	cd $TMPDIR
 	npm install
+  npm shrinkwrap --dev
 	npm run build
+  mv npm-shrinkwrap.json build/npm-shrinkwrap.json
 	rsync $FLAGS $BUILD/* commonform.org:$ROOT/releases/$COMMIT
 	cat $BUILD/index.html | sed -e "s/RELEASE\//https:\/\/commonform.org\/releases\/$COMMIT\//" > index.html
 	rsync $FLAGS index.html commonform.org:$ROOT/
