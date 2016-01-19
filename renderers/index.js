@@ -21,7 +21,7 @@ function renderers(state) {
     var mobile = state.mobile
     return h('article.commonform',
       [ h('div.menu',
-          [ ( mobile ? renderDownloadButton(state) : undefined ),
+          [ ( mobile ? undefined : renderDownloadButton(state) ),
             thunk(renderEMailButton, digest) ]),
         h('form',
           { onsubmit: function(event) {
