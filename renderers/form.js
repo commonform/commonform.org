@@ -36,15 +36,16 @@ function form(state) {
 
   // Rendering
   var offset = 0
+  function focusThisForm(event) {
+    event.stopPropagation()
+    emit('focus', path) }
   return [
     h('section',
       { className: classnames({
           conspicuous: ( 'conspicuous' in formObject ),
           focused: isFocused }),
         attributes: { 'data-digest': merkle.digest },
-        ondblclick: function(event) {
-          event.stopPropagation()
-          emit('focus', path) } },
+        ondblclick: focusThisForm },
       [ ( form.heading ?
             thunk(renderHeading, form.heading) :
             undefined ),
@@ -55,14 +56,20 @@ function form(state) {
                     thunk(renderAnnotations, annotationsHere) :
                     undefined ) ]) :
             undefined ),
-        ( annotationsHere.some(function(annotation) {
-            return annotation.level === 'error' }) ?
-            h('a.flag', { title: 'Error' }, '⚠') :
-            undefined ),
-        ( annotationsHere.some(function(annotation) {
-            return annotation.level !== 'error' }) ?
-            h('a.flag', { title: 'Notes' }, '⚐') :
-            undefined ),
+        h('aside.marginalia',
+          { onclick: focusThisForm },
+          [ ( annotationsHere.some(function(annotation) {
+                return annotation.level === 'error' }) ?
+                h('a.flag',
+                  { title: 'Click to Show Error' },
+                  '⚠') :
+                undefined ),
+            ( annotationsHere.some(function(annotation) {
+                return annotation.level !== 'error' }) ?
+                h('a.flag',
+                  { title: 'Click to Show Annotatios' },
+                  '⚐') :
+                undefined ) ]),
         groups
           .map(function(group) {
             var groupState = {
