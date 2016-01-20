@@ -27,12 +27,14 @@
     "node-sass": "^3.4.2",
     "stream-replace": "^1.0.0",
     "tape": "^4.4.0",
+    "uglifyify": "^3.0.1",
+    "uglifyjs": "^2.4.10",
     "watchify": "^3.7.0",
     "webdriverio": "^3.4.0"
   },
   "private": true,
   "scripts": {
-    "buildjs": "browserify index.js > build/browser.js",
+    "buildjs": "browserify -t uglifyify index.js | uglifyjs -c > build/browser.js",
     "buildcss": "node-sass --output-style compressed styles.sass > build/styles.css",
     "build": "npm run buildjs && npm run buildcss",
     "chromedriver": "chromedriver --url-base=/wd/hub",
