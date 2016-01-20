@@ -15,7 +15,7 @@ function paragraph(state) {
   var emit = state.emit
   var offset = state.offset
   var path = state.path
-  return h('p',
+  return h('p.text',
     [ data.content
         .map(function(child, index) {
           if (predicates.text(child)) {
