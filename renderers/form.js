@@ -36,9 +36,9 @@ function form(state) {
 
   // Rendering
   var offset = 0
-  function focusThisForm(event) {
+  function toggleFocus(event) {
     event.stopPropagation()
-    emit('focus', path) }
+    emit('focus', ( isFocused ? undefined : path )) }
   return [
     h('section',
       { className: classnames({
@@ -49,7 +49,7 @@ function form(state) {
             undefined :
             h('a.sigil',
               { title: 'Click to Focus',
-                onclick: focusThisForm },
+                onclick: toggleFocus },
               '§') ),
         ( form.heading ?
             thunk(renderHeading, form.heading) :
@@ -62,7 +62,7 @@ function form(state) {
                     undefined ) ]) :
             undefined ),
         h('aside.marginalia',
-          { onclick: focusThisForm },
+          { onclick: toggleFocus },
           [ ( annotationsHere.some(function(annotation) {
                 return annotation.level === 'error' }) ?
                 h('a.flag',
