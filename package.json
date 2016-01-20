@@ -34,7 +34,7 @@
   },
   "private": true,
   "scripts": {
-    "buildjs": "browserify -t uglifyify index.js | uglifyjs -c > build/browser.js",
+    "buildjs": "browserify -t uglifyify index.js | uglifyjs -c 2>/dev/null > build/browser.js",
     "buildcss": "node-sass --output-style compressed styles.sass > build/styles.css",
     "build": "npm run buildjs && npm run buildcss",
     "chromedriver": "chromedriver --url-base=/wd/hub",
