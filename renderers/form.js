@@ -6,6 +6,7 @@ var get = require('keyarray').get
 var group = require('commonform-group-series')
 var h = require('virtual-dom/h')
 var jsonClone = require('../utility/json-clone')
+var isBlank = require('commonform-predicate').blank
 var renderAnnotations = require('./annotations')
 var renderDigest = require('./digest')
 var renderHeading = require('./heading')
@@ -74,6 +75,16 @@ function form(state) {
                 h('a.flag',
                   { title: 'Click to Show Annotations' },
                   '⚐') :
+                undefined ),
+            ( formObject.content
+                .some(function(element, index) {
+                   return (
+                     isBlank(element) &&
+                     !blanks.some(function(direction) {
+                       return deepEqual(
+                         direction.blank,
+                         path.concat('form', 'content', index)) }) ) }) ?
+                h('a.flag', { title: 'Empty Blank' }, '✍') :
                 undefined ) ]),
         groups
           .map(function(group) {

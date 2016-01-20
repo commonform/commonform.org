@@ -20,8 +20,7 @@ function blank(state) {
             { title: 'Clear',
               onclick: function() {
                 emit('blank', path, undefined) } }) ]) :
-      [ h('a.flag', { title: 'Fill-in-the-Blank' }, '✍'),
-        h('input.blank',
+      [ h('input.blank',
           { direction: value,
             onchange: function(event) {
               emit('blank', path, event.target.value) } }) ] ) }
