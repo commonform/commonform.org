@@ -9,5 +9,5 @@ function annotation(annotation) {
   return h('p.',
     { className: annotation.level },
     [ ( annotation.url ?
-        h('a', { href: annotation.url }, annotation.message) :
-        annotation.message ) ]) }
+          h('a', { href: annotation.url }, annotation.message) :
+          annotation.message ) ]) }
