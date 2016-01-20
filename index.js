@@ -5,7 +5,7 @@ var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
 
 // The browser path prefix for specific Common Forms.
-var formPathPrefix = '/forms/'
+var formPathPrefix = require('./utility/constants').formPrefix
 
 // An `EventEmitter` for sending and receiving changes to the global
 // application state.

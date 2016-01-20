@@ -1,8 +1,10 @@
 var xhr = require('xhr')
 
+var api = require('./constants').api
+
 function downloadForm(digest, callback) {
   xhr(
-    { url: 'https://api.commonform.org/forms/' + digest },
+    { url: ( api + '/forms/' + digest ) },
     function(error, response, body) {
       if (error) {
         callback(error) }
