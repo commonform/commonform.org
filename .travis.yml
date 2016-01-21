@@ -12,6 +12,7 @@ install:
 before_script:
   - "npm run start &"
   - "echo \"$!\" > server.pid"
+  - "npm run build"
 script:
   - "npm test"
 after_script:
