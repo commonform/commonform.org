@@ -39,7 +39,6 @@
     "build:css": "node-sass --output-style compressed styles.sass > build/styles.css",
     "build": "npm-run-all --parallel build:*",
     "chromedriver": "chromedriver --url-base=/wd/hub",
-    "pretest": "npm run build",
     "start": "node server.js",
     "test": "tape test/*.test.js",
     "watch": "watchify index.js -o build/browser.js -dv"
