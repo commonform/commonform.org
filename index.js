@@ -82,10 +82,17 @@ eventBus
     mainLoop.update(state) })
 
   .on('signatures', function(operation, key, value) {
+    var signatures = state.signatures
     if (operation === 'set' && key.length === 0) {
-      state.signatures = value }
+      signatures = value }
+    else if (operation === 'splice') {
+      var entitiesPath = key.slice(0, -1)
+      var operand = keyarray.get(signatures, entitiesPath)
+      operand.splice(key, 1)
+      if (operand.length === 0) {
+        keyarray.delete(signatures, entitiesPath) } }
     else {
-      keyarray[operation](state.signatures, key, value) }
+      keyarray[operation](signatures, key, value) }
     mainLoop.update(state) })
 
 // The main loop that rerenders the user interface on global state change.

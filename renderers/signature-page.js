@@ -35,7 +35,7 @@ function signaturePage(state) {
       renderEntities(
         { emit: emit,
           entities: entities,
-          path: path }),
+          path: path.concat('entities') }),
       h('p', 'By:'),
       h('p', [ 'Name: ', inputFor('name') ]),
       ( entities ?

@@ -42,4 +42,10 @@ function signatureEntity(state) {
                 function() {
                   emit('signatures', 'delete', byPath) },
                 'Role') })() ] :
-          null ) ]) }
+          null ),
+      h('p',
+        h('button',
+          { onclick: function(event) {
+              event.preventDefault()
+              emit('signatures', 'splice', path) } },
+          'Delete Entity')) ]) }
