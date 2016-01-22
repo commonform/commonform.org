@@ -29,7 +29,7 @@ function signatureEntity(state) {
     [ ( needsBy ? 'By: ' : null ),
       inputFor('name', 'Name'), ', a ',
       inputFor('jurisdiction', 'Jurisdiction'), ' ',
-      inputFor('form', 'Form'),
+      inputFor('form', 'Entity Type'),
       ( needsBy ?
           [ ', its ',
             (function() {
