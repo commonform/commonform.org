@@ -50,8 +50,7 @@ function signaturePage(state) {
                   function(value) {
                     emit('signatures', 'set', byPath, value) },
                   function() {
-                    emit('signatures', 'delete', byPath) },
-                  'Title') ]) })() :
+                    emit('signatures', 'delete', byPath) }) ]) })() :
           null ),
       information.map(function(text) {
         text = ( text === 'email' ? 'E-Mail' : capitalize(text) )
