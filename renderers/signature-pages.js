@@ -13,9 +13,7 @@ function signaturePages(state) {
     return h('button',
       { onclick: function(event) {
           event.preventDefault()
-          var twoBlankPages =
-            [ clone(emptySignaturePage),
-              clone(emptySignaturePage) ]
+          var twoBlankPages = [ newPage(), newPage() ]
           emit('signatures', 'set', [ ], twoBlankPages) } },
       'Add Signature Pages') }
   else {
@@ -29,4 +27,14 @@ function signaturePages(state) {
             renderSignaturePage,
             { emit: emit,
               page: page,
-              path: [ index ] }) }) ]) } }
+              path: [ index ] }) }),
+        h('p',
+          h('button',
+            { onclick: function(event) {
+                event.preventDefault()
+                var newPath = [ signatures.length ]
+                emit('signatures', 'set', newPath, newPage()) } },
+            'Add Signature Page')) ]) } }
+
+  function newPage() {
+    return clone(emptySignaturePage) }

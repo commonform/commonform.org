@@ -55,4 +55,9 @@ function signaturePage(state) {
       information.map(function(text) {
         text = ( text === 'email' ? 'E-Mail' : capitalize(text) )
         return h('p', [ text, ':' ]) }),
-      h('p.endOfPage', '[End of Signature Page]') ]) }
+      h('p',
+        h('button',
+          { onclick: function(event) {
+              event.preventDefault()
+              emit('signatures', 'delete', path) } },
+          'Delete this Signature Page')) ]) }
