@@ -48,7 +48,21 @@ tape('Browser', function(test) {
       .then(function(existing) {
         test.assert(
           existing,
-          'Page displays form from API.') }) }) })
+          'Page displays form from API.') }) })
+
+  test.test('Signature Pages Button', function(test) {
+    test.plan(1)
+    var addButton = '//button[contains(text(),"Add Signature Pages")]'
+    webdriver
+      .url('http://localhost:8000')
+      .waitForExist(addButton)
+      .click(addButton)
+      .isExisting('//*[contains(text(),"Signature Pages Follow")]')
+      .then(function(existing) {
+        test.assert(
+          existing,
+          'Clicking "Add signature Pages" adds signature pages.') }) }) })
+
 
 tape.onFinish(function() {
   webdriver.end() })
