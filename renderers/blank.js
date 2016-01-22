@@ -2,7 +2,7 @@ module.exports = blank
 
 var deepEqual = require('deep-equal')
 var find = require('array-find')
-var h = require('virtual-dom/h')
+var input = require('./replaceable-input')
 
 function blank(state) {
   var blanks = state.blanks
@@ -11,16 +11,9 @@ function blank(state) {
   var direction = find(blanks, function(element) {
     return deepEqual(element.blank, path) })
   var value = ( direction ? direction.value : '' )
-  return (
-    value.length > 0 ?
-      h('span.blank',
-        { },
-        [ value,
-          h('a.clear',
-            { title: 'Clear',
-              onclick: function() {
-                emit('blank', path, undefined) } }) ]) :
-      [ h('input.blank',
-          { direction: value,
-            onchange: function(event) {
-              emit('blank', path, event.target.value) } }) ] ) }
+  return input(
+    value,
+    function(value) {
+      emit('blank', path, value) },
+    function() {
+      emit('blank', path, undefined) }) }

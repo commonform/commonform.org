@@ -6,6 +6,7 @@ var renderEMailButton = require('./e-mail-button')
 var renderFooter = require('./footer')
 var renderHeader = require('./header')
 var renderForm = require('./form')
+var renderSignaturePages = require('./signature-pages')
 var thunk = require('vdom-thunk')
 
 function renderers(state) {
@@ -19,6 +20,7 @@ function renderers(state) {
     var emit = state.emit
     var focused = state.focused
     var mobile = state.mobile
+    var signatures = state.signatures
     return h('article.commonform',
       [ h('div.menu',
           [ ( mobile ? undefined : renderDownloadButton(state) ),
@@ -34,4 +36,7 @@ function renderers(state) {
               derived: derived,
               emit: emit,
               path: [ ] }) ]),
+        thunk(renderSignaturePages,
+          { emit: emit,
+            signatures: signatures }),
         thunk(renderFooter) ]) } }

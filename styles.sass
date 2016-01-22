@@ -47,7 +47,7 @@ body
   color: #444
   text-rendering: optimizeLegibility
 
-.menu button
+button
   border-radius: 1000px
   background: white
   border: 1px solid #777
@@ -185,8 +185,6 @@ body
     display: inline-block
     border: none
     border-bottom: 1px dashed black
-    position: relative
-    bottom: -1px
     background: inherit
 
   input.blank
@@ -228,3 +226,13 @@ body
   dfn:after
     font-weight: normal
     content: '”'
+
+  .endOfPage
+    text-align: center
+
+  .signaturePages
+    .page
+      &> *:not(:first-child):not(:last-child)
+        margin-left: 30%
+      .header input
+        width: 100%

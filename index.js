@@ -1,6 +1,7 @@
 var MobileDetect = require('mobile-detect')
 var annotate = require('./utility/annotate')
 var deepEqual = require('deep-equal')
+var keyarray = require('keyarray')
 var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
 
@@ -40,7 +41,10 @@ var state = {
   emit: eventBus.emit.bind(eventBus),
 
   // Detect mobile user agents, so we can conditionally render user interface.
-  mobile: new MobileDetect(window.navigator.userAgent).mobile() }
+  mobile: new MobileDetect(window.navigator.userAgent).mobile(),
+
+  // Signature page descriptions.
+  signatures: [ ] }
 
 // Global event bus event handlers. Event listeners bound to user interface
 // elements fire these events to update the global state.
@@ -75,6 +79,13 @@ eventBus
   .on('focus', function(focused) {
     state.focused = focused
     computeDerivedState()
+    mainLoop.update(state) })
+
+  .on('signatures', function(operation, key, value) {
+    if (operation === 'set' && key.length === 0) {
+      state.signatures = value }
+    else {
+      keyarray[operation](state.signatures, key, value) }
     mainLoop.update(state) })
 
 // The main loop that rerenders the user interface on global state change.

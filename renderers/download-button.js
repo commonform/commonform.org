@@ -5,10 +5,12 @@ var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
 var h = require('virtual-dom/h')
 var outline = require('outline-numbering')
+var signaturePages = require('ooxml-signature-pages')
 
 function downloadButton(state) {
   var form = state.form
   var blanks = state.blanks
+  var signatures = state.signatures
   return h('button',
     { onclick: function(event) {
         event.preventDefault()
@@ -16,10 +18,13 @@ function downloadButton(state) {
           'Enter a document title',
           'Untitled Form')
         if (title !== null) {
+          var options = {
+            title: title,
+            numbering: outline }
+          if (signatures) {
+            options.after = signaturePages(signatures) }
           filesaver(
-            docx(
-              clone(form), blanks,
-              { title: title, numbering: outline })
+            docx(clone(form), blanks, options)
               .generate({ type: 'blob' }),
             fileName(title, 'docx')) } } },
     [ 'Download' ]) }
