@@ -11,9 +11,10 @@ function signaturePages(state) {
   var signatures = state.signatures
   return h('.signaturePages',
     [ h('p.endOfPage',
-        ( signatures.length === 1 ?
-            '[Signature Page Follows]' :
-            '[Signature Pages Follow]' )),
+        ( signatures.length > 0 ?
+            ( ( signatures.length === 1 ) ?
+              '[Signature Page Follows]' :
+              '[Signature Pages Follow]' ) : null )),
       signatures.map(function(page, index) {
         return thunk(
           renderSignaturePage,
