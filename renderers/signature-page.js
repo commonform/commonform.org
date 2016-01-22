@@ -40,11 +40,10 @@ function signaturePage(state) {
           path: path.concat('entities') }),
       h('p', 'By:'),
       h('p', [ 'Name: ', inputFor('name') ]),
-      ( entities ?
+      ( ( entities.length > 0 ) ?
           (function() {
             var lastIndex = ( entities.length - 1 )
-            var byPath = path.concat(
-              'entities', lastIndex, 'by')
+            var byPath = path.concat('entities', lastIndex, 'by')
             return h('p',
               [ 'Title: ',
                 input(
@@ -74,5 +73,5 @@ function signaturePage(state) {
         h('button',
           { onclick: function(event) {
               event.preventDefault()
-              emit('signatures', 'delete', path) } },
+              emit('signatures', 'splice', path) } },
           'Delete this Signature Page')) ]) }

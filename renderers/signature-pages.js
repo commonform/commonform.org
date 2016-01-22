@@ -25,8 +25,7 @@ function signaturePages(state) {
         h('button',
           { onclick: function(event) {
               event.preventDefault()
-              var newPath = [ signatures.length ]
-              emit('signatures', 'set', newPath, newPage()) } },
+              emit('signatures', 'push', [ ], newPage()) } },
           'Add Signature Page')) ]) }
 
   function newPage() {

@@ -23,5 +23,5 @@ function signatureEntities(state) {
         h('button',
           { onclick: function(event) {
               event.preventDefault()
-              emit('signatures', 'set', path, entities.concat({ })) } },
+              emit('signatures', 'push', path, { }) } },
           'Add Entity')) ]) }
