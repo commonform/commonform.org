@@ -9,32 +9,24 @@ var thunk = require('vdom-thunk')
 function signaturePages(state) {
   var emit = state.emit
   var signatures = state.signatures
-  if (signatures.length === 0) {
-    return h('button',
-      { onclick: function(event) {
-          event.preventDefault()
-          var twoBlankPages = [ newPage(), newPage() ]
-          emit('signatures', 'set', [ ], twoBlankPages) } },
-      'Add Signature Pages') }
-  else {
-    return h('.signaturePages',
-      [ h('p.endOfPage',
-          ( signatures.length === 1 ?
-              '[Signature Page Follows]' :
-              '[Signature Pages Follow]' )),
-        signatures.map(function(page, index) {
-          return thunk(
-            renderSignaturePage,
-            { emit: emit,
-              page: page,
-              path: [ index ] }) }),
-        h('p',
-          h('button',
-            { onclick: function(event) {
-                event.preventDefault()
-                var newPath = [ signatures.length ]
-                emit('signatures', 'set', newPath, newPage()) } },
-            'Add Signature Page')) ]) } }
+  return h('.signaturePages',
+    [ h('p.endOfPage',
+        ( signatures.length === 1 ?
+            '[Signature Page Follows]' :
+            '[Signature Pages Follow]' )),
+      signatures.map(function(page, index) {
+        return thunk(
+          renderSignaturePage,
+          { emit: emit,
+            page: page,
+            path: [ index ] }) }),
+      h('p',
+        h('button',
+          { onclick: function(event) {
+              event.preventDefault()
+              var newPath = [ signatures.length ]
+              emit('signatures', 'set', newPath, newPage()) } },
+          'Add Signature Page')) ]) }
 
   function newPage() {
     return clone(emptySignaturePage) }

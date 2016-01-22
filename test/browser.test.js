@@ -50,19 +50,18 @@ tape('Browser', function(test) {
           existing,
           'Page displays form from API.') }) })
 
-  test.test('Signature Pages Button', function(test) {
+  test.test('Signature Page Button', function(test) {
     test.plan(1)
-    var addButton = '//button[contains(text(),"Add Signature Pages")]'
+    var addButton = '//button[contains(text(),"Add Signature Page")]'
     webdriver
       .url('http://localhost:8000')
       .waitForExist(addButton)
       .click(addButton)
-      .isExisting('//*[contains(text(),"Signature Pages Follow")]')
+      .isExisting('//*[contains(text(),"Signature Page Follows")]')
       .then(function(existing) {
         test.assert(
           existing,
-          'Clicking "Add signature Pages" adds signature pages.') }) }) })
-
+          'Clicking "Add Signature Page" adds signature pages.') }) }) })
 
 tape.onFinish(function() {
   webdriver.end() })
