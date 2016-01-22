@@ -1,11 +1,10 @@
 module.exports = renderers
 
 var h = require('virtual-dom/h')
-var renderDownloadButton = require('./download-button')
-var renderEMailButton = require('./e-mail-button')
 var renderFooter = require('./footer')
-var renderHeader = require('./header')
 var renderForm = require('./form')
+var renderHeader = require('./header')
+var renderMenu = require('./menu')
 var renderSignaturePages = require('./signature-pages')
 var thunk = require('vdom-thunk')
 
@@ -16,15 +15,14 @@ function renderers(state) {
   else {
     var blanks = state.blanks
     var derived = state.derived
-    var digest = derived.merkle.digest
     var emit = state.emit
     var focused = state.focused
     var mobile = state.mobile
     var signatures = state.signatures
+    var digest = derived.merkle.digest
+    var menu = thunk(renderMenu, { digest: digest, mobile: mobile })
     return h('article.commonform',
-      [ h('div.menu',
-          [ ( mobile ? undefined : renderDownloadButton(state) ),
-            thunk(renderEMailButton, digest) ]),
+      [ menu,
         h('form',
           { onsubmit: function(event) {
               event.preventDefault() } },
@@ -39,4 +37,5 @@ function renderers(state) {
         thunk(renderSignaturePages,
           { emit: emit,
             signatures: signatures }),
+        menu,
         thunk(renderFooter) ]) } }
