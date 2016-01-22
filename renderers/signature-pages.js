@@ -7,16 +7,16 @@ var renderSignaturePage = require('./signature-page')
 var thunk = require('vdom-thunk')
 
 function signaturePages(state) {
-  var signatures = state.signatures
   var emit = state.emit
+  var signatures = state.signatures
   if (signatures.length === 0) {
     return h('button',
       { onclick: function(event) {
           event.preventDefault()
-          emit('signatures',
-            'set', [ ],
+          var twoBlankPages =
             [ clone(emptySignaturePage),
-              clone(emptySignaturePage) ]) } },
+              clone(emptySignaturePage) ]
+          emit('signatures', 'set', [ ], twoBlankPages) } },
       'Add Signature Pages') }
   else {
     return h('.signaturePages',

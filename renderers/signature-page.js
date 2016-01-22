@@ -9,8 +9,8 @@ function signaturePage(state) {
   var emit = state.emit
   var page = state.page
   var path = state.path
-  var entities = page.entities
 
+  var entities = page.entities
   var information = ( page.information || [ ] )
 
   function updateValue(key, value) {
@@ -53,8 +53,7 @@ function signaturePage(state) {
                     emit('signatures', 'delete', byPath) },
                   'Title') ]) })() :
           null ),
-      information.map(function(prompt) {
-        return h('p',
-          [ ( prompt === 'email' ? 'E-Mail' : capitalize(prompt) ),
-            ': ' ]) }),
+      information.map(function(text) {
+        text = ( text === 'email' ? 'E-Mail' : capitalize(text) )
+        return h('p', [ text, ':' ]) }),
       h('p.endOfPage', '[End of Signature Page]') ]) }
