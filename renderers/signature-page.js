@@ -31,7 +31,7 @@ function signaturePage(state) {
 
   return h('.page',
     [ h('p.header', inputFor('header', 'Signature Page Header')),
-      h('p', [ inputFor('term', 'Defined Term'), ':' ]),
+      h('p', [ inputFor('term', 'Party Defined Term'), ':' ]),
       renderEntities(
         { emit: emit,
           entities: entities,
