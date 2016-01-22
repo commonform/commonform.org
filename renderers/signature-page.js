@@ -5,6 +5,8 @@ var h = require('virtual-dom/h')
 var input = require('./replaceable-input')
 var renderEntities = require('./signature-entities')
 
+var optional = [ 'date', 'email', 'address' ]
+
 function signaturePage(state) {
   var emit = state.emit
   var page = state.page
@@ -52,9 +54,22 @@ function signaturePage(state) {
                   function() {
                     emit('signatures', 'delete', byPath) }) ]) })() :
           null ),
-      information.map(function(text) {
-        text = ( text === 'email' ? 'E-Mail' : capitalize(text) )
-        return h('p', [ text, ':' ]) }),
+      optional.map(function(text) {
+        var display = ( text === 'email' ? 'E-Mail' : capitalize(text) )
+        if (information.indexOf(text) > -1) {
+          return h('p', [ display, ':' ]) }
+        else {
+          return h('p',
+            h('button',
+              { onclick: function(event) {
+                event.preventDefault()
+                var infoPath = path.concat('information')
+                var newValue = optional.filter(function(filtering) {
+                  return (
+                    ( filtering === text ) ||
+                    ( information.indexOf(filtering) > -1 ) ) })
+                emit('signatures', 'set', infoPath, newValue) } },
+              ( 'Require ' + display ))) } }),
       h('p',
         h('button',
           { onclick: function(event) {
