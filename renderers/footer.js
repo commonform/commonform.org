@@ -10,7 +10,7 @@ function footer() {
             'Equity'),
           ' and ',
           h('a',
-            { href: 'http://practicaltypography.com/triplicate.html' },
+            { href: 'http://typographyforlawyers.com/triplicate.html' },
             'Triplicate'),
           ' typefaces by ',
           h('a',
