@@ -14,24 +14,26 @@ function renderers(state) {
     return h('div') }
   else {
     var blanks = state.blanks
-    var derived = state.derived
+    var comparingDigest = state.derived.comparingDigest
     var emit = state.emit
     var focused = state.focused
     var mobile = state.mobile
     var signatures = state.signatures
-    var digest = derived.merkle.digest
+    var digest = state.derived.merkle.digest
     var menu = thunk(renderMenu, { digest: digest, mobile: mobile })
     return h('article.commonform',
       [ menu,
         h('form',
           { onsubmit: function(event) {
               event.preventDefault() } },
-          [ thunk(renderHeader, digest),
+          [ thunk(renderHeader,
+              { digest: digest,
+                comparingDigest: comparingDigest }),
             renderForm({
               blanks: blanks,
               focused: focused,
               form: form,
-              derived: derived,
+              derived: state.derived,
               emit: emit,
               path: [ ] }) ]),
         thunk(renderSignaturePages,

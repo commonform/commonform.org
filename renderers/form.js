@@ -18,6 +18,7 @@ function form(state) {
   // State
   var annotations = state.derived.annotations
   var blanks = state.blanks
+  var diff = state.derived.diff
   var form = state.form
   var emit = state.emit
   var focused = state.focused
@@ -92,7 +93,8 @@ function form(state) {
               blanks: blanks,
               data: group,
               derived: {
-                annotations: get(annotations, formKey, { }) },
+                annotations: get(annotations, formKey, { }),
+                diff: get(diff, formKey.concat('content'), { }) },
               emit: emit,
               focused: focused,
               offset: offset,

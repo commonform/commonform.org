@@ -4,6 +4,7 @@ var downloadForm = require('./download-form')
 var isSHA256 = require('is-sha-256-hex-digest')
 var merkleize = require('commonform-merkleize')
 var welcome = require('commonform-welcome-form')
+var querystring = require('querystring')
 
 var welcomeDigest = merkleize(welcome).digest
 
@@ -18,10 +19,19 @@ function loadInitialForm(path, prefix, load) {
     if (initialDigest === welcomeDigest) {
       load(welcome) }
     else {
-      downloadForm(initialDigest, function(error, response) {
+      downloadForm(initialDigest, function(error, baseResponse) {
         if (error) {
           alert(error.message) }
         else {
-          load(response) } }) } }
+          var query = querystring.parse(window.location.search.slice(1))
+          var comparing = query.comparing
+          if (comparing) {
+            downloadForm(comparing, function(error, comparingResponse) {
+              if (error) {
+                alert(error.message) }
+              else {
+                load(baseResponse, comparingResponse) } }) }
+          else {
+            load(baseResponse) } } }) } }
   else {
     load(welcome) } }

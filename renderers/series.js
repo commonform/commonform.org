@@ -4,6 +4,7 @@ var get = require('keyarray').get
 
 function series(state) {
   var annotations = state.derived.annotations
+  var diff = state.derived.diff
   var blanks = state.blanks
   var data = state.data
   var emit = state.emit
@@ -20,6 +21,7 @@ function series(state) {
         form: child,
         derived: {
           annotations: get(annotations, [ 'content', absoluteIndex ], { }),
+          diff: get(diff, [ 'content', absoluteIndex ], { }),
           merkle: merkle.content[absoluteIndex] },
         emit: emit,
         focused: focused,

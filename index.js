@@ -1,6 +1,7 @@
 var MobileDetect = require('mobile-detect')
 var annotate = require('./utility/annotate')
 var deepEqual = require('deep-equal')
+var diff = require('./utility/diff')
 var keyarray = require('keyarray')
 var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
@@ -17,6 +18,9 @@ var state = {
 
   // The Common Form to display.
   form: null,
+
+  // The Common Form being compared.
+  comparing: null,
 
   // Values of fill-in-the-blanks in the form.
   // Matches the JSON Schema:
@@ -51,8 +55,9 @@ var state = {
 eventBus
 
   // Load a new Common Form.
-  .on('form', function(form) {
+  .on('form', function(form, comparing) {
     state.form = form
+    state.comparing = comparing
     computeDerivedState()
     mainLoop.update(state)
     pushState() })
@@ -106,14 +111,25 @@ var mainLoop = require('main-loop')(
 // Push a state of the application to the browser's `history`.
 function pushState() {
   var digest = state.derived.merkle.digest
-  history.pushState({ digest: digest }, null, ( formPathPrefix + digest )) }
+  var path = ( formPathPrefix + digest )
+  history.pushState(
+    { digest: digest },
+    null,
+    ( state.comparing ?
+      ( path + '?comparing=' + state.derived.comparingDigest ) :
+      path )) }
 
 // Compute various information about the displayed Common Form when it changes.
 function computeDerivedState() {
   var form = state.form
+  var comparing = state.comparing
   state.derived = {
     annotations: annotate(form),
-    merkle: merkleize(form) } }
+    merkle: merkleize(form),
+    diff: { } }
+  if (comparing) {
+    state.derived.comparingDigest = merkleize(comparing).digest
+    state.derived.diff = diff(form, comparing) } }
 
 // Point the main rendering loop to an element on the page.
 document

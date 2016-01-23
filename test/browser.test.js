@@ -97,7 +97,44 @@ tape('Browser', function(test) {
             !existing,
             'On clicking "Add Signature Page" ' +
             'and then "Delete this Signature Page", '+
-            'the text "Signature Page Follows" disappears.') }) }) }) })
+            'the text "Signature Page Follows" disappears.') }) })
+
+    test.test(function(test) {
+      test.plan(1)
+      var base = (
+        '527d5af64284a8edd1bda8b7dbf667ef' +
+        '4f2a2eb27fbf36360825a024f6d7a1f7' )
+      var comparing = (
+        '93e53edf35669414835c7b8f677dcd4d' +
+        'ee7893cac345ca57f56f2e98be496c49' )
+      webdriver
+        .url('http://localhost:8000/forms/' + base + '?comparing=' + comparing)
+        .isExisting('//ins[contains(text(),"in cash")]')
+        .then(function(existing) {
+          test.assert(
+            !existing,
+            'Comparing ' +
+            '527d... and 93e5...' +
+            'shows "in cash" inserted.') }) })
+
+    test.test(function(test) {
+      test.plan(1)
+      var base = (
+        'ac2cefd3a769f3495ec998e9845147be' +
+        '5d3dfd7357a1b7e4be9f8da3af094dcf' )
+      var comparing = (
+        '527d5af64284a8edd1bda8b7dbf667ef' +
+        '4f2a2eb27fbf36360825a024f6d7a1f7' )
+      webdriver
+        .url('http://localhost:8000/forms/' + base + '?comparing=' + comparing)
+        .isExisting('//ins[contains(text(),"in cash")]')
+        .then(function(existing) {
+          test.assert(
+            !existing,
+            'Comparing ' +
+            '527d... and 93e5...' +
+            'shows "in cash" inserted.') }) })
+  }) })
 
 tape.onFinish(function() {
   webdriver.end() })

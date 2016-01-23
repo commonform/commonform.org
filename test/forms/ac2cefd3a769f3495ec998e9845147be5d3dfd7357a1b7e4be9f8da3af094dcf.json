@@ -1,0 +1,7 @@
+{ "content": [
+    { "use": "Purchaser" },
+    " shall pay ",
+    { "use": "Seller" },
+    " the sum of ",
+    { "blank": "" },
+    "." ] }
