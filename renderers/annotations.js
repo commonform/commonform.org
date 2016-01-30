@@ -1,16 +1,18 @@
 module.exports = annotations
 
 var h = require('virtual-dom/h')
+var improvePunctuation = require('../utility/improve-punctuation')
 
 function annotations(annotations) {
   return h('aside', deduplicate(annotations).map(annotation)) }
 
 function annotation(annotation) {
+  var message = improvePunctuation(annotation.message)
   return h('p.',
     { className: annotation.level },
     [ ( annotation.url ?
-          ('a', { href: annotation.url }, annotation.message) :
-          annotation.message ) ]) }
+          h('a', { href: annotation.url }, message) :
+          message ) ]) }
 
 function deduplicate(annotations) {
   return annotations
