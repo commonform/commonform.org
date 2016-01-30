@@ -2,7 +2,9 @@ module.exports = blank
 
 var deepEqual = require('deep-equal')
 var find = require('array-find')
+var improvePunctuation = require('../utility/improve-punctuation')
 var input = require('./replaceable-input')
+var replaceUnicode = require('../utility/replace-unicode')
 
 function blank(state) {
   var blanks = state.blanks
@@ -10,10 +12,13 @@ function blank(state) {
   var path = state.path
   var direction = find(blanks, function(element) {
     return deepEqual(element.blank, path) })
-  var value = ( direction ? direction.value : '' )
+  var value = (
+    direction ?
+      improvePunctuation(direction.value) :
+      '' )
   return input(
     value,
     function(value) {
-      emit('blank', path, value) },
+      emit('blank', path, replaceUnicode(value)) },
     function() {
       emit('blank', path, undefined) }) }
