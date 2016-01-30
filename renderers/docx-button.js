@@ -1,4 +1,4 @@
-module.exports = downloadButton
+module.exports = docxButton
 
 var clone = require('../utility/json-clone')
 var docx = require('commonform-docx')
@@ -7,7 +7,7 @@ var h = require('virtual-dom/h')
 var outline = require('outline-numbering')
 var signaturePages = require('ooxml-signature-pages')
 
-function downloadButton(state) {
+function docxButton(state) {
   var form = state.form
   var blanks = state.blanks
   var signatures = state.signatures
@@ -27,7 +27,7 @@ function downloadButton(state) {
             docx(clone(form), blanks, options)
               .generate({ type: 'blob' }),
             fileName(title, 'docx')) } } },
-    [ 'Download' ]) }
+    [ 'Download for Word' ]) }
 
 function fileName(title, extension) {
   var date = new Date().toISOString()
