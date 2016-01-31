@@ -5,7 +5,6 @@ var h = require('virtual-dom/h')
 var stringify = require('commonform-markup-stringify')
 
 function markupButton(state) {
-  console.log('state', state)
   var form = state.form
   return h('button',
     { onclick: function(event) {
@@ -14,8 +13,6 @@ function markupButton(state) {
           'Enter a document title',
           'Untitled Form')
         if (title !== null) {
-          console.log(form)
-          console.log(stringify(form))
           var blob = new Blob(
             [ stringify(form) ],
             { type: 'text/plain;charset=utf-8' })

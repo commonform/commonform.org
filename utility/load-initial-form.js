@@ -22,6 +22,6 @@ function loadInitialForm(path, prefix, load) {
         if (error) {
           alert(error.message) }
         else {
-          load(response) } }) } }
+          load(response, true) } }) } }
   else {
-    load(welcome) } }
+    load(welcome, true) } }
