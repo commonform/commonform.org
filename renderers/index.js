@@ -20,7 +20,13 @@ function renderers(state) {
     var mobile = state.mobile
     var signatures = state.signatures
     var digest = derived.merkle.digest
-    var menu = thunk(renderMenu, { digest: digest, mobile: mobile })
+    var menu = thunk(
+      renderMenu,
+      { digest: digest,
+        mobile: mobile,
+        form: form,
+        blanks: blanks,
+        sigantures: signatures })
     return h('article.commonform',
       [ menu,
         h('form',
