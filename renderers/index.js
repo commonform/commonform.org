@@ -17,14 +17,17 @@ function renderers(state) {
     var derived = state.derived
     var emit = state.emit
     var focused = state.focused
+    var fromAPI = state.fromAPI
     var mobile = state.mobile
     var signatures = state.signatures
     var digest = derived.merkle.digest
     var menu = thunk(
       renderMenu,
       { digest: digest,
+        emit: emit,
         mobile: mobile,
         form: form,
+        fromAPI: fromAPI,
         blanks: blanks,
         sigantures: signatures })
     return h('article.commonform',

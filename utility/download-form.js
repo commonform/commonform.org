@@ -1,3 +1,5 @@
+module.exports = downloadForm
+
 var xhr = require('xhr')
 
 var api = require('./constants').api
@@ -15,5 +17,3 @@ function downloadForm(digest, callback) {
         catch (e) {
           return callback(e) }
         callback(null, jsonResponse) } }) }
-
-module.exports = downloadForm

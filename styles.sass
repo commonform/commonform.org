@@ -58,7 +58,8 @@ button
 .menu button:last-child
   margin-right: 0
 
-.menu button:hover
+.menu button:hover,
+.fileInputTrick:hover button
   border: 1px solid black
   color: black
 
@@ -240,3 +241,20 @@ button
         margin-left: 30%
       .header input
         width: 100%
+
+  .fileInputTrick
+    display: inline
+    position: relative
+    cursor: pointer
+
+    button
+      position: absolute
+      top: 0
+      left: 0
+      z-index: 1
+
+    input[type=file]
+      position: relative
+      z-index: 2
+      opacity: 0
+      width: 150px

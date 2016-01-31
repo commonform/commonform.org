@@ -18,6 +18,9 @@ var state = {
   // The Common Form to display.
   form: null,
 
+  // Was `form` loaded from the API?
+  fromAPI: false,
+
   // Values of fill-in-the-blanks in the form.
   // Matches the JSON Schema:
   // { "type": "array",
@@ -51,8 +54,9 @@ var state = {
 eventBus
 
   // Load a new Common Form.
-  .on('form', function(form) {
+  .on('form', function(form, fromAPI) {
     state.form = form
+    state.fromAPI = fromAPI
     computeDerivedState()
     mainLoop.update(state)
     pushState() })
