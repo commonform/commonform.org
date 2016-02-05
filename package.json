@@ -42,7 +42,7 @@
   "private": true,
   "scripts": {
     "build:js": "browserify -t uglifyify index.js | uglifyjs -c 2>/dev/null > build/browser.js",
-    "build:css": "node-sass --output-style compressed styles.sass > build/styles.css",
+    "build:css": "node-sass --output-style compressed styles/styles.sass > build/styles.css",
     "build": "npm-run-all --parallel build:*",
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "node server.js",
