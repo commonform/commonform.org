@@ -50,6 +50,17 @@ tape('Browser', function(test) {
           existing,
           'Page displays form from API.') }) })
 
+  test.test('Load from a project', function(test) {
+    test.plan(1)
+    webdriver
+      .url('http://localhost:8000/projects/test/test')
+      .waitForExist('//*[contains(text(),"This is a test.")]')
+      .isExisting('//*[contains(text(),"This is a test.")]')
+      .then(function(existing) {
+        test.assert(
+          existing,
+          'Page displays form from API.') }) })
+
   test.test('Signature Page Button', function(test) {
     var addButton =    '//button[contains(text(),"Add Signature Page")]'
     var deleteButton = '//button[contains(text(),"Delete this Signature Page")]'

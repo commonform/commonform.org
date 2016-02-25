@@ -23,7 +23,7 @@ http
     var pathname = url.parse(request.url).pathname
     if (pathname === '/') {
       serveIndex(response) }
-    else if (pathname.slice(0, 7) === '/forms/') {
+    else if (pathname.startsWith('/forms/') || pathname.startsWith('/projects/')) {
       serveIndex(response) }
     else {
       ecstatic(request, response) } })
