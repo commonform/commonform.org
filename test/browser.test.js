@@ -54,7 +54,40 @@ tape('Browser', function(test) {
     test.plan(1)
     webdriver
       .url('http://localhost:8000/projects/test/test')
-      .waitForExist('//*[contains(text(),"This is a test.")]')
+      .waitForExist('//*[contains(text(),"This is a test.")]', 1000)
+      .isExisting('//*[contains(text(),"This is a test.")]')
+      .then(function(existing) {
+        test.assert(
+          existing,
+          'Page displays form from API.') }) })
+
+  test.test('Load from a project, latest edition', function(test) {
+    test.plan(1)
+    webdriver
+      .url('http://localhost:8000/projects/test/test/latest')
+      .waitForExist('//*[contains(text(),"This is a test.")]', 1000)
+      .isExisting('//*[contains(text(),"This is a test.")]')
+      .then(function(existing) {
+        test.assert(
+          existing,
+          'Page displays form from API.') }) })
+
+  test.test('Load from a project, implied current edition', function(test) {
+    test.plan(1)
+    webdriver
+      .url('http://localhost:8000/projects/test/test')
+      .waitForExist('//*[contains(text(),"This is a test.")]', 1000)
+      .isExisting('//*[contains(text(),"This is a test.")]')
+      .then(function(existing) {
+        test.assert(
+          existing,
+          'Page displays form from API.') }) })
+
+  test.test('Load from a project, current edition', function(test) {
+    test.plan(1)
+    webdriver
+      .url('http://localhost:8000/projects/test/test/current')
+      .waitForExist('//*[contains(text(),"This is a test.")]', 1000)
       .isExisting('//*[contains(text(),"This is a test.")]')
       .then(function(existing) {
         test.assert(

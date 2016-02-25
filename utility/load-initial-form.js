@@ -10,7 +10,7 @@ var welcomeDigest = merkleize(welcome).digest
 var FORM_PATH = /^\/forms\/([a-f0-9]{64})$/
 //       Groups:           1
 
-var PROJECT_PATH = /^\/projects\/([a-z]+)\/([a-z0-9-]+)(\/([0-9eucd]+))?$/
+var PROJECT_PATH = /^\/projects\/([a-z]+)\/([a-z0-9-]+)(\/([0-9eucd]+|latest|current))?$/
 //       Groups:                 1         2           3  4
 
 function loadInitialForm(path, prefix, load) {
