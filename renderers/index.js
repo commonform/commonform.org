@@ -19,6 +19,7 @@ function renderers(state) {
     var focused = state.focused
     var fromAPI = state.fromAPI
     var mobile = state.mobile
+    var projects = state.projects
     var signatures = state.signatures
     var digest = derived.merkle.digest
     var menu = thunk(
@@ -35,7 +36,9 @@ function renderers(state) {
         h('form',
           { onsubmit: function(event) {
               event.preventDefault() } },
-          [ thunk(renderHeader, digest),
+          [ thunk(renderHeader, {
+              digest: digest,
+              projects: projects }),
             renderForm({
               blanks: blanks,
               focused: focused,

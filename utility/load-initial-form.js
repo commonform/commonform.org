@@ -4,6 +4,8 @@ var downloadForm = require('./download-form')
 var merkleize = require('commonform-merkleize')
 var welcome = require('commonform-welcome-form')
 var getProject = require('commonform-get-project')
+var getFormProjects = require('commonform-get-form-projects')
+var parallel = require('run-parallel')
 
 var welcomeDigest = merkleize(welcome).digest
 
@@ -19,13 +21,16 @@ function loadInitialForm(path, prefix, load) {
   if (( match = FORM_PATH.exec(path) )) {
     initialDigest = match[1]
     if (initialDigest === welcomeDigest) {
-      load(welcome) }
+      load(welcome, false, [ ]) }
     else {
-      downloadForm(initialDigest, function(error, response) {
-        if (error) {
-          alert(error.message) }
-        else {
-          load(response, true) } }) } }
+      parallel(
+        [ downloadForm.bind(this, initialDigest),
+          getFormProjects.bind(this, initialDigest) ],
+        function(error, results) {
+          if (error) {
+            alert(error.message) }
+          else {
+            load(results[0], true, results[1]) } }) } }
   else if (( match = PROJECT_PATH.exec(path) )) {
     var publisher = match[1]
     var project = match[2]
@@ -34,10 +39,13 @@ function loadInitialForm(path, prefix, load) {
       if (error) {
         alert(error.message) }
       else {
-        downloadForm(project.form, function(error, response) {
-          if (error) {
-            alert(error.message) }
-          else {
-            load(response, true) } }) } }) }
+        parallel(
+          [ downloadForm.bind(this, project.form),
+            getFormProjects.bind(this, project.form) ],
+          function(error, results) {
+            if (error) {
+              alert(error.message) }
+            else {
+              load(results[0], true, results[1]) } }) } }) }
   else {
-    load(welcome, true) } }
+    load(welcome, true, [ ]) } }

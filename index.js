@@ -18,6 +18,9 @@ var state = {
   // The Common Form to display.
   form: null,
 
+  // Projects the Common Form is published as.
+  projects: [ ],
+
   // Was `form` loaded from the API?
   fromAPI: false,
 
@@ -54,9 +57,10 @@ var state = {
 eventBus
 
   // Load a new Common Form.
-  .on('form', function(form, fromAPI) {
+  .on('form', function(form, fromAPI, projects) {
     state.form = form
     state.fromAPI = fromAPI
+    state.projects = projects
     computeDerivedState()
     mainLoop.update(state)
     pushState() })
