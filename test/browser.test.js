@@ -61,16 +61,27 @@ tape('Browser', function(test) {
           existing,
           'Page displays form from API.') }) })
 
-  test.test('Display project information', function(test) {
+  test.test('Display project name', function(test) {
     test.plan(1)
     webdriver
       .url('http://localhost:8000/projects/test/test/1e')
-      .waitForExist('//*[contains(text(),"test 1e")]', 2000)
-      .isExisting('//*[contains(text(),"test 1e")]')
+      .waitForExist('//*[contains(text(),"test")]', 2000)
+      .isExisting('//*[contains(text(),"test")]')
       .then(function(existing) {
         test.assert(
           existing,
-          'Page displays project information.') }) })
+          'Page displays project name.') }) })
+
+  test.test('Display project edition', function(test) {
+    test.plan(1)
+    webdriver
+      .url('http://localhost:8000/projects/test/test/1e')
+      .waitForExist('//abbr[contains(text(), "1e")]', 2000)
+      .isExisting('//abbr[contains(@title,"first edition") and contains(text(), "1e")]')
+      .then(function(existing) {
+        test.assert(
+          existing,
+          'Page displays project name.') }) })
 
   test.test('Load from a project, latest edition', function(test) {
     test.plan(1)
