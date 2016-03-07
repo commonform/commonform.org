@@ -47,7 +47,9 @@ var state = {
   emit: eventBus.emit.bind(eventBus),
 
   // Detect mobile user agents, so we can conditionally render user interface.
-  mobile: new MobileDetect(window.navigator.userAgent).mobile(),
+  mobile: (function() {
+    var md = new MobileDetect(window.navigator.userAgent)
+    return ( md.mobile() !== null || md.tablet() !== null ) })(),
 
   // Signature page descriptions.
   signatures: [ ] }
