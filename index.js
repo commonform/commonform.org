@@ -1,7 +1,9 @@
 var MobileDetect = require('mobile-detect')
 var annotate = require('./utility/annotate')
 var deepEqual = require('deep-equal')
+var diff = require('commonform-diff')
 var keyarray = require('keyarray')
+var loadComparing = require('./utility/load-comparing')
 var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
 
@@ -17,6 +19,10 @@ var state = {
 
   // The Common Form to display.
   form: null,
+
+  // The Common Form to compare, if any.
+  comparing: null,
+  comparingDigest: null,
 
   // Projects the Common Form is published as.
   projects: [ ],
@@ -67,6 +73,15 @@ eventBus
     mainLoop.update(state)
     pushState() })
 
+  // Load a new form to compare to.
+  .on('comparing', function(comparing) {
+    state.comparing = comparing.form
+    state.comparingDigest = comparing.digest
+    if (state.form) {
+      computeDerivedState()
+      mainLoop.update(state)
+      pushState() } })
+
   // Assign or remove a value from a fill-in-the-blank.
   .on('blank', function(blank, value) {
     var index = state.blanks.findIndex(function(record) {
@@ -116,14 +131,19 @@ var mainLoop = require('main-loop')(
 // Push a state of the application to the browser's `history`.
 function pushState() {
   var digest = state.derived.merkle.digest
-  history.pushState({ digest: digest }, null, ( formPathPrefix + digest )) }
+  history.pushState(
+    { digest: digest },
+    null,
+    ( formPathPrefix + digest + window.location.hash )) }
 
 // Compute various information about the displayed Common Form when it changes.
 function computeDerivedState() {
   var form = state.form
   state.derived = {
     annotations: annotate(form),
-    merkle: merkleize(form) } }
+    merkle: merkleize(form) }
+  if (state.comparing) {
+    state.derived.diff = diff(state.form, state.comparing) } }
 
 // Point the main rendering loop to an element on the page.
 document
@@ -136,3 +156,7 @@ loadInitialForm(
   window.location.pathname,
   formPathPrefix,
   eventBus.emit.bind(eventBus, 'form'))
+
+loadComparing(
+  window.location.hash,
+  eventBus.emit.bind(eventBus, 'comparing'))

@@ -1,6 +1,8 @@
 module.exports = renderers
 
+var classnames = require('classnames')
 var h = require('virtual-dom/h')
+var renderDiff = require('./diff')
 var renderFooter = require('./footer')
 var renderForm = require('./form')
 var renderHeader = require('./header')
@@ -13,6 +15,7 @@ function renderers(state) {
   if (!form) {
     return h('div') }
   else {
+    var diffing = !!state.comparing
     var blanks = state.blanks
     var derived = state.derived
     var emit = state.emit
@@ -22,6 +25,8 @@ function renderers(state) {
     var projects = state.projects
     var signatures = state.signatures
     var digest = derived.merkle.digest
+    var comparingDigest = state.comparingDigest
+    var diff = state.derived.diff
     var menu = thunk(
       renderMenu,
       { digest: digest,
@@ -31,21 +36,25 @@ function renderers(state) {
         fromAPI: fromAPI,
         blanks: blanks,
         sigantures: signatures })
-    return h('article.commonform',
+    return h('article',
+      { className: classnames('commonform', { diff: diffing }) },
       [ menu,
         h('form',
           { onsubmit: function(event) {
               event.preventDefault() } },
           [ thunk(renderHeader, {
               digest: digest,
+              comparingDigest: comparingDigest,
               projects: projects }),
-            renderForm({
-              blanks: blanks,
-              focused: focused,
-              form: form,
-              derived: derived,
-              emit: emit,
-              path: [ ] }) ]),
+            ( diffing
+                ? renderDiff({ diff: diff })
+                : renderForm({
+                    blanks: blanks,
+                    focused: focused,
+                    form: form,
+                    derived: derived,
+                    emit: emit,
+                    path: [ ] }) ) ]),
         thunk(renderSignaturePages,
           { emit: emit,
             signatures: signatures }),

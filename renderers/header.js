@@ -8,6 +8,11 @@ var thunk = require('vdom-thunk')
 function header(state) {
   var digest = state.digest
   var projects = state.projects
+  var comparingDigest = state.comparingDigest
   return h('header', [
-    thunk(renderDigest, digest),
+    h('p', [ thunk(renderDigest, digest) ]),
+    ( comparingDigest
+        ? [ h('p', 'compared to'),
+            h('p', [ thunk(renderDigest, comparingDigest) ]) ]
+        : null ),
     thunk(renderProjects, projects) ]) }

@@ -5,8 +5,7 @@ var formPrefix = require('../utility/constants').formPrefix
 
 function digest(digest) {
   return h('a.digest',
-    { title: ( 'The fingerprint of this Common Form'),
-      target: '_blank',
+    { target: '_blank',
       href: ( formPrefix + digest ) },
     [ digest.slice(0, 32),
       h('wbr'),

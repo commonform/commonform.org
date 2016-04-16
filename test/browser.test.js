@@ -189,7 +189,39 @@ tape('Browser', function(test) {
         .then(function(existing) {
           test.assert(
             existing,
-            'Displays “quotation marks” with nice quotes.') }) }) })
+            'Displays “quotation marks” with nice quotes.') }) })
+
+    var apache2 = (
+      '5d912ab4e9be029a2b3d137aefeb918a' +
+      'd1f001463e0f554ca24008dc70494eb0' )
+
+    var apache2edit = (
+      'dad34e74228090369e96aae72b874206' +
+      '39c93de9e544dbc920a03832a0754f9c' )
+
+    test.test(function(test) {
+      test.plan(1)
+      webdriver
+        .url(
+          'http://localhost:8000/forms/' + apache2 +
+          '#compare:' + apache2edit)
+        .isExisting('//*[contains(text(),"compared to")]')
+        .then(function(existing) {
+          test.assert(
+            existing,
+            'Displays "compared to" when diffing.') }) })
+
+    test.test(function(test) {
+      test.plan(1)
+      webdriver
+        .url(
+          'http://localhost:8000/forms/' + apache2 +
+          '#compare:' + apache2edit)
+        .isExisting('//del/span[contains(text(),"whether")]')
+        .then(function(existing) {
+          test.assert(
+            existing,
+            'Displays "whether" as a deletion.') }) }) })
 
 tape.onFinish(function() {
   webdriver.end() })

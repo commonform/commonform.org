@@ -1,5 +1,6 @@
 module.exports = downloadForm
 
+var parse = require('json-parse-errback')
 var xhr = require('xhr')
 
 var api = require('./constants').api
@@ -11,9 +12,4 @@ function downloadForm(digest, callback) {
       if (error) {
         callback(error) }
       else {
-        var jsonResponse
-        try {
-          jsonResponse = JSON.parse(body) }
-        catch (e) {
-          return callback(e) }
-        callback(null, jsonResponse) } }) }
+        parse(body, callback) } }) }
