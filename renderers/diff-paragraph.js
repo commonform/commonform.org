@@ -36,8 +36,7 @@ function diffParagraph(state) {
             else if (predicates.definition(child)) {
               return output.concat(wrapper(renderDefinition(child.definition))) }
             else if (predicates.blank(child)) {
-              // TODO
-              return output }
+              return output.concat(h('span.blank')) }
             else if (predicates.reference(child)) {
               return output.concat(renderReference(child.reference)) } },
           [ ]) ]) }
