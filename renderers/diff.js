@@ -13,7 +13,8 @@ function renderDiff(state) {
   var diff = state.diff
 
   // Derivations
-  var formLike = ( diff.hasOwnProperty('form') ? diff.form : diff )
+  var root = !diff.hasOwnProperty('form')
+  var formLike = ( root ? diff : diff.form )
   var groups = group(jsonClone(formLike))
 
   // Rendering
@@ -23,7 +24,10 @@ function renderDiff(state) {
       { className: classnames({
           conspicuous: formLike.conspicuous.some(function(element) {
             return ( !element.hasOwnProperty('deleted') ) }) }) },
-      [ ( Array.isArray(diff.heading)
+      [ ( root
+            ? null
+            : h('a.sigil', '§') ),
+        ( Array.isArray(diff.heading)
             ? renderDiffHeading({ heading: diff.heading })
             : null ),
         groups
