@@ -249,7 +249,35 @@ tape('Browser', function(test) {
         .then(function(existing) {
           test.assert(
             existing,
-            'Displays "This is D." as an insertion.') }) }) })
+            'Displays "This is D." as an insertion.') }) })
+
+    var a = (
+      '3e0a6550ad6afb461c5a217bd24f5424' +
+      '7405a31fb1a06b705acf35c7010a599b' )
+
+    var aConspicuous = (
+      '1111d342cef09cf3eb11b30c565a3c7a' +
+      '9080b01665dcf1cc2ebab99c7efdb2ea' )
+
+    test.test(function(test) {
+      test.plan(1)
+      webdriver
+        .url('http://localhost:8000/forms/' + a + '#compare:' + aConspicuous)
+        .isExisting('//*[contains(text(),"Made conspicuous")]')
+        .then(function(existing) {
+          test.assert(
+            existing,
+            'Displays "Made conspicuous".') }) })
+
+    test.test(function(test) {
+      test.plan(1)
+      webdriver
+        .url('http://localhost:8000/forms/' + aConspicuous + '#compare:' + a)
+        .isExisting('//*[contains(text(),"Made inconspicuous")]')
+        .then(function(existing) {
+          test.assert(
+            existing,
+            'Displays "Made inconspicuous".') }) }) })
 
 tape.onFinish(function() {
   webdriver.end() })

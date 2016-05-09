@@ -26,20 +26,26 @@ function renderDiff(state) {
   else {
     wrapper = function doNotWrap(argument) {
       return argument } }
+  var conspicuous = formLike.conspicuous
+  var madeConspicuous = (
+    conspicuous.length === 1 &&
+    conspicuous[0].hasOwnProperty('inserted') )
+  var madeInconspicuous = (
+    conspicuous.length === 1 &&
+    conspicuous[0].hasOwnProperty('deleted') )
 
   // Rendering
   return h('section',
-    // TODO: Show conspicuous changes
     { className: classnames({
-        conspicuous: formLike.conspicuous.some(function(element) {
+        conspicuous: conspicuous.some(function(element) {
           return ( !element.hasOwnProperty('deleted') ) }) }) },
     wrapper([
-      ( root
-          ? null
-          : h('a.sigil', '§') ),
+      ( root ? null : h('a.sigil', '§') ),
       ( Array.isArray(diff.heading)
           ? renderDiffHeading({ heading: diff.heading })
           : null ),
+      ( madeInconspicuous ? h('p.edit', 'Made inconspicuous') : null ),
+      ( madeConspicuous ? h('p.edit', 'Made conspicuous') : null ),
       groups
         .map(function(group) {
           var renderer = (
