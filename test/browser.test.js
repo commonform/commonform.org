@@ -296,6 +296,7 @@ tape('Browser', function(test) {
             'On clicking "Edit", ' +
             'Button "Read" appears.') }) })
 
+    /*
     test.test(function(test) {
       var newHash = (
         'cbdec2965f96e2bd85d77e49b0de7854' +
@@ -321,7 +322,7 @@ tape('Browser', function(test) {
             url,
             ( 'http://localhost:8000/forms/' + newHash ),
             'On clicking "Edit", ' +
-            'Button "Read" appears.') }) }) }) })
+            'Button "Read" appears.') }) }) */ }) })
 
 tape.onFinish(function() {
   webdriver.end() })
