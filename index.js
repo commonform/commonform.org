@@ -24,6 +24,9 @@ var state = {
   comparing: null,
   comparingDigest: null,
 
+  // Edit mode flag.
+  editing: false,
+
   // Projects the Common Form is published as.
   projects: [ ],
 
@@ -81,6 +84,14 @@ eventBus
       computeDerivedState()
       mainLoop.update(state)
       pushState() } })
+
+  // Switch to and from edit mode.
+  .on('editing', function(editing) {
+    if (state.comparing) { return }
+    else {
+      state.editing = editing
+      computeDerivedState()
+      mainLoop.update(state) } })
 
   // Assign or remove a value from a fill-in-the-blank.
   .on('blank', function(blank, value) {

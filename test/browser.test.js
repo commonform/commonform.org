@@ -279,5 +279,22 @@ tape('Browser', function(test) {
             existing,
             'Displays "Made inconspicuous".') }) }) })
 
+tape('Edit Mode', function(test) {
+  var editButton = '//button[contains(text(),"Edit")]'
+  var readButton = '//button[contains(text(),"Read")]'
+
+  test.test(function(test) {
+    test.plan(1)
+    webdriver
+      .url('http://localhost:8000/')
+      .waitForExist(editButton)
+      .click(editButton)
+      .isExisting(readButton)
+      .then(function(existing) {
+        test.assert(
+          existing,
+          'On clicking "Edit", ' +
+          'Button "Read" appears.') }) }) })
+
 tape.onFinish(function() {
   webdriver.end() })

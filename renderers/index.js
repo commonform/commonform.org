@@ -18,6 +18,7 @@ function renderers(state) {
     var diffing = !!state.comparing
     var blanks = state.blanks
     var derived = state.derived
+    var editing = state.editing
     var emit = state.emit
     var focused = state.focused
     var fromAPI = state.fromAPI
@@ -31,6 +32,7 @@ function renderers(state) {
       renderMenu,
       { digest: digest,
         emit: emit,
+        editing: editing,
         mobile: mobile,
         form: form,
         fromAPI: fromAPI,
