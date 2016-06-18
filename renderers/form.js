@@ -92,7 +92,7 @@ function form(state) {
         ( ( root || form.hasOwnProperty('heading') ) ?
             renderDropZone({
               emit: emit,
-              path: path.concat('form', 'content', 0) }) :
+              path: path.concat(formKey, 'content', 0) }) :
             undefined ),
         groups
           .map(function(group) {
