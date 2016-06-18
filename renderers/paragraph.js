@@ -6,6 +6,7 @@ var renderText = require('./text')
 var renderUse = require('./use')
 var renderDefinition = require('./definition')
 var renderBlank = require('./blank')
+var renderDropZone = require('./drop-zone')
 var renderReference = require('./reference')
 var thunk = require('vdom-thunk')
 
@@ -15,8 +16,9 @@ function paragraph(state) {
   var emit = state.emit
   var offset = state.offset
   var path = state.path
-  return h('p.text',
-    [ data.content
+  return [
+    h('p.text',
+      data.content
         .map(function(child, index) {
           if (predicates.text(child)) {
             return thunk(renderText, child) }
@@ -32,4 +34,7 @@ function paragraph(state) {
                 emit: emit,
                 path: childPath }) }
           else if (predicates.reference(child)) {
-            return thunk(renderReference, child.reference) } }) ]) }
+            return thunk(renderReference, child.reference) } })),
+    renderDropZone({
+      emit: emit,
+      path: path.concat('content', ( offset + data.content.length )) }) ] }

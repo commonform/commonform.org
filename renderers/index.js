@@ -52,6 +52,7 @@ function renderers(state) {
                 ? renderDiff({ diff: diff })
                 : renderForm({
                     blanks: blanks,
+                    editing: editing,
                     focused: focused,
                     form: form,
                     derived: derived,

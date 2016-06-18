@@ -1,5 +1,6 @@
 var MobileDetect = require('mobile-detect')
 var annotate = require('./utility/annotate')
+var clone = require('./utility/json-clone')
 var deepEqual = require('deep-equal')
 var diff = require('commonform-diff')
 var keyarray = require('keyarray')
@@ -87,11 +88,32 @@ eventBus
 
   // Switch to and from edit mode.
   .on('editing', function(editing) {
-    if (state.comparing) { return }
-    else {
+    if (!state.comparing) {
       state.editing = editing
       computeDerivedState()
       mainLoop.update(state) } })
+
+  // Move child from one place to another.
+  .on('move', function(fromPath, toPath) {
+    // Not trying to move a child within itself.
+    if (!deepEqual(fromPath, toPath.slice(0, fromPath.length))) {
+      // Clone the form.
+      var newForm = clone(state.form)
+      var containsMoving = keyarray.get(newForm, fromPath.slice(0, -1))
+      var moving = keyarray.get(newForm, fromPath)
+      var containsTarget = keyarray.get(newForm, toPath.slice(0, -1))
+      var fromIndex = fromPath[fromPath.length - 1]
+      var toIndex = toPath[toPath.length - 1]
+      containsTarget.splice(toIndex, 0, moving)
+      var oldIndex = (
+        ( toIndex > fromIndex )
+          ? containsMoving.indexOf(moving)
+          : containsMoving.lastIndexOf(moving) )
+      containsMoving.splice(oldIndex, 1)
+      state.form = newForm
+      computeDerivedState()
+      mainLoop.update(state)
+      pushState() } })
 
   // Assign or remove a value from a fill-in-the-blank.
   .on('blank', function(blank, value) {

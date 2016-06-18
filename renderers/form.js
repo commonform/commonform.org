@@ -9,8 +9,10 @@ var jsonClone = require('../utility/json-clone')
 var isBlank = require('commonform-predicate').blank
 var renderAnnotations = require('./annotations')
 var renderDigest = require('./digest')
+var renderDropZone = require('./drop-zone')
 var renderHeading = require('./heading')
 var renderParagraph = require('./paragraph')
+var renderSectionButton = require('./section-button')
 var renderSeries = require('./series')
 var thunk = require('vdom-thunk')
 
@@ -19,6 +21,7 @@ function form(state) {
   var annotations = state.derived.annotations
   var blanks = state.blanks
   var form = state.form
+  var editing = state.editing
   var emit = state.emit
   var focused = state.focused
   var merkle = state.derived.merkle
@@ -48,10 +51,10 @@ function form(state) {
         attributes: { 'data-digest': merkle.digest } },
       [ ( root ?
             undefined :
-            h('a.sigil',
-              { title: 'Click to Focus',
-                onclick: toggleFocus },
-              '§') ),
+            renderSectionButton({
+              toggleFocus: toggleFocus,
+              editing: editing,
+              path: path }) ),
         ( form.heading ?
             thunk(renderHeading, form.heading) :
             undefined ),
@@ -86,6 +89,11 @@ function form(state) {
                          path.concat('form', 'content', index)) }) ) }) ?
                 h('a.flag', { title: 'Empty Blank' }, '✍') :
                 undefined ) ]),
+        ( ( root || form.hasOwnProperty('heading') ) ?
+            renderDropZone({
+              emit: emit,
+              path: path.concat('form', 'content', 0) }) :
+            undefined ),
         groups
           .map(function(group) {
             var groupState = {
@@ -100,7 +108,8 @@ function form(state) {
             var renderer
             if (group.type === 'series') {
               renderer = renderSeries
-              groupState.derived.merkle = merkle }
+              groupState.derived.merkle = merkle
+              groupState.editing = editing }
             else {
               renderer = renderParagraph }
             var result = renderer(groupState)

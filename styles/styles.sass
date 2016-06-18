@@ -77,8 +77,8 @@ button
     font-size: 75%
 
   header
-    padding: 0 0 1rem 0
-    margin: 0 0 1rem 0
+    padding: 0
+    margin: 0
 
   .menu
     padding: 1rem 0
@@ -105,41 +105,49 @@ button
   section section .heading,
   section section .details,
   section section .sigil,
+  section section .dropZone,
   section section p
     margin-left: 3rem
   section section section .heading,
   section section section .details,
   section section section .sigil,
+  section section section .dropZone,
   section section section p
     margin-left: 6rem
   section section section section .heading,
   section section section section .details,
   section section section section .sigil,
+  section section section section .dropZone,
   section section section section p
     margin-left: 9rem
   section section section section section .heading,
   section section section section section .details,
   section section section section section .sigil,
+  section section section section section .dropZone,
   section section section section section p
     margin-left: 12rem
   section section section section section section .heading,
   section section section section section section .details,
   section section section section section section .sigil,
+  section section section section section section .dropZone,
   section section section section section section p
     margin-left: 15rem
   section section section section section section section .heading,
   section section section section section section section .details,
   section section section section section section section .sigil,
+  section section section section section section section .dropZone,
   section section section section section section section p
     margin-left: 18rem
   section section section section section section section section .heading,
   section section section section section section section section .details,
   section section section section section section section section .sigil,
+  section section section section section section section section .dropZone,
   section section section section section section section section p
     margin-left: 21rem
   section section section section section section section section section .heading,
   section section section section section section section section section .details,
   section section section section section section section section section .sigil,
+  section section section section section section section section section .dropZone,
   section section section section section section section section section p
     margin-left: 24rem
 
@@ -179,6 +187,12 @@ button
   .heading
     font-weight: bold
     text-indent: 0
+    margin: 0
+    padding: 0
+
+  .text, .heading
+    margin-top: 0
+    margin-bottom: 0
 
   .conspicuous > .text
     font-weight: bold
@@ -283,3 +297,13 @@ button
       content: '['
     &:after
       content: ']'
+
+section[draggable=true]
+  cursor: move
+
+.dropZone
+  height: 0.75rem
+  border: 1px solid white
+
+.over
+  border: 1px dashed darkgreen
