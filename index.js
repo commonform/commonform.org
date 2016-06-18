@@ -7,6 +7,7 @@ var keyarray = require('keyarray')
 var loadComparing = require('./utility/load-comparing')
 var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
+var removeEmptyChildren = require('./utility/remove-empty-children')
 
 // The browser path prefix for specific Common Forms.
 var formPathPrefix = require('./utility/constants').formPrefix
@@ -110,6 +111,8 @@ eventBus
           ? containsMoving.indexOf(moving)
           : containsMoving.lastIndexOf(moving) )
       containsMoving.splice(oldIndex, 1)
+      // TODO: Intelligently remove emptied parent. Don't recurse.
+      removeEmptyChildren(newForm)
       state.form = newForm
       computeDerivedState()
       mainLoop.update(state)
