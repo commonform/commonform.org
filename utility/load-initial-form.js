@@ -3,8 +3,8 @@ module.exports = loadInitialForm
 var downloadForm = require('./download-form')
 var merkleize = require('commonform-merkleize')
 var welcome = require('commonform-welcome-form')
-var getProject = require('commonform-get-project')
-var getFormProjects = require('commonform-get-form-projects')
+var getPublication = require('commonform-get-publication')
+var getFormPublications = require('commonform-get-form-publications')
 var parallel = require('run-parallel')
 
 var welcomeDigest = merkleize(welcome).digest
@@ -25,7 +25,7 @@ function loadInitialForm(path, prefix, load) {
     else {
       parallel(
         [ downloadForm.bind(this, initialDigest),
-          getFormProjects.bind(this, initialDigest) ],
+          getFormPublications.bind(this, initialDigest) ],
         function(error, results) {
           if (error) {
             alert(error.message) }
@@ -35,13 +35,13 @@ function loadInitialForm(path, prefix, load) {
     var publisher = match[1]
     var project = match[2]
     var edition = ( match[4] || 'current' )
-    getProject(publisher, project, edition, function(error, project) {
+    getPublication(publisher, project, edition, function(error, publication) {
       if (error) {
         alert(error.message) }
       else {
         parallel(
-          [ downloadForm.bind(this, project.form),
-            getFormProjects.bind(this, project.form) ],
+          [ downloadForm.bind(this, publication.digest),
+            getFormPublications.bind(this, publication.digest) ],
           function(error, results) {
             if (error) {
               alert(error.message) }
