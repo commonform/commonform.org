@@ -53,7 +53,7 @@ tape('Browser', function(test) {
   test.test('Load from a project', function(test) {
     test.plan(1)
     webdriver
-      .url('http://localhost:8000/projects/test/test-form')
+      .url('http://localhost:8000/projects/test/test')
       .waitForExist('//*[contains(text(),"This is a test form.")]', 2000)
       .isExisting('//*[contains(text(),"This is a test form.")]')
       .then(function(existing) {
@@ -64,7 +64,7 @@ tape('Browser', function(test) {
   test.test('Display project name', function(test) {
     test.plan(1)
     webdriver
-      .url('http://localhost:8000/projects/test/test-form/1e')
+      .url('http://localhost:8000/projects/test/test/1e')
       .waitForExist('//*[contains(text(),"test")]', 2000)
       .isExisting('//*[contains(text(),"test")]')
       .then(function(existing) {
@@ -75,7 +75,7 @@ tape('Browser', function(test) {
   test.test('Display project edition', function(test) {
     test.plan(1)
     webdriver
-      .url('http://localhost:8000/projects/test/test-form/1e')
+      .url('http://localhost:8000/projects/test/test/1e')
       .waitForExist('//abbr[contains(text(), "1e")]', 2000)
       .isExisting('//abbr[contains(@title,"first edition") and contains(text(), "1e")]')
       .then(function(existing) {
@@ -86,7 +86,7 @@ tape('Browser', function(test) {
   test.test('Load from a project, latest edition', function(test) {
     test.plan(1)
     webdriver
-      .url('http://localhost:8000/projects/test/test-form/latest')
+      .url('http://localhost:8000/projects/test/test/latest')
       .waitForExist('//*[contains(text(),"This is a test form.")]', 2000)
       .isExisting('//*[contains(text(),"This is a test form.")]')
       .then(function(existing) {
