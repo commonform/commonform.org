@@ -25,9 +25,6 @@ var state = {
   comparing: null,
   comparingDigest: null,
 
-  // Path of a Common From to be moved.
-  selection: undefined,
-
   // Projects the Common Form is published as.
   projects: [ ],
 
@@ -86,12 +83,6 @@ eventBus
       mainLoop.update(state)
       pushState() } })
 
-  // Select a form to move.
-  .on('selection', function(path) {
-    state.selection = path
-    computeDerivedState()
-    mainLoop.update(state) })
-
   // Move child from one place to another.
   .on('move', function(fromPath, toPath) {
     // Not trying to move a child within itself.
@@ -112,7 +103,7 @@ eventBus
       // TODO: Intelligently remove emptied parent. Don't recurse.
       removeEmptyChildren(newForm)
       state.form = newForm
-      state.selection = undefined
+      state.focused = null
       computeDerivedState()
       mainLoop.update(state)
       pushState() } })

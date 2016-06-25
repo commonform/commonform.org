@@ -7,9 +7,8 @@ function series(state) {
   var annotations = state.derived.annotations
   var blanks = state.blanks
   var data = state.data
-  var selection = state.selection
-  var emit = state.emit
   var focused = state.focused
+  var emit = state.emit
   var merkle = state.derived.merkle
   var offset = state.offset
   var path = state.path
@@ -23,13 +22,12 @@ function series(state) {
         derived: {
           annotations: get(annotations, [ 'content', absoluteIndex ], { }),
           merkle: merkle.content[absoluteIndex] },
-        selection: selection,
-        emit: emit,
         focused: focused,
+        emit: emit,
         path: path.concat(pathSuffix) })
       return [
         result,
         renderDropZone({
           emit: emit,
-          selection: selection,
+          focused: focused,
           path: path.concat('content', ( absoluteIndex + 1 )) }) ] }) }

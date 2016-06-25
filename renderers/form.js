@@ -25,7 +25,6 @@ function form(state) {
   var focused = state.focused
   var merkle = state.derived.merkle
   var path = state.path
-  var selection = state.selection
 
   // Derivations
   var root = path.length === 0
@@ -37,37 +36,22 @@ function form(state) {
     annotations,
     formKey.concat('annotations'),
     [ ])
-  var selected = deepEqual(selection, path)
 
   // Rendering
   var offset = 0
   function toggleFocus(event) {
     event.stopPropagation()
-    emit('focus', ( isFocused ? undefined : path )) }
-  var properties =
-    { className: classnames({
-        conspicuous: ( 'conspicuous' in formObject ),
-        focused: isFocused,
-        selected: selected }),
-      attributes: { 'data-digest': merkle.digest } }
-  if (selected) {
-    properties.onclick = function(event) {
-      event.preventDefault()
-      event.stopPropagation()
-      emit('selection', undefined) } }
-  else {
-    properties.ondblclick = function(event) {
-      event.preventDefault()
-      event.stopPropagation()
-      emit('selection', path) } }
+    emit('focus', ( isFocused ? null : path )) }
   return [
     h('section',
-      properties,
+      { className: classnames({
+          conspicuous: ( 'conspicuous' in formObject ),
+          notFocused: ( focused !== null && !isFocused ),
+          focused: isFocused }),
+        attributes: { 'data-digest': merkle.digest } },
       [ ( root ?
             undefined :
-            renderSectionButton({
-              toggleFocus: toggleFocus,
-              selection: selection }) ),
+            renderSectionButton({ toggleFocus: toggleFocus }) ),
         ( form.heading ?
             thunk(renderHeading, form.heading) :
             undefined ),
@@ -105,7 +89,7 @@ function form(state) {
         ( ( root || form.hasOwnProperty('heading') ) ?
             renderDropZone({
               emit: emit,
-              selection: selection,
+              focused: focused,
               path: path.concat(formKey, 'content', 0) }) :
             undefined ),
         groups
@@ -118,13 +102,12 @@ function form(state) {
               emit: emit,
               focused: focused,
               offset: offset,
-              path: path.concat(formKey),
-              selection: selection }
+              path: path.concat(formKey) }
             var renderer
             if (group.type === 'series') {
               renderer = renderSeries
               groupState.derived.merkle = merkle
-              groupState.selection = selection }
+              groupState.focused = focused }
             else {
               renderer = renderParagraph }
             var result = renderer(groupState)

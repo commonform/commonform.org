@@ -8,14 +8,15 @@ var OVER_CLASS = 'over'
 function dropZone(state) {
   var emit = state.emit
   var path = state.path
-  var selection = state.selection
+  var focused = state.focused
   var properties = { className: 'dropZone', href: '#' }
-  if (selection) {
-    var withinSelection = deepEqual(selection, path.slice(0, selection.length))
+  if (focused !== null) {
+    var withinFocused = deepEqual(focused, path.slice(0, focused.length))
+    var same = deepEqual(focused, path)
     var immediatelyAfter = deepEqual(
-      selection.slice(0, -1).concat(selection[selection.length - 1] + 1),
+      focused.slice(0, -1).concat(focused[focused.length - 1] + 1),
       path)
-    var canDropHere = ( !withinSelection && !immediatelyAfter )
+    var canDropHere = ( !withinFocused && !immediatelyAfter )
     if (canDropHere) {
       properties.className += ' active'
       properties.onmouseover = over
@@ -24,7 +25,9 @@ function dropZone(state) {
       properties.onclick = function(event) {
         event.preventDefault()
         this.classList.remove(OVER_CLASS)
-        emit('move', selection, path) } } }
+        emit('move', focused, path) } }
+    if (immediatelyAfter || same) {
+      properties.className += ' notFocused' } }
   return h('a', properties) }
 
 function over(event) {
