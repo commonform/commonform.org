@@ -1,6 +1,6 @@
 var tape = require('tape')
 
-var webdriver = require('./webdriver')()
+var webdriver = require('./webdriver')
 var welcome = require('commonform-welcome-form')
 var merkleize = require('commonform-merkleize')
 
@@ -277,52 +277,7 @@ tape('Browser', function(test) {
         .then(function(existing) {
           test.assert(
             existing,
-            'Displays "Made inconspicuous".') }) })
-
-  tape('Edit Mode', function(test) {
-    var editButton = '//button[contains(text(),"Edit")]'
-    var readButton = '//button[contains(text(),"Read")]'
-
-    test.test(function(test) {
-      test.plan(1)
-      webdriver
-        .url('http://localhost:8000/')
-        .waitForExist(editButton)
-        .click(editButton)
-        .isExisting(readButton)
-        .then(function(existing) {
-          test.assert(
-            existing,
-            'On clicking "Edit", ' +
-            'Button "Read" appears.') }) })
-
-    /*
-    test.test(function(test) {
-      var newHash = (
-        'cbdec2965f96e2bd85d77e49b0de7854' +
-        'dd7d71af67c1796377463662452b0d8d' )
-      var moving = '(//a[@class="sigil"])[4]'
-      moving = '/html/body/div/article/form/section/section[2]/section[2]/a'
-      var to = '(//*[contains(@class,"dropZone")])[5]'
-      to = '/html/body/div/article/form/section/section[2]/div[1]'
-      test.plan(1)
-      test.timeoutAfter(1000 * 1000)
-      webdriver
-        .url('http://localhost:8000/')
-        .waitForExist(editButton)
-        .click(editButton)
-        .waitForExist(readButton)
-        .waitForExist(moving)
-        .waitForExist(to)
-        .dragAndDrop(moving, to)
-        .waitForExist('//*[contains(text(), "' + newHash.slice(0, 8) + '")]')
-        .getUrl()
-        .then(function(url) {
-          test.equal(
-            url,
-            ( 'http://localhost:8000/forms/' + newHash ),
-            'On clicking "Edit", ' +
-            'Button "Read" appears.') }) }) */ }) })
+            'Displays "Made inconspicuous".') }) }) })
 
 tape.onFinish(function() {
   webdriver.end() })
