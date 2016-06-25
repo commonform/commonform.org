@@ -160,12 +160,14 @@ button
   section section section section section section section section section p
     margin-left: 24rem
 
+  section
+    padding-bottom: 0.25rem
+    padding-top: 0.25rem
+
   section,
   section > p
     position: relative
     background: inherit
-    padding-bottom: 0.5rem
-    padding-top: 0.5rem
 
   .sigil
     display: block
@@ -312,12 +314,13 @@ button
 .dropZone
   display: block
   width: auto
-  height: 0
+  height: 1rem
+  cursor: default
+  border: 1px dashed white
+  border-radius: 5px
   &.notFocused
     +notFocused
   &.active
-    height: 1rem
-    border-radius: 5px
     border: 1px dashed #777
   &.over
     cursor: pointer

@@ -32,6 +32,9 @@ function form(state) {
   var formObject = ( root ? form : form.form )
   var groups = group(jsonClone(formObject))
   var isFocused = deepEqual(focused, path)
+  var withinFocused =
+    ( ( focused !== null ) &&
+      deepEqual(focused, path.slice(0, focused.length)) )
   var annotationsHere = get(
     annotations,
     formKey.concat('annotations'),
@@ -47,7 +50,7 @@ function form(state) {
       { className: classnames({
           conspicuous: ( 'conspicuous' in formObject ),
           notFocused: ( focused !== null && !isFocused ),
-          focused: isFocused }),
+          focused: withinFocused }),
         attributes: { 'data-digest': merkle.digest } },
       [ ( root ?
             undefined :
