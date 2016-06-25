@@ -1,11 +1,9 @@
 module.exports = loadInitialForm
 
-var downloadForm = require('./download-form')
+var getPublication = require('commonform-get-publication')
+var loadForm = require('./load-form')
 var merkleize = require('commonform-merkleize')
 var welcome = require('commonform-welcome-form')
-var getPublication = require('commonform-get-publication')
-var getFormPublications = require('commonform-get-form-publications')
-var parallel = require('run-parallel')
 
 var welcomeDigest = merkleize(welcome).digest
 
@@ -23,14 +21,9 @@ function loadInitialForm(path, prefix, load) {
     if (initialDigest === welcomeDigest) {
       load(welcome, false, [ ]) }
     else {
-      parallel(
-        [ downloadForm.bind(this, initialDigest),
-          getFormPublications.bind(this, initialDigest) ],
-        function(error, results) {
-          if (error) {
-            alert(error.message) }
-          else {
-            load(results[0], true, results[1]) } }) } }
+      loadForm(initialDigest, function(error, form, publications) {
+        if (error) { alert(error.message) }
+        else { load(form, true, publications) } }) } }
   else if (( match = PROJECT_PATH.exec(path) )) {
     var publisher = match[1]
     var project = match[2]
@@ -39,13 +32,8 @@ function loadInitialForm(path, prefix, load) {
       if (error) {
         alert(error.message) }
       else {
-        parallel(
-          [ downloadForm.bind(this, publication.digest),
-            getFormPublications.bind(this, publication.digest) ],
-          function(error, results) {
-            if (error) {
-              alert(error.message) }
-            else {
-              load(results[0], true, results[1]) } }) } }) }
+        loadForm(publication.digest, function(error, form, publications) {
+          if (error) { alert(error.message) }
+          else { load(form, true, publications) } }) } }) }
   else {
     load(welcome, true, [ ]) } }

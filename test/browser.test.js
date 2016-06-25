@@ -128,6 +128,7 @@ tape('Browser', function(test) {
         .url('http://localhost:8000')
         .waitForExist(addButton)
         .click(addButton)
+        .waitForExist(pageFollows)
         .isExisting(pageFollows)
         .then(function(existing) {
           test.assert(
@@ -199,24 +200,26 @@ tape('Browser', function(test) {
       'dad34e74228090369e96aae72b874206' +
       '39c93de9e544dbc920a03832a0754f9c' )
 
-    test.test(function(test) {
+    test.test('"compared to"', function(test) {
       test.plan(1)
       webdriver
         .url(
           'http://localhost:8000/forms/' + apache2 +
           '#compare:' + apache2edit)
+        .waitForExist('//*[contains(text(),"compared to")]')
         .isExisting('//*[contains(text(),"compared to")]')
         .then(function(existing) {
           test.assert(
             existing,
             'Displays "compared to" when diffing.') }) })
 
-    test.test(function(test) {
+    test.test('Comparison shows changes', function(test) {
       test.plan(1)
       webdriver
         .url(
           'http://localhost:8000/forms/' + apache2 +
           '#compare:' + apache2edit)
+        .waitForExist('//*[contains(text(),"compared to")]')
         .isExisting('//del/span[contains(text(),"whether")]')
         .then(function(existing) {
           test.assert(

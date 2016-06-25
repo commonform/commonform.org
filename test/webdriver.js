@@ -2,8 +2,9 @@ module.exports = (function() {
   return require('webdriverio')
     .remote(configuration())
     .init()
-    .timeouts('script', 1000)
-    .timeouts('implicit', 1000)
+    .timeouts('script', 10000)
+    .timeouts('implicit', 10000)
+    .timeouts('page load', 10000)
     .url('http://localhost:8000') })()
 
 function configuration() {

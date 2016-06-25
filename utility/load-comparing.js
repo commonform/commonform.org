@@ -1,6 +1,6 @@
 module.exports = loadComparing
 
-var downloadForm = require('./download-form')
+var downloadForm = require('commonform-get-form')
 
 var COMPARE_HASH = /^#compare:([a-f0-9]{64})$/
 //       Groups:             1

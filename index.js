@@ -1,10 +1,15 @@
+var Cache = require('level-lru-cache')
 var MobileDetect = require('mobile-detect')
 var annotate = require('./utility/annotate')
 var clone = require('./utility/json-clone')
 var deepEqual = require('deep-equal')
 var diff = require('commonform-diff')
+var getFormPublications = require('commonform-get-form-publications')
 var keyarray = require('keyarray')
+var leveljs = require('level-js')
+var levelup = require('levelup')
 var loadComparing = require('./utility/load-comparing')
+var loadForm = require('./utility/load-form')
 var loadInitialForm = require('./utility/load-initial-form')
 var merkleize = require('commonform-merkleize')
 var removeEmptyChildren = require('./utility/remove-empty-children')
@@ -148,6 +153,24 @@ eventBus
       keyarray[operation](signatures, key, value) }
     mainLoop.update(state) })
 
+var level = levelup('commonform', { db: leveljs })
+var formCache = new Cache(level, 100)
+
+window.addEventListener('popstate', function(event) {
+  if (event.state) {
+    var digest = event.state.digest
+    formCache.get(digest, function(error, cached) {
+      if (cached) {
+        var form = JSON.parse(cached)
+        // TODO Rename "project" to "publication" throughout
+        // TODO Cache publications
+        getFormPublications(digest, function(error, publications) {
+          eventBus.emit('form', form, true, ( publications || [ ] )) }) }
+      else {
+        loadForm(digest, function(error, form, publications) {
+          if (error) { alert(error.message) }
+          else { eventBus.emit('form', form, true, publications) } }) } }) } })
+
 // The main loop that rerenders the user interface on global state change.
 var mainLoop = require('main-loop')(
   state,
@@ -155,12 +178,17 @@ var mainLoop = require('main-loop')(
   require('virtual-dom'))
 
 // Push a state of the application to the browser's `history`.
-function pushState() {
+function pushState(fromHistory) {
   var digest = state.derived.merkle.digest
-  history.pushState(
-    { digest: digest },
-    null,
-    ( formPathPrefix + digest + window.location.hash )) }
+  var comparing = state.comparingDigest
+  if (!fromHistory) {
+    history.pushState(
+      { digest: digest, comparingDigest: comparing },
+      digest,
+      ( formPathPrefix + digest + window.location.hash )) }
+  formCache.put(digest, JSON.stringify(state.form))
+  if (comparing) {
+    formCache.put(comparing, JSON.stringify(state.comparing)) } }
 
 // Compute various information about the displayed Common Form when it changes.
 function computeDerivedState() {
