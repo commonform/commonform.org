@@ -16,6 +16,7 @@ function paragraph(state) {
   var emit = state.emit
   var offset = state.offset
   var path = state.path
+  var selection = state.selection
   return [
     h('p.text',
       data.content
@@ -37,4 +38,5 @@ function paragraph(state) {
             return thunk(renderReference, child.reference) } })),
     renderDropZone({
       emit: emit,
+      selection: selection,
       path: path.concat('content', ( offset + data.content.length )) }) ] }

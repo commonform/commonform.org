@@ -151,6 +151,11 @@ button
   section section section section section section section section section p
     margin-left: 24rem
 
+  section
+    border: 1px solid white
+    &.selected
+      border: 1px solid blue
+
   section,
   section > p
     position: relative
@@ -298,12 +303,15 @@ button
     &:after
       content: ']'
 
-section[draggable=true]
-  cursor: move
-
 .dropZone
+  display: block
+  width: auto
   height: 0.75rem
-  border: 1px solid white
-
-.over
-  border: 1px dashed darkgreen
+  margin-top: 1px
+  margin-bottom: 1px
+  cursor: default
+  &.active
+    background: #C9F5CE
+  &.over
+    cursor: pointer
+    background: #67c281

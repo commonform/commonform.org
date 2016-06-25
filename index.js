@@ -18,7 +18,6 @@ var eventBus = new (require('events').EventEmitter)
 
 // The global application state.
 var state = {
-
   // The Common Form to display.
   form: null,
 
@@ -26,8 +25,8 @@ var state = {
   comparing: null,
   comparingDigest: null,
 
-  // Edit mode flag.
-  editing: false,
+  // Path of a Common From to be moved.
+  selection: undefined,
 
   // Projects the Common Form is published as.
   projects: [ ],
@@ -87,12 +86,11 @@ eventBus
       mainLoop.update(state)
       pushState() } })
 
-  // Switch to and from edit mode.
-  .on('editing', function(editing) {
-    if (!state.comparing) {
-      state.editing = editing
-      computeDerivedState()
-      mainLoop.update(state) } })
+  // Select a form to move.
+  .on('selection', function(path) {
+    state.selection = path
+    computeDerivedState()
+    mainLoop.update(state) })
 
   // Move child from one place to another.
   .on('move', function(fromPath, toPath) {
@@ -114,6 +112,7 @@ eventBus
       // TODO: Intelligently remove emptied parent. Don't recurse.
       removeEmptyChildren(newForm)
       state.form = newForm
+      state.selection = undefined
       computeDerivedState()
       mainLoop.update(state)
       pushState() } })
