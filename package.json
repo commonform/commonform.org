@@ -49,6 +49,6 @@
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "node server.js",
     "test": "tape test/*.test.js",
-    "watch": "budo index.js --css styles.css -d build/assets --live"
+    "watch": "budo index.js --css /styles.css -d build/assets --pushstate --live"
   }
 }

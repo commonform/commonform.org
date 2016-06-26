@@ -1,10 +1,10 @@
 var choo = require('choo')
 var improvePunctuation = require('../improve-punctuation')
 
-module.exports = function(digest, annotationsArray) {
+module.exports = function(digest, annotationsArray, send) {
   return choo.view`
     <p class=details>
-      ${digestLink(digest)}
+      ${digestLink(digest, send)}
       ${annotations(annotationsArray)}
     </p>` }
 
@@ -19,11 +19,15 @@ function annotationText(url, message) {
   if (url) { return choo.view`<a href=${url}>${message}</a>` }
   else { return choo.view`${message}` } }
 
-function digestLink(digest) {
+function digestLink(digest, send) {
   return choo.view`
-    <a class=digest target=_blank href="/forms/${digest}">
-      ${digest.slice(0, 32)}<wbr>${digest.slice(32)}
-    </a>` }
+    <a
+        class=digest
+        href="/forms/${digest}"
+        onclick=${function() {
+          send('form:load')
+          send('form:fetch', { digest: digest }) }}
+      >${digest.slice(0, 32)}<wbr>${digest.slice(32)}</a>` }
 
 function deduplicate(annotations) {
   return annotations

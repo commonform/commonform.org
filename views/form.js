@@ -32,7 +32,7 @@ function form(form, send) {
     <section class="${classes}" data-digest="${form.merkle.digest}">
       ${root ? null : sectionButton(toggleFocus)}
       ${form.tree.heading ? heading(form.tree.heading) : null }
-      ${isFocused ? details(form.merkle.digest, annotationsHere) : null}
+      ${isFocused ? details(form.merkle.digest, annotationsHere, send) : null}
       ${marginalia(tree, form.path, form.blanks, annotationsHere, toggleFocus)}
       ${groups.map(function(group) {
           var groupState =
