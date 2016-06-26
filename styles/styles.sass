@@ -1,0 +1,290 @@
+@import 'normalize'
+
+@media all
+  html
+    font-size: 23px
+@media all and (max-width:1000px)
+  html
+    font-size: 23px
+@media all and (max-width:960px)
+  html
+    font-size: 22px
+@media all and (max-width:920px)
+  html
+    font-size: 21px
+@media all and (max-width:880px)
+  html
+    font-size: 20px
+@media all and (max-width:840px)
+  html
+    font-size: 19px
+@media all and (max-width:800px)
+  html
+    font-size: 18px
+@media all and (max-width:760px)
+  html
+    font-size: 17px
+@media all and (max-width:720px)
+  html
+    font-size: 16px
+@media all and (max-width:680px)
+  html
+    font-size: 15px
+@media all and (max-width:640px)
+  html
+    font-size: 14px
+@media all and (max-width:600px)
+  html
+    font-size: 13px
+@media all and (max-width:560px)
+  html
+    font-size: 12px
+@media all and (max-width:520px)
+  html
+    font-size: 11px
+
+body
+  text-align: center
+  font-family: Equity, Georgia, serif
+  color: #444
+  text-rendering: optimizeLegibility
+
+button
+  border-radius: 1000px
+  background: white
+  border: 1px solid #777
+  font-family: "Concourse T3"
+  padding: 0 1ex
+  margin-right: 1ex
+
+.menu button:last-child
+  margin-right: 0
+
+.menu button:hover,
+.fileInputTrick:hover button
+  border: 1px solid black
+  color: black
+
+.container
+  width: 37rem
+  margin: 1rem auto
+  line-height: 1.4
+  text-align: left
+
+.commonform
+  .digest
+    font-family: Triplicate, "Andale Mono", monospace
+    font-size: 75%
+
+  header
+    padding: 0 0 1rem 0
+    margin: 0 0 1rem 0
+
+  .menu
+    padding: 1rem 0
+    margin: 1rem 0
+
+  footer
+    border-top: 1px solid black
+    margin: 0.5rem 0
+    padding: 0.5rem 0
+    font-size: 75%
+    text-align: right
+
+    p
+      margin: 0 0 0.5rem 0
+      padding: 0
+
+  footer a, .digest
+    text-decoration: none
+    color: inherit
+
+  footer a:hover, .digest:hover
+    text-decoration: underline
+
+  section section .heading,
+  section section .details,
+  section section .sigil,
+  section section p
+    margin-left: 3rem
+  section section section .heading,
+  section section section .details,
+  section section section .sigil,
+  section section section p
+    margin-left: 6rem
+  section section section section .heading,
+  section section section section .details,
+  section section section section .sigil,
+  section section section section p
+    margin-left: 9rem
+  section section section section section .heading,
+  section section section section section .details,
+  section section section section section .sigil,
+  section section section section section p
+    margin-left: 12rem
+  section section section section section section .heading,
+  section section section section section section .details,
+  section section section section section section .sigil,
+  section section section section section section p
+    margin-left: 15rem
+  section section section section section section section .heading,
+  section section section section section section section .details,
+  section section section section section section section .sigil,
+  section section section section section section section p
+    margin-left: 18rem
+  section section section section section section section section .heading,
+  section section section section section section section section .details,
+  section section section section section section section section .sigil,
+  section section section section section section section section p
+    margin-left: 21rem
+  section section section section section section section section section .heading,
+  section section section section section section section section section .details,
+  section section section section section section section section section .sigil,
+  section section section section section section section section section p
+    margin-left: 24rem
+
+  section,
+  section > p
+    position: relative
+    background: inherit
+
+  .sigil
+    display: block
+    content: '§'
+    font-weight: normal
+    position: absolute
+    left: -2rem
+    cursor: pointer
+    -webkit-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    -o-user-select: none
+    user-select: none;
+
+  .marginalia
+    display: block
+    cursor: pointer
+    position: absolute
+    right: -2rem
+
+  .marginalia .flag
+    display: block
+    clear: both
+    width: 100%
+
+  .error
+    color: darkred
+
+  .warn
+    color: darkorange
+
+  .info
+    color: darkblue
+
+  .heading
+    font-weight: bold
+    text-indent: 0
+
+  .conspicuous > .text
+    font-weight: bold
+    font-style: italic
+
+  .conspicuous > .text > .use,
+  .conspicuous > .text > dfn
+    font-style: normal
+
+  .blank
+    display: inline-block
+    border: none
+    border-bottom: 1px dashed black
+    background: inherit
+
+  input.blank
+    width: 10rem
+
+  span.blank:before
+    content: ' '
+
+  .clear
+    cursor: pointer
+
+  .clear:before
+    content: ' ⌫ '
+
+  .reference
+    font-style: italic
+
+  .reference:before
+    content: '☞ '
+
+  .use,
+  .reference
+    text-decoration: none
+    color: inherit
+    font-style: italic
+
+  .use:hover,
+  .reference:hover
+    text-decoration: underline
+
+  aside
+    p
+      margin-left: 0 !important
+
+  dfn
+    font-weight: bold
+    font-style: normal
+
+  dfn:before
+    font-weight: normal
+    content: '“'
+
+  dfn:after
+    font-weight: normal
+    content: '”'
+
+  .endOfPage
+    text-align: center
+
+  .signaturePages
+    .page
+      &> *:not(:first-child):not(:last-child)
+        margin-left: 30%
+      .header input
+        width: 100%
+
+  .fileInputTrick
+    display: inline-block
+    position: relative
+    cursor: pointer
+
+    button
+      position: absolute
+      top: 0
+      left: 0
+      z-index: 1
+
+    input[type=file]
+      position: relative
+      z-index: 2
+      opacity: 0
+      width: 150px
+
+  ins, del
+    width: auto
+    height: auto
+    margin: none
+    padding: none
+
+  ins
+    color: rgb(0, 100, 0)
+
+  del
+    color: rgb(100, 0, 0)
+
+  .edit
+    color: rgb(178, 98, 0)
+    &:before
+      content: '['
+    &:after
+      content: ']'
