@@ -10,4 +10,3 @@ module.exports = function redirectToForm (params, state, send) {
     </div>
   `
 }
-

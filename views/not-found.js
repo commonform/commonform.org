@@ -9,4 +9,3 @@ module.exports = function notFound () {
     </div>
   `
 }
-
