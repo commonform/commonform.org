@@ -1,4 +1,4 @@
-var annotate = require('./utility/annotate')
+var annotate = require('./annotate')
 var choo = require('choo')
 var clone = require('./clone')
 var downloadForm = require('./download-form')
