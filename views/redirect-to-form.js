@@ -1,3 +1,5 @@
+const choo = require('choo')
+
 module.exports = function redirectToForm (params, state, send) {
   send('form:redirectToForm', params)
   return choo.view`

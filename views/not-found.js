@@ -1,3 +1,5 @@
+const choo = require('choo')
+
 module.exports = function notFound () {
   choo.view`
     <div class=container>
