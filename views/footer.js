@@ -1,4 +1,4 @@
-var choo = require('choo')
+const choo = require('choo')
 
 module.exports = function () {
   return choo.view`

@@ -1,10 +1,10 @@
-var tape = require('tape')
-var webdriver = require('./webdriver')
+const tape = require('tape')
+const webdriver = require('./webdriver')
 
 tape('Loading from API', function (suite) {
   suite.test('Load from API', function (test) {
     test.plan(1)
-    var digest = '813203e4f775c681aee09075f0990e7e79b5037fcce9440b66b4bfb436206748'
+    const digest = '813203e4f775c681aee09075f0990e7e79b5037fcce9440b66b4bfb436206748'
     webdriver
       .url('http://localhost:8000/forms/' + digest)
       .waitForExist('//*[contains(text(),"api.commonform.org")]')

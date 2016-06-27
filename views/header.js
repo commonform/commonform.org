@@ -1,6 +1,6 @@
-var choo = require('choo')
-var digestLink = require('./digest-link')
-var spell = require('reviewers-edition-spell')
+const choo = require('choo')
+const digestLink = require('./digest-link')
+const spell = require('reviewers-edition-spell')
 
 module.exports = function (digest, publications) {
   return choo.view`

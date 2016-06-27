@@ -1,10 +1,10 @@
-var tape = require('tape')
-var webdriver = require('./webdriver')
+const tape = require('tape')
+const webdriver = require('./webdriver')
 
 tape('Comparison', function (suite) {
-  var apache2 = '5d912ab4e9be029a2b3d137aefeb918ad1f001463e0f554ca24008dc70494eb0'
+  const apache2 = '5d912ab4e9be029a2b3d137aefeb918ad1f001463e0f554ca24008dc70494eb0'
 
-  var apache2edit = 'dad34e74228090369e96aae72b87420639c93de9e544dbc920a03832a0754f9c'
+  const apache2edit = 'dad34e74228090369e96aae72b87420639c93de9e544dbc920a03832a0754f9c'
 
   suite.test(function (test) {
     test.plan(1)
@@ -36,9 +36,9 @@ tape('Comparison', function (suite) {
       })
   })
 
-  var abc = 'b34c42c6b0620405d352d1987ab6b7586634c136c8b7fca26e15abc2ce3e62f0'
+  const abc = 'b34c42c6b0620405d352d1987ab6b7586634c136c8b7fca26e15abc2ce3e62f0'
 
-  var bcd = 'ca4b4d97de8c014df46d17d17e1de72e8fb942e1b6f0d72b5eddf56af4418967'
+  const bcd = 'ca4b4d97de8c014df46d17d17e1de72e8fb942e1b6f0d72b5eddf56af4418967'
 
   suite.test(function (test) {
     test.plan(1)
@@ -66,9 +66,9 @@ tape('Comparison', function (suite) {
       })
   })
 
-  var a = '3e0a6550ad6afb461c5a217bd24f54247405a31fb1a06b705acf35c7010a599b'
+  const a = '3e0a6550ad6afb461c5a217bd24f54247405a31fb1a06b705acf35c7010a599b'
 
-  var aConspicuous = '1111d342cef09cf3eb11b30c565a3c7a9080b01665dcf1cc2ebab99c7efdb2ea'
+  const aConspicuous = '1111d342cef09cf3eb11b30c565a3c7a9080b01665dcf1cc2ebab99c7efdb2ea'
 
   suite.test(function (test) {
     test.plan(1)

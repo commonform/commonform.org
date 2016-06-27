@@ -1,31 +1,30 @@
-var choo = require('choo')
-var classnames = require('classnames')
-var clone = require('../clone')
-var deepEqual = require('deep-equal')
-var find = require('array-find')
-var get = require('keyarray').get
-var group = require('commonform-group-series')
-var improvePunctuation = require('../improve-punctuation')
-var predicates = require('commonform-predicate')
-var replaceUnicode = require('../replace-unicode')
-
-var details = require('./details')
-var input = require('./input')
+const choo = require('choo')
+const classnames = require('classnames')
+const clone = require('../clone')
+const deepEqual = require('deep-equal')
+const find = require('array-find')
+const get = require('keyarray').get
+const group = require('commonform-group-series')
+const improvePunctuation = require('../improve-punctuation')
+const predicates = require('commonform-predicate')
+const replaceUnicode = require('../replace-unicode')
+const details = require('./details')
+const input = require('./input')
 
 module.exports = form
 
 function form (form, send) {
-  var root = form.path.length === 0
-  var formKey = root ? [] : ['form']
-  var tree = root ? form.tree : form.tree.form
-  var groups = group(clone(tree))
-  var isFocused = deepEqual(form.focused, form.path)
-  var annotationsHere = get(
+  const root = form.path.length === 0
+  const formKey = root ? [] : ['form']
+  const tree = root ? form.tree : form.tree.form
+  const groups = group(clone(tree))
+  const isFocused = deepEqual(form.focused, form.path)
+  const annotationsHere = get(
     form.annotations,
     formKey.concat('annotations'),
     []
   )
-  var classes = classnames({
+  const classes = classnames({
     conspicuous: 'conspicuous' in tree,
     focused: isFocused
   })
@@ -51,7 +50,7 @@ function form (form, send) {
           renderer = series
           groupState.merkle = form.merkle
         } else renderer = paragraph
-        var result = renderer(groupState, send)
+        const result = renderer(groupState, send)
         offset += group.content.length
         return result
       })}
@@ -73,9 +72,9 @@ function sectionButton (toggleFocus) {
 }
 
 function marginalia (tree, path, blanks, annotations, toggleFocus) {
-  var hasError = annotations.some((a) => a.level === 'error')
-  var hasAnnotation = annotations.some((a) => a.level !== 'error')
-  var hasBlank = tree.content.some((element, index) =>
+  const hasError = annotations.some((a) => a.level === 'error')
+  const hasAnnotation = annotations.some((a) => a.level !== 'error')
+  const hasBlank = tree.content.some((element, index) =>
      predicates.blank(element) &&
      !blanks.some((direction) => deepEqual(direction.blank, path.concat('form', 'content', index))))
   return choo.view`
@@ -93,9 +92,9 @@ function heading (heading) {
 
 function series (state, send) {
   return state.data.content.map(function (child, index) {
-    var absoluteIndex = index + state.offset
-    var pathSuffix = ['content', absoluteIndex]
-    var result = form(
+    const absoluteIndex = index + state.offset
+    const pathSuffix = ['content', absoluteIndex]
+    const result = form(
       {
         blanks: state.blanks,
         tree: child,
@@ -131,10 +130,10 @@ function paragraph (state, send) {
               >${child.definition}</dfn>
           `
         } else if (predicates.blank(child)) {
-          var childPath = state.path.concat(['content', state.offset + index])
+          const childPath = state.path.concat(['content', state.offset + index])
           return blank(state.blanks, childPath, send)
         } else if (predicates.reference(child)) {
-          var heading = child.reference
+          const heading = child.reference
           return choo.view`
             <a  class=reference
                 title="Jump to ${heading}"
@@ -144,8 +143,8 @@ function paragraph (state, send) {
 }
 
 function blank (blanks, path, send) {
-  var direction = find(blanks, (element) => deepEqual(element.blank, path))
-  var value = direction ? improvePunctuation(direction.value) : ''
+  const direction = find(blanks, (element) => deepEqual(element.blank, path))
+  const value = direction ? improvePunctuation(direction.value) : ''
   return input(
     value,
     function (value) { send('form:blank', {path: path, value: replaceUnicode(value)}) },

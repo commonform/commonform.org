@@ -1,4 +1,4 @@
-var choo = require('choo')
+const choo = require('choo')
 
 module.exports = function input (value, set, clear, placeholder) {
   if (value && value.length > 0) {

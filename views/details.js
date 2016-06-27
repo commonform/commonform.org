@@ -1,6 +1,6 @@
-var choo = require('choo')
-var improvePunctuation = require('../improve-punctuation')
-var digestLink = require('./digest-link')
+const choo = require('choo')
+const digestLink = require('./digest-link')
+const improvePunctuation = require('../improve-punctuation')
 
 module.exports = function (digest, annotationsArray, send) {
   return choo.view`
@@ -16,7 +16,7 @@ function annotations (array) {
 }
 
 function annotation (data) {
-  var message = improvePunctuation(data.message)
+  const message = improvePunctuation(data.message)
   return choo.view`<p class=${data.level}>${annotationText(data.url, message)}</p>`
 }
 

@@ -1,9 +1,8 @@
-var capitalize = require('capitalize')
-var choo = require('choo')
-var clone = require('../clone')
-var emptySignaturePage = require('../empty-signature-page')
-
-var input = require('./input')
+const capitalize = require('capitalize')
+const choo = require('choo')
+const clone = require('../clone')
+const emptySignaturePage = require('../empty-signature-page')
+const input = require('./input')
 
 module.exports = function (pages, send) {
   return choo.view`
@@ -32,14 +31,14 @@ module.exports = function (pages, send) {
   `
 }
 
-var optional = ['date', 'email', 'address']
+const optional = ['date', 'email', 'address']
 
 function signaturePage (page, path, send) {
-  var entities = page.entities
-  var information = page.information || []
+  const entities = page.entities
+  const information = page.information || []
 
   function updateValue (key, value) {
-    var keyPath = path.concat(key)
+    const keyPath = path.concat(key)
     if (value.length > 0) {
       send(
         'form:signatures',
@@ -72,8 +71,8 @@ function signaturePage (page, path, send) {
       ${
         entities.length > 0
           ? (function () {
-            var lastIndex = entities.length - 1
-            var byPath = path.concat('entities', lastIndex, 'by')
+            const lastIndex = entities.length - 1
+            const byPath = path.concat('entities', lastIndex, 'by')
             return choo.view`
               <p>Title:
                 ${input(
@@ -97,7 +96,7 @@ function signaturePage (page, path, send) {
       }
       ${
         optional.map(function (text) {
-          var display = text === 'email' ? 'E-Mail' : capitalize(text)
+          const display = text === 'email' ? 'E-Mail' : capitalize(text)
           if (information.indexOf(text) > -1) return choo.view`<p>${display}:`
           else {
             return choo.view`
@@ -106,8 +105,8 @@ function signaturePage (page, path, send) {
                     onclick=${
                       function (event) {
                         event.preventDefault()
-                        var infoPath = path.concat('information')
-                        var newValue = optional.filter(
+                        const infoPath = path.concat('information')
+                        const newValue = optional.filter(
                           (filtering) => filtering === text || information.indexOf(filtering) > -1)
                         send(
                           'form:signatures',
@@ -172,12 +171,12 @@ function entitiesParagraphs (entities, path, send) {
 }
 
 function signatureEntity (state, send) {
-  var entity = state.entity
-  var needsBy = state.needsBy
-  var path = state.path
+  const entity = state.entity
+  const needsBy = state.needsBy
+  const path = state.path
 
   function updateValue (key, value) {
-    var keyPath = path.concat(key)
+    const keyPath = path.concat(key)
     if (value.length > 0) {
       send(
         'form:signatures',
@@ -209,8 +208,8 @@ function signatureEntity (state, send) {
       ${needsBy ? 'its' : null}
       ${needsBy
         ? (function () {
-          var by = state.by
-          var byPath = state.byPath
+          const by = state.by
+          const byPath = state.byPath
           return input(
             by,
             function (value) {

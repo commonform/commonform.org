@@ -1,23 +1,22 @@
-var annotate = require('./annotate')
-var choo = require('choo')
-var clone = require('./clone')
-var downloadForm = require('./download-form')
-var downloadFormPublications = require('./download-form-publications')
-var downloadPublication = require('./download-publication')
-var keyarray = require('keyarray')
-var merkleize = require('commonform-merkleize')
-var runParallel = require('run-parallel')
+const annotate = require('./annotate')
+const choo = require('choo')
+const clone = require('./clone')
+const downloadForm = require('./download-form')
+const downloadFormPublications = require('./download-form-publications')
+const downloadPublication = require('./download-publication')
+const footer = require('./views/footer')
+const form = require('./views/form')
+const header = require('./views/header')
+const keyarray = require('keyarray')
+const menu = require('./views/menu')
+const merkleize = require('commonform-merkleize')
+const runParallel = require('run-parallel')
+const signaturePages = require('./views/signature-pages')
 
-var footer = require('./views/footer')
-var form = require('./views/form')
-var header = require('./views/header')
-var menu = require('./views/menu')
-var signaturePages = require('./views/signature-pages')
+const app = choo()
 
-var app = choo()
-
-var welcomeTree = require('commonform-welcome-form')
-var welcome = {
+const welcomeTree = require('commonform-welcome-form')
+const welcome = {
   tree: welcomeTree,
   annotations: annotate(welcomeTree),
   merkle: merkleize(welcomeTree)

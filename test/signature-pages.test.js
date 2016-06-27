@@ -1,11 +1,11 @@
-var tape = require('tape')
-var webdriver = require('./webdriver')
+const tape = require('tape')
+const webdriver = require('./webdriver')
 
 tape.test('Signature Pages', function (test) {
-  var addButton = '//button[contains(text(),"Add Signature Page")]'
-  var deleteButton = '//button[contains(text(),"Delete this Signature Page")]'
-  var pageFollows = '//*[contains(text(),"Signature Page Follows")]'
-  var pagesFollow = '//*[contains(text(),"Signature Pages Follow")]'
+  const addButton = '//button[contains(text(),"Add Signature Page")]'
+  const deleteButton = '//button[contains(text(),"Delete this Signature Page")]'
+  const pageFollows = '//*[contains(text(),"Signature Page Follows")]'
+  const pagesFollow = '//*[contains(text(),"Signature Pages Follow")]'
 
   test.test(function (test) {
     test.plan(1)

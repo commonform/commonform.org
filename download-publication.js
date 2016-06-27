@@ -1,4 +1,4 @@
-var http = require('choo/http')
+const http = require('choo/http')
 
 module.exports = function (publication, callback) {
   var uri = 'https://api.commonform.org' +
