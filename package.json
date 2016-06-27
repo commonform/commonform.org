@@ -46,7 +46,7 @@
   "private": true,
   "scripts": {
     "build": "npm-run-all --parallel build:*",
-    "build:css": "node-sass --output-style compressed styles/styles.sass > build/assets/styles.css",
+    "build:css": "node-sass --output-style compressed styles/styles.sass > build/styles.css",
     "build:js": "browserify -p licensify -g unassertify -g es2020 -g uglifyify index.js | uglifyjs --comments 2>/dev/null > build/browser.js",
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "node server.js",
