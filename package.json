@@ -31,7 +31,7 @@
   "devDependencies": {
     "browserify": "^13.0.0",
     "ecstatic": "^1.4.1",
-    "es2020": "github:kemitchell/es2020",
+    "es2020": "^1.1.7",
     "licensify": "^3.1.2",
     "node-sass": "^3.4.2",
     "npm-run-all": "^1.5.0",
