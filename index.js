@@ -2,12 +2,16 @@ var annotate = require('./utility/annotate')
 var choo = require('choo')
 var clone = require('./clone')
 var downloadForm = require('./download-form')
+var downloadFormPublications = require('./download-form-publications')
+var downloadPublication = require('./download-publication')
 var keyarray = require('keyarray')
 var merkleize = require('commonform-merkleize')
+var runParallel = require('run-parallel')
 
-var form = require('./views/form')
-var menu = require('./views/menu')
 var footer = require('./views/footer')
+var form = require('./views/form')
+var header = require('./views/header')
+var menu = require('./views/menu')
 var signaturePages = require('./views/signature-pages')
 
 var app = choo()
@@ -23,12 +27,12 @@ app.model(
   { namespace: 'form',
     state:
       { error: null,
-        tree: welcome.tree,
+        tree: null,
         path: [ ],
         projects: [ ],
         blanks: [ ],
-        annotations: welcome.annotations,
-        merkle: welcome.merkle,
+        annotations: null,
+        merkle: null,
         signaturePages: [ ],
         focused: null },
 
@@ -57,38 +61,65 @@ app.model(
               blanks: [ ],
               annotations: annotate(action.tree),
               merkle: merkleize(action.tree),
+              publications: action.publications,
               signaturePages: [ ],
               focused: null }),
-        load: () => ({ loading: true }) },
+        error: (action) => ({ error: action.error }),
+        load: () => ({ tree: null, annotations: null, merkle: null }) },
 
     effects:
-      { 'fetch': function(action, state, send) {
-          if (action.digest === welcome.digest) {
-            send('form:tree', { tree: welcome.tree }) }
-          else {
-            downloadForm(action.digest, function(error, tree) {
-              if (error) { send('form:error', { error: error }) }
-              else { send('form:tree', { tree: tree }) } }) } } } })
+      { fetch: function(action, state, send) {
+          var digest = action.digest
+          runParallel(
+            [ function(done) {
+                downloadForm(digest, function(error, tree) {
+                  if (error) done(error)
+                  else done(null, tree) }) },
+              function(done) {
+                downloadFormPublications(digest, function(error, publications) {
+                  if (error) done(null, [ ])
+                  else done(null, publications) }) } ],
+            function(error, results) {
+              if (error) send('form:error', { error: error })
+              else send('form:tree', { tree: results[0], publications: results[1] }) }) },
+        redirectToForm: function(action, state, send) {
+          action.edition = action.edition || 'current'
+          downloadPublication(action, function(error, digest) {
+            if (error) send('form:error', { error: error })
+            else window.location = '/forms/' + digest }) } } })
 
 app.router((route) =>
   [ route('/', formView),
     route('/forms',
-      [ route('/:digest', formView) ]) ])
+      [ route('/:digest', formView) ]),
+    route('/publications',
+      [ route('/:publisher',
+          [ route('/:project', redirectToForm,
+              [ route('/:edition', redirectToForm) ]) ]) ]) ])
 
 if (module.parent) module.exports = app
 else document.body.appendChild(app.start())
 
+function redirectToForm(params, state, send) {
+  send('form:redirectToForm', params)
+  return choo.view`
+    <div class=container>
+      <article class=commonform>
+        Loading...
+      </article>
+    </div>` }
+
 function formView(params, state, send) {
-  var digest = params.digest || welcome.digest
+  if (Object.keys(params).length === 0) params.digest = welcome.digest
   if (state.form.error) {
     return choo.view`
       <div class=container>
         <article class=commonform>
-          <p class=error>${state.form.error}</p>
+          <p class=error>${state.form.error.message}</p>
         </article>
       </div>` }
-  else if (!state.form.merkle || digest !== state.form.merkle.digest) {
-    send('form:fetch', { digest: digest })
+  else if (!state.form.merkle) {
+    send('form:fetch', params)
     return choo.view`
       <div class=container>
         <article class=commonform>
@@ -100,6 +131,7 @@ function formView(params, state, send) {
       <div class=container>
         <article class=commonform>
           ${menu(state.form, send)}
+          ${header(state.form.merkle.digest, state.form.publications)}
           ${form(state.form, send)}
           ${signaturePages(state.form.signaturePages, send)}
           ${menu(state.form, send)}

@@ -25,6 +25,7 @@
     "ooxml-signature-pages": "^0.5.0",
     "outline-numbering": "^0.2.0",
     "reviewers-edition-spell": "^1.0.2",
+    "run-parallel": "^1.1.6",
     "unicode-ascii-equivalents": "^0.1.1"
   },
   "devDependencies": {
@@ -39,6 +40,7 @@
     "tape": "^4.4.0",
     "uglifyify": "^3.0.2",
     "unassertify": "^2.0.3",
+    "watchify": "^3.7.0",
     "webdriverio": "^3.4.0"
   },
   "private": true,
@@ -49,6 +51,7 @@
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "node server.js",
     "test": "tape test/*.test.js",
-    "watch": "budo index.js --css /styles.css -d build/assets --pushstate --live"
+    "budo": "budo index.js:/index.js --css /styles.css -d build/assets --pushstate --live",
+    "watch": "watchify index.js -o build/browser.js -dv"
   }
 }
