@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "browserify": "^13.0.0",
-    "budo": "^8.3.0",
     "ecstatic": "^1.4.1",
     "es2020": "github:kemitchell/es2020",
     "licensify": "^3.1.2",
@@ -52,7 +51,6 @@
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "node server.js",
     "test": "tape test/*.test.js",
-    "budo": "budo index.js:/index.js --css /styles.css -d build/assets --pushstate --live",
     "watch": "watchify index.js -o build/browser.js -dv"
   }
 }
