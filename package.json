@@ -30,6 +30,8 @@
   },
   "devDependencies": {
     "browserify": "^13.0.0",
+    "browserify-header": "^0.9.2",
+    "browserify-licenses": "^0.1.1",
     "ecstatic": "^1.4.1",
     "es2020": "^1.1.7",
     "licensify": "^3.1.2",
@@ -38,6 +40,7 @@
     "standard": "^7.1.2",
     "stream-replace": "^1.0.0",
     "tape": "^4.4.0",
+    "uglify-js": "^2.6.4",
     "uglifyify": "^3.0.2",
     "unassertify": "^2.0.3",
     "watchify": "^3.7.0",
@@ -47,11 +50,13 @@
   "scripts": {
     "build": "npm-run-all --parallel build:*",
     "build:css": "node-sass --output-style compressed styles/styles.sass > build/styles.css",
-    "build:js": "browserify -p licensify -g unassertify -g es2020 -g uglifyify index.js | uglifyjs --comments 2>/dev/null > build/browser.js",
+    "build:licenses": "brlicenses -f full index.js >> build/LICENSES",
+    "build:js": "NODE_ENV=production browserify -p [ browserify-header --file header.js ] -p licensify -g unassertify -g es2020 -g uglifyify index.js | uglifyjs --comments warnings=false > build/browser.js",
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "node server.js",
     "test": "tape test/*.test.js",
     "lint": "standard --env browser",
+    "licensee": "licensee 2>&1",
     "watch": "watchify index.js -o build/browser.js -dv"
   }
 }
