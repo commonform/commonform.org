@@ -1,0 +1,811 @@
+{
+  "content": [
+    {
+      "form": {
+        "content": [
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "License"
+                },
+                " shall mean the terms and conditions for use, reproduction, and distribution as defined by ",
+                {
+                  "reference": "Definitions"
+                },
+                ", ",
+                {
+                  "reference": "Grant of Copyright License"
+                },
+                ", ",
+                {
+                  "reference": "Grant of Patent License"
+                },
+                ", ",
+                {
+                  "reference": "Redistribution"
+                },
+                ", ",
+                {
+                  "reference": "Submission of Contributions"
+                },
+                ", ",
+                {
+                  "reference": "Trademarks"
+                },
+                ", ",
+                {
+                  "reference": "Disclaimer of Warranty"
+                },
+                ", ",
+                {
+                  "reference": "Limitation of Liability"
+                },
+                ", and ",
+                {
+                  "reference": "Accepting Warranty or Additional Liability"
+                },
+                " of this document."
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "Licensor"
+                },
+                " shall mean the copyright owner or entity authorized by the copyright owner that is granting the ",
+                {
+                  "use": "License"
+                },
+                "."
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "Legal Entity"
+                },
+                " shall mean the union of the acting entity and all other entities that ",
+                {
+                  "use": "control"
+                },
+                ", are ",
+                {
+                  "use": "control"
+                },
+                "led by, or are under common ",
+                {
+                  "use": "control"
+                },
+                " with that entity. For the purposes of this definition, ",
+                {
+                  "definition": "control"
+                },
+                " means",
+                {
+                  "form": {
+                    "content": [
+                      "the power, direct or indirect, to cause the direction or management of such entity, by contract or otherwise, or"
+                    ]
+                  }
+                },
+                {
+                  "form": {
+                    "content": [
+                      "ownership of fifty percent (50%) or more of the outstanding shares, or"
+                    ]
+                  }
+                },
+                {
+                  "form": {
+                    "content": [
+                      "beneficial ownership of such entity."
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "You"
+                },
+                " (or ",
+                {
+                  "definition": "Your"
+                },
+                ") shall mean an individual or ",
+                {
+                  "use": "Legal Entity"
+                },
+                " exercising permissions granted by this ",
+                {
+                  "use": "License"
+                },
+                "."
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "Source"
+                },
+                " form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files."
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "Object"
+                },
+                " form shall mean any form resulting from mechanical transformation or translation of a ",
+                {
+                  "use": "Source"
+                },
+                " form, including but not limited to compiled object code, generated documentation, and conversions to other media types."
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "Work"
+                },
+                " shall mean the work of authorship, whether in ",
+                {
+                  "use": "Source"
+                },
+                " or ",
+                {
+                  "use": "Object"
+                },
+                " form, made available under the ",
+                {
+                  "use": "License"
+                },
+                ", as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below)."
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "Derivative Works"
+                },
+                " shall mean any work, whether in ",
+                {
+                  "use": "Source"
+                },
+                " or ",
+                {
+                  "use": "Object"
+                },
+                " form, that is based on (or derived from) the ",
+                {
+                  "use": "Work"
+                },
+                " and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this ",
+                {
+                  "use": "License"
+                },
+                ", ",
+                {
+                  "use": "Derivative Works"
+                },
+                " shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the ",
+                {
+                  "use": "Work"
+                },
+                " and ",
+                {
+                  "use": "Derivative Works"
+                },
+                " thereof."
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "Contribution"
+                },
+                " shall mean any work of authorship, including the original version of the ",
+                {
+                  "use": "Work"
+                },
+                " and any modifications or additions to that ",
+                {
+                  "use": "Work"
+                },
+                " or ",
+                {
+                  "use": "Derivative Works"
+                },
+                " thereof, that is intentionally ",
+                {
+                  "use": "submitted"
+                },
+                " to ",
+                {
+                  "use": "Licensor"
+                },
+                " for inclusion in the ",
+                {
+                  "use": "Work"
+                },
+                " by the copyright owner or by an individual or ",
+                {
+                  "use": "Legal Entity"
+                },
+                " authorized to submit on behalf of the copyright owner. For the purposes of this definition, ",
+                {
+                  "definition": "submitted"
+                },
+                " means any form of electronic, verbal, or written communication sent to the ",
+                {
+                  "use": "Licensor"
+                },
+                " or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the ",
+                {
+                  "use": "Licensor"
+                },
+                " for the purpose of discussing and improving the ",
+                {
+                  "use": "Work"
+                },
+                ", but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as \"Not a Contribution.\""
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "definition": "Contributor"
+                },
+                " shall mean ",
+                {
+                  "use": "Licensor"
+                },
+                " and any individual or ",
+                {
+                  "use": "Legal Entity"
+                },
+                " on behalf of whom a ",
+                {
+                  "use": "Contribution"
+                },
+                " has been received by ",
+                {
+                  "use": "Licensor"
+                },
+                " and subsequently incorporated within the ",
+                {
+                  "use": "Work"
+                },
+                "."
+              ]
+            }
+          }
+        ]
+      },
+      "heading": "Definitions"
+    },
+    {
+      "form": {
+        "content": [
+          "Subject to the terms and conditions of this ",
+          {
+            "use": "License"
+          },
+          ", each ",
+          {
+            "use": "Contributor"
+          },
+          " hereby grants to ",
+          {
+            "use": "You"
+          },
+          " a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare ",
+          {
+            "use": "Derivative Works"
+          },
+          " of, publicly display, publicly perform, sublicense, and distribute the ",
+          {
+            "use": "Work"
+          },
+          " and such ",
+          {
+            "use": "Derivative Works"
+          },
+          " in ",
+          {
+            "use": "Source"
+          },
+          " or ",
+          {
+            "use": "Object"
+          },
+          " form."
+        ]
+      },
+      "heading": "Grant of Copyright License"
+    },
+    {
+      "form": {
+        "content": [
+          "Subject to the terms and conditions of this ",
+          {
+            "use": "License"
+          },
+          ", each ",
+          {
+            "use": "Contributor"
+          },
+          " hereby grants to ",
+          {
+            "use": "You"
+          },
+          " a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the ",
+          {
+            "use": "Work"
+          },
+          ", where such license applies only to those patent claims licensable by such ",
+          {
+            "use": "Contributor"
+          },
+          " that are necessarily infringed by their ",
+          {
+            "use": "Contribution"
+          },
+          "(s) alone or by combination of their ",
+          {
+            "use": "Contribution"
+          },
+          "(s) with the ",
+          {
+            "use": "Work"
+          },
+          " to which such ",
+          {
+            "use": "Contribution"
+          },
+          "(s) was ",
+          {
+            "use": "submitted"
+          },
+          ". If ",
+          {
+            "use": "You"
+          },
+          " institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the ",
+          {
+            "use": "Work"
+          },
+          " or a ",
+          {
+            "use": "Contribution"
+          },
+          " incorporated within the ",
+          {
+            "use": "Work"
+          },
+          " constitutes direct or contributory patent infringement, then any patent licenses granted to ",
+          {
+            "use": "You"
+          },
+          " under this ",
+          {
+            "use": "License"
+          },
+          " for that ",
+          {
+            "use": "Work"
+          },
+          " shall terminate as of the date such litigation is filed."
+        ]
+      },
+      "heading": "Grant of Patent License"
+    },
+    {
+      "form": {
+        "content": [
+          {
+            "use": "You"
+          },
+          " may reproduce and distribute copies of the ",
+          {
+            "use": "Work"
+          },
+          " or ",
+          {
+            "use": "Derivative Works"
+          },
+          " thereof in any medium, with or without modifications, and in ",
+          {
+            "use": "Source"
+          },
+          " or ",
+          {
+            "use": "Object"
+          },
+          " form, provided that ",
+          {
+            "use": "You"
+          },
+          " meet the following conditions:",
+          {
+            "form": {
+              "content": [
+                {
+                  "use": "You"
+                },
+                " must give any other recipients of the ",
+                {
+                  "use": "Work"
+                },
+                " or ",
+                {
+                  "use": "Derivative Works"
+                },
+                " a copy of this ",
+                {
+                  "use": "License"
+                },
+                "; and"
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "use": "You"
+                },
+                " must cause any modified files to carry prominent notices stating that ",
+                {
+                  "use": "You"
+                },
+                " changed the files; and"
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "use": "You"
+                },
+                " must retain, in the ",
+                {
+                  "use": "Source"
+                },
+                " form of any ",
+                {
+                  "use": "Derivative Works"
+                },
+                " that ",
+                {
+                  "use": "You"
+                },
+                " distribute, all copyright, patent, trademark, and attribution notices from the ",
+                {
+                  "use": "Source"
+                },
+                " form of the ",
+                {
+                  "use": "Work"
+                },
+                ", excluding those notices that do not pertain to any part of the ",
+                {
+                  "use": "Derivative Works"
+                },
+                "; and"
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                "If the ",
+                {
+                  "use": "Work"
+                },
+                " includes a \"NOTICE\" text file as part of its distribution, then any ",
+                {
+                  "use": "Derivative Works"
+                },
+                " that ",
+                {
+                  "use": "You"
+                },
+                " distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the ",
+                {
+                  "use": "Derivative Works"
+                },
+                ", in at least one of the following places: within a NOTICE text file distributed as part of the ",
+                {
+                  "use": "Derivative Works"
+                },
+                "; within the ",
+                {
+                  "use": "Source"
+                },
+                " form or documentation, if provided along with the ",
+                {
+                  "use": "Derivative Works"
+                },
+                "; or, within a display generated by the ",
+                {
+                  "use": "Derivative Works"
+                },
+                ", if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the ",
+                {
+                  "use": "License"
+                },
+                ". ",
+                {
+                  "use": "You"
+                },
+                " may add ",
+                {
+                  "use": "You"
+                },
+                "r own attribution notices within ",
+                {
+                  "use": "Derivative Works"
+                },
+                " that ",
+                {
+                  "use": "You"
+                },
+                " distribute, alongside or as an addendum to the NOTICE text from the ",
+                {
+                  "use": "Work"
+                },
+                ", provided that such additional attribution notices cannot be construed as modifying the ",
+                {
+                  "use": "License"
+                },
+                "."
+              ]
+            }
+          },
+          {
+            "form": {
+              "content": [
+                {
+                  "use": "You"
+                },
+                " may add ",
+                {
+                  "use": "Your"
+                },
+                " own copyright statement to ",
+                {
+                  "use": "Your"
+                },
+                " modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of ",
+                {
+                  "use": "Your"
+                },
+                " modifications, or for any such ",
+                {
+                  "use": "Derivative Works"
+                },
+                " as a whole, provided ",
+                {
+                  "use": "Your"
+                },
+                " use, reproduction, and distribution of the ",
+                {
+                  "use": "Work"
+                },
+                " otherwise complies with the conditions stated in this ",
+                {
+                  "use": "License"
+                },
+                "."
+              ]
+            }
+          }
+        ]
+      },
+      "heading": "Redistribution"
+    },
+    {
+      "form": {
+        "content": [
+          "Unless ",
+          {
+            "use": "You"
+          },
+          " explicitly state otherwise, any Contribution intentionally ",
+          {
+            "use": "submitted"
+          },
+          " for inclusion in the ",
+          {
+            "use": "Work"
+          },
+          " by ",
+          {
+            "use": "You"
+          },
+          " to the ",
+          {
+            "use": "Licensor"
+          },
+          " shall be under the terms and conditions of this ",
+          {
+            "use": "License"
+          },
+          ", without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with ",
+          {
+            "use": "Licensor"
+          },
+          " regarding such ",
+          {
+            "use": "Contribution"
+          },
+          "s."
+        ]
+      },
+      "heading": "Submission of Contributions"
+    },
+    {
+      "form": {
+        "content": [
+          "This ",
+          {
+            "use": "License"
+          },
+          " does not grant permission to use the trade names, trademarks, service marks, or product names of the ",
+          {
+            "use": "Licensor"
+          },
+          ", except as required for reasonable and customary use in describing the origin of the ",
+          {
+            "use": "Work"
+          },
+          " and reproducing the content of the NOTICE file."
+        ]
+      },
+      "heading": "Trademarks"
+    },
+    {
+      "form": {
+        "conspicuous": "yes",
+        "content": [
+          "Unless required by applicable law or agreed to in writing, ",
+          {
+            "use": "Licensor"
+          },
+          " provides the ",
+          {
+            "use": "Work"
+          },
+          " (and each ",
+          {
+            "use": "Contributor"
+          },
+          " provides its ",
+          {
+            "use": "Contribution"
+          },
+          "s) on an \"as is\" basis, without warranties or conditions of any kind, either express or implied, including, without limitation, any warranties or conditions of title, non-infringement, merchantability, or fitness for a particular purpose. ",
+          {
+            "use": "You"
+          },
+          " are solely responsible for determining the appropriateness of using or redistributing the ",
+          {
+            "use": "Work"
+          },
+          " and assume any risks associated with ",
+          {
+            "use": "Your"
+          },
+          " exercise of permissions under this ",
+          {
+            "use": "License"
+          },
+          "."
+        ]
+      },
+      "heading": "Disclaimer of Warranty"
+    },
+    {
+      "form": {
+        "content": [
+          "In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any ",
+          {
+            "use": "Contributor"
+          },
+          " be liable to ",
+          {
+            "use": "You"
+          },
+          " for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this ",
+          {
+            "use": "License"
+          },
+          " or out of the use or inability to use the ",
+          {
+            "use": "Work"
+          },
+          " (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such ",
+          {
+            "use": "Contributor"
+          },
+          " has been advised of the possibility of such damages."
+        ]
+      },
+      "heading": "Limitation of Liability"
+    },
+    {
+      "form": {
+        "content": [
+          "While redistributing the ",
+          {
+            "use": "Work"
+          },
+          " or ",
+          {
+            "use": "Derivative Works"
+          },
+          " thereof, ",
+          {
+            "use": "You"
+          },
+          " may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this ",
+          {
+            "use": "License"
+          },
+          ". However, in accepting such obligations, ",
+          {
+            "use": "You"
+          },
+          " may act only on ",
+          {
+            "use": "Your"
+          },
+          " own behalf and on ",
+          {
+            "use": "Your"
+          },
+          " sole responsibility, not on behalf of any other ",
+          {
+            "use": "Contributor"
+          },
+          ", and only if ",
+          {
+            "use": "You"
+          },
+          " agree to indemnify, defend, and hold each ",
+          {
+            "use": "Contributor"
+          },
+          " harmless for any liability incurred by, or claims asserted against, such ",
+          {
+            "use": "Contributor"
+          },
+          " by reason of your accepting any such warranty or additional liability."
+        ]
+      },
+      "heading": "Accepting Warranty or Additional Liability"
+    }
+  ]
+}

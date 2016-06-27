@@ -2,14 +2,17 @@ const choo = require('choo')
 const classnames = require('classnames')
 const clone = require('../clone')
 const deepEqual = require('deep-equal')
+const definition = require('./definition')
+const details = require('./details')
 const find = require('array-find')
 const get = require('keyarray').get
 const group = require('commonform-group-series')
 const improvePunctuation = require('../improve-punctuation')
-const predicates = require('commonform-predicate')
-const replaceUnicode = require('../replace-unicode')
-const details = require('./details')
 const input = require('./input')
+const predicates = require('commonform-predicate')
+const reference = require('./reference')
+const replaceUnicode = require('../replace-unicode')
+const use = require('./use')
 
 module.exports = form
 
@@ -112,33 +115,23 @@ function series (state, send) {
 function paragraph (state, send) {
   return choo.view`
     <p class=text>
-      ${state.data.content.map(function (child, index) {
-        if (predicates.text(child)) {
-          return choo.view`<span>${improvePunctuation(child)}</span>`
-        } else if (predicates.use(child)) {
-          return choo.view`
-            <a  class=use
-                title="Jump to definition of ${child.use}"
-                href="#Definition ${child.user}"
-              >${child.use}</a>
-          `
-        } else if (predicates.definition(child)) {
-          return choo.view`
-            <dfn
-                id="Definition of ${child.definition}"
-                title="Definition of ${child.definition}"o
-              >${child.definition}</dfn>
-          `
-        } else if (predicates.blank(child)) {
-          const childPath = state.path.concat(['content', state.offset + index])
-          return blank(state.blanks, childPath, send)
-        } else if (predicates.reference(child)) {
-          const heading = child.reference
-          return choo.view`
-            <a  class=reference
-                title="Jump to ${heading}"
-                href="#Heading ${heading}"
-                >${heading}</a>` } })}</p>
+      ${
+        state.data.content.map((child, index) => {
+          if (predicates.text(child)) {
+            return choo.view`<span>${improvePunctuation(child)}</span>`
+          } else if (predicates.use(child)) {
+            return use(child.use)
+          } else if (predicates.definition(child)) {
+            return definition(child.definition)
+          } else if (predicates.blank(child)) {
+            const childPath = state.path.concat(['content', state.offset + index])
+            return blank(state.blanks, childPath, send)
+          } else if (predicates.reference(child)) {
+            return reference(child.reference)
+          }
+        })
+      }
+    </p>
   `
 }
 

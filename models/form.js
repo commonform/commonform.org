@@ -1,5 +1,6 @@
 const annotate = require('../annotate')
 const clone = require('../clone')
+const diff = require('commonform-diff')
 const downloadForm = require('../download-form')
 const downloadFormPublications = require('../download-form-publications')
 const downloadPublication = require('../download-publication')
@@ -23,6 +24,16 @@ module.exports = {
   },
 
   reducers: {
+    comparing: (action, state) => ({
+      comparing: {
+        tree: action.tree,
+        merkle: merkleize(action.tree),
+        publications: action.publications
+      },
+      diff: state.hasOwnProperty('tree')
+        ? diff(state.tree, action.tree)
+        : null
+    }),
     focus: (action) => ({focused: action.path}),
     signatures: function (action, state) {
       var pages = clone(state.signaturePages)
@@ -40,7 +51,7 @@ module.exports = {
       }
       return {signaturePages: pages}
     },
-    tree: (action) => ({
+    tree: (action, state) => ({
       error: null,
       tree: action.tree,
       path: [],
@@ -50,7 +61,10 @@ module.exports = {
       merkle: merkleize(action.tree),
       publications: action.publications,
       signaturePages: [],
-      focused: null
+      focused: null,
+      diff: state.hasOwnProperty('comparing')
+        ? diff(action.tree, state.comparing.tree)
+        : null
     }),
     error: (action) => ({error: action.error}),
     load: () => ({tree: null, annotations: null, merkle: null})},
@@ -75,7 +89,11 @@ module.exports = {
         ],
         function (error, results) {
           if (error) send('form:error', {error: error})
-          else send('form:tree', {tree: results[0], publications: results[1]})
+          else {
+            const payload = {tree: results[0], publications: results[1]}
+            const name = action.comparing ? 'form:comparing' : 'form:tree'
+            send(name, payload)
+          }
         })
     },
     redirectToForm: function (action, state, send) {
