@@ -51,6 +51,7 @@
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "node server.js",
     "test": "tape test/*.test.js",
+    "lint": "standard --env browser",
     "watch": "watchify index.js -o build/browser.js -dv"
   }
 }

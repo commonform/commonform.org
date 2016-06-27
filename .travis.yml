@@ -15,6 +15,7 @@ before_script:
   - "npm run build"
 script:
   - "npm test"
+  - "npm run lint"
 after_script:
   - "kill $(cat server.pid)"
 addons:

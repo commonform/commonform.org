@@ -1,1 +1,1 @@
-module.exports = function(argument) { return JSON.parse(JSON.stringify(argument)) }
+module.exports = function (argument) { return JSON.parse(JSON.stringify(argument)) }

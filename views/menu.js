@@ -8,7 +8,7 @@ var parseMarkup = require('commonform-markup-parse')
 var filesaver = require('filesaver.js').saveAs
 var signaturePagesToOOXML = require('ooxml-signature-pages')
 
-module.exports = function(form, send) {
+module.exports = function (form, send) {
   return choo.view`
     <div class="menu">
       <button onclick=${downloadDOCX}>Download for Word</button>
@@ -18,55 +18,63 @@ module.exports = function(form, send) {
         <button>Open File</button>
         <input type=file accept=".cform,.commonform,.json" onchange=${selectFile}>
       </form>
-    </div>`
+    </div>
+  `
 
-    function downloadDOCX(event) {
-      event.preventDefault()
-      var title = prompt(
-        'Enter a document title',
-        'Untitled Form')
-      if (title !== null) {
-        var options = { title: title, numbering: outline }
-        if (form.signatures) {
-          options.after = signaturePagesToOOXML(form.signatures) }
-        filesaver(
-          docx(clone(form.tree), form.blanks, options)
-            .generate({ type: 'blob' }),
-          fileName(title, 'docx')) } }
+  function downloadDOCX (event) {
+    event.preventDefault()
+    var title = window.prompt('Enter a document title', 'Untitled Form')
+    if (title !== null) {
+      var options = { title: title, numbering: outline }
+      if (form.signatures) {
+        options.after = signaturePagesToOOXML(form.signatures)
+      }
+      filesaver(
+        docx(clone(form.tree), form.blanks, options).generate({ type: 'blob' }),
+        fileName(title, 'docx'))
+    }
+  }
 
-    function downloadMarkup(event) {
-      event.preventDefault()
-      var title = prompt('Enter a document title', 'Untitled Form')
-      if (title !== null) {
-        var blob = new Blob(
-          [ toMarkup(form.tree) ],
-          { type: 'text/plain;charset=utf-8' })
-        filesaver(blob, fileName(title, 'cform')) } }
+  function downloadMarkup (event) {
+    event.preventDefault()
+    var title = window.prompt('Enter a document title', 'Untitled Form')
+    if (title !== null) {
+      var blob = new Blob(
+        [ toMarkup(form.tree) ],
+        { type: 'text/plain;charset=utf-8' }
+      )
+      filesaver(blob, fileName(title, 'cform'))
+    }
+  }
 
-  function selectFile(event) {
+  function selectFile (event) {
     event.preventDefault()
     var target = event.target
     var file = target.files[0]
     var reader = new FileReader()
     var isJSON = file.type.match(/application\/json/)
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       var result = event.target.result
       var tree
-      try { tree = ( isJSON ? JSON.parse(result) : parseMarkup(result).form ) }
-      catch(error) { return }
-      send('form:content', { tree: tree.form }) }
+      try {
+        tree = isJSON ? JSON.parse(result) : parseMarkup(result).form
+      } catch (error) { return }
+      send('form:content', { tree: tree.form })
+    }
     reader.readAsText(file, 'UTF-8')
-    target.value = null }
+    target.value = null
+  }
 
-  function email(event) {
+  function email (event) {
     event.preventDefault()
-    window.location.href = (
-      'mailto:?' + querystring.stringify(
-        { subject: 'Link to Common Form',
-          body: (
-            'https://commonform.org/forms/' +
-            form.merkle.digest ) }) ) } }
+    window.location.href = 'mailto:?' + querystring.stringify({
+      subject: 'Link to Common Form',
+      body: 'https://commonform.org/forms/' + form.merkle.digest
+    })
+  }
+}
 
-function fileName(title, extension) {
+function fileName (title, extension) {
   var date = new Date().toISOString()
-  return ( '' + title + ' ' + date + '.' + extension ) }
+  return '' + title + ' ' + date + '.' + extension
+}
