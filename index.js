@@ -103,8 +103,9 @@ app.model({
   }
 })
 
-app.router((route) => [
+app.router('/notFound', (route) => [
   route('/', formView),
+  route('/notFound', notFound),
   route('/forms', [
     route('/:digest', formView)
   ]),
@@ -119,6 +120,16 @@ app.router((route) => [
 
 if (module.parent) module.exports = app
 else document.body.appendChild(app.start())
+
+function notFound () {
+  choo.view`
+    <div class=container>
+      <article class=commonform>
+        <p>Not found.</p>
+      </article>
+    </div>
+  `
+}
 
 function redirectToForm (params, state, send) {
   send('form:redirectToForm', params)
