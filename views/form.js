@@ -41,7 +41,7 @@ function form (form, send) {
         var groupState = {
           blanks: form.blanks,
           data: group,
-          annotations: get(form.annotations, formKey, { }),
+          annotations: get(form.annotations, formKey, {}),
           focused: form.focused,
           offset: offset,
           path: form.path.concat(formKey)
@@ -99,7 +99,7 @@ function series (state, send) {
       {
         blanks: state.blanks,
         tree: child,
-        annotations: get(state.annotations, [ 'content', absoluteIndex ], { }),
+        annotations: get(state.annotations, ['content', absoluteIndex], {}),
         merkle: state.merkle.content[absoluteIndex],
         focused: state.focused,
         path: state.path.concat(pathSuffix)
@@ -131,7 +131,7 @@ function paragraph (state, send) {
               >${child.definition}</dfn>
           `
         } else if (predicates.blank(child)) {
-          var childPath = state.path.concat([ 'content', state.offset + index ])
+          var childPath = state.path.concat(['content', state.offset + index])
           return blank(state.blanks, childPath, send)
         } else if (predicates.reference(child)) {
           var heading = child.reference
@@ -148,7 +148,7 @@ function blank (blanks, path, send) {
   var value = direction ? improvePunctuation(direction.value) : ''
   return input(
     value,
-    function (value) { send('form:blank', { path: path, value: replaceUnicode(value) }) },
-    function () { send('form:blank', { path: path, value: null }) }
+    function (value) { send('form:blank', {path: path, value: replaceUnicode(value)}) },
+    function () { send('form:blank', {path: path, value: null}) }
   )
 }

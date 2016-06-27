@@ -39,7 +39,7 @@ app.model({
   },
 
   reducers: {
-    focus: (action) => ({ focused: action.path }),
+    focus: (action) => ({focused: action.path}),
     signatures: function (action, state) {
       var pages = clone(state.signaturePages)
       var operand
@@ -54,21 +54,22 @@ app.model({
       } else {
         keyarray[action.operation](pages, action.key, action.value)
       }
-      return { signaturePages: pages }
+      return {signaturePages: pages}
     },
     tree: (action) => ({
       error: null,
       tree: action.tree,
-      path: [ ],
-      projects: [ ],
-      blanks: [ ],
+      path: [],
+      projects: [],
+      blanks: [],
       annotations: annotate(action.tree),
       merkle: merkleize(action.tree),
       publications: action.publications,
-      signaturePages: [ ],
-      focused: null }),
-    error: (action) => ({ error: action.error }),
-    load: () => ({ tree: null, annotations: null, merkle: null }) },
+      signaturePages: [],
+      focused: null
+    }),
+    error: (action) => ({error: action.error}),
+    load: () => ({tree: null, annotations: null, merkle: null})},
 
   effects: {
     fetch: function (action, state, send) {
@@ -83,20 +84,20 @@ app.model({
           },
           function (done) {
             downloadFormPublications(digest, function (error, publications) {
-              if (error) done(null, [ ])
+              if (error) done(null, [])
               else done(null, publications)
             })
           }
         ],
         function (error, results) {
-          if (error) send('form:error', { error: error })
-          else send('form:tree', { tree: results[0], publications: results[1] })
+          if (error) send('form:error', {error: error})
+          else send('form:tree', {tree: results[0], publications: results[1]})
         })
     },
     redirectToForm: function (action, state, send) {
       action.edition = action.edition || 'current'
       downloadPublication(action, function (error, digest) {
-        if (error) send('form:error', { error: error })
+        if (error) send('form:error', {error: error})
         else window.location = '/forms/' + digest
       })
     }

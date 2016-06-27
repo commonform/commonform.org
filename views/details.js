@@ -34,5 +34,5 @@ function deduplicate (annotations) {
     })
       ? annotations
       : annotations.concat(element)
-  }, [ ])
+  }, [])
 }

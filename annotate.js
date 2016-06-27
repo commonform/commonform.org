@@ -3,7 +3,7 @@ var lint = require('commonform-lint')
 var treeify = require('commonform-treeify-annotations')
 
 module.exports = function (form) {
-  return treeify([ ]
+  return treeify([]
     .concat(critique(form))
     .concat(lint(form))
     .map(function (annotation) {

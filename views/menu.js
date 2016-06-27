@@ -25,12 +25,12 @@ module.exports = function (form, send) {
     event.preventDefault()
     var title = window.prompt('Enter a document title', 'Untitled Form')
     if (title !== null) {
-      var options = { title: title, numbering: outline }
+      var options = {title: title, numbering: outline}
       if (form.signatures) {
         options.after = signaturePagesToOOXML(form.signatures)
       }
       filesaver(
-        docx(clone(form.tree), form.blanks, options).generate({ type: 'blob' }),
+        docx(clone(form.tree), form.blanks, options).generate({type: 'blob'}),
         fileName(title, 'docx'))
     }
   }
@@ -40,8 +40,8 @@ module.exports = function (form, send) {
     var title = window.prompt('Enter a document title', 'Untitled Form')
     if (title !== null) {
       var blob = new Blob(
-        [ toMarkup(form.tree) ],
-        { type: 'text/plain;charset=utf-8' }
+        [toMarkup(form.tree)],
+        {type: 'text/plain;charset=utf-8'}
       )
       filesaver(blob, fileName(title, 'cform'))
     }
@@ -59,7 +59,7 @@ module.exports = function (form, send) {
       try {
         tree = isJSON ? JSON.parse(result) : parseMarkup(result).form
       } catch (error) { return }
-      send('form:content', { tree: tree.form })
+      send('form:content', {tree: tree.form})
     }
     reader.readAsText(file, 'UTF-8')
     target.value = null
