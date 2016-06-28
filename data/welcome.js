@@ -1,4 +1,4 @@
-const annotate = require('./annotate')
+const annotate = require('../annotate')
 const merkleize = require('commonform-merkleize')
 const welcomeTree = require('commonform-welcome-form')
 

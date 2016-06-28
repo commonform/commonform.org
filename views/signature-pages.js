@@ -1,7 +1,7 @@
 const capitalize = require('capitalize')
 const choo = require('choo')
 const clone = require('../clone')
-const emptySignaturePage = require('../empty-signature-page')
+const emptySignaturePage = require('../data/empty-signature-page')
 const input = require('./input')
 
 module.exports = function (pages, send) {
