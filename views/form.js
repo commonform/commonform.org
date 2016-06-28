@@ -1,17 +1,17 @@
 const choo = require('choo')
 const classnames = require('classnames')
-const clone = require('../clone')
+const clone = require('../utilities/clone')
 const deepEqual = require('deep-equal')
 const definition = require('./definition')
 const details = require('./details')
 const find = require('array-find')
 const get = require('keyarray').get
 const group = require('commonform-group-series')
-const improvePunctuation = require('../improve-punctuation')
+const improvePunctuation = require('../utilities/improve-punctuation')
 const input = require('./input')
 const predicates = require('commonform-predicate')
 const reference = require('./reference')
-const replaceUnicode = require('../replace-unicode')
+const replaceUnicode = require('../utilities/replace-unicode')
 const use = require('./use')
 
 module.exports = form

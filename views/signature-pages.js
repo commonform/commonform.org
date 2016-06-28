@@ -1,6 +1,6 @@
 const capitalize = require('capitalize')
 const choo = require('choo')
-const clone = require('../clone')
+const clone = require('../utilities/clone')
 const emptySignaturePage = require('../data/empty-signature-page')
 const input = require('./input')
 

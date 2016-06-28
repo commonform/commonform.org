@@ -1,6 +1,6 @@
 const choo = require('choo')
 const digestLink = require('./digest-link')
-const improvePunctuation = require('../improve-punctuation')
+const improvePunctuation = require('../utilities/improve-punctuation')
 
 module.exports = function (digest, annotationsArray, send) {
   return choo.view`

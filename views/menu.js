@@ -1,5 +1,5 @@
 const choo = require('choo')
-const clone = require('../clone')
+const clone = require('../utilities/clone')
 const outline = require('outline-numbering')
 const querystring = require('querystring')
 const docx = require('commonform-docx')

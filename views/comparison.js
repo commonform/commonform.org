@@ -1,6 +1,6 @@
 const choo = require('choo')
 const classnames = require('classnames')
-const clone = require('../clone')
+const clone = require('../utilities/clone')
 const group = require('commonform-group-series')
 const predicates = require('commonform-predicate')
 const definition = require('./definition')

@@ -1,5 +1,5 @@
-const annotate = require('../annotate')
-const clone = require('../clone')
+const annotate = require('../utilities/annotate')
+const clone = require('../utilities/clone')
 const diff = require('commonform-diff')
 const downloadForm = require('../queries/form')
 const downloadFormPublications = require('../queries/form-publications')
