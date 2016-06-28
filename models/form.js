@@ -1,6 +1,7 @@
 const annotate = require('../utilities/annotate')
 const clone = require('../utilities/clone')
 const diff = require('commonform-diff')
+const deepEqual = require('deep-equal')
 const downloadForm = require('../queries/form')
 const downloadFormPublications = require('../queries/form-publications')
 const downloadPublication = require('../queries/publication')
@@ -24,6 +25,26 @@ module.exports = {
   },
 
   reducers: {
+    blank: function (action, state) {
+      var blank = action.path
+      var value = action.value
+      var index = state.blanks
+        .findIndex((record) => deepEqual(record.blank, blank))
+      var newBlanks = clone(state.blanks)
+      if (value === null) {
+        if (index > -1) {
+          newBlanks.splice(index, 1)
+          return {blanks: newBlanks}
+        }
+      } else {
+        if (index < 0) {
+          newBlanks.unshift({blank: blank})
+          index = 0
+        }
+        newBlanks[index].value = value
+        return {blanks: newBlanks}
+      }
+    },
     comparing: (action, state) => ({
       comparing: {
         tree: action.tree,
