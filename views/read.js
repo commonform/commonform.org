@@ -1,4 +1,4 @@
-const choo = require('choo')
+const html = require('choo/html')
 const comparison = require('./comparison')
 const footer = require('./footer')
 const form = require('./form')
@@ -6,9 +6,9 @@ const header = require('./header')
 const menu = require('./menu')
 const signaturePages = require('./signature-pages')
 
-module.exports = function read (params, state, send) {
+module.exports = function read (state, prev, send) {
   if (state.form.error) {
-    return choo.view`
+    return html`
       <div class=container>
         <article class=commonform>
           <p class=error>${state.form.error.message}</p>
@@ -16,8 +16,7 @@ module.exports = function read (params, state, send) {
       </div>
     `
   } else if (!state.form.merkle) {
-    // asap(() => send('form:fetch', params))
-    return choo.view`
+    return html`
       <div class=container>
         <article class=commonform>
           Loading...
@@ -26,7 +25,7 @@ module.exports = function read (params, state, send) {
     `
   } else {
     if (state.form.diff) {
-      return choo.view`
+      return html`
         <div class=container>
           <article class=commonform>
             ${menu(state.form, send)}
@@ -45,7 +44,7 @@ module.exports = function read (params, state, send) {
         </div>
       `
     } else {
-      return choo.view`
+      return html`
         <div class=container>
           <article class=commonform>
             ${menu(state.form, send)}

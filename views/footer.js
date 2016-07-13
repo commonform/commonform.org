@@ -1,7 +1,7 @@
-const choo = require('choo')
+const html = require('choo/html')
 
 module.exports = function () {
-  return choo.view`
+  return html`
     <footer>
       <p>
         <a href="http://typographyforlawyers.com/equity.html">Equity</a>

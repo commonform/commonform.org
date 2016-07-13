@@ -1,7 +1,7 @@
-const choo = require('choo')
+const html = require('choo/html')
 
 module.exports = function notFound () {
-  choo.view`
+  html`
     <div class=container>
       <article class=commonform>
         <p>Not found.</p>

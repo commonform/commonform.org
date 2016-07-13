@@ -1,4 +1,4 @@
-const choo = require('choo')
+const html = require('choo/html')
 const classnames = require('classnames')
 const clone = require('../utilities/clone')
 const deepEqual = require('deep-equal')
@@ -33,7 +33,7 @@ function form (form, send) {
   })
 
   var offset = 0
-  return choo.view`
+  return html`
     <section class="${classes}" data-digest="${form.merkle.digest}">
       ${root ? null : sectionButton(toggleFocus)}
       ${form.tree.heading ? heading(form.tree.heading) : null}
@@ -67,7 +67,7 @@ function form (form, send) {
 }
 
 function sectionButton (toggleFocus) {
-  return choo.view`
+  return html`
     <a class=sigil
       onclick=${toggleFocus}
       title="Click to focus.">§</a>
@@ -80,17 +80,17 @@ function marginalia (tree, path, blanks, annotations, toggleFocus) {
   const hasBlank = tree.content.some((element, index) =>
      predicates.blank(element) &&
      !blanks.some((direction) => deepEqual(direction.blank, path.concat('form', 'content', index))))
-  return choo.view`
+  return html`
     <aside class=marginalia onclick=${toggleFocus}>
-      ${hasError ? choo.view`<a class=flag>\u26A0</a>` : null}
-      ${hasAnnotation ? choo.view`<a class=flag>\u2690</a>` : null}
-      ${hasBlank ? choo.view`<a class=flag>\u270D</a>` : null}
+      ${hasError ? html`<a class=flag>\u26A0</a>` : null}
+      ${hasAnnotation ? html`<a class=flag>\u2690</a>` : null}
+      ${hasBlank ? html`<a class=flag>\u270D</a>` : null}
     </aside>
   `
 }
 
 function heading (heading) {
-  return choo.view`<p class=heading id="Heading ${heading}">${heading}</p>`
+  return html`<p class=heading id="Heading ${heading}">${heading}</p>`
 }
 
 function series (state, send) {
@@ -113,12 +113,12 @@ function series (state, send) {
 }
 
 function paragraph (state, send) {
-  return choo.view`
+  return html`
     <p class=text>
       ${
         state.data.content.map((child, index) => {
           if (predicates.text(child)) {
-            return choo.view`<span>${improvePunctuation(child)}</span>`
+            return html`<span>${improvePunctuation(child)}</span>`
           } else if (predicates.use(child)) {
             return use(child.use)
           } else if (predicates.definition(child)) {

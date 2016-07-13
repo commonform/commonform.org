@@ -1,8 +1,8 @@
-const choo = require('choo')
+const html = require('choo/html')
 
 module.exports = function input (value, set, clear, placeholder) {
   if (value && value.length > 0) {
-    return choo.view`
+    return html`
       <span class=blank>
         ${value}
         <a  class=clear
@@ -14,7 +14,7 @@ module.exports = function input (value, set, clear, placeholder) {
       </span>
     `
   } else {
-    return choo.view`
+    return html`
       <input
           class=blank
           placeholder="${placeholder || ''}"

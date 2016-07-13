@@ -1,10 +1,10 @@
-const choo = require('choo')
+const html = require('choo/html')
 const digestLink = require('./digest-link')
 const spell = require('reviewers-edition-spell')
 
 module.exports = function (digest, publications, toDigest, toPublications) {
   return toDigest
-    ? choo.view`
+    ? html`
       <header>
         ${paragraph(digest, publications)}
         <p>compared to</p>
@@ -15,7 +15,7 @@ module.exports = function (digest, publications, toDigest, toPublications) {
 }
 
 function paragraph (digest, publications) {
-  return choo.view`
+  return html`
     <div>
       <p>${digestLink(digest)}</p>
       ${publicationsList(publications)}
@@ -24,11 +24,11 @@ function paragraph (digest, publications) {
 }
 
 function publicationsList (publications) {
-  return choo.view`<p>${publications.map(publicationLine)}</p>`
+  return html`<p>${publications.map(publicationLine)}</p>`
 }
 
 function publicationLine (publication) {
-  return choo.view`
+  return html`
     <p class=publication>
       <strong>${publication.publisher}</strong>
       published this form as

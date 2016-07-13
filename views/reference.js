@@ -1,7 +1,7 @@
-const choo = require('choo')
+const html = require('choo/html')
 
 module.exports = function (heading) {
-  return choo.view`
+  return html`
     <a  class=reference
         title="Jump to ${heading}"
         href="#Heading ${heading}"

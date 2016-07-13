@@ -1,4 +1,4 @@
-const choo = require('choo')
+const html = require('choo/html')
 const clone = require('../utilities/clone')
 const outline = require('outline-numbering')
 const querystring = require('querystring')
@@ -9,7 +9,7 @@ const filesaver = require('filesaver.js').saveAs
 const signaturePagesToOOXML = require('ooxml-signature-pages')
 
 module.exports = function (form, send) {
-  return choo.view`
+  return html`
     <div class="menu">
       <button onclick=${downloadDOCX}>Download for Word</button>
       <button onclick=${downloadMarkup}>Download Markup</button>

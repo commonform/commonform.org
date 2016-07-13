@@ -1,7 +1,7 @@
-var choo = require('choo')
+const html = require('choo/html')
 
 module.exports = function (term) {
-  return choo.view`
+  return html`
     <dfn
         title="Jump to definition of ${term}"
         href="#Definition ${term}"

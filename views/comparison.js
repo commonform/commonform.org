@@ -1,4 +1,4 @@
-const choo = require('choo')
+const html = require('choo/html')
 const classnames = require('classnames')
 const clone = require('../utilities/clone')
 const group = require('commonform-group-series')
@@ -6,8 +6,6 @@ const predicates = require('commonform-predicate')
 const definition = require('./definition')
 const reference = require('./reference')
 const use = require('./use')
-
-const view = choo.view.bind(choo)
 
 module.exports = comparison
 
@@ -17,9 +15,9 @@ function comparison (diff) {
   const groups = group(clone(treeLike))
   var wrapper
   if (diff.hasOwnProperty('inserted')) {
-    wrapper = (argument) => view`<ins>${argument}</ins>`
+    wrapper = (argument) => html`<ins>${argument}</ins>`
   } else if (diff.hasOwnProperty('deleted')) {
-    wrapper = (argument) => view`<del>${argument}</del>`
+    wrapper = (argument) => html`<del>${argument}</del>`
   } else {
     wrapper = (argument) => argument
   }
@@ -36,25 +34,25 @@ function comparison (diff) {
       !element.hasOwnProperty('deleted'))
   })
 
-  return view`
+  return html`
     <section class=${classNames}>
       ${
         wrapper(
-          view`
+          html`
             <div>
-              ${root ? null : view`<a class=sigil>\u00A7</a>`}
+              ${root ? null : html`<a class=sigil>\u00A7</a>`}
               ${
                 Array.isArray(diff.heading)
                   ? heading(diff.heading)
                   : null}
               ${
                 madeInconspicuous
-                  ? view`<p class=edit>Made inconspicuous.</p>`
+                  ? html`<p class=edit>Made inconspicuous.</p>`
                   : null
               }
               ${
                 madeConspicuous
-                  ? view`<p class=edit>Made conspicuous.</p>`
+                  ? html`<p class=edit>Made conspicuous.</p>`
                   : null
               }
               ${
@@ -73,7 +71,7 @@ function comparison (diff) {
 
 function heading (heading) {
   const joined = heading.map((word) => word.word).join('')
-  return view`
+  return html`
     <p class=heading id=${joined}>
       ${heading.map(word)}
     </p>
@@ -81,23 +79,23 @@ function heading (heading) {
 }
 
 function word (word) {
-  if (word.inserted) return view`<ins>${word.word}</ins>`
-  else if (word.deleted) return view`<del>${word.word}</del>`
-  else return view`<span>${word.word}</span>`
+  if (word.inserted) return html`<ins>${word.word}</ins>`
+  else if (word.deleted) return html`<del>${word.word}</del>`
+  else return html`<span>${word.word}</span>`
 }
 
 function series (data) { return data.content.map((child) => comparison(child)) }
 
 function paragraph (data) {
-  return view`
+  return html`
     <p class=text>
       ${
         data.content.reduce((output, child) => {
           var wrapper
           if (child.hasOwnProperty('inserted')) {
-            wrapper = (argument) => view`<ins>${argument}</ins>`
+            wrapper = (argument) => html`<ins>${argument}</ins>`
           } else if (child.hasOwnProperty('deleted')) {
-            wrapper = (argument) => view`<del>${argument}</del>`
+            wrapper = (argument) => html`<del>${argument}</del>`
           } else {
             wrapper = doNotWrap
           }
@@ -113,14 +111,14 @@ function paragraph (data) {
               }
             } else {
               return output.concat(
-                wrapper(view`<span>${child.word}</span>`))
+                wrapper(html`<span>${child.word}</span>`))
             }
           } else if (predicates.use(child)) {
             return output.concat(wrapper(use(child.use)))
           } else if (predicates.definition(child)) {
             return output.concat(wrapper(definition(child.definition)))
           } else if (predicates.blank(child)) {
-            return output.concat(view`<span class=blank></span>`)
+            return output.concat(html`<span class=blank></span>`)
           } else if (predicates.reference(child)) {
             return output.concat(reference(child.reference))
           }

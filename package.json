@@ -2,7 +2,7 @@
   "dependencies": {
     "array-find": "^1.0.0",
     "capitalize": "^1.0.0",
-    "choo": "^2.3.1",
+    "choo": "^3.1.1",
     "classnames": "^2.2.5",
     "commonform-critique": "^0.8.1",
     "commonform-diff": "^1.0.0",

@@ -1,9 +1,9 @@
-const choo = require('choo')
+const html = require('choo/html')
 const digestLink = require('./digest-link')
 const improvePunctuation = require('../utilities/improve-punctuation')
 
 module.exports = function (digest, annotationsArray, send) {
-  return choo.view`
+  return html`
     <p class=details>
       ${digestLink(digest, send)}
       ${annotations(annotationsArray)}
@@ -12,17 +12,17 @@ module.exports = function (digest, annotationsArray, send) {
 }
 
 function annotations (array) {
-  return choo.view`<aside>${deduplicate(array).map(annotation)}</aside>`
+  return html`<aside>${deduplicate(array).map(annotation)}</aside>`
 }
 
 function annotation (data) {
   const message = improvePunctuation(data.message)
-  return choo.view`<p class=${data.level}>${annotationText(data.url, message)}</p>`
+  return html`<p class=${data.level}>${annotationText(data.url, message)}</p>`
 }
 
 function annotationText (url, message) {
-  if (url) return choo.view`<a href=${url}>${message}</a>`
-  else return choo.view`${message}`
+  if (url) return html`<a href=${url}>${message}</a>`
+  else return html`${message}`
 }
 
 function deduplicate (annotations) {

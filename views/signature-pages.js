@@ -1,11 +1,11 @@
 const capitalize = require('capitalize')
-const choo = require('choo')
+const html = require('choo/html')
 const clone = require('../utilities/clone')
 const emptySignaturePage = require('../data/empty-signature-page')
 const input = require('./input')
 
 module.exports = function (pages, send) {
-  return choo.view`
+  return html`
     <div class=signaturePages>
       <p class=endOfPage>
         ${pages.length > 0
@@ -61,7 +61,7 @@ function signaturePage (page, path, send) {
     )
   }
 
-  return choo.view`
+  return html`
     <div class=page>
       <p class=header>${inputFor('header', 'Signature Page Header')}</p>
       <p>${inputFor('term', 'Party Defined Term')}:</p>
@@ -73,7 +73,7 @@ function signaturePage (page, path, send) {
           ? (function () {
             const lastIndex = entities.length - 1
             const byPath = path.concat('entities', lastIndex, 'by')
-            return choo.view`
+            return html`
               <p>Title:
                 ${input(
                   entities[lastIndex].by,
@@ -97,9 +97,9 @@ function signaturePage (page, path, send) {
       ${
         optional.map(function (text) {
           const display = text === 'email' ? 'E-Mail' : capitalize(text)
-          if (information.indexOf(text) > -1) return choo.view`<p>${display}:`
+          if (information.indexOf(text) > -1) return html`<p>${display}:`
           else {
-            return choo.view`
+            return html`
               <p>
                 <button
                     onclick=${
@@ -138,7 +138,7 @@ function newPage () { return clone(emptySignaturePage) }
 
 function entitiesParagraphs (entities, path, send) {
   entities = entities || []
-  return choo.view`
+  return html`
     <div class=entities>
       ${
         entities.map(function (entity, index, entities) {
@@ -199,7 +199,7 @@ function signatureEntity (state, send) {
     )
   }
 
-  return choo.view`
+  return html`
     <p class=entity>
       ${needsBy ? 'By:' : null}
       ${inputFor('name', 'Name')}, a

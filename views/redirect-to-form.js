@@ -1,8 +1,9 @@
-const choo = require('choo')
+const html = require('choo/html')
 
-module.exports = function redirectToForm (params, state, send) {
+module.exports = function redirectToForm (state, prev, send) {
+  const params = state.params
   send('form:redirectToForm', params)
-  return choo.view`
+  return html`
     <div class=container>
       <article class=commonform>
         Loading...

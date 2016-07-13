@@ -1,7 +1,7 @@
-const choo = require('choo')
+const html = require('choo/html')
 
 module.exports = function (digest, send) {
-  return choo.view`
+  return html`
     <a
         class=digest
         href="/forms/${digest}"

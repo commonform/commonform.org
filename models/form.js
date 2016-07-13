@@ -91,7 +91,7 @@ module.exports = {
     load: () => ({tree: null, annotations: null, merkle: null})},
 
   effects: {
-    fetch: function (action, state, send) {
+    fetch: function (action, state, send, done) {
       var digest = action.digest
       runParallel(
         [
@@ -109,18 +109,18 @@ module.exports = {
           }
         ],
         function (error, results) {
-          if (error) send('form:error', {error: error})
+          if (error) done(error)
           else {
             const payload = {tree: results[0], publications: results[1]}
             const name = action.comparing ? 'form:comparing' : 'form:tree'
-            send(name, payload)
+            send(name, payload, function (error) { if (error) done(error) })
           }
         })
     },
-    redirectToForm: function (action, state, send) {
+    redirectToForm: function (action, state, send, done) {
       action.edition = action.edition || 'current'
       downloadPublication(action, function (error, digest) {
-        if (error) send('form:error', {error: error})
+        if (error) done(error)
         else window.location = '/forms/' + digest
       })
     }

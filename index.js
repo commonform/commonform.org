@@ -1,4 +1,8 @@
-const app = require('choo')()
+const app = require('choo')({
+  onError: function (error, state, createSend) {
+    createSend('onError:')('form:error', error)
+  }
+})
 
 app.model(require('./models/popstate'))
 app.model(require('./models/form'))
@@ -22,4 +26,7 @@ app.router('/notFound', (route) => [
 ])
 
 if (module.parent) module.exports = app
-else document.body.appendChild(app.start())
+else {
+  const tree = app.start()
+  document.body.appendChild(tree)
+}
