@@ -13,18 +13,27 @@ const ecstatic = require('ecstatic')({
 function serveIndex (response) {
   response.setHeader('Content-Type', 'text/html')
   fs.createReadStream('build/index.html')
-    .pipe(replace(/RELEASE\//g, release))
-    .pipe(response)
+  .pipe(replace(/RELEASE\//g, release))
+  .pipe(response)
 }
 
 http
-  .createServer(function (request, response) {
-    response.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
-    response.setHeader('Pragma', 'no-cache')
-    response.setHeader('Expires', '0')
-    var pathname = url.parse(request.url).pathname
-    if (pathname === '/') serveIndex(response)
-    else if (pathname.startsWith('/forms/') || pathname.startsWith('/publications/')) serveIndex(response)
-    else ecstatic(request, response)
-  })
-  .listen(process.env.PORT || 8000)
+.createServer(function (request, response) {
+  response.setHeader(
+    'Cache-Control', 'no-cache, no-store, must-revalidate'
+  )
+  response.setHeader('Pragma', 'no-cache')
+  response.setHeader('Expires', '0')
+  var pathname = url.parse(request.url).pathname
+  if (pathname === '/') {
+    serveIndex(response)
+  } else if (
+    pathname.startsWith('/forms/') ||
+    pathname.startsWith('/publications/')
+  ) {
+    serveIndex(response)
+  } else {
+    ecstatic(request, response)
+  }
+})
+.listen(process.env.PORT || 8000)
