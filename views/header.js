@@ -32,20 +32,32 @@ function publicationLine (publication) {
   var project = publication.project
   var publisher = publication.publisher
   var link = `/publications/${publisher}/${project}/${edition}`
-  return html`
-    <p class=publication>
-      <strong>${publisher}</strong>
-      published this form
-      ${publication.root ? 'as' : 'within'}
-      <strong>
-        <a
-            class=publication
-            href=${link}
-            title="Read ${publisher}'s ${project} ${spell(edition)}">
+  if (publication.root) {
+    return html`
+      <p class=publication>
+        <strong>${publisher}</strong>
+        published this form as
+        <strong>
           ${project}
           <abbr title=${spell(edition)}>${edition}</abbr>
-        </a>
-      </strong>
-    </p>
-  `
+        </strong>
+      </p>
+    `
+  } else {
+    return html`
+      <p class=publication>
+        <strong>${publisher}</strong>
+        published this form within
+        <strong>
+          <a
+              class=publication
+              href=${link}
+              title="Read ${publisher}'s ${project} ${spell(edition)}">
+            ${project}
+            <abbr title=${spell(edition)}>${edition}</abbr>
+          </a>
+        </strong>
+      </p>
+    `
+  }
 }
