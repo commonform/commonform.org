@@ -90,7 +90,7 @@ function marginalia (tree, path, blanks, annotations, toggleFocus) {
 }
 
 function heading (heading) {
-  return html`<p class=heading id="Heading ${heading}">${heading}</p>`
+  return html`<p class=heading id="Heading:${heading}">${heading}</p>`
 }
 
 function series (state, send) {
