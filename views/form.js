@@ -34,7 +34,10 @@ function form (form, send) {
 
   var offset = 0
   return html`
-    <section class="${classes}" data-digest="${form.merkle.digest}">
+    <section
+        class="${classes}"
+        data-digest="${form.merkle.digest}"
+        ondblclick=${toggleFocus}>
       ${root ? null : sectionButton(toggleFocus)}
       ${form.tree.heading ? heading(form.tree.heading) : null}
       ${isFocused ? details(form.merkle.digest, annotationsHere, send) : null}
