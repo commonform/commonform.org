@@ -28,13 +28,23 @@ function publicationsList (publications) {
 }
 
 function publicationLine (publication) {
+  var edition = publication.edition
+  var project = publication.project
+  var publisher = publication.publisher
+  var link = `/publications/${publisher}/${project}/${edition}`
   return html`
     <p class=publication>
-      <strong>${publication.publisher}</strong>
-      published this form as
+      <strong>${publisher}</strong>
+      published this form
+      ${publication.root ? 'as' : 'within'}
       <strong>
-        ${publication.project}
-        <abbr title=${spell(publication.edition)}>${publication.edition}</abbr>
+        <a
+            class=publication
+            href=${link}
+            title="Read ${publisher}'s ${project} ${spell(edition)}">
+          ${project}
+          <abbr title=${spell(edition)}>${edition}</abbr>
+        </a>
       </strong>
     </p>
   `
