@@ -38,7 +38,6 @@ module.exports = function read (state, prev, send) {
               )
             }
             ${comparison(state.form.diff, send)}
-            ${menu(state.form, send)}
             ${footer()}
           </article>
         </div>
@@ -51,7 +50,6 @@ module.exports = function read (state, prev, send) {
             ${header(state.form.merkle.digest, state.form.publications)}
             ${form(state.form, send)}
             ${signaturePages(state.form.signaturePages, send)}
-            ${menu(state.form, send)}
             ${footer()}
           </article>
         </div>
