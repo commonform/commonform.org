@@ -22,10 +22,11 @@ tape('Display', function (test) {
   test.test('Welcome', function (test) {
     test.plan(2)
     const digestPrefix = welcomeDigest.substr(0, 16)
+    const welcome = '//input[@class="heading" and @value="Welcome"]'
     webdriver
       .url('http://localhost:8000')
-      .waitForExist('.heading=Welcome')
-      .isExisting('.heading=Welcome')
+      .waitForExist(welcome)
+      .isExisting(welcome)
       .then(function (existing) {
         test.assert(
           existing,

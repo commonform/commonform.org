@@ -79,7 +79,7 @@ module.exports = {
       projects: [],
       blanks: [],
       annotations: annotate(action.tree),
-      merkle: merkleize(action.tree),
+      merkle: action.merkle || merkleize(action.tree),
       publications: action.publications,
       signaturePages: [],
       focused: null,
@@ -88,9 +88,29 @@ module.exports = {
         : null
     }),
     error: (action) => ({error: action.error}),
-    load: () => ({tree: null, annotations: null, merkle: null})},
+    load: () => ({tree: null, annotations: null, merkle: null})
+  },
 
   effects: {
+    heading: function (action, state, send, done) {
+      var path = action.path
+      var newHeading = action.heading
+      var newTree = clone(state.tree)
+      if (newHeading.length === 0) {
+        keyarray.delete(newTree, path.concat('heading'))
+      } else {
+        keyarray.set(newTree, path.concat('heading'), newHeading)
+      }
+      var merkle = merkleize(newTree)
+      var root = merkle.digest
+      window.history.pushState(newTree, '', '/forms/' + root)
+      var payload = {
+        tree: newTree,
+        merkle: merkle,
+        publications: []
+      }
+      send('form:tree', payload, done)
+    },
     fetch: function (action, state, send, done) {
       var digest = action.digest
       runParallel(

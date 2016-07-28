@@ -110,46 +110,14 @@ button
   footer a:hover, .digest:hover
     text-decoration: underline
 
-  section section .heading,
-  section section .details,
-  section section .sigil,
-  section section p
-    margin-left: 3rem
-  section section section .heading,
-  section section section .details,
-  section section section .sigil,
-  section section section p
-    margin-left: 6rem
-  section section section section .heading,
-  section section section section .details,
-  section section section section .sigil,
-  section section section section p
-    margin-left: 9rem
-  section section section section section .heading,
-  section section section section section .details,
-  section section section section section .sigil,
-  section section section section section p
-    margin-left: 12rem
-  section section section section section section .heading,
-  section section section section section section .details,
-  section section section section section section .sigil,
-  section section section section section section p
-    margin-left: 15rem
-  section section section section section section section .heading,
-  section section section section section section section .details,
-  section section section section section section section .sigil,
-  section section section section section section section p
-    margin-left: 18rem
-  section section section section section section section section .heading,
-  section section section section section section section section .details,
-  section section section section section section section section .sigil,
-  section section section section section section section section p
-    margin-left: 21rem
-  section section section section section section section section section .heading,
-  section section section section section section section section section .details,
-  section section section section section section section section section .sigil,
-  section section section section section section section section section p
-    margin-left: 24rem
+  section > section
+    padding-left: 3rem
+    margin-top: 1rem
+
+  .heading
+    border: none
+    display: block
+    width: 100%
 
   section,
   section > p
@@ -161,7 +129,7 @@ button
     content: '§'
     font-weight: normal
     position: absolute
-    left: -2rem
+    left: 0
     cursor: pointer
     -webkit-user-select: none
     -moz-user-select: none

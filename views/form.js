@@ -39,7 +39,12 @@ function form (form, send) {
         data-digest="${form.merkle.digest}"
         ondblclick=${toggleFocus}>
       ${root ? null : sectionButton(toggleFocus)}
-      ${form.tree.heading ? heading(form.tree.heading) : null}
+      ${root ? null : heading(form.tree.heading, function (newValue) {
+        send('form:heading', {
+          path: form.path,
+          heading: newValue
+        })
+      })}
       ${isFocused ? details(form.merkle.digest, annotationsHere, send) : null}
       ${marginalia(tree, form.path, form.blanks, annotationsHere, toggleFocus)}
       ${groups.map(function (group) {
@@ -92,8 +97,16 @@ function marginalia (tree, path, blanks, annotations, toggleFocus) {
   `
 }
 
-function heading (heading) {
-  return html`<p class=heading id="Heading:${heading}">${heading}</p>`
+function heading (heading, send) {
+  return html`
+    <input
+        type=text
+        class=heading
+        placeholder="Click to add heading"
+        id="Heading:${heading}"
+        onchange=${(event) => send(event.target.value)}
+        value=${heading || ''}/>
+  `
 }
 
 function series (state, send) {
