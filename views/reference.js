@@ -7,8 +7,8 @@ module.exports = function (heading) {
         href="#Heading:${heading}"
         onclick=${function () {
           document
-            .getElementById('Heading:' + heading)
-            .scrollIntoView()
+          .getElementById('Heading:' + heading)
+          .scrollIntoView()
         }}
         >${heading}</a>`
 }

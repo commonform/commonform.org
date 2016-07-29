@@ -10,19 +10,19 @@ tape('Edits', function (suite) {
       '218c8c9d2d8496ae2b0e54bf64ec815e'
     )
     webdriver
-      .url('http://localhost:8000')
-      .waitForExist(firstHeading)
-      .click(firstHeading)
-      .keys(' Back!')
-      .keys('\uE006')
-      .waitForText('.digest', newRoot)
-      .getUrl()
-      .then(function (url) {
-        test.equal(
-          url,
-          'http://localhost:8000/forms/' + newRoot,
-          'updates location bar'
-        )
-      })
+    .url('http://localhost:8000')
+    .waitForExist(firstHeading)
+    .click(firstHeading)
+    .keys(' Back!')
+    .keys('\uE006')
+    .waitForText('.digest', newRoot)
+    .getUrl()
+    .then(function (url) {
+      test.equal(
+        url,
+        'http://localhost:8000/forms/' + newRoot,
+        'updates location bar'
+      )
+    })
   })
 })

@@ -8,11 +8,12 @@ module.exports = function (pages, send) {
   return html`
     <div class=signaturePages>
       <p class=endOfPage>
-        ${pages.length > 0
-            ? pages.length === 1
-              ? '[Signature Page Follows]'
-              : '[Signature Pages Follow]'
-            : null
+        ${
+          pages.length > 0
+          ? pages.length === 1
+            ? '[Signature Page Follows]'
+            : '[Signature Pages Follow]'
+          : null
         }
       </p>
       ${pages.map((element, index) => signaturePage(element, [index], send))}
@@ -70,29 +71,29 @@ function signaturePage (page, path, send) {
       <p>Name: ${inputFor('name')}</p>
       ${
         entities.length > 0
-          ? (function () {
-            const lastIndex = entities.length - 1
-            const byPath = path.concat('entities', lastIndex, 'by')
-            return html`
-              <p>Title:
-                ${input(
-                  entities[lastIndex].by,
-                  function (value) {
-                    send(
-                      'form:signatures',
-                      {operation: 'set', key: byPath, value: value}
-                    )
-                  },
-                  function () {
-                    send(
-                      'form:signatures',
-                      {operation: 'delete', key: byPath}
-                    )
-                  })
-                }
-              </p>`
-          })()
-          : null
+        ? (function () {
+          const lastIndex = entities.length - 1
+          const byPath = path.concat('entities', lastIndex, 'by')
+          return html`
+            <p>Title:
+              ${input(
+                entities[lastIndex].by,
+                function (value) {
+                  send(
+                    'form:signatures',
+                    {operation: 'set', key: byPath, value: value}
+                  )
+                },
+                function () {
+                  send(
+                    'form:signatures',
+                    {operation: 'delete', key: byPath}
+                  )
+                })
+              }
+            </p>`
+        })()
+        : null
       }
       ${
         optional.map(function (text) {
@@ -206,7 +207,8 @@ function signatureEntity (state, send) {
       ${inputFor('jurisdiction', 'Jurisdiction')}
       ${inputFor('form', 'Entity Type')}
       ${needsBy ? 'its' : null}
-      ${needsBy
+      ${
+        needsBy
         ? (function () {
           const by = state.by
           const byPath = state.byPath

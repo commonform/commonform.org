@@ -29,7 +29,7 @@ module.exports = {
       var blank = action.path
       var value = action.value
       var index = state.blanks
-        .findIndex((record) => deepEqual(record.blank, blank))
+      .findIndex((record) => deepEqual(record.blank, blank))
       var newBlanks = clone(state.blanks)
       if (value === null) {
         if (index > -1) {
@@ -52,8 +52,8 @@ module.exports = {
         publications: action.publications
       },
       diff: state.hasOwnProperty('tree')
-        ? diff(state.tree, action.tree)
-        : null
+      ? diff(state.tree, action.tree)
+      : null
     }),
     focus: (action) => ({focused: action.path}),
     signatures: function (action, state) {
@@ -61,8 +61,8 @@ module.exports = {
       var operand
       if (action.operation === 'push') {
         operand = action.key.length === 0
-          ? pages
-          : keyarray.get(pages, action.key)
+        ? pages
+        : keyarray.get(pages, action.key)
         operand.push(action.value)
       } else if (action.operation === 'splice') {
         operand = keyarray.get(pages, action.key.slice(0, -1))
@@ -88,8 +88,8 @@ module.exports = {
         signaturePages: [],
         focused: null,
         diff: state.hasOwnProperty('comparing')
-          ? diff(action.tree, state.comparing.tree)
-          : null
+        ? diff(action.tree, state.comparing.tree)
+        : null
       }
     },
     error: (action) => ({error: action.error}),

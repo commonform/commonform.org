@@ -4,14 +4,14 @@ const spell = require('reviewers-edition-spell')
 
 module.exports = function (digest, publications, toDigest, toPublications) {
   return toDigest
-    ? html`
-      <header>
-        ${paragraph(digest, publications)}
-        <p>compared to</p>
-        ${paragraph(toDigest, toPublications)}
-      </header>
-    `
-    : paragraph(digest, publications)
+  ? html`
+    <header>
+      ${paragraph(digest, publications)}
+      <p>compared to</p>
+      ${paragraph(toDigest, toPublications)}
+    </header>
+  `
+  : paragraph(digest, publications)
 }
 
 function paragraph (digest, publications) {

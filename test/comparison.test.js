@@ -9,31 +9,33 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-      .url(
-        'http://localhost:8000/forms/' + apache2 +
-        '#compare:' + edited)
-      .isExisting('//*[contains(text(),"compared to")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Displays "compared to" when diffing.'
-        )
-      })
+    .url(
+      'http://localhost:8000/forms/' + apache2 +
+      '#compare:' + edited
+    )
+    .isExisting('//*[contains(text(),"compared to")]')
+    .then(function (existing) {
+      test.assert(
+        existing,
+        'Displays "compared to" when diffing.'
+      )
+    })
   })
 
   suite.test(function (test) {
     test.plan(1)
     webdriver
-      .url(
-        'http://localhost:8000/forms/' + apache2 +
-        '#compare:' + edited)
-      .isExisting('//del//span[contains(text(),"whether")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Displays "whether" as a deletion.'
-        )
-      })
+    .url(
+      'http://localhost:8000/forms/' + apache2 +
+      '#compare:' + edited
+    )
+    .isExisting('//del//span[contains(text(),"whether")]')
+    .then(function (existing) {
+      test.assert(
+        existing,
+        'Displays "whether" as a deletion.'
+      )
+    })
   })
 
   const abc = 'b34c42c6b0620405d352d1987ab6b7586634c136c8b7fca26e15abc2ce3e62f0'
@@ -43,29 +45,29 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-      .url('http://localhost:8000/forms/' + abc + '#compare:' + bcd)
-      .waitForExist('//del//p[contains(text(),"This is A.")]')
-      .isExisting('//del//p[contains(text(),"This is A.")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Displays This is A." as a deletion.'
-        )
-      })
+    .url('http://localhost:8000/forms/' + abc + '#compare:' + bcd)
+    .waitForExist('//del//p[contains(text(),"This is A.")]')
+    .isExisting('//del//p[contains(text(),"This is A.")]')
+    .then(function (existing) {
+      test.assert(
+        existing,
+        'Displays This is A." as a deletion.'
+      )
+    })
   })
 
   suite.test(function (test) {
     test.plan(1)
     webdriver
-      .url('http://localhost:8000/forms/' + abc + '#compare:' + bcd)
-      .waitForExist('//ins//p[contains(text(),"This is D.")]')
-      .isExisting('//ins//p[contains(text(),"This is D.")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Displays "This is D." as an insertion.'
-        )
-      })
+    .url('http://localhost:8000/forms/' + abc + '#compare:' + bcd)
+    .waitForExist('//ins//p[contains(text(),"This is D.")]')
+    .isExisting('//ins//p[contains(text(),"This is D.")]')
+    .then(function (existing) {
+      test.assert(
+        existing,
+        'Displays "This is D." as an insertion.'
+      )
+    })
   })
 
   const a = '3e0a6550ad6afb461c5a217bd24f54247405a31fb1a06b705acf35c7010a599b'
@@ -75,28 +77,28 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-      .url('http://localhost:8000/forms/' + a + '#compare:' + aConspicuous)
-      .waitForExist('//*[contains(text(),"Made conspicuous")]')
-      .isExisting('//*[contains(text(),"Made conspicuous")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Displays "Made conspicuous".'
-        )
-      })
+    .url('http://localhost:8000/forms/' + a + '#compare:' + aConspicuous)
+    .waitForExist('//*[contains(text(),"Made conspicuous")]')
+    .isExisting('//*[contains(text(),"Made conspicuous")]')
+    .then(function (existing) {
+      test.assert(
+        existing,
+        'Displays "Made conspicuous".'
+      )
+    })
   })
 
   suite.test(function (test) {
     test.plan(1)
     webdriver
-      .url('http://localhost:8000/forms/' + aConspicuous + '#compare:' + a)
-      .waitForExist('//*[contains(text(),"Made inconspicuous")]')
-      .isExisting('//*[contains(text(),"Made inconspicuous")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Displays "Made inconspicuous".'
-        )
-      })
+    .url('http://localhost:8000/forms/' + aConspicuous + '#compare:' + a)
+    .waitForExist('//*[contains(text(),"Made inconspicuous")]')
+    .isExisting('//*[contains(text(),"Made inconspicuous")]')
+    .then(function (existing) {
+      test.assert(
+        existing,
+        'Displays "Made inconspicuous".'
+      )
+    })
   })
 })

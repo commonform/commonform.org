@@ -9,14 +9,14 @@ tape('Display', function (test) {
   test.test('Sanity Check', function (test) {
     test.plan(1)
     webdriver
-      .getText('a.openSource')
-      .then(function (value) {
-        test.equal(
-          value,
-          'Common Form is open-source software.',
-          'a.openSource says "Common Form is open-source software."'
-        )
-      })
+    .getText('a.openSource')
+    .then(function (value) {
+      test.equal(
+        value,
+        'Common Form is open-source software.',
+        'a.openSource says "Common Form is open-source software."'
+      )
+    })
   })
 
   test.test('Welcome', function (test) {
@@ -24,21 +24,21 @@ tape('Display', function (test) {
     const digestPrefix = welcomeDigest.substr(0, 16)
     const welcome = '//input[@class="heading" and @value="Welcome"]'
     webdriver
-      .url('http://localhost:8000')
-      .waitForExist(welcome)
-      .isExisting(welcome)
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays "Welcome" heading.'
-        )
-      })
-      .isExisting('//*[contains(text(),\'' + digestPrefix + '\')]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays digest of welcome form.'
-        )
-      })
+    .url('http://localhost:8000')
+    .waitForExist(welcome)
+    .isExisting(welcome)
+    .then(function (existing) {
+      test.assert(
+        existing,
+        'Page displays "Welcome" heading.'
+      )
+    })
+    .isExisting('//*[contains(text(),\'' + digestPrefix + '\')]')
+    .then(function (existing) {
+      test.assert(
+        existing,
+        'Page displays digest of welcome form.'
+      )
+    })
   })
 })
