@@ -1,6 +1,9 @@
+var assert = require('assert')
 var html = require('choo/html')
 
 module.exports = function (digest, send) {
+  assert.equal(typeof digest, 'string')
+  assert.equal(typeof send, 'function')
   return html`
     <a
         class=digest

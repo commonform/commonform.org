@@ -1,3 +1,4 @@
+var assert = require('assert')
 var html = require('choo/html')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
@@ -17,6 +18,7 @@ var use = require('./use')
 module.exports = form
 
 function form (form, send) {
+  assert.equal(typeof form.tree, 'object')
   var root = form.path.length === 0
   var formKey = root ? [] : ['form']
   var tree = root ? form.tree : form.tree.form

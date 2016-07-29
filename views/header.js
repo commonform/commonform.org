@@ -1,25 +1,32 @@
-var html = require('choo/html')
+var assert = require('assert')
 var digestLink = require('./digest-link')
+var html = require('choo/html')
 var spell = require('reviewers-edition-spell')
 
 module.exports = function (
-  digest, publications, toDigest, toPublications
+  digest, publications, toDigest, toPublications, send
 ) {
+  assert.equal(typeof digest, 'string')
+  assert(Array.isArray(publications))
+  assert(send !== undefined)
   return toDigest
   ? html`
     <header>
-      ${paragraph(digest, publications)}
+      ${paragraph(digest, publications, send)}
       <p>compared to</p>
-      ${paragraph(toDigest, toPublications)}
+      ${paragraph(toDigest, toPublications, send)}
     </header>
   `
-  : paragraph(digest, publications)
+  : paragraph(digest, publications, send)
 }
 
-function paragraph (digest, publications) {
+function paragraph (digest, publications, send) {
+  assert.equal(typeof digest, 'string')
+  assert(Array.isArray(publications))
+  assert(send !== undefined)
   return html`
     <div>
-      <p>${digestLink(digest)}</p>
+      <p>${digestLink(digest, send)}</p>
       ${publicationsList(publications)}
     </div>
   `
