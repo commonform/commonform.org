@@ -72,21 +72,26 @@ module.exports = {
       }
       return {signaturePages: pages}
     },
-    tree: (action, state) => ({
-      error: null,
-      tree: action.tree,
-      path: [],
-      projects: [],
-      blanks: [],
-      annotations: annotate(action.tree),
-      merkle: action.merkle || merkleize(action.tree),
-      publications: action.publications,
-      signaturePages: [],
-      focused: null,
-      diff: state.hasOwnProperty('comparing')
-        ? diff(action.tree, state.comparing.tree)
-        : null
-    }),
+    tree: function (action, state) {
+      var merkle = merkleize(action.tree)
+      var root = merkle.digest
+      window.history.pushState(action.tree, '', '/forms/' + root)
+      return {
+        error: null,
+        tree: action.tree,
+        path: [],
+        projects: [],
+        blanks: [],
+        annotations: annotate(action.tree),
+        merkle: merkleize(action.tree),
+        publications: action.publications,
+        signaturePages: [],
+        focused: null,
+        diff: state.hasOwnProperty('comparing')
+          ? diff(action.tree, state.comparing.tree)
+          : null
+      }
+    },
     error: (action) => ({error: action.error}),
     load: () => ({tree: null, annotations: null, merkle: null})
   },
@@ -101,12 +106,8 @@ module.exports = {
       } else {
         keyarray.set(newTree, path.concat('heading'), newHeading)
       }
-      var merkle = merkleize(newTree)
-      var root = merkle.digest
-      window.history.pushState(newTree, '', '/forms/' + root)
       var payload = {
         tree: newTree,
-        merkle: merkle,
         publications: []
       }
       send('form:tree', payload, done)
