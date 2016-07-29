@@ -17,7 +17,9 @@ function annotations (array) {
 
 function annotation (data) {
   const message = improvePunctuation(data.message)
-  return html`<p class=${data.level}>${annotationText(data.url, message)}</p>`
+  return html`
+    <p class=${data.level}>${annotationText(data.url, message)}</p>
+  `
 }
 
 function annotationText (url, message) {

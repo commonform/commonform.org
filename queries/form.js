@@ -6,7 +6,9 @@ module.exports = function (digest, callback) {
     if (error) callback(error)
     else {
       if (response.statusCode !== 200) {
-        callback(new Error('Server responded ' + response.statusCode + '.'))
+        callback(
+          new Error('Server responded ' + response.statusCode + '.')
+        )
       } else {
         if (!body) callback(new Error('No body received,'))
         else callback(null, body)

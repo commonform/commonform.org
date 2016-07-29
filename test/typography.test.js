@@ -4,7 +4,10 @@ const webdriver = require('./webdriver')
 tape('Typography', function (suite) {
   suite.test(function (test) {
     test.plan(1)
-    const hash = 'd68564fa22da73d2bb989207d4973ec7366da62b612f63f65eaa8e2a2281222d'
+    const hash = (
+      'd68564fa22da73d2bb989207d4973ec7' +
+      '366da62b612f63f65eaa8e2a2281222d'
+    )
     webdriver
     .url('http://localhost:8000/forms/' + hash)
     .isExisting('//*[contains(text(),"Wouldn’t")]')
@@ -18,7 +21,10 @@ tape('Typography', function (suite) {
 
   suite.test(function (test) {
     test.plan(1)
-    const hash = 'd68564fa22da73d2bb989207d4973ec7366da62b612f63f65eaa8e2a2281222d'
+    const hash = (
+      'd68564fa22da73d2bb989207d4973ec7' +
+      '366da62b612f63f65eaa8e2a2281222d'
+    )
     webdriver
     .url('http://localhost:8000/forms/' + hash)
     .isExisting('//*[contains(text(),"“quotation marks”")]')

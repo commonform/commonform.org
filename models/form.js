@@ -93,7 +93,11 @@ module.exports = {
       }
     },
     error: (action) => ({error: action.error}),
-    load: () => ({tree: null, annotations: null, merkle: null})
+    load: () => ({
+      tree: null,
+      annotations: null,
+      merkle: null
+    })
   },
 
   effects: {
@@ -123,18 +127,28 @@ module.exports = {
             })
           },
           function (done) {
-            downloadFormPublications(digest, function (error, publications) {
-              if (error) done(null, [])
-              else done(null, publications)
-            })
+            downloadFormPublications(
+              digest,
+              function (error, publications) {
+                if (error) done(null, [])
+                else done(null, publications)
+              }
+            )
           }
         ],
         function (error, results) {
           if (error) done(error)
           else {
-            const payload = {tree: results[0], publications: results[1]}
-            const name = action.comparing ? 'form:comparing' : 'form:tree'
-            send(name, payload, function (error) { if (error) done(error) })
+            const payload = {
+              tree: results[0],
+              publications: results[1]
+            }
+            const name = action.comparing
+            ? 'form:comparing'
+            : 'form:tree'
+            send(name, payload, function (error) {
+              if (error) done(error)
+            })
           }
         })
     },

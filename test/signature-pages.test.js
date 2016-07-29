@@ -3,7 +3,11 @@ const webdriver = require('./webdriver')
 
 tape.test('Signature Pages', function (test) {
   const addButton = '//button[contains(text(),"Add Signature Page")]'
-  const deleteButton = '//button[contains(text(),"Delete this Signature Page")]'
+  const deleteButton = (
+    '//button[' +
+    'contains(text(),"Delete this Signature Page")' +
+    ']'
+  )
   const pageFollows = '//*[contains(text(),"Signature Page Follows")]'
   const pagesFollow = '//*[contains(text(),"Signature Pages Follow")]'
 

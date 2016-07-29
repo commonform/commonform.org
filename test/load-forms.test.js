@@ -4,7 +4,10 @@ const webdriver = require('./webdriver')
 tape('Loading from API', function (suite) {
   suite.test('Load from API', function (test) {
     test.plan(1)
-    const digest = '813203e4f775c681aee09075f0990e7e79b5037fcce9440b66b4bfb436206748'
+    const digest = (
+      '813203e4f775c681aee09075f0990e7e' +
+      '79b5037fcce9440b66b4bfb436206748'
+    )
     webdriver
     .url('http://localhost:8000/forms/' + digest)
     .waitForExist('//*[contains(text(),"api.commonform.org")]')
@@ -50,7 +53,12 @@ tape('Loading from API', function (suite) {
     webdriver
     .url('http://localhost:8000/publications/test/test/1e')
     .waitForExist('//abbr[contains(text(), "1e")]', 2000)
-    .isExisting('//abbr[contains(@title,"first edition") and contains(text(), "1e")]')
+    .isExisting(
+      '//abbr[' +
+      'contains(@title,"first edition") and ' +
+      'contains(text(), "1e")' +
+      ']'
+    )
     .then(function (existing) {
       test.assert(
         existing,
@@ -73,7 +81,7 @@ tape('Loading from API', function (suite) {
     })
   })
 
-  suite.test('Load from a project, implied current edition', function (test) {
+  suite.test('Load from a project, no edition', function (test) {
     test.plan(1)
     webdriver
     .url('http://localhost:8000/publications/test/test')

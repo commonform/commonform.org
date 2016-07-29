@@ -2,7 +2,9 @@ const html = require('choo/html')
 const digestLink = require('./digest-link')
 const spell = require('reviewers-edition-spell')
 
-module.exports = function (digest, publications, toDigest, toPublications) {
+module.exports = function (
+  digest, publications, toDigest, toPublications
+) {
   return toDigest
   ? html`
     <header>

@@ -7,7 +7,8 @@ const replacements = [
   [/"$/g, RIGHT_DOUBLE],
   [/ "/g, ' ' + LEFT_DOUBLE],
   [/"/g, RIGHT_DOUBLE],
-  [/'/g, RIGHT_SINGLE]]
+  [/'/g, RIGHT_SINGLE]
+]
 
 module.exports = function (string) {
   return replacements.reduce(function (returned, replacement) {

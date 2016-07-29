@@ -16,14 +16,20 @@ module.exports = function (pages, send) {
           : null
         }
       </p>
-      ${pages.map((element, index) => signaturePage(element, [index], send))}
+      ${pages.map((element, index) => {
+        return signaturePage(element, [index], send)
+      })}
       <p>
         <button
             onclick=${function (event) {
               event.preventDefault()
               send(
                 'form:signatures',
-                {operation: 'push', key: [], value: newPage()}
+                {
+                  operation: 'push',
+                  key: [],
+                  value: newPage()
+                }
               )
             }}
           >Add Signature Page</button>
@@ -43,12 +49,19 @@ function signaturePage (page, path, send) {
     if (value.length > 0) {
       send(
         'form:signatures',
-        {operation: 'set', key: keyPath, value: value}
+        {
+          operation: 'set',
+          key: keyPath,
+          value: value
+        }
       )
     } else {
       send(
         'form:signatures',
-        {operation: 'delete', key: keyPath}
+        {
+          operation: 'delete',
+          key: keyPath
+        }
       )
     }
   }
@@ -56,8 +69,12 @@ function signaturePage (page, path, send) {
   function inputFor (key, placeholder) {
     return input(
       page[key] || '',
-      function (value) { updateValue(key, value) },
-      function () { updateValue(key, '') },
+      function (value) {
+        updateValue(key, value)
+      },
+      function () {
+        updateValue(key, '')
+      },
       placeholder
     )
   }
@@ -81,13 +98,20 @@ function signaturePage (page, path, send) {
                 function (value) {
                   send(
                     'form:signatures',
-                    {operation: 'set', key: byPath, value: value}
+                    {
+                      operation: 'set',
+                      key: byPath,
+                      value: value
+                    }
                   )
                 },
                 function () {
                   send(
                     'form:signatures',
-                    {operation: 'delete', key: byPath}
+                    {
+                      operation: 'delete',
+                      key: byPath
+                    }
                   )
                 })
               }
@@ -97,9 +121,12 @@ function signaturePage (page, path, send) {
       }
       ${
         optional.map(function (text) {
-          const display = text === 'email' ? 'E-Mail' : capitalize(text)
-          if (information.indexOf(text) > -1) return html`<p>${display}:`
-          else {
+          const display = text === 'email'
+          ? 'E-Mail'
+          : capitalize(text)
+          if (information.indexOf(text) > -1) {
+            return html`<p>${display}:`
+          } else {
             return html`
               <p>
                 <button
@@ -108,10 +135,20 @@ function signaturePage (page, path, send) {
                         event.preventDefault()
                         const infoPath = path.concat('information')
                         const newValue = optional.filter(
-                          (filtering) => filtering === text || information.indexOf(filtering) > -1)
+                          (filtering) => {
+                            return (
+                              filtering === text ||
+                              information.indexOf(filtering) > -1
+                            )
+                          }
+                        )
                         send(
                           'form:signatures',
-                          {operation: 'set', key: infoPath, value: newValue}
+                          {
+                            operation: 'set',
+                            key: infoPath,
+                            value: newValue
+                          }
                         )
                       }
                     }
@@ -126,7 +163,10 @@ function signaturePage (page, path, send) {
             onclick=${
               function (event) {
                 event.preventDefault()
-                send('form:signatures', {operation: 'splice', key: path})
+                send('form:signatures', {
+                  operation: 'splice',
+                  key: path
+                })
               }
             }
           >Delete this Signature Page
@@ -135,7 +175,9 @@ function signaturePage (page, path, send) {
   `
 }
 
-function newPage () { return clone(emptySignaturePage) }
+function newPage () {
+  return clone(emptySignaturePage)
+}
 
 function entitiesParagraphs (entities, path, send) {
   entities = entities || []
@@ -161,7 +203,11 @@ function entitiesParagraphs (entities, path, send) {
                 event.preventDefault()
                 send(
                   'form:signatures',
-                  {operation: 'push', key: path, value: {}}
+                  {
+                    operation: 'push',
+                    key: path,
+                    value: {}
+                  }
                 )
               }
             }
@@ -181,12 +227,19 @@ function signatureEntity (state, send) {
     if (value.length > 0) {
       send(
         'form:signatures',
-        {operation: 'set', key: keyPath, value: value}
+        {
+          operation: 'set',
+          key: keyPath,
+          value: value
+        }
       )
     } else {
       send(
         'form:signatures',
-        {operation: 'delete', key: keyPath}
+        {
+          operation: 'delete',
+          key: keyPath
+        }
       )
     }
   }
@@ -194,8 +247,12 @@ function signatureEntity (state, send) {
   function inputFor (key, placeholder) {
     return input(
       entity[key] || '',
-      function (value) { updateValue(key, value) },
-      function () { updateValue(key, '') },
+      function (value) {
+        updateValue(key, value)
+      },
+      function () {
+        updateValue(key, '')
+      },
       placeholder
     )
   }
@@ -217,13 +274,20 @@ function signatureEntity (state, send) {
             function (value) {
               send(
                 'form:signatures',
-                {operation: 'set', key: byPath, value: value}
+                {
+                  operation: 'set',
+                  key: byPath,
+                  value: value
+                }
               )
             },
             function () {
               send(
                 'form:signatures',
-                {operation: 'delete', key: byPath}
+                {
+                  operation: 'delete',
+                  key: byPath
+                }
               )
             },
             'Role'
@@ -235,7 +299,10 @@ function signatureEntity (state, send) {
           onclick=${
             function (event) {
               event.preventDefault()
-              send('form:signatures', {operation: 'splice', key: path})
+              send('form:signatures', {
+                operation: 'splice',
+                key: path
+              })
             }
           }
         >Delete Entity</button>

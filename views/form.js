@@ -45,8 +45,17 @@ function form (form, send) {
           heading: newValue
         })
       })}
-      ${isFocused ? details(form.merkle.digest, annotationsHere, send) : null}
-      ${marginalia(tree, form.path, form.blanks, annotationsHere, toggleFocus)}
+      ${
+        isFocused
+        ? details(form.merkle.digest, annotationsHere, send)
+        : null
+      }
+      ${
+        marginalia(
+          tree, form.path, form.blanks,
+          annotationsHere, toggleFocus
+        )
+      }
       ${groups.map(function (group) {
         var groupState = {
           blanks: form.blanks,
@@ -85,9 +94,17 @@ function sectionButton (toggleFocus) {
 function marginalia (tree, path, blanks, annotations, toggleFocus) {
   const hasError = annotations.some((a) => a.level === 'error')
   const hasAnnotation = annotations.some((a) => a.level !== 'error')
-  const hasBlank = tree.content.some((element, index) =>
-     predicates.blank(element) &&
-     !blanks.some((direction) => deepEqual(direction.blank, path.concat('form', 'content', index))))
+  const hasBlank = tree.content.some(function (element, index) {
+    return (
+      predicates.blank(element) &&
+      !blanks.some(function (direction) {
+        return deepEqual(
+          direction.blank,
+          path.concat('form', 'content', index)
+        )
+      })
+    )
+  })
   return html`
     <aside class=marginalia onclick=${toggleFocus}>
       ${hasError ? html`<a class=flag>\u26A0</a>` : null}
@@ -117,7 +134,9 @@ function series (state, send) {
       {
         blanks: state.blanks,
         tree: child,
-        annotations: get(state.annotations, ['content', absoluteIndex], {}),
+        annotations: get(
+          state.annotations, ['content', absoluteIndex], {}
+        ),
         merkle: state.merkle.content[absoluteIndex],
         focused: state.focused,
         path: state.path.concat(pathSuffix)
@@ -140,7 +159,8 @@ function paragraph (state, send) {
           } else if (predicates.definition(child)) {
             return definition(child.definition)
           } else if (predicates.blank(child)) {
-            const childPath = state.path.concat(['content', state.offset + index])
+            const childPath = state.path
+            .concat(['content', state.offset + index])
             return blank(state.blanks, childPath, send)
           } else if (predicates.reference(child)) {
             return reference(child.reference)
@@ -152,11 +172,25 @@ function paragraph (state, send) {
 }
 
 function blank (blanks, path, send) {
-  const direction = find(blanks, (element) => deepEqual(element.blank, path))
-  const value = direction ? improvePunctuation(direction.value) : ''
+  const direction = find(blanks, function (element) {
+    return deepEqual(element.blank, path)
+  })
+  const value = direction
+  ? improvePunctuation(direction.value)
+  : ''
   return input(
     value,
-    function (value) { send('form:blank', {path: path, value: replaceUnicode(value)}) },
-    function () { send('form:blank', {path: path, value: null}) }
+    function (value) {
+      send('form:blank', {
+        path: path,
+        value: replaceUnicode(value)
+      })
+    },
+    function () {
+      send('form:blank', {
+        path: path,
+        value: null
+      })
+    }
   )
 }

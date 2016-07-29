@@ -57,8 +57,10 @@ function comparison (diff) {
                 : null
               }
               ${
-                groups.map((group) => {
-                  const renderer = group.type === 'series' ? series : paragraph
+                groups.map(function (group) {
+                  const renderer = group.type === 'series'
+                  ? series
+                  : paragraph
                   return renderer(group)
                 })
               }
@@ -85,13 +87,15 @@ function word (word) {
   else return html`<span>${word.word}</span>`
 }
 
-function series (data) { return data.content.map((child) => comparison(child)) }
+function series (data) {
+  return data.content.map((child) => comparison(child))
+}
 
 function paragraph (data) {
   return html`
     <p class=text>
       ${
-        data.content.reduce((output, child) => {
+        data.content.reduce(function (output, child) {
           var wrapper
           if (child.hasOwnProperty('inserted')) {
             wrapper = (argument) => html`<ins>${argument}</ins>`
@@ -123,10 +127,12 @@ function paragraph (data) {
           } else if (predicates.reference(child)) {
             return output.concat(reference(child.reference))
           }
-        }, [ ])
+        }, [])
       }
     </p>
   `
 }
 
-function doNotWrap (argument) { return argument }
+function doNotWrap (argument) {
+  return argument
+}

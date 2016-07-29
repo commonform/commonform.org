@@ -16,7 +16,10 @@ module.exports = function (form, send) {
       <button onclick=${email}>E-Mail</button>
       <form class=fileInputTrick>
         <button>Open File</button>
-        <input type=file accept=".cform,.commonform,.json" onchange=${selectFile}>
+        <input
+            type=file
+            accept=".cform,.commonform,.json"
+            onchange=${selectFile}>
       </form>
     </div>
   `
@@ -30,8 +33,10 @@ module.exports = function (form, send) {
         options.after = signaturePagesToOOXML(form.signatures)
       }
       filesaver(
-        docx(clone(form.tree), form.blanks, options).generate({type: 'blob'}),
-        fileName(title, 'docx'))
+        docx(clone(form.tree), form.blanks, options)
+        .generate({type: 'blob'}),
+        fileName(title, 'docx')
+      )
     }
   }
 
@@ -39,7 +44,7 @@ module.exports = function (form, send) {
     event.preventDefault()
     var title = window.prompt('Enter a document title', 'Untitled Form')
     if (title !== null) {
-      var blob = new Blob(
+      var blob = new window.Blob(
         [toMarkup(form.tree)],
         {type: 'text/plain;charset=utf-8'}
       )
@@ -51,7 +56,7 @@ module.exports = function (form, send) {
     event.preventDefault()
     const target = event.target
     const file = target.files[0]
-    const reader = new FileReader()
+    const reader = new window.FileReader()
     const isJSON = file.type.match(/application\/json/)
     reader.onload = function (event) {
       const result = event.target.result
