@@ -1,7 +1,7 @@
-const html = require('choo/html')
+var html = require('choo/html')
 
 module.exports = function redirectToForm (state, prev, send) {
-  const params = state.params
+  var params = state.params
   send('form:redirectToForm', params)
   return html`
     <div class=container>

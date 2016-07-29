@@ -1,10 +1,10 @@
-const tape = require('tape')
-const webdriver = require('./webdriver')
+var tape = require('tape')
+var webdriver = require('./webdriver')
 
 tape('Typography', function (suite) {
   suite.test(function (test) {
     test.plan(1)
-    const hash = (
+    var hash = (
       'd68564fa22da73d2bb989207d4973ec7' +
       '366da62b612f63f65eaa8e2a2281222d'
     )
@@ -21,7 +21,7 @@ tape('Typography', function (suite) {
 
   suite.test(function (test) {
     test.plan(1)
-    const hash = (
+    var hash = (
       'd68564fa22da73d2bb989207d4973ec7' +
       '366da62b612f63f65eaa8e2a2281222d'
     )

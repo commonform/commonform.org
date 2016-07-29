@@ -1,6 +1,6 @@
-const annotate = require('../utilities/annotate')
-const merkleize = require('commonform-merkleize')
-const welcomeTree = require('commonform-welcome-form')
+var annotate = require('../utilities/annotate')
+var merkleize = require('commonform-merkleize')
+var welcomeTree = require('commonform-welcome-form')
 
 var welcome = module.exports = {
   tree: welcomeTree,

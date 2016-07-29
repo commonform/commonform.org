@@ -1,4 +1,4 @@
-const equivalents = require('unicode-ascii-equivalents')
+var equivalents = require('unicode-ascii-equivalents')
 
 module.exports = function (string) {
   return equivalents.reduce(function (returned, equivalence) {

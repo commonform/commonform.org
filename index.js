@@ -1,4 +1,4 @@
-const app = require('choo')({
+var app = require('choo')({
   onError: function (error, state, createSend) {
     createSend('onError:')('form:error', error)
   }
@@ -7,8 +7,8 @@ const app = require('choo')({
 app.model(require('./models/popstate'))
 app.model(require('./models/form'))
 
-const read = require('./views/read')
-const redirectToForm = require('./views/redirect-to-form')
+var read = require('./views/read')
+var redirectToForm = require('./views/redirect-to-form')
 
 app.router('/notFound', (route) => [
   route('/', read),
@@ -27,6 +27,6 @@ app.router('/notFound', (route) => [
 
 if (module.parent) module.exports = app
 else {
-  const tree = app.start()
+  var tree = app.start()
   document.body.appendChild(tree)
 }

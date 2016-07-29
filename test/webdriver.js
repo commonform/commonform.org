@@ -1,4 +1,4 @@
-const webdriver = module.exports = (function () {
+var webdriver = module.exports = (function () {
   return require('webdriverio')
   .remote(configuration())
   .init()

@@ -1,10 +1,10 @@
-const tape = require('tape')
-const webdriver = require('./webdriver')
+var tape = require('tape')
+var webdriver = require('./webdriver')
 
 tape('Loading from API', function (suite) {
   suite.test('Load from API', function (test) {
     test.plan(1)
-    const digest = (
+    var digest = (
       '813203e4f775c681aee09075f0990e7e' +
       '79b5037fcce9440b66b4bfb436206748'
     )

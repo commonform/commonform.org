@@ -1,13 +1,13 @@
-const annotate = require('../utilities/annotate')
-const clone = require('../utilities/clone')
-const diff = require('commonform-diff')
-const deepEqual = require('deep-equal')
-const downloadForm = require('../queries/form')
-const downloadFormPublications = require('../queries/form-publications')
-const downloadPublication = require('../queries/publication')
-const keyarray = require('keyarray')
-const merkleize = require('commonform-merkleize')
-const runParallel = require('run-parallel')
+var annotate = require('../utilities/annotate')
+var clone = require('../utilities/clone')
+var diff = require('commonform-diff')
+var deepEqual = require('deep-equal')
+var downloadForm = require('../queries/form')
+var downloadFormPublications = require('../queries/form-publications')
+var downloadPublication = require('../queries/publication')
+var keyarray = require('keyarray')
+var merkleize = require('commonform-merkleize')
+var runParallel = require('run-parallel')
 
 module.exports = {
   namespace: 'form',
@@ -139,11 +139,11 @@ module.exports = {
         function (error, results) {
           if (error) done(error)
           else {
-            const payload = {
+            var payload = {
               tree: results[0],
               publications: results[1]
             }
-            const name = action.comparing
+            var name = action.comparing
             ? 'form:comparing'
             : 'form:tree'
             send(name, payload, function (error) {

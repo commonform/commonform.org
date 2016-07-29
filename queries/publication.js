@@ -1,4 +1,4 @@
-const http = require('choo/http')
+var http = require('choo/http')
 
 module.exports = function (publication, callback) {
   var uri = (

@@ -1,5 +1,5 @@
-const tape = require('tape')
-const webdriver = require('./webdriver')
+var tape = require('tape')
+var webdriver = require('./webdriver')
 
 tape('Edits', function (suite) {
   suite.test('change heading', function (test) {

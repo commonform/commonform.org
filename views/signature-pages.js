@@ -1,8 +1,8 @@
-const capitalize = require('capitalize')
-const html = require('choo/html')
-const clone = require('../utilities/clone')
-const emptySignaturePage = require('../data/empty-signature-page')
-const input = require('./input')
+var capitalize = require('capitalize')
+var html = require('choo/html')
+var clone = require('../utilities/clone')
+var emptySignaturePage = require('../data/empty-signature-page')
+var input = require('./input')
 
 module.exports = function (pages, send) {
   return html`
@@ -38,14 +38,14 @@ module.exports = function (pages, send) {
   `
 }
 
-const optional = ['date', 'email', 'address']
+var optional = ['date', 'email', 'address']
 
 function signaturePage (page, path, send) {
-  const entities = page.entities
-  const information = page.information || []
+  var entities = page.entities
+  var information = page.information || []
 
   function updateValue (key, value) {
-    const keyPath = path.concat(key)
+    var keyPath = path.concat(key)
     if (value.length > 0) {
       send(
         'form:signatures',
@@ -89,8 +89,8 @@ function signaturePage (page, path, send) {
       ${
         entities.length > 0
         ? (function () {
-          const lastIndex = entities.length - 1
-          const byPath = path.concat('entities', lastIndex, 'by')
+          var lastIndex = entities.length - 1
+          var byPath = path.concat('entities', lastIndex, 'by')
           return html`
             <p>Title:
               ${input(
@@ -121,7 +121,7 @@ function signaturePage (page, path, send) {
       }
       ${
         optional.map(function (text) {
-          const display = text === 'email'
+          var display = text === 'email'
           ? 'E-Mail'
           : capitalize(text)
           if (information.indexOf(text) > -1) {
@@ -133,8 +133,8 @@ function signaturePage (page, path, send) {
                     onclick=${
                       function (event) {
                         event.preventDefault()
-                        const infoPath = path.concat('information')
-                        const newValue = optional.filter(
+                        var infoPath = path.concat('information')
+                        var newValue = optional.filter(
                           (filtering) => {
                             return (
                               filtering === text ||
@@ -218,12 +218,12 @@ function entitiesParagraphs (entities, path, send) {
 }
 
 function signatureEntity (state, send) {
-  const entity = state.entity
-  const needsBy = state.needsBy
-  const path = state.path
+  var entity = state.entity
+  var needsBy = state.needsBy
+  var path = state.path
 
   function updateValue (key, value) {
-    const keyPath = path.concat(key)
+    var keyPath = path.concat(key)
     if (value.length > 0) {
       send(
         'form:signatures',
@@ -267,8 +267,8 @@ function signatureEntity (state, send) {
       ${
         needsBy
         ? (function () {
-          const by = state.by
-          const byPath = state.byPath
+          var by = state.by
+          var byPath = state.byPath
           return input(
             by,
             function (value) {

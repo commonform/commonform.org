@@ -1,6 +1,6 @@
-const critique = require('commonform-critique')
-const lint = require('commonform-lint')
-const treeify = require('commonform-treeify-annotations')
+var critique = require('commonform-critique')
+var lint = require('commonform-lint')
+var treeify = require('commonform-treeify-annotations')
 
 module.exports = function (form) {
   return treeify(

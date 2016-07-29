@@ -1,4 +1,4 @@
-const html = require('choo/html')
+var html = require('choo/html')
 
 module.exports = function input (value, set, clear, placeholder) {
   if (value && value.length > 0) {

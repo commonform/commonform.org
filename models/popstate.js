@@ -1,15 +1,15 @@
-const welcome = require('../data/welcome')
+var welcome = require('../data/welcome')
 
 module.exports = {
   subscriptions: [fetchFormOn('load'), fetchFormOn('popstate')]
 }
 
-const HASH = /([0-9a-f]{64})$/
+var HASH = /([0-9a-f]{64})$/
 
 function fetchFormOn (event) {
   return function (send, done) {
     window.addEventListener(event, function () {
-      const location = window.location
+      var location = window.location
       var match
       var data
       var path = location.pathname
@@ -22,7 +22,7 @@ function fetchFormOn (event) {
           send('form:fetch', data, yieldError)
         }
       }
-      const hash = window.location.hash
+      var hash = window.location.hash
       if (hash.indexOf('#compare:') === 0) {
         match = HASH.exec(hash)
         if (match) {

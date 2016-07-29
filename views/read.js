@@ -1,10 +1,10 @@
-const html = require('choo/html')
-const comparison = require('./comparison')
-const footer = require('./footer')
-const form = require('./form')
-const header = require('./header')
-const menu = require('./menu')
-const signaturePages = require('./signature-pages')
+var html = require('choo/html')
+var comparison = require('./comparison')
+var footer = require('./footer')
+var form = require('./form')
+var header = require('./header')
+var menu = require('./menu')
+var signaturePages = require('./signature-pages')
 
 module.exports = function read (state, prev, send) {
   if (state.form.error) {

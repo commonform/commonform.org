@@ -1,6 +1,6 @@
-const html = require('choo/html')
-const digestLink = require('./digest-link')
-const spell = require('reviewers-edition-spell')
+var html = require('choo/html')
+var digestLink = require('./digest-link')
+var spell = require('reviewers-edition-spell')
 
 module.exports = function (
   digest, publications, toDigest, toPublications

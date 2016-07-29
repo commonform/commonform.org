@@ -1,10 +1,10 @@
-const fs = require('fs')
-const http = require('http')
-const replace = require('stream-replace')
-const url = require('url')
+var fs = require('fs')
+var http = require('http')
+var replace = require('stream-replace')
+var url = require('url')
 
-const release = '/releases/development/'
-const ecstatic = require('ecstatic')({
+var release = '/releases/development/'
+var ecstatic = require('ecstatic')({
   root: 'build',
   baseDir: 'releases/development',
   cache: 0

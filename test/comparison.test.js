@@ -1,13 +1,13 @@
-const tape = require('tape')
-const webdriver = require('./webdriver')
+var tape = require('tape')
+var webdriver = require('./webdriver')
 
 tape('Comparison', function (suite) {
-  const apache2 = (
+  var apache2 = (
     '5d912ab4e9be029a2b3d137aefeb918a' +
     'd1f001463e0f554ca24008dc70494eb0'
   )
 
-  const edited = (
+  var edited = (
     'f02d98846a09ce8431c4d2968c265672' +
     '842ab20322c21e1ee87a0de6943e7a1b'
   )
@@ -44,12 +44,12 @@ tape('Comparison', function (suite) {
     })
   })
 
-  const abc = (
+  var abc = (
     'b34c42c6b0620405d352d1987ab6b758' +
     '6634c136c8b7fca26e15abc2ce3e62f0'
   )
 
-  const bcd = (
+  var bcd = (
     'ca4b4d97de8c014df46d17d17e1de72e' +
     '8fb942e1b6f0d72b5eddf56af4418967'
   )
@@ -82,12 +82,12 @@ tape('Comparison', function (suite) {
     })
   })
 
-  const a = (
+  var a = (
     '3e0a6550ad6afb461c5a217bd24f5424' +
     '7405a31fb1a06b705acf35c7010a599b'
   )
 
-  const aConspicuous = (
+  var aConspicuous = (
     '1111d342cef09cf3eb11b30c565a3c7a' +
     '9080b01665dcf1cc2ebab99c7efdb2ea'
   )

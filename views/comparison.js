@@ -1,18 +1,18 @@
-const html = require('choo/html')
-const classnames = require('classnames')
-const clone = require('../utilities/clone')
-const group = require('commonform-group-series')
-const predicates = require('commonform-predicate')
-const definition = require('./definition')
-const reference = require('./reference')
-const use = require('./use')
+var html = require('choo/html')
+var classnames = require('classnames')
+var clone = require('../utilities/clone')
+var group = require('commonform-group-series')
+var predicates = require('commonform-predicate')
+var definition = require('./definition')
+var reference = require('./reference')
+var use = require('./use')
 
 module.exports = comparison
 
 function comparison (diff) {
-  const root = !diff.hasOwnProperty('form')
-  const treeLike = root ? diff : diff.form
-  const groups = group(clone(treeLike))
+  var root = !diff.hasOwnProperty('form')
+  var treeLike = root ? diff : diff.form
+  var groups = group(clone(treeLike))
   var wrapper
   if (diff.hasOwnProperty('inserted')) {
     wrapper = (argument) => html`<ins>${argument}</ins>`
@@ -21,15 +21,15 @@ function comparison (diff) {
   } else {
     wrapper = (argument) => argument
   }
-  const conspicuous = treeLike.conspicuous
-  const madeConspicuous =
+  var conspicuous = treeLike.conspicuous
+  var madeConspicuous =
     conspicuous.length === 1 &&
     conspicuous[0].hasOwnProperty('inserted')
-  const madeInconspicuous =
+  var madeInconspicuous =
     conspicuous.length === 1 &&
     conspicuous[0].hasOwnProperty('deleted')
 
-  const classNames = classnames({
+  var classNames = classnames({
     conspicuous: conspicuous.some((element) =>
       !element.hasOwnProperty('deleted'))
   })
@@ -58,7 +58,7 @@ function comparison (diff) {
               }
               ${
                 groups.map(function (group) {
-                  const renderer = group.type === 'series'
+                  var renderer = group.type === 'series'
                   ? series
                   : paragraph
                   return renderer(group)
@@ -73,7 +73,7 @@ function comparison (diff) {
 }
 
 function heading (heading) {
-  const joined = heading.map((word) => word.word).join('')
+  var joined = heading.map((word) => word.word).join('')
   return html`
     <p class=heading id=${joined}>
       ${heading.map(word)}

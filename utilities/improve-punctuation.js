@@ -1,8 +1,8 @@
-const LEFT_DOUBLE = '“'
-const RIGHT_DOUBLE = '”'
-const RIGHT_SINGLE = '’'
+var LEFT_DOUBLE = '“'
+var RIGHT_DOUBLE = '”'
+var RIGHT_SINGLE = '’'
 
-const replacements = [
+var replacements = [
   [/^"/g, LEFT_DOUBLE],
   [/"$/g, RIGHT_DOUBLE],
   [/ "/g, ' ' + LEFT_DOUBLE],

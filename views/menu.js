@@ -1,12 +1,12 @@
-const html = require('choo/html')
-const clone = require('../utilities/clone')
-const outline = require('outline-numbering')
-const querystring = require('querystring')
-const docx = require('commonform-docx')
-const toMarkup = require('commonform-markup-stringify')
-const parseMarkup = require('commonform-markup-parse')
-const filesaver = require('filesaver.js').saveAs
-const signaturePagesToOOXML = require('ooxml-signature-pages')
+var html = require('choo/html')
+var clone = require('../utilities/clone')
+var outline = require('outline-numbering')
+var querystring = require('querystring')
+var docx = require('commonform-docx')
+var toMarkup = require('commonform-markup-stringify')
+var parseMarkup = require('commonform-markup-parse')
+var filesaver = require('filesaver.js').saveAs
+var signaturePagesToOOXML = require('ooxml-signature-pages')
 
 module.exports = function (form, send) {
   return html`
@@ -54,12 +54,12 @@ module.exports = function (form, send) {
 
   function selectFile (event) {
     event.preventDefault()
-    const target = event.target
-    const file = target.files[0]
-    const reader = new window.FileReader()
-    const isJSON = file.type.match(/application\/json/)
+    var target = event.target
+    var file = target.files[0]
+    var reader = new window.FileReader()
+    var isJSON = file.type.match(/application\/json/)
     reader.onload = function (event) {
-      const result = event.target.result
+      var result = event.target.result
       var tree
       try {
         tree = isJSON ? JSON.parse(result) : parseMarkup(result).form
@@ -80,6 +80,6 @@ module.exports = function (form, send) {
 }
 
 function fileName (title, extension) {
-  const date = new Date().toISOString()
+  var date = new Date().toISOString()
   return '' + title + ' ' + date + '.' + extension
 }
