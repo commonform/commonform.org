@@ -25,6 +25,7 @@ module.exports = {
   },
 
   reducers: {
+
     blank: function (action, state) {
       var blank = action.path
       var value = action.value
@@ -47,6 +48,7 @@ module.exports = {
         return {blanks: newBlanks}
       }
     },
+
     comparing: function (action, state) {
       return {
         comparing: {
@@ -59,9 +61,11 @@ module.exports = {
         : null
       }
     },
+
     focus: function (action) {
       return {focused: action.path}
     },
+
     signatures: function (action, state) {
       var pages = clone(state.signaturePages)
       var operand
@@ -78,6 +82,7 @@ module.exports = {
       }
       return {signaturePages: pages}
     },
+
     tree: function (action, state) {
       var merkle = merkleize(action.tree)
       var root = merkle.digest
@@ -98,9 +103,11 @@ module.exports = {
         : null
       }
     },
+
     error: function (action) {
       return {error: action.error}
     },
+
     load: function () {
       return {
         tree: null,
@@ -108,9 +115,11 @@ module.exports = {
         merkle: null
       }
     }
+
   },
 
   effects: {
+
     heading: function (action, state, send, done) {
       var path = action.path
       var newHeading = action.heading
@@ -126,6 +135,7 @@ module.exports = {
       }
       send('form:tree', payload, done)
     },
+
     fetch: function (action, state, send, done) {
       var digest = action.digest
       runParallel(
@@ -162,6 +172,7 @@ module.exports = {
           }
         })
     },
+
     redirectToForm: function (action, state, send, done) {
       action.edition = action.edition || 'current'
       downloadPublication(action, function (error, digest) {
@@ -169,5 +180,6 @@ module.exports = {
         else window.location = '/forms/' + digest
       })
     }
+
   }
 }
