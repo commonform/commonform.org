@@ -29,7 +29,9 @@ module.exports = {
       var blank = action.path
       var value = action.value
       var index = state.blanks
-      .findIndex((record) => deepEqual(record.blank, blank))
+      .findIndex(function (record) {
+        return deepEqual(record.blank, blank)
+      })
       var newBlanks = clone(state.blanks)
       if (value === null) {
         if (index > -1) {
@@ -45,17 +47,21 @@ module.exports = {
         return {blanks: newBlanks}
       }
     },
-    comparing: (action, state) => ({
-      comparing: {
-        tree: action.tree,
-        merkle: merkleize(action.tree),
-        publications: action.publications
-      },
-      diff: state.hasOwnProperty('tree')
-      ? diff(state.tree, action.tree)
-      : null
-    }),
-    focus: (action) => ({focused: action.path}),
+    comparing: function (action, state) {
+      return {
+        comparing: {
+          tree: action.tree,
+          merkle: merkleize(action.tree),
+          publications: action.publications
+        },
+        diff: state.hasOwnProperty('tree')
+        ? diff(state.tree, action.tree)
+        : null
+      }
+    },
+    focus: function (action) {
+      return {focused: action.path}
+    },
     signatures: function (action, state) {
       var pages = clone(state.signaturePages)
       var operand
@@ -92,12 +98,16 @@ module.exports = {
         : null
       }
     },
-    error: (action) => ({error: action.error}),
-    load: () => ({
-      tree: null,
-      annotations: null,
-      merkle: null
-    })
+    error: function (action) {
+      return {error: action.error}
+    },
+    load: function () {
+      return {
+        tree: null,
+        annotations: null,
+        merkle: null
+      }
+    }
   },
 
   effects: {

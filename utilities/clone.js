@@ -1,1 +1,3 @@
-module.exports = (x) => JSON.parse(JSON.stringify(x))
+module.exports = function (x) {
+  return JSON.parse(JSON.stringify(x))
+}

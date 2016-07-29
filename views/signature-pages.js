@@ -16,7 +16,7 @@ module.exports = function (pages, send) {
           : null
         }
       </p>
-      ${pages.map((element, index) => {
+      ${pages.map(function (element, index) {
         return signaturePage(element, [index], send)
       })}
       <p>
@@ -135,7 +135,7 @@ function signaturePage (page, path, send) {
                         event.preventDefault()
                         var infoPath = path.concat('information')
                         var newValue = optional.filter(
-                          (filtering) => {
+                          function (filtering) {
                             return (
                               filtering === text ||
                               information.indexOf(filtering) > -1

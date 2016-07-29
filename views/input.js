@@ -7,7 +7,7 @@ module.exports = function input (value, set, clear, placeholder) {
         ${value}
         <a  class=clear
             title="Clear"
-            onclick=${(e) => {
+            onclick=${function (e) {
               e.preventDefault()
               clear()
             }}></a>
@@ -18,7 +18,7 @@ module.exports = function input (value, set, clear, placeholder) {
       <input
           class=blank
           placeholder="${placeholder || ''}"
-          onchange=${(e) => {
+          onchange=${function (e) {
             e.preventDefault()
             set(e.target.value)
           }}>

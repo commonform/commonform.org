@@ -15,11 +15,17 @@ function comparison (diff) {
   var groups = group(clone(treeLike))
   var wrapper
   if (diff.hasOwnProperty('inserted')) {
-    wrapper = (argument) => html`<ins>${argument}</ins>`
+    wrapper = function (argument) {
+      return html`<ins>${argument}</ins>`
+    }
   } else if (diff.hasOwnProperty('deleted')) {
-    wrapper = (argument) => html`<del>${argument}</del>`
+    wrapper = function (argument) {
+      return html`<del>${argument}</del>`
+    }
   } else {
-    wrapper = (argument) => argument
+    wrapper = function (argument) {
+      return argument
+    }
   }
   var conspicuous = treeLike.conspicuous
   var madeConspicuous =
@@ -30,8 +36,9 @@ function comparison (diff) {
     conspicuous[0].hasOwnProperty('deleted')
 
   var classNames = classnames({
-    conspicuous: conspicuous.some((element) =>
-      !element.hasOwnProperty('deleted'))
+    conspicuous: conspicuous.some(function (element) {
+      return !element.hasOwnProperty('deleted')
+    })
   })
 
   return html`
@@ -73,7 +80,9 @@ function comparison (diff) {
 }
 
 function heading (heading) {
-  var joined = heading.map((word) => word.word).join('')
+  var joined = heading
+  .map(function (word) { return word.word })
+  .join('')
   return html`
     <p class=heading id=${joined}>
       ${heading.map(word)}
@@ -88,7 +97,9 @@ function word (word) {
 }
 
 function series (data) {
-  return data.content.map((child) => comparison(child))
+  return data.content.map(function (child) {
+    return comparison(child)
+  })
 }
 
 function paragraph (data) {
@@ -98,9 +109,13 @@ function paragraph (data) {
         data.content.reduce(function (output, child) {
           var wrapper
           if (child.hasOwnProperty('inserted')) {
-            wrapper = (argument) => html`<ins>${argument}</ins>`
+            wrapper = function (argument) {
+              return html`<ins>${argument}</ins>`
+            }
           } else if (child.hasOwnProperty('deleted')) {
-            wrapper = (argument) => html`<del>${argument}</del>`
+            wrapper = function (argument) {
+              return html`<del>${argument}</del>`
+            }
           } else {
             wrapper = doNotWrap
           }

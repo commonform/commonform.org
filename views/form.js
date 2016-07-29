@@ -92,8 +92,12 @@ function sectionButton (toggleFocus) {
 }
 
 function marginalia (tree, path, blanks, annotations, toggleFocus) {
-  var hasError = annotations.some((a) => a.level === 'error')
-  var hasAnnotation = annotations.some((a) => a.level !== 'error')
+  var hasError = annotations.some(function (a) {
+    return a.level === 'error'
+  })
+  var hasAnnotation = annotations.some(function (a) {
+    return a.level !== 'error'
+  })
   var hasBlank = tree.content.some(function (element, index) {
     return (
       predicates.blank(element) &&
@@ -121,7 +125,9 @@ function heading (heading, send) {
         class=heading
         placeholder="Click to add heading"
         id="Heading:${heading}"
-        onchange=${(event) => send(event.target.value)}
+        onchange=${function (event) {
+          send(event.target.value)
+        }}
         value=${heading || ''}/>
   `
 }
@@ -151,7 +157,7 @@ function paragraph (state, send) {
   return html`
     <p class=text>
       ${
-        state.data.content.map((child, index) => {
+        state.data.content.map(function (child, index) {
           if (predicates.text(child)) {
             return html`<span>${improvePunctuation(child)}</span>`
           } else if (predicates.use(child)) {
