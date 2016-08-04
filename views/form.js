@@ -34,6 +34,13 @@ function form (form, send) {
     focused: isFocused
   })
 
+  var setHeading = function (newValue) {
+    send('form:heading', {
+      path: form.path,
+      heading: newValue
+    })
+  }
+
   var offset = 0
   return html`
     <section
@@ -41,12 +48,7 @@ function form (form, send) {
         data-digest="${form.merkle.digest}"
         ondblclick=${toggleFocus}>
       ${root ? null : sectionButton(toggleFocus)}
-      ${root ? null : heading(form.tree.heading, function (newValue) {
-        send('form:heading', {
-          path: form.path,
-          heading: newValue
-        })
-      })}
+      ${root ? null : heading(form.mode, form.tree.heading, setHeading)}
       ${
         isFocused
         ? details(form.merkle.digest, annotationsHere, send)
@@ -60,6 +62,7 @@ function form (form, send) {
       }
       ${groups.map(function (group) {
         var groupState = {
+          mode: form.mode,
           blanks: form.blanks,
           data: group,
           annotations: get(form.annotations, formKey, {}),
@@ -120,18 +123,31 @@ function marginalia (tree, path, blanks, annotations, toggleFocus) {
   `
 }
 
-function heading (heading, send) {
-  return html`
-    <input
-        type=text
-        class=heading
-        placeholder="Click to add heading"
-        id="Heading:${heading}"
-        onchange=${function (event) {
-          send(event.target.value)
-        }}
-        value=${heading || ''}/>
-  `
+function heading (mode, heading, send) {
+  if (mode === 'edit') {
+    return html`
+      <input
+          type=text
+          class=heading
+          placeholder="Click to add heading"
+          id="Heading:${heading}"
+          onchange=${function (event) {
+            send(event.target.value)
+          }}
+          value=${heading || ''}/>
+    `
+  } else {
+    if (heading) {
+      return html`
+        <p
+            class=heading
+            id="Heading:${heading}"
+          >${heading}</p>
+      `
+    } else {
+      return null
+    }
+  }
 }
 
 function series (state, send) {
@@ -140,6 +156,7 @@ function series (state, send) {
     var pathSuffix = ['content', absoluteIndex]
     var result = form(
       {
+        mode: state.mode,
         blanks: state.blanks,
         tree: child,
         annotations: get(
