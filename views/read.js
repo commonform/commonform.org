@@ -3,6 +3,7 @@ var comparison = require('./comparison')
 var footer = require('./footer')
 var form = require('./form')
 var header = require('./header')
+var modeButtons = require('./mode-buttons')
 var menu = require('./menu')
 var signaturePages = require('./signature-pages')
 
@@ -47,6 +48,7 @@ module.exports = function read (state, prev, send) {
       return html`
         <div class=container>
           <article class=commonform>
+            ${modeButtons(state.form.mode, send)}
             ${menu(state.form, send)}
             ${
               header(

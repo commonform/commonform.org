@@ -1,5 +1,12 @@
 @import 'normalize'
 
+=notselectable
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  -o-user-select: none
+  user-select: none;
+
 @media all
   html
     font-size: 23px
@@ -71,6 +78,26 @@ button
   line-height: 1.4
   text-align: left
 
+.modes
+  position: fixed
+  left: 0rem
+  top: 0rem
+  text-align: center
+  font-size: 200%
+  z-index: 100
+  a
+    display: block
+    width: 2.5rem
+    text-align: center
+    +notselectable
+    text-decoration: none
+    cursor: pointer
+    background: white
+    &.enabled
+      color: black
+    &.disabled
+      color: #eee
+
 .commonform
   a.publication
     text-decoration: none
@@ -131,11 +158,7 @@ button
     position: absolute
     left: 0
     cursor: pointer
-    -webkit-user-select: none
-    -moz-user-select: none
-    -ms-user-select: none
-    -o-user-select: none
-    user-select: none;
+    +notselectable
 
   .marginalia
     display: block

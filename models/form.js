@@ -13,6 +13,7 @@ module.exports = {
   namespace: 'form',
 
   state: {
+    mode: 'read',
     error: null,
     tree: null,
     path: [],
@@ -25,6 +26,10 @@ module.exports = {
   },
 
   reducers: {
+
+    mode: function (action, state) {
+      return action
+    },
 
     blank: function (action, state) {
       var blank = action.path
