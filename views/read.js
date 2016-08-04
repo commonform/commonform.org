@@ -29,6 +29,7 @@ module.exports = function read (state, prev, send) {
       return html`
         <div class=container>
           <article class=commonform>
+            ${modeButtons(state.form.mode, send)}
             ${menu(state.form, send)}
             ${
               header(
