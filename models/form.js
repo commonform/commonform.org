@@ -1,4 +1,5 @@
 var annotate = require('../utilities/annotate')
+var assert = require('assert')
 var clone = require('../utilities/clone')
 var diff = require('commonform-diff')
 var deepEqual = require('deep-equal')
@@ -124,6 +125,21 @@ module.exports = {
   },
 
   effects: {
+
+    child: function (action, state, send, done) {
+      assert(Array.isArray(action.path))
+      var path = action.path
+      var newChild = {form: {content: ['...']}}
+      var newTree = clone(state.tree)
+      var array = keyarray.get(newTree, path.slice(0, -1))
+      var index = path[path.length - 1]
+      array.splice(index, 0, newChild)
+      var payload = {
+        tree: newTree,
+        publications: []
+      }
+      send('form:tree', payload, done)
+    },
 
     heading: function (action, state, send, done) {
       var path = action.path

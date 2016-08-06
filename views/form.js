@@ -5,6 +5,7 @@ var clone = require('../utilities/clone')
 var deepEqual = require('deep-equal')
 var definition = require('./definition')
 var details = require('./details')
+var dropZone = require('./drop-zone')
 var find = require('array-find')
 var get = require('keyarray').get
 var group = require('commonform-group-series')
@@ -24,6 +25,7 @@ function form (form, send) {
   var tree = root ? form.tree : form.tree.form
   var groups = group(clone(tree))
   var isFocused = deepEqual(form.focused, form.path)
+  var editing = form.mode === 'edit'
   var annotationsHere = get(
     form.annotations,
     formKey.concat('annotations'),
@@ -60,6 +62,11 @@ function form (form, send) {
           annotationsHere, toggleFocus
         )
       }
+      ${
+        (root || form.hasOwnProperty('heading')) && editing
+        ? dropZone('child', form.path.concat('content', 0), send)
+        : null
+      }
       ${groups.map(function (group) {
         var groupState = {
           mode: form.mode,
@@ -74,7 +81,9 @@ function form (form, send) {
         if (group.type === 'series') {
           renderer = series
           groupState.merkle = form.merkle
-        } else renderer = paragraph
+        } else {
+          renderer = paragraph
+        }
         var result = renderer(groupState, send)
         offset += group.content.length
         return result
@@ -168,31 +177,54 @@ function series (state, send) {
       },
       send
     )
-    return result
+    if (state.mode === 'edit') {
+      return [
+        result,
+        dropZone(
+          'child',
+          state.path.concat('content', absoluteIndex + 1),
+          send
+        )
+      ]
+    } else {
+      return result
+    }
   })
 }
 
 function paragraph (state, send) {
+  var elementCount = state.data.content.length
   return html`
-    <p class=text>
+    <div>
+      <p class=text>
+        ${
+          state.data.content.map(function (child, index) {
+            if (predicates.text(child)) {
+              return html`<span>${improvePunctuation(child)}</span>`
+            } else if (predicates.use(child)) {
+              return use(child.use)
+            } else if (predicates.definition(child)) {
+              return definition(child.definition)
+            } else if (predicates.blank(child)) {
+              var childPath = state.path
+              .concat(['content', state.offset + index])
+              return blank(state.blanks, childPath, send)
+            } else if (predicates.reference(child)) {
+              return reference(child.reference)
+            }
+          })
+        }
+      </p>
       ${
-        state.data.content.map(function (child, index) {
-          if (predicates.text(child)) {
-            return html`<span>${improvePunctuation(child)}</span>`
-          } else if (predicates.use(child)) {
-            return use(child.use)
-          } else if (predicates.definition(child)) {
-            return definition(child.definition)
-          } else if (predicates.blank(child)) {
-            var childPath = state.path
-            .concat(['content', state.offset + index])
-            return blank(state.blanks, childPath, send)
-          } else if (predicates.reference(child)) {
-            return reference(child.reference)
-          }
-        })
+        state.mode === 'edit'
+        ? dropZone(
+          'child',
+          state.path.concat('content', state.offset + elementCount),
+          send
+        )
+        : null
       }
-    </p>
+    </div>
   `
 }
 
