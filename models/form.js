@@ -6,6 +6,7 @@ var deepEqual = require('deep-equal')
 var downloadForm = require('../queries/form')
 var downloadFormPublications = require('../queries/form-publications')
 var downloadPublication = require('../queries/publication')
+var fix = require('commonform-fix-strings')
 var keyarray = require('keyarray')
 var merkleize = require('commonform-merkleize')
 var runParallel = require('run-parallel')
@@ -134,6 +135,21 @@ module.exports = {
       var array = keyarray.get(newTree, path.slice(0, -1))
       var index = path[path.length - 1]
       array.splice(index, 0, newChild)
+      var payload = {
+        tree: newTree,
+        publications: []
+      }
+      send('form:tree', payload, done)
+    },
+
+    splice: function (action, state, send, done) {
+      assert(Array.isArray(action.path))
+      var newTree = clone(state.tree)
+      var path = action.path
+      var array = keyarray.get(newTree, path.slice(0, -1))
+      var index = path[path.length - 1]
+      array.splice(index, 1)
+      fix(newTree)
       var payload = {
         tree: newTree,
         publications: []

@@ -7,6 +7,7 @@
     "commonform-critique": "^0.8.1",
     "commonform-diff": "^1.0.0",
     "commonform-docx": "^0.11.3",
+    "commonform-fix-strings": "^0.2.3",
     "commonform-group-series": "^0.5.1",
     "commonform-lint": "^0.6.2",
     "commonform-markup-parse": "^0.2.2",

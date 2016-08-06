@@ -62,6 +62,7 @@ function form (form, send) {
           annotationsHere, toggleFocus
         )
       }
+      ${isFocused ? deleteButton(form.path, send) : null}
       ${
         (root || form.hasOwnProperty('heading')) && editing
         ? dropZone(
@@ -108,6 +109,18 @@ function sectionButton (toggleFocus) {
       onclick=${toggleFocus}
       title="Click to focus.">§</a>
   `
+}
+
+function deleteButton (path, send) {
+  return html`
+    <button
+        onclick=${onClick}
+      >Delete</button>
+  `
+  function onClick (event) {
+    event.preventDefault()
+    send('form:splice', {path: path})
+  }
 }
 
 function marginalia (tree, path, blanks, annotations, toggleFocus) {
