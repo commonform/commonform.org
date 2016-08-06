@@ -64,7 +64,11 @@ function form (form, send) {
       }
       ${
         (root || form.hasOwnProperty('heading')) && editing
-        ? dropZone('child', form.path.concat('content', 0), send)
+        ? dropZone(
+          form.focused ? 'move' : 'child',
+          form.path.concat('content', 0),
+          send
+        )
         : null
       }
       ${groups.map(function (group) {
@@ -74,6 +78,7 @@ function form (form, send) {
           data: group,
           annotations: get(form.annotations, formKey, {}),
           focused: form.focused,
+          withinFocused: isFocused || form.withinFocused,
           offset: offset,
           path: form.path.concat(formKey)
         }
@@ -173,15 +178,20 @@ function series (state, send) {
         ),
         merkle: state.merkle.content[absoluteIndex],
         focused: state.focused,
+        withinFocused: state.withinFocused,
         path: state.path.concat(pathSuffix)
       },
       send
     )
-    if (state.mode === 'edit') {
+    var shouldShowDropZone = (
+      state.mode === 'edit' &&
+      (state.focused === null || !state.withinFocused)
+    )
+    if (shouldShowDropZone) {
       return [
         result,
         dropZone(
-          'child',
+          state.focused ? 'move' : 'child',
           state.path.concat('content', absoluteIndex + 1),
           send
         )
@@ -194,6 +204,10 @@ function series (state, send) {
 
 function paragraph (state, send) {
   var elementCount = state.data.content.length
+  var shouldShowDropZone = (
+    state.mode === 'edit' &&
+    (state.focused === null || !state.withinFocused)
+  )
   return html`
     <div>
       <p class=text>
@@ -216,9 +230,9 @@ function paragraph (state, send) {
         }
       </p>
       ${
-        state.mode === 'edit'
+        shouldShowDropZone
         ? dropZone(
-          'child',
+          state.focused ? 'move' : 'child',
           state.path.concat('content', state.offset + elementCount),
           send
         )

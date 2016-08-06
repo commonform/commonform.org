@@ -141,6 +141,34 @@ module.exports = {
       send('form:tree', payload, done)
     },
 
+    move: function (action, state, send, done) {
+      assert(Array.isArray(action.path))
+      assert(Array.isArray(state.focused))
+      var fromPath = state.focused
+      var toPath = action.path
+      // Do not move forms within themselves.
+      if (deepEqual(fromPath, toPath.slice(0, fromPath.length))) {
+        done()
+      } else {
+        var newTree = clone(state.tree)
+        var hasMoving = keyarray.get(newTree, fromPath.slice(0, -1))
+        var moving = keyarray.get(newTree, fromPath)
+        var hasTarget = keyarray.get(newTree, toPath.slice(0, -1))
+        var fromIndex = fromPath[fromPath.length - 1]
+        var toIndex = toPath[toPath.length - 1]
+        hasTarget.splice(toIndex, 0, moving)
+        var oldIndex = toIndex > fromIndex
+        ? hasMoving.indexOf(moving)
+        : hasMoving.lastIndexOf(moving)
+        hasMoving.splice(oldIndex, 1)
+        var payload = {
+          tree: newTree,
+          publications: []
+        }
+        send('form:tree', payload, done)
+      }
+    },
+
     heading: function (action, state, send, done) {
       var path = action.path
       var newHeading = action.heading
