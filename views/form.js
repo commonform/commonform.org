@@ -44,7 +44,7 @@ function form (form, send) {
 
   var shouldShowDropZone = (
     form.mode === 'edit' &&
-    (form.focused === null || !form.withinFocused)
+    (form.focused === null || (!form.withinFocused && !isFocused))
   )
 
   var offset = 0
@@ -70,7 +70,7 @@ function form (form, send) {
       ${dropZone(
         shouldShowDropZone,
         form.focused ? 'move' : 'child',
-        form.path.concat('content', 0),
+        form.path.concat('form', 'content', 0),
         send
       )}
       ${groups.map(function (group) {
