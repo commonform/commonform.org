@@ -25,7 +25,6 @@ function form (form, send) {
   var tree = root ? form.tree : form.tree.form
   var groups = group(clone(tree))
   var isFocused = deepEqual(form.focused, form.path)
-  var editing = form.mode === 'edit'
   var annotationsHere = get(
     form.annotations,
     formKey.concat('annotations'),
@@ -42,6 +41,11 @@ function form (form, send) {
       heading: newValue
     })
   }
+
+  var shouldShowDropZone = (
+    form.mode === 'edit' &&
+    (form.focused === null || !form.withinFocused)
+  )
 
   var offset = 0
   return html`
@@ -63,15 +67,12 @@ function form (form, send) {
         )
       }
       ${isFocused ? deleteButton(form.path, send) : null}
-      ${
-        (root || form.hasOwnProperty('heading')) && editing
-        ? dropZone(
-          form.focused ? 'move' : 'child',
-          form.path.concat('content', 0),
-          send
-        )
-        : null
-      }
+      ${dropZone(
+        shouldShowDropZone,
+        form.focused ? 'move' : 'child',
+        form.path.concat('content', 0),
+        send
+      )}
       ${groups.map(function (group) {
         var groupState = {
           mode: form.mode,
@@ -164,16 +165,14 @@ function heading (mode, heading, send) {
           value=${heading || ''}/>
     `
   } else {
-    if (heading) {
-      return html`
-        <p
-            class=heading
-            id="Heading:${heading}"
-          >${heading}</p>
-      `
-    } else {
-      return null
-    }
+    return html`
+      <input
+          type=text
+          class=heading
+          id="Heading:${heading}"
+          value=${heading || ''}
+          readonly />
+    `
   }
 }
 
@@ -200,18 +199,15 @@ function series (state, send) {
       state.mode === 'edit' &&
       (state.focused === null || !state.withinFocused)
     )
-    if (shouldShowDropZone) {
-      return [
-        result,
-        dropZone(
-          state.focused ? 'move' : 'child',
-          state.path.concat('content', absoluteIndex + 1),
-          send
-        )
-      ]
-    } else {
-      return result
-    }
+    return [
+      result,
+      dropZone(
+        shouldShowDropZone,
+        state.focused ? 'move' : 'child',
+        state.path.concat('content', absoluteIndex + 1),
+        send
+      )
+    ]
   })
 }
 
@@ -242,15 +238,12 @@ function paragraph (state, send) {
           })
         }
       </p>
-      ${
-        shouldShowDropZone
-        ? dropZone(
-          state.focused ? 'move' : 'child',
-          state.path.concat('content', state.offset + elementCount),
-          send
-        )
-        : null
-      }
+      ${dropZone(
+        shouldShowDropZone,
+        state.focused ? 'move' : 'child',
+        state.path.concat('content', state.offset + elementCount),
+        send
+      )}
     </div>
   `
 }

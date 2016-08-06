@@ -139,7 +139,6 @@ button
 
   section > section
     padding-left: 3rem
-    margin-top: 1rem
 
   .heading
     height: 1rem
@@ -147,6 +146,7 @@ button
     width: 100%
     border: none
     background: inherit
+    margin: 0
 
   section,
   section > p
@@ -208,6 +208,9 @@ button
 
   span.blank:before
     content: ' '
+
+  p.text
+    margin: 0
 
   .clear
     cursor: pointer
@@ -294,9 +297,10 @@ button
       content: ']'
 
 .dropZone
-  font-size: 75%
   cursor: pointer
-  color: #ccc
   height: 1rem
-  margin: 0.5rem 0
+  margin: 4px 0
   border: 1px dashed #ccc
+  &.disabled
+    border: 1px solid white
+    cursor: auto
