@@ -44,7 +44,10 @@ function publicationLine (publication) {
   if (publication.root) {
     return html`
       <p class=publication>
-        <strong>${publisher}</strong>
+        <a
+            class=publisher
+            href="/publishers/${encodeURIComponent(publisher)}"
+          >${publisher}</a>
         published this form as
         <strong>
           ${project}

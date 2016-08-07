@@ -29,7 +29,8 @@ http
     serveIndex(response)
   } else if (
     pathname.startsWith('/forms/') ||
-    pathname.startsWith('/publications/')
+    pathname.startsWith('/publications/') ||
+    pathname.startsWith('/publishers')
   ) {
     serveIndex(response)
   } else {
