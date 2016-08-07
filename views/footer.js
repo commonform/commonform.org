@@ -12,9 +12,8 @@ module.exports = function () {
           Triplicate
         </a>
         typefaces by
-        <a href="http://typographyforlawyers.com/about.html">
-          Matthew Butterick
-        </a>.
+        <a href="http://typographyforlawyers.com/about.html"
+          >Matthew Butterick</a>.
       </p>
       <p>
         <a class=openSource>
