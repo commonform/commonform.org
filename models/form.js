@@ -11,6 +11,9 @@ var keyarray = require('keyarray')
 var merkleize = require('commonform-merkleize')
 var runParallel = require('run-parallel')
 
+var slice = Array.prototype.slice
+var splice = Array.prototype.splice
+
 module.exports = {
   namespace: 'form',
 
@@ -194,6 +197,63 @@ module.exports = {
       } else {
         keyarray.set(newTree, path.concat('heading'), newHeading)
       }
+      var payload = {
+        tree: newTree,
+        publications: []
+      }
+      send('form:tree', payload, done)
+    },
+
+    edit: function (action, state, send, done) {
+      assert(action.element)
+      assert(Array.isArray(action.context))
+      assert(Number.isInteger(action.offset))
+      assert(Number.isInteger(action.count))
+      var element = action.element
+      var children = slice.call(element.children)
+      var elements = children.map(function (element) {
+        var nodeType = element.nodeType
+        var tagName = element.tagName
+        var className = element.className
+        // Handle nodes our renderer generates for valid form content.
+        // span.string
+        if (tagName === 'SPAN' && className === 'string') {
+          return element.textContent
+        // dfn
+        } else if (tagName === 'DFN') {
+          return {definition: element.textContent}
+        // a.use
+        } else if (tagName === 'A' && className === 'use') {
+          return {use: element.textContent}
+        // a.reference
+        } else if (tagName === 'A' && className === 'reference') {
+          return {reference: element.textContent}
+        // input.blank
+        } else if (tagName === 'INPUT' && className === 'blank') {
+          return {blank: ''}
+        // Handle nodes our rendered does _not_ generate.  These come
+        // from user input and copy-and-paste.
+        } else if (nodeType === window.Node.TEXT_NODE) {
+          return element.textContent
+        } else if (nodeType === window.Node.ELEMENT_NODE) {
+          return element.textContent
+        // Return an empty string for anything else.
+        // commonform-fix-strings will make sure we end up with valid
+        // form content.
+        } else {
+          return ''
+        }
+      })
+      // TODO: Automatically mark new term uses.
+      // TODO: Automatically mark new definitions.
+      // TODO: Automatically mark new references.
+      // TODO: Automatically mark new blanks.
+      var newTree = clone(state.tree)
+      var context = keyarray.get(newTree, action.context)
+      var offset = action.offset
+      var count = action.count
+      splice.apply(context, [offset, count].concat(elements))
+      fix(newTree)
       var payload = {
         tree: newTree,
         publications: []

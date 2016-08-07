@@ -51,8 +51,7 @@ function form (form, send) {
   return html`
     <section
         class="${classes}"
-        data-digest="${form.merkle.digest}"
-        ondblclick=${toggleFocus}>
+        data-digest="${form.merkle.digest}">
       ${root ? null : sectionButton(toggleFocus)}
       ${root ? null : heading(form.mode, form.tree.heading, setHeading)}
       ${
@@ -213,24 +212,49 @@ function series (state, send) {
 
 function paragraph (state, send) {
   var elementCount = state.data.content.length
+  var offset = state.offset
+  var lastIndex = state.offset + elementCount
+  var editing = state.mode === 'edit'
   var shouldShowDropZone = (
-    state.mode === 'edit' &&
+    editing &&
     (state.focused === null || !state.withinFocused)
   )
+  if (editing) {
+    var onBlur = function (event) {
+      event.stopPropagation()
+      send('form:edit', {
+        element: event.target,
+        context: state.path.concat('content'),
+        offset: offset,
+        count: elementCount
+      })
+    }
+    var onKeyDown = function (event) {
+      if (event.which === 13 /* RETURN */) {
+        event.preventDefault()
+        event.stopPropagation()
+        event.target.blur()
+      }
+    }
+  }
   return html`
     <div>
-      <p class=text>
-        ${
+      <p
+          class=text
+          contenteditable=${editing ? 'true' : 'false'}
+          onblur=${onBlur}
+          onkeydown=${onKeyDown}
+        >${
           state.data.content.map(function (child, index) {
             if (predicates.text(child)) {
-              return html`<span>${improvePunctuation(child)}</span>`
+              return string(child)
             } else if (predicates.use(child)) {
               return use(child.use)
             } else if (predicates.definition(child)) {
               return definition(child.definition)
             } else if (predicates.blank(child)) {
               var childPath = state.path
-              .concat(['content', state.offset + index])
+              .concat('content', offset + index)
               return blank(state.blanks, childPath, send)
             } else if (predicates.reference(child)) {
               return reference(child.reference)
@@ -241,11 +265,15 @@ function paragraph (state, send) {
       ${dropZone(
         shouldShowDropZone,
         state.focused ? 'move' : 'child',
-        state.path.concat('content', state.offset + elementCount),
+        state.path.concat('content', lastIndex),
         send
       )}
     </div>
   `
+}
+
+function string (string) {
+  return html`<span class=string>${improvePunctuation(string)}</span>`
 }
 
 function blank (blanks, path, send) {
