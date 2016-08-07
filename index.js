@@ -6,8 +6,11 @@ var app = require('choo')({
 
 app.model(require('./models/popstate'))
 app.model(require('./models/form'))
+app.model(require('./models/browser'))
 
 var read = require('./views/read')
+var publishers = require('./views/publishers')
+var projects = require('./views/projects')
 var redirectToForm = require('./views/redirect-to-form')
 
 app.router('/notFound', function (route) {
@@ -16,6 +19,9 @@ app.router('/notFound', function (route) {
     route('/notFound', require('./views/not-found')),
     route('/forms', [
       route('/:digest', read)
+    ]),
+    route('/publishers', publishers, [
+      route('/:publisher', projects)
     ]),
     route('/publications', [
       route('/:publisher', [

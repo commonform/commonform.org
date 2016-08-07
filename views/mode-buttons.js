@@ -5,7 +5,11 @@ module.exports = modeButtons
 function modeButtons (mode, send) {
   return html`
     <div class=modes>
-      ${modeButton('browse', mode, send)}
+      <a
+          href="/publishers"
+          class=disabled
+          title="Click to browse publishers."
+      >${symbols.browse}</a>
       ${modeButton('read', mode, send)}
       ${modeButton('edit', mode, send)}
       ${modeButton('compare', mode, send)}

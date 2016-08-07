@@ -90,8 +90,9 @@ button
     width: 2.5rem
     text-align: center
     +notselectable
-    text-decoration: none
     cursor: pointer
+    text-decoration: none
+    border: none !important
     background: white
     &.enabled
       color: black
@@ -99,7 +100,7 @@ button
       color: #eee
 
 .commonform
-  a.publication
+  a
     text-decoration: none
     font-weight: normal
     color: black
@@ -133,9 +134,6 @@ button
   footer a, .digest
     text-decoration: none
     color: inherit
-
-  footer a:hover, .digest:hover
-    text-decoration: underline
 
   section > section
     padding-left: 3rem
