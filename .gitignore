@@ -2,3 +2,4 @@ build/LICENSES
 build/browser.js
 build/npm-shrinkwrap.json
 build/styles.css
+build/*.map

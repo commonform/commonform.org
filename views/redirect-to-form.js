@@ -1,13 +1,8 @@
-var html = require('choo/html')
+var loading = require('./loading')
 
 module.exports = function redirectToForm (state, prev, send) {
   var params = state.params
-  send('form:redirectToForm', params)
-  return html`
-    <div class=container>
-      <article class=commonform>
-        Loading...
-      </article>
-    </div>
-  `
+  return loading(function () {
+    send('form:redirectToForm', params)
+  })
 }
