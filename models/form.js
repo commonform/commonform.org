@@ -10,6 +10,7 @@ var fix = require('commonform-fix-strings')
 var keyarray = require('keyarray')
 var merkleize = require('commonform-merkleize')
 var runParallel = require('run-parallel')
+var welcome = require('../data/welcome')
 
 var slice = Array.prototype.slice
 var splice = Array.prototype.splice
@@ -20,12 +21,13 @@ module.exports = {
   state: {
     mode: 'read',
     error: null,
-    tree: null,
+    tree: welcome.tree,
     path: [],
     projects: [],
     blanks: [],
-    annotations: null,
-    merkle: null,
+    annotations: welcome.annotations,
+    publications: [],
+    merkle: welcome.merkle,
     signaturePages: [],
     focused: null
   },
@@ -263,48 +265,51 @@ module.exports = {
 
     fetch: function (action, state, send, done) {
       var digest = action.digest
-      runParallel(
-        [
-          function (done) {
-            downloadForm(digest, function (error, tree) {
-              if (error) done(error)
-              else done(null, tree)
-            })
-          },
-          function (done) {
-            downloadFormPublications(
-              digest,
-              function (error, publications) {
-                if (error) done(null, [])
-                else done(null, publications)
-              }
-            )
-          }
-        ],
-        function (error, results) {
-          if (error) done(error)
-          else {
-            var payload = {
-              tree: results[0],
-              publications: results[1]
+      if (digest) {
+        runParallel(
+          [
+            function (done) {
+              downloadForm(digest, function (error, tree) {
+                if (error) done(error)
+                else done(null, tree)
+              })
+            },
+            function (done) {
+              downloadFormPublications(
+                digest,
+                function (error, publications) {
+                  if (error) done(null, [])
+                  else done(null, publications)
+                }
+              )
             }
-            var name = action.comparing
-            ? 'form:comparing'
-            : 'form:tree'
-            send(name, payload, function (error) {
-              if (error) done(error)
-            })
+          ],
+          function (error, results) {
+            if (error) done(error)
+            else {
+              var payload = {
+                tree: results[0],
+                publications: results[1]
+              }
+              var name = action.comparing
+              ? 'form:comparing'
+              : 'form:tree'
+              send(name, payload, function (error) {
+                if (error) done(error)
+              })
+            }
+          }
+        )
+      } else {
+        downloadPublication(action, function (error, digest) {
+          if (error) {
+            done(error)
+          } else {
+            var payload = {digest: digest}
+            send('form:fetch', payload, done)
           }
         })
-    },
-
-    redirectToForm: function (action, state, send, done) {
-      action.edition = action.edition || 'current'
-      downloadPublication(action, function (error, digest) {
-        if (error) done(error)
-        else window.location = '/forms/' + digest
-      })
+      }
     }
-
   }
 }

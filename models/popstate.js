@@ -2,7 +2,6 @@ var welcome = require('../data/welcome')
 
 module.exports = {
   subscriptions: [
-    fetchFormOn('load'),
     fetchFormOn('popstate')
   ]
 }

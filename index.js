@@ -8,14 +8,14 @@ app.model(require('./models/popstate'))
 app.model(require('./models/form'))
 app.model(require('./models/browser'))
 
+var welcome = require('./views/welcome')
 var read = require('./views/read')
 var publishers = require('./views/publishers')
 var projects = require('./views/projects')
-var redirectToForm = require('./views/redirect-to-form')
 
 app.router('/notFound', function (route) {
   return [
-    route('/', read),
+    route('/', welcome),
     route('/notFound', require('./views/not-found')),
     route('/forms', [
       route('/:digest', read)
@@ -25,8 +25,8 @@ app.router('/notFound', function (route) {
     ]),
     route('/publications', [
       route('/:publisher', [
-        route('/:project', redirectToForm, [
-          route('/:edition', redirectToForm)
+        route('/:project', read, [
+          route('/:edition', read)
         ])
       ])
     ])

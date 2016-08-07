@@ -1,13 +1,17 @@
-var html = require('choo/html')
 var comparison = require('./comparison')
+var editor = require('./editor')
 var footer = require('./footer')
-var form = require('./form')
 var header = require('./header')
-var modeButtons = require('./mode-buttons')
+var html = require('choo/html')
+var loading = require('./loading')
 var menu = require('./menu')
-var signaturePages = require('./signature-pages')
+var modeButtons = require('./mode-buttons')
 
 module.exports = function read (state, prev, send) {
+  var haveData = (
+    state.form.merkle &&
+    state.form.merkle.digest === state.params.digest
+  )
   if (state.form.error) {
     return html`
       <div class=container>
@@ -16,14 +20,19 @@ module.exports = function read (state, prev, send) {
         </article>
       </div>
     `
-  } else if (!state.form.merkle) {
-    return html`
-      <div class=container>
-        <article class=commonform>
-          Loading...
-        </article>
-      </div>
-    `
+  } else if (!haveData) {
+    return loading(function () {
+      var params = state.params
+      var payload = {}
+      if (params.publisher) {
+        payload.publisher = params.publisher
+        payload.project = params.project
+        payload.edition = params.edition || 'current'
+      } else {
+        payload.digest = params.digest
+      }
+      send('form:fetch', payload)
+    })
   } else {
     if (state.form.diff) {
       return html`
@@ -46,26 +55,7 @@ module.exports = function read (state, prev, send) {
         </div>
       `
     } else {
-      return html`
-        <div class=container>
-          <article class=commonform>
-            ${modeButtons(state.form.mode, send)}
-            ${menu(state.form, send)}
-            ${
-              header(
-                state.form.merkle.digest,
-                state.form.publications,
-                false,
-                [],
-                send
-              )
-            }
-            ${form(state.form, send)}
-            ${signaturePages(state.form.signaturePages, send)}
-            ${footer()}
-          </article>
-        </div>
-      `
+      return editor(state, send)
     }
   }
 }
