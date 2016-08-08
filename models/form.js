@@ -5,7 +5,6 @@ var diff = require('commonform-diff')
 var deepEqual = require('deep-equal')
 var downloadForm = require('../queries/form')
 var downloadFormPublications = require('../queries/form-publications')
-var downloadPublication = require('../queries/publication')
 var fix = require('commonform-fix-strings')
 var keyarray = require('keyarray')
 var merkleize = require('commonform-merkleize')
@@ -19,6 +18,7 @@ module.exports = {
   namespace: 'form',
 
   state: {
+    dynamic: false,
     mode: 'read',
     error: null,
     tree: welcome.tree,
@@ -96,17 +96,15 @@ module.exports = {
     },
 
     tree: function (action, state) {
-      var merkle = merkleize(action.tree)
-      var root = merkle.digest
-      window.history.pushState(action.tree, '', '/forms/' + root)
       return {
+        dynamic: action.dynamic || false,
         error: null,
         tree: action.tree,
         path: [],
         projects: [],
         blanks: [],
         annotations: annotate(action.tree),
-        merkle: merkleize(action.tree),
+        merkle: action.merkle || merkleize(action.tree),
         publications: action.publications,
         signaturePages: [],
         focused: null,
@@ -118,19 +116,22 @@ module.exports = {
 
     error: function (action) {
       return {error: action.error}
-    },
-
-    load: function () {
-      return {
-        tree: null,
-        annotations: null,
-        merkle: null
-      }
     }
 
   },
 
   effects: {
+
+    modify: function (action, state, send, done) {
+      action.dynamic = true
+      var merkle = merkleize(action.tree)
+      var root = merkle.digest
+      var href = '/forms/' + root
+      send('form:tree', action, function () {
+        send('location:setLocation', {location: href}, done)
+        window.history.pushState({}, '', href)
+      })
+    },
 
     child: function (action, state, send, done) {
       assert(Array.isArray(action.path))
@@ -142,9 +143,10 @@ module.exports = {
       array.splice(index, 0, newChild)
       var payload = {
         tree: newTree,
-        publications: []
+        publications: [],
+        dynamic: true
       }
-      send('form:tree', payload, done)
+      send('form:modify', payload, done)
     },
 
     splice: function (action, state, send, done) {
@@ -157,9 +159,10 @@ module.exports = {
       fix(newTree)
       var payload = {
         tree: newTree,
-        publications: []
+        publications: [],
+        dynamic: true
       }
-      send('form:tree', payload, done)
+      send('form:modify', payload, done)
     },
 
     move: function (action, state, send, done) {
@@ -184,9 +187,10 @@ module.exports = {
         hasMoving.splice(oldIndex, 1)
         var payload = {
           tree: newTree,
-          publications: []
+          publications: [],
+          dynamic: true
         }
-        send('form:tree', payload, done)
+        send('form:modify', payload, done)
       }
     },
 
@@ -201,9 +205,10 @@ module.exports = {
       }
       var payload = {
         tree: newTree,
-        publications: []
+        publications: [],
+        dynamic: true
       }
-      send('form:tree', payload, done)
+      send('form:modify', payload, done)
     },
 
     edit: function (action, state, send, done) {
@@ -212,7 +217,7 @@ module.exports = {
       assert(Number.isInteger(action.offset))
       assert(Number.isInteger(action.count))
       var element = action.element
-      var children = slice.call(element.children)
+      var children = slice.call(element.childNodes)
       var elements = children.map(function (element) {
         var nodeType = element.nodeType
         var tagName = element.tagName
@@ -258,58 +263,48 @@ module.exports = {
       fix(newTree)
       var payload = {
         tree: newTree,
-        publications: []
+        publications: [],
+        dynamic: true
       }
-      send('form:tree', payload, done)
+      send('form:modify', payload, done)
     },
 
     fetch: function (action, state, send, done) {
       var digest = action.digest
-      if (digest) {
-        runParallel(
-          [
-            function (done) {
-              downloadForm(digest, function (error, tree) {
-                if (error) done(error)
-                else done(null, tree)
-              })
-            },
-            function (done) {
-              downloadFormPublications(
-                digest,
-                function (error, publications) {
-                  if (error) done(null, [])
-                  else done(null, publications)
-                }
-              )
-            }
-          ],
-          function (error, results) {
-            if (error) done(error)
-            else {
-              var payload = {
-                tree: results[0],
-                publications: results[1]
+      runParallel(
+        [
+          function (done) {
+            downloadForm(digest, function (error, tree) {
+              if (error) done(error)
+              else done(null, tree)
+            })
+          },
+          function (done) {
+            downloadFormPublications(
+              digest,
+              function (error, publications) {
+                if (error) done(null, [])
+                else done(null, publications)
               }
-              var name = action.comparing
-              ? 'form:comparing'
-              : 'form:tree'
-              send(name, payload, function (error) {
-                if (error) done(error)
-              })
+            )
+          }
+        ],
+        function (error, results) {
+          if (error) done(error)
+          else {
+            var payload = {
+              tree: results[0],
+              publications: results[1]
             }
+            var name = action.comparing
+            ? 'form:comparing'
+            : 'form:tree'
+            send(name, payload, function (error) {
+              if (error) done(error)
+            })
           }
-        )
-      } else {
-        downloadPublication(action, function (error, digest) {
-          if (error) {
-            done(error)
-          } else {
-            var payload = {digest: digest}
-            send('form:fetch', payload, done)
-          }
-        })
-      }
+        }
+      )
     }
   }
 }

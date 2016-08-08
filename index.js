@@ -4,14 +4,15 @@ var app = require('choo')({
   }
 })
 
-app.model(require('./models/popstate'))
+app.model(require('./models/global'))
 app.model(require('./models/form'))
 app.model(require('./models/browser'))
 
-var welcome = require('./views/welcome')
-var read = require('./views/read')
-var publishers = require('./views/publishers')
 var projects = require('./views/projects')
+var publishers = require('./views/publishers')
+var read = require('./views/read')
+var redirect = require('./views/redirect')
+var welcome = require('./views/welcome')
 
 app.router('/notFound', function (route) {
   return [
@@ -25,8 +26,8 @@ app.router('/notFound', function (route) {
     ]),
     route('/publications', [
       route('/:publisher', [
-        route('/:project', read, [
-          route('/:edition', read)
+        route('/:project', redirect, [
+          route('/:edition', redirect)
         ])
       ])
     ])
