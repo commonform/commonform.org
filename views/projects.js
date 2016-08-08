@@ -2,6 +2,7 @@ var compare = require('reviewers-edition-compare')
 var footer = require('./footer')
 var html = require('yo-yo')
 var loading = require('./loading')
+var modeButtons = require('./mode-buttons')
 
 module.exports = function (publisher, state, send) {
   var haveData = state.publisher === publisher && state.projects
@@ -13,6 +14,7 @@ module.exports = function (publisher, state, send) {
     return html`
       <div class=container>
         <article class=commonform>
+          ${modeButtons('browse', send)}
           <h1>${publisher}’s Common Form Projects</h1>
           ${list(publisher, state.projects, send)}
           <a href="/publishers" class=nav>« list of all publishers</a>
