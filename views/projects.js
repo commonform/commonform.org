@@ -14,22 +14,32 @@ module.exports = function (publisher, state, send) {
       <div class=container>
         <article class=commonform>
           <h1>${publisher}’s Common Form Projects</h1>
-          <ul>
-            ${
-              state.projects.map(function (project) {
-                return projectItem(
-                  publisher,
-                  project.name,
-                  project.editions,
-                  send
-                )
-              })
-            }
-          </ul>
+          ${list(publisher, state.projects, send)}
           <a href="/publishers" class=nav>« list of all publishers</a>
           ${footer()}
         </article>
       </div>
+    `
+  }
+}
+
+function list (publisher, projects, send) {
+  if (projects.length === 0) {
+    return html`<p>No publications</p>`
+  } else {
+    return html`
+      <ul>
+        ${
+          projects.map(function (project) {
+            return projectItem(
+              publisher,
+              project.name,
+              project.editions,
+              send
+            )
+          })
+        }
+      </ul>
     `
   }
 }
