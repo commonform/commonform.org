@@ -70,7 +70,7 @@ function form (form, send) {
       ${dropZone(
         shouldShowDropZone,
         form.focused ? 'move' : 'child',
-        form.path.concat('form', 'content', 0),
+        form.path.concat(formKey, 'content', 0),
         send
       )}
       ${groups.map(function (group) {
