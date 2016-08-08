@@ -34,8 +34,9 @@ app.router('/notFound', function (route) {
   ]
 })
 
-if (module.parent) module.exports = app
-else {
+if (module.parent) {
+  module.exports = app
+} else {
   var tree = app.start()
   document.body.appendChild(tree)
 }
