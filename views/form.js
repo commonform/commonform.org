@@ -54,7 +54,16 @@ function form (form, send) {
         class="${classes}"
         data-digest="${form.merkle.digest}">
       ${root ? null : sectionButton(toggleFocus)}
-      ${root ? null : heading(form.mode, form.tree.heading, setHeading)}
+      ${
+        root
+        ? null
+        : heading(
+          form.mode,
+          isFocused || form.withinFocused,
+          form.tree.heading,
+          setHeading
+        )
+      }
       ${
         isFocused
         ? details(form.merkle.digest, annotationsHere, send)
@@ -155,8 +164,8 @@ function marginalia (tree, path, blanks, annotations, toggleFocus) {
   `
 }
 
-function heading (mode, heading, send) {
-  if (mode === 'edit') {
+function heading (mode, withinFocused, heading, send) {
+  if (mode === 'edit' && (heading || withinFocused)) {
     return html`
       <input
           type=text
@@ -168,7 +177,7 @@ function heading (mode, heading, send) {
           }}
           value=${heading || ''}/>
     `
-  } else {
+  } else if (mode !== 'edit' && heading) {
     return html`
       <input
           type=text
@@ -177,6 +186,8 @@ function heading (mode, heading, send) {
           value=${heading || ''}
           readonly />
     `
+  } else {
+    return null
   }
 }
 
