@@ -1,4 +1,4 @@
-var http = require('choo/http')
+var http = require('xhr')
 
 module.exports = function (uri, callback) {
   http(uri, {json: true}, function (error, response, body) {
