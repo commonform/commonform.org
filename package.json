@@ -29,6 +29,7 @@
     "reviewers-edition-spell": "^1.0.2",
     "run-parallel": "^1.1.6",
     "unicode-ascii-equivalents": "^0.1.1",
+    "xhr": "^2.2.2",
     "yo-yo": "^1.2.2"
   },
   "devDependencies": {
