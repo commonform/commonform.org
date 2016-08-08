@@ -1,6 +1,7 @@
 var footer = require('./footer')
 var html = require('yo-yo')
 var loading = require('./loading')
+var modeButtons = require('./mode-buttons')
 
 module.exports = function browse (state, send) {
   if (!state.publishers) {
@@ -11,6 +12,7 @@ module.exports = function browse (state, send) {
     return html`
       <div class=container>
         <article class=commonform>
+          ${modeButtons('browse', send)}
           <h1>Common Form Publishers</h1>
           <ul>
             ${

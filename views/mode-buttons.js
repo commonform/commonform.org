@@ -3,21 +3,28 @@ var html = require('yo-yo')
 module.exports = modeButtons
 
 function modeButtons (mode, send) {
+  var showReadModes = mode !== 'browse' && mode !== 'search'
   return html`
     <div class=modes>
       <a
+          href="/search"
+          class=${enableIf(mode === 'search')}
+          title="Click to search forms."
+      >${symbols.search}</a>
+      <a
           href="/publishers"
-          class=disabled
-          title="Click to browse publishers."
+          class=${enableIf(mode === 'browse')}
+          title="Click to browse forms."
       >${symbols.browse}</a>
-      ${modeButton('read', mode, send)}
-      ${modeButton('edit', mode, send)}
+      ${showReadModes ? modeButton('read', mode, send) : null}
+      ${showReadModes ? modeButton('edit', mode, send) : null}
     </div>
   `
 }
 
 var symbols = {
-  browse: '\u267B', // recycle symbol (black)
+  search: '\u26cf', // pick
+  browse: '\u269f', // three lines converging left
   read: '\u2398', // next page symbol
   edit: '\u270D', // writing hand symbol
   compare: '\u2260', // not-equal
@@ -38,4 +45,8 @@ function modeButton (mode, currentMode, send) {
         }}
       >${symbols[mode]}</a>
   `
+}
+
+function enableIf (argument) {
+  return argument ? 'enabled' : 'disabled'
 }
