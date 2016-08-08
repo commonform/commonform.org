@@ -1,24 +1,14 @@
 var compare = require('reviewers-edition-compare')
 var footer = require('./footer')
-var html = require('choo/html')
+var html = require('yo-yo')
 var loading = require('./loading')
-var showError = require('./error')
 
-module.exports = function (state, previous, send) {
-  var publisher = state.params.publisher
-  var haveData = (
-    state.browser.publisher === publisher &&
-    state.browser.projects
-  )
+module.exports = function (publisher, state, send) {
+  var haveData = state.publisher === publisher && state.projects
   if (!haveData) {
     return loading(function () {
-      send('browser:fetch', {
-        type: 'projects',
-        publisher: publisher
-      })
+      send('browser:get projects', publisher)
     })
-  } else if (state.browser.error) {
-    return showError(state.browser.error)
   } else {
     return html`
       <div class=container>
@@ -26,7 +16,7 @@ module.exports = function (state, previous, send) {
           <h1>${publisher}’s Common Form Projects</h1>
           <ul>
             ${
-              state.browser.projects.map(function (project) {
+              state.projects.map(function (project) {
                 return projectItem(
                   publisher,
                   project.name,
@@ -70,6 +60,16 @@ function editionLink (publisher, project, edition, send) {
     <a
         class=publication
         href=${href}
+        onclick=${onClick}
       >${edition}</a>
   `
+  function onClick (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    send('form:load publication', {
+      publisher: publisher,
+      project: project,
+      edition: edition
+    })
+  }
 }

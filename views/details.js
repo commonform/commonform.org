@@ -1,4 +1,4 @@
-var html = require('choo/html')
+var html = require('yo-yo')
 var digestLink = require('./digest-link')
 var improvePunctuation = require('../utilities/improve-punctuation')
 

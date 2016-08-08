@@ -1,4 +1,4 @@
-var html = require('choo/html')
+var html = require('yo-yo')
 
 module.exports = modeButtons
 
@@ -12,9 +12,6 @@ function modeButtons (mode, send) {
       >${symbols.browse}</a>
       ${modeButton('read', mode, send)}
       ${modeButton('edit', mode, send)}
-      ${modeButton('compare', mode, send)}
-      ${modeButton('comment', mode, send)}
-      ${modeButton('settings', mode, send)}
     </div>
   `
 }
@@ -37,7 +34,7 @@ function modeButton (mode, currentMode, send) {
         class=${enabled ? 'enabled' : 'disabled'}
         onclick=${function (event) {
           event.preventDefault()
-          send('form:mode', {mode: mode})
+          send('form:mode', mode)
         }}
       >${symbols[mode]}</a>
   `

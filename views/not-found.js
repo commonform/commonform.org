@@ -1,7 +1,7 @@
-var html = require('choo/html')
+var html = require('yo-yo')
 
-module.exports = function notFound () {
-  html`
+module.exports = function () {
+  return html`
     <div class=container>
       <article class=commonform>
         <p>Not found.</p>

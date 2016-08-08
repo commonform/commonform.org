@@ -1,42 +1,186 @@
-var app = require('choo')({
-  onError: function (error, state, createSend) {
-    createSend('onError:')('form:error', error)
-  }
-})
-
-app.model(require('./models/global'))
-app.model(require('./models/form'))
-app.model(require('./models/browser'))
-
+var EventEmitter = require('events').EventEmitter
+var assert = require('assert')
+var browserModel = require('./models/browser')
+var formModel = require('./models/form')
+var loading = require('./views/loading')
+var notFound = require('./views/not-found')
+var pathOf = require('pathname-match')
 var projects = require('./views/projects')
 var publishers = require('./views/publishers')
 var read = require('./views/read')
-var redirect = require('./views/redirect')
-var welcome = require('./views/welcome')
+var showError = require('./views/error')
+var yo = require('yo-yo')
 
-app.router('/notFound', function (route) {
-  return [
-    route('/', welcome),
-    route('/notFound', require('./views/not-found')),
-    route('/forms', [
-      route('/:digest', read)
-    ]),
-    route('/publishers', publishers, [
-      route('/:publisher', projects)
-    ]),
-    route('/publications', [
-      route('/:publisher', [
-        route('/:project', redirect, [
-          route('/:edition', redirect)
-        ])
-      ])
-    ])
-  ]
+// State
+var form = {}
+var browser = {}
+var state = {
+  error: null,
+  browser: browser,
+  form: form
+}
+
+// Data Modeling
+
+var actions = new EventEmitter()
+.on('error', function (error) {
+  console.error(error)
+  state.error = error
+  update()
 })
 
+function action (/* variadic */) {
+  var event = arguments[0]
+  assert(
+    actions.listenerCount(event) > 0,
+    'no listeners for action ' + event
+  )
+  actions.emit.apply(actions, arguments)
+}
+
+var reductions = new EventEmitter()
+
+function useModel (scope, model) {
+  model(initialize(scope), reduce(scope), handle(scope))
+
+  function initialize (scope) {
+    return function (initialState) {
+      Object.assign(state[scope], initialState)
+    }
+  }
+
+  function reduce (scope) {
+    return function (event, handler) {
+      event = scope + ':' + event
+      assert.equal(typeof event, 'string', 'event is a string')
+      assert(event.length !== 0, 'event is not empty')
+      assert.equal(
+        reductions.listenerCount(event), 0,
+        'just one listener for ' + event
+      )
+      reductions.on(event, function (data) {
+        Object.assign(state[scope], handler(data, state[scope]))
+      })
+    }
+  }
+
+  function handle (scope) {
+    return function (event, handler) {
+      assert.equal(typeof event, 'string', 'event is a string')
+      assert(event.length !== 0, 'event is not empty')
+      event = scope + ':' + event
+      assert.equal(
+        actions.listenerCount(event), 0,
+        'just one listener for ' + event
+      )
+      actions.on(event, function (data) {
+        handler(data, state[scope], send, callback)
+        function send (event, data) {
+          event = scope + ':' + event
+          assert(
+            reductions.listenerCount(event) > 0,
+            'no listeners for ' + event
+          )
+          reductions.emit(event, data)
+        }
+        function callback (error) {
+          if (error) {
+            action('error', error)
+          }
+          update()
+        }
+      })
+    }
+  }
+}
+
+useModel('form', formModel)
+useModel('browser', browserModel)
+
+// Rendering
+
+var rendered = render()
+
+function render () {
+  if (state.error) {
+    return showError(state.error)
+  } else {
+    var path = pathOf(window.location.href)
+    var publisher
+    if (path === '' || path === '/') {
+      return publishers(browser, action)
+    } else if (startsWith('/forms/')) {
+      var digest = path.substring(7)
+      return read(digest, form, action)
+    } else if (path === '/publishers' || path === '/publishers') {
+      return publishers(browser, action)
+    } else if (startsWith('/publishers/')) {
+      publisher = decodeURIComponent(path.substring(12))
+      return projects(publisher, browser, action)
+    } else if (startsWith('/publications/')) {
+      var match = new RegExp(
+        '^' +
+        '/publications' +
+        '/([^/]+)' + // publisher
+        '/([^/]+)' + // project
+        '(/[^/]+)?' + // edition
+        '$'
+      ).exec(path)
+      if (!match) {
+        return notFound()
+      } else {
+        action('form:load publication', {
+          publisher: decodeURIComponent(match[1]),
+          project: decodeURIComponent(match[2]),
+          edition: match[3]
+          ? decodeURIComponent(match[3].substring(1))
+          : 'current'
+        })
+        return loading()
+      }
+    } else {
+      return notFound()
+    }
+  }
+  function startsWith (prefix) {
+    return path.indexOf(prefix) === 0
+  }
+}
+
+function update () {
+  yo.update(rendered, render())
+}
+
+// History
+
+// Trap hyperlinks.
+window.addEventListener('click', function (event) {
+  function findLocalLinkAnchor (node) {
+    if (!node) {
+      return undefined
+    } else {
+      var checkParent = (
+        !node ||
+        node.localName !== 'a' ||
+        node.href === undefined ||
+        window.location.host !== node.host
+      )
+      return checkParent ? findLocalLinkAnchor(node.parentNode) : node
+    }
+  }
+  var node = findLocalLinkAnchor(event.target)
+  if (node) {
+    event.preventDefault()
+    var path = pathOf(node.href)
+    window.history.pushState({}, null, path)
+    update()
+  }
+})
+
+window.addEventListener('popstate', update)
+
 if (module.parent) {
-  module.exports = app
+  module.exports = render
 } else {
-  var tree = app.start()
-  document.body.appendChild(tree)
+  document.body.appendChild(rendered)
 }
