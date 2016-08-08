@@ -1,8 +1,9 @@
 var annotate = require('../utilities/annotate')
 var assert = require('assert')
+var cache = require('../cache')
 var clone = require('../utilities/clone')
-var diff = require('commonform-diff')
 var deepEqual = require('deep-equal')
+var diff = require('commonform-diff')
 var downloadForm = require('../queries/form')
 var downloadFormPublications = require('../queries/form-publications')
 var fix = require('commonform-fix-strings')
@@ -18,18 +19,18 @@ module.exports = {
   namespace: 'form',
 
   state: {
-    dynamic: false,
-    mode: 'read',
+    annotations: welcome.annotations,
+    blanks: [],
+    diff: null,
     error: null,
-    tree: welcome.tree,
+    focused: null,
+    merkle: welcome.merkle,
+    mode: 'read',
     path: [],
     projects: [],
-    blanks: [],
-    annotations: welcome.annotations,
     publications: [],
-    merkle: welcome.merkle,
     signaturePages: [],
-    focused: null
+    tree: welcome.tree
   },
 
   reducers: {
@@ -105,7 +106,7 @@ module.exports = {
         blanks: [],
         annotations: annotate(action.tree),
         merkle: action.merkle || merkleize(action.tree),
-        publications: action.publications,
+        publications: action.publications || [],
         signaturePages: [],
         focused: null,
         diff: state.hasOwnProperty('comparing')
@@ -121,15 +122,22 @@ module.exports = {
   },
 
   effects: {
-
-    modify: function (action, state, send, done) {
-      action.dynamic = true
-      var merkle = merkleize(action.tree)
+    update: function (action, state, send, done) {
+      var merkle = action.merkle = merkleize(action.tree)
       var root = merkle.digest
-      var href = '/forms/' + root
-      send('form:tree', action, function () {
-        send('location:setLocation', {location: href}, done)
-        window.history.pushState({}, '', href)
+      var path = '/forms/' + root
+      action.path = path
+      cache.put(root, JSON.stringify(action.tree), function (error) {
+        if (error) {
+          done(error)
+        } else {
+          if (window.location.href.indexOf(path) !== 0) {
+            window.history.pushState({}, '', path)
+            send('displayForm', action, done)
+          } else {
+            send('displayForm', action, done)
+          }
+        }
       })
     },
 
@@ -141,12 +149,7 @@ module.exports = {
       var array = keyarray.get(newTree, path.slice(0, -1))
       var index = path[path.length - 1]
       array.splice(index, 0, newChild)
-      var payload = {
-        tree: newTree,
-        publications: [],
-        dynamic: true
-      }
-      send('form:modify', payload, done)
+      send('form:update', {tree: newTree}, done)
     },
 
     splice: function (action, state, send, done) {
@@ -157,12 +160,7 @@ module.exports = {
       var index = path[path.length - 1]
       array.splice(index, 1)
       fix(newTree)
-      var payload = {
-        tree: newTree,
-        publications: [],
-        dynamic: true
-      }
-      send('form:modify', payload, done)
+      send('form:update', {tree: newTree}, done)
     },
 
     move: function (action, state, send, done) {
@@ -185,12 +183,7 @@ module.exports = {
         ? hasMoving.indexOf(moving)
         : hasMoving.lastIndexOf(moving)
         hasMoving.splice(oldIndex, 1)
-        var payload = {
-          tree: newTree,
-          publications: [],
-          dynamic: true
-        }
-        send('form:modify', payload, done)
+        send('form:update', {tree: newTree}, done)
       }
     },
 
@@ -203,12 +196,7 @@ module.exports = {
       } else {
         keyarray.set(newTree, path.concat('heading'), newHeading)
       }
-      var payload = {
-        tree: newTree,
-        publications: [],
-        dynamic: true
-      }
-      send('form:modify', payload, done)
+      send('form:update', {tree: newTree}, done)
     },
 
     edit: function (action, state, send, done) {
@@ -261,12 +249,7 @@ module.exports = {
       var count = action.count
       splice.apply(context, [offset, count].concat(elements))
       fix(newTree)
-      var payload = {
-        tree: newTree,
-        publications: [],
-        dynamic: true
-      }
-      send('form:modify', payload, done)
+      send('form:update', {tree: newTree}, done)
     },
 
     fetch: function (action, state, send, done) {

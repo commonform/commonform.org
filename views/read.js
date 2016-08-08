@@ -8,17 +8,10 @@ var menu = require('./menu')
 var modeButtons = require('./mode-buttons')
 
 module.exports = function read (state, prev, send) {
-  console.log('read view\n')
   var haveData = (
     state.form.merkle &&
-    (
-      state.form.dynamic ||
-      state.form.merkle.digest === state.params.digest
-    )
+    state.form.merkle.digest === state.params.digest
   )
-  console.log('state.params.digest', state.params.digest)
-  console.log('state.form.merkle.digest', state.form.merkle.digest)
-  console.log('haveData', haveData)
   if (state.form.error) {
     return html`
       <div class=container>
