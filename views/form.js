@@ -67,12 +67,16 @@ function form (form, send) {
         )
       }
       ${isFocused && editing ? deleteButton(form.path, send) : null}
-      ${dropZone(
-        shouldShowDropZone,
-        form.focused ? 'move' : 'child',
-        form.path.concat(formKey, 'content', 0),
-        send
-      )}
+      ${
+        groups[0].type === 'series'
+        ? dropZone(
+          shouldShowDropZone,
+          form.focused ? 'move' : 'child',
+          form.path.concat(formKey, 'content', 0),
+          send
+        )
+        : null
+      }
       ${groups.map(function (group) {
         var groupState = {
           mode: form.mode,
