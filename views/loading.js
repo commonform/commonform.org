@@ -4,7 +4,7 @@ module.exports = function (onLoad) {
   return html`
     <div class=container>
       <article class=commonform onload=${onLoad}>
-        Loading...
+        Loading…
       </article>
     </div>
   `

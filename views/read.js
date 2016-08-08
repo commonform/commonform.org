@@ -8,10 +8,17 @@ var menu = require('./menu')
 var modeButtons = require('./mode-buttons')
 
 module.exports = function read (state, prev, send) {
+  console.log('read view\n')
   var haveData = (
     state.form.merkle &&
-    state.form.merkle.digest === state.params.digest
+    (
+      state.form.dynamic ||
+      state.form.merkle.digest === state.params.digest
+    )
   )
+  console.log('state.params.digest', state.params.digest)
+  console.log('state.form.merkle.digest', state.form.merkle.digest)
+  console.log('haveData', haveData)
   if (state.form.error) {
     return html`
       <div class=container>
@@ -21,17 +28,11 @@ module.exports = function read (state, prev, send) {
       </div>
     `
   } else if (!haveData) {
+    // Calling send here is unorthodox, but works when redirecting from
+    // a publication route.
+    send('form:fetch', {digest: state.params.digest})
     return loading(function () {
-      var params = state.params
-      var payload = {}
-      if (params.publisher) {
-        payload.publisher = params.publisher
-        payload.project = params.project
-        payload.edition = params.edition || 'current'
-      } else {
-        payload.digest = params.digest
-      }
-      send('form:fetch', payload)
+      return
     })
   } else {
     if (state.form.diff) {

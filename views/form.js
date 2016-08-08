@@ -25,6 +25,7 @@ function form (form, send) {
   var tree = root ? form.tree : form.tree.form
   var groups = group(clone(tree))
   var isFocused = deepEqual(form.focused, form.path)
+  var editing = form.mode === 'edit'
   var annotationsHere = get(
     form.annotations,
     formKey.concat('annotations'),
@@ -43,7 +44,7 @@ function form (form, send) {
   }
 
   var shouldShowDropZone = (
-    form.mode === 'edit' &&
+    editing &&
     (form.focused === null || (!form.withinFocused && !isFocused))
   )
 
@@ -65,7 +66,7 @@ function form (form, send) {
           annotationsHere, toggleFocus
         )
       }
-      ${isFocused ? deleteButton(form.path, send) : null}
+      ${isFocused && editing ? deleteButton(form.path, send) : null}
       ${dropZone(
         shouldShowDropZone,
         form.focused ? 'move' : 'child',

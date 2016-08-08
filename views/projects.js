@@ -23,7 +23,7 @@ module.exports = function (state, previous, send) {
     return html`
       <div class=container>
         <article class=commonform>
-          <h1>${publisher}'s Common Form Projects</h1>
+          <h1>${publisher}’s Common Form Projects</h1>
           <ul>
             ${
               state.browser.projects.map(function (project) {
@@ -36,7 +36,7 @@ module.exports = function (state, previous, send) {
               })
             }
           </ul>
-          <a href="/publishers">List all publishers.</a>
+          <a href="/publishers" class=nav>« list of all publishers</a>
           ${footer()}
         </article>
       </div>
