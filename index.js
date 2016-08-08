@@ -8,6 +8,7 @@ var pathOf = require('pathname-match')
 var projects = require('./views/projects')
 var publishers = require('./views/publishers')
 var read = require('./views/read')
+var search = require('./views/search')
 var showError = require('./views/error')
 var yo = require('yo-yo')
 
@@ -112,6 +113,8 @@ function render () {
     } else if (startsWith('/forms/')) {
       var digest = path.substring(7)
       return read(digest, form, action)
+    } else if (path === '/search' || path === '/search') {
+      return search(browser, action)
     } else if (path === '/publishers' || path === '/publishers') {
       return publishers(browser, action)
     } else if (startsWith('/publishers/')) {

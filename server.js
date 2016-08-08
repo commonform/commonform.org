@@ -30,7 +30,8 @@ http
   } else if (
     pathname.startsWith('/forms/') ||
     pathname.startsWith('/publications/') ||
-    pathname.startsWith('/publishers')
+    pathname.startsWith('/publishers') ||
+    pathname.startsWith('/search')
   ) {
     serveIndex(response)
   } else {
