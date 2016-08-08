@@ -1,4 +1,4 @@
-var html = require('choo/html')
+var html = require('yo-yo')
 var clone = require('../utilities/clone')
 var outline = require('outline-numbering')
 var querystring = require('querystring')

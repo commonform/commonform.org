@@ -1,4 +1,4 @@
-var html = require('choo/html')
+var html = require('yo-yo')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
 var group = require('commonform-group-series')

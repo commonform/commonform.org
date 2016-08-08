@@ -1,5 +1,5 @@
 var capitalize = require('capitalize')
-var html = require('choo/html')
+var html = require('yo-yo')
 var clone = require('../utilities/clone')
 var emptySignaturePage = require('../data/empty-signature-page')
 var input = require('./input')

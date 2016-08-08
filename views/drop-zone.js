@@ -1,5 +1,5 @@
 var assert = require('assert')
-var html = require('choo/html')
+var html = require('yo-yo')
 
 module.exports = dropZone
 

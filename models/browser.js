@@ -1,84 +1,68 @@
-var downloadEditions = require('../queries/editions')
-var downloadProjects = require('../queries/projects')
-var downloadPublishers = require('../queries/publishers')
-var runParallel = require('run-parallel')
+var asyncMap = require('async.map')
+var getEditions = require('../queries/editions')
+var getProjects = require('../queries/projects')
+var getPublishers = require('../queries/publishers')
 
-module.exports = {
-  namespace: 'browser',
-
-  state: {
+module.exports = function (initialize, reduction, handler) {
+  initialize({
+    projects: null,
     publisher: null,
-    publishers: null,
-    projects: null
-  },
+    publishers: null
+  })
 
-  reducers: {
-    publishers: function (action, state) {
-      return action
-    },
+  reduction('publishers', function (publishers, state) {
+    return {publishers: publishers}
+  })
 
-    projects: function (action, state) {
-      return {
-        publishers: null,
-        publisher: action.publisher,
-        projects: action.projects
+  handler('get publishers', function (action, state, reduce, done) {
+    getPublishers(function (error, publishers) {
+      if (error) {
+        done(error)
+      } else {
+        reduce('publishers', publishers)
+        done()
       }
-    }
-  },
+    })
+  })
 
-  effects: {
-    fetch: function (action, state, send, done) {
-      var type = action.type
-      if (type === 'publishers') {
-        downloadPublishers(function (error, publishers) {
+  reduction('projects', function (data, state) {
+    return {
+      publishers: null,
+      publisher: data.publisher,
+      projects: data.projects
+    }
+  })
+
+  handler('get projects', function (publisher, state, reduce, done) {
+    getProjects(publisher, function (error, projects) {
+      if (error) {
+        done(error)
+      } else {
+        asyncMap(projects, fetchEditions, function (error, projects) {
           if (error) {
             done(error)
           } else {
-            var payload = {
-              publishers: publishers
+            var data = {
+              publisher: publisher,
+              projects: projects
             }
-            send('browser:publishers', payload, done)
-          }
-        })
-      } else if (type === 'projects') {
-        var publisher = action.publisher
-        downloadProjects(publisher, function (error, projects) {
-          if (error) {
-            done(error)
-          } else {
-            runParallel(
-              projects.map(function (project) {
-                return function (done) {
-                  downloadEditions(
-                    publisher, project,
-                    function (error, editions) {
-                      if (error) {
-                        done(error)
-                      } else {
-                        done(null, {
-                          name: project,
-                          editions: editions
-                        })
-                      }
-                    }
-                  )
-                }
-              }),
-              function (error, projects) {
-                if (error) {
-                  done(error)
-                } else {
-                  var payload = {
-                    publisher: publisher,
-                    projects: projects
-                  }
-                  send('browser:projects', payload, done)
-                }
-              }
-            )
+            reduce('projects', data, done)
+            done()
           }
         })
       }
-    }
-  }
+      function fetchEditions (project, done) {
+        getEditions(publisher, project, function (error, editions) {
+          if (error) {
+            done(error)
+          } else {
+            done(null, {
+              name: project,
+              editions: editions
+            })
+          }
+        })
+      }
+    })
+  })
 }

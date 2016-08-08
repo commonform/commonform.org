@@ -1,5 +1,5 @@
 var assert = require('assert')
-var html = require('choo/html')
+var html = require('yo-yo')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
 var deepEqual = require('deep-equal')
@@ -100,7 +100,7 @@ function form (form, send) {
 
   function toggleFocus (event) {
     event.stopPropagation()
-    send('form:focus', {path: isFocused ? null : form.path})
+    send('form:focus', isFocused ? null : form.path)
   }
 }
 

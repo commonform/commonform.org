@@ -1,17 +1,12 @@
 var footer = require('./footer')
-var html = require('choo/html')
+var html = require('yo-yo')
 var loading = require('./loading')
-var showError = require('./error')
 
-module.exports = function browse (state, previous, send) {
-  if (!state.browser.publishers) {
+module.exports = function browse (state, send) {
+  if (!state.publishers) {
     return loading(function () {
-      send('browser:fetch', {
-        type: 'publishers'
-      })
+      send('browser:get publishers')
     })
-  } else if (state.browser.error) {
-    return showError(state.browser.error)
   } else {
     return html`
       <div class=container>
@@ -19,7 +14,7 @@ module.exports = function browse (state, previous, send) {
           <h1>Common Form Publishers</h1>
           <ul>
             ${
-              state.browser.publishers.map(function (publisher) {
+              state.publishers.map(function (publisher) {
                 return publisherLink(publisher, send)
               })
             }
@@ -37,13 +32,6 @@ function publisherLink (publisher, send) {
       <a
           class=publisher
           href="/publishers/${encodeURIComponent(publisher)}"
-          onclick=${function () {
-            var payload = {
-              type: 'publisher',
-              publisher: publisher
-            }
-            send('browser:fetch', payload)
-          }}
         >${publisher}</a>
     </li>
   `
