@@ -8,13 +8,7 @@ module.exports = function (digest, send) {
     <a
         class=digest
         href="/forms/${digest}"
-        onclick=${onClick}
       >${digest.slice(0, 32)}<wbr>${digest.slice(32)}</a>
   `
-  function onClick (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    send('form:load form', digest)
-  }
 }
 
