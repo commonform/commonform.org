@@ -8,17 +8,20 @@ var pathOf = require('pathname-match')
 var projects = require('./views/projects')
 var publishers = require('./views/publishers')
 var read = require('./views/read')
-var search = require('./views/search')
+var searchModel = require('./models/search')
+var searchView = require('./views/search')
 var showError = require('./views/error')
 var yo = require('yo-yo')
 
 // State
 var form = {}
 var browser = {}
+var search = {}
 var state = {
   error: null,
   browser: browser,
-  form: form
+  form: form,
+  search: search
 }
 
 // Data Modeling
@@ -97,6 +100,7 @@ function useModel (scope, model) {
 
 useModel('form', formModel)
 useModel('browser', browserModel)
+useModel('search', searchModel)
 
 // Rendering
 
@@ -113,8 +117,11 @@ function render () {
     } else if (startsWith('/forms/')) {
       var digest = path.substring(7)
       return read(digest, form, action)
-    } else if (path === '/search' || path === '/search') {
-      return search(browser, action)
+    } else if (startsWith('/search')) {
+      var split = path.split('/')
+      return searchView(
+        decode(split[2]), decode(split[3]), search, action
+      )
     } else if (path === '/publishers' || path === '/publishers') {
       return publishers(browser, action)
     } else if (startsWith('/publishers/')) {
@@ -148,6 +155,10 @@ function render () {
   function startsWith (prefix) {
     return path.indexOf(prefix) === 0
   }
+}
+
+function decode (argument) {
+  return argument ? decodeURIComponent(argument) : argument
 }
 
 function update () {
