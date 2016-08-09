@@ -5,7 +5,7 @@ var modeButtons = require('./mode-buttons')
 
 module.exports = function browse (state, send) {
   if (!state.publishers) {
-    return loading(function () {
+    return loading('browse', function () {
       send('browser:get publishers')
     })
   } else {

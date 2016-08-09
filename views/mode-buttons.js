@@ -8,28 +8,18 @@ function modeButtons (mode, send) {
     <div class=modes>
       <a
           href="/search"
-          class=${enableIf(mode === 'search')}
+          class="search ${enableIf(mode === 'search')}"
           title="Click to search forms."
-      >${symbols.search}</a>
+      ></a>
       <a
           href="/publishers"
-          class=${enableIf(mode === 'browse')}
+          class="browse ${enableIf(mode === 'browse')}"
           title="Click to browse forms."
-      >${symbols.browse}</a>
+      ></a>
       ${showReadModes ? modeButton('read', mode, send) : null}
       ${showReadModes ? modeButton('edit', mode, send) : null}
     </div>
   `
-}
-
-var symbols = {
-  search: '\u26cf', // pick
-  browse: '\u269f', // three lines converging left
-  read: '\u2398', // next page symbol
-  edit: '\u270D', // writing hand symbol
-  compare: '\u2260', // not-equal
-  comment: '\u275e', // right double quote
-  settings: '\u2699' // gear symbol
 }
 
 function modeButton (mode, currentMode, send) {
@@ -38,12 +28,12 @@ function modeButton (mode, currentMode, send) {
   return html`
     <a
         title=${title}
-        class=${enabled ? 'enabled' : 'disabled'}
+        class="${mode} ${enabled ? 'enabled' : 'disabled'}"
         onclick=${function (event) {
           event.preventDefault()
           send('form:mode', mode)
         }}
-      >${symbols[mode]}</a>
+      ></a>
   `
 }
 

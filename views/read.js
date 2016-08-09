@@ -10,7 +10,7 @@ var modeButtons = require('./mode-buttons')
 module.exports = function read (digest, state, send) {
   var haveData = state.merkle && state.merkle.digest === digest
   if (!haveData) {
-    return loading(function () {
+    return loading(state.mode, function () {
       send('form:fetch', {digest: digest})
     })
   } else {

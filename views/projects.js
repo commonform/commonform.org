@@ -7,7 +7,7 @@ var modeButtons = require('./mode-buttons')
 module.exports = function (publisher, state, send) {
   var haveData = state.publisher === publisher && state.projects
   if (!haveData) {
-    return loading(function () {
+    return loading('browse', function () {
       send('browser:get projects', publisher)
     })
   } else {

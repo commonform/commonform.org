@@ -16,6 +16,9 @@ module.exports = function () {
           >Matthew Butterick</a>.
       </p>
       <p>
+        PICOL icons from <a href="http://picol.org">picol.org</a>.
+      </p>
+      <p>
         <a class=openSource>
           Common Form is
           <a href="https://github.com/commonform"
