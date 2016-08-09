@@ -1,10 +1,13 @@
 var asyncMap = require('async.map')
 var getEditions = require('../queries/editions')
 var getProjects = require('../queries/projects')
+var getPublisher = require('../queries/publisher')
 var getPublishers = require('../queries/publishers')
+var runParallel = require('run-parallel')
 
 module.exports = function (initialize, reduction, handler) {
   initialize({
+    about: null,
     projects: null,
     publisher: null,
     publishers: null
@@ -29,40 +32,60 @@ module.exports = function (initialize, reduction, handler) {
     return {
       publishers: null,
       publisher: data.publisher,
+      about: data.about,
       projects: data.projects
     }
   })
 
   handler('get projects', function (publisher, state, reduce, done) {
-    getProjects(publisher, function (error, projects) {
-      if (error) {
-        done(error)
-      } else {
-        asyncMap(projects, fetchEditions, function (error, projects) {
-          if (error) {
-            done(error)
-          } else {
-            var data = {
-              publisher: publisher,
-              projects: projects
+    runParallel(
+      [
+        function (done) {
+          getProjects(publisher, function (error, projects) {
+            if (error) {
+              done(error)
+            } else {
+              asyncMap(projects, fetchEditions, done)
             }
-            reduce('projects', data, done)
-            done()
-          }
-        })
+            function fetchEditions (project, done) {
+              getEditions(
+                publisher, project,
+                function (error, editions) {
+                  if (error) {
+                    done(error)
+                  } else {
+                    done(null, {
+                      name: project,
+                      editions: editions
+                    })
+                  }
+                }
+              )
+            }
+          })
+        },
+        function (done) {
+          getPublisher(publisher, function (error, result) {
+            if (error) {
+              done(null, {about: ''})
+            } else {
+              done(null, result)
+            }
+          })
+        }
+      ],
+      function (error, results) {
+        if (error) {
+          done(error)
+        } else {
+          reduce('projects', {
+            about: results[1].about,
+            publisher: publisher,
+            projects: results[0]
+          })
+          done()
+        }
       }
-      function fetchEditions (project, done) {
-        getEditions(publisher, project, function (error, editions) {
-          if (error) {
-            done(error)
-          } else {
-            done(null, {
-              name: project,
-              editions: editions
-            })
-          }
-        })
-      }
-    })
+    )
   })
 }
