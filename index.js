@@ -139,14 +139,15 @@ function render () {
       if (!match) {
         return notFound()
       } else {
-        action('form:load publication', {
-          publisher: decodeURIComponent(match[1]),
-          project: decodeURIComponent(match[2]),
-          edition: match[3]
-          ? decodeURIComponent(match[3].substring(1))
-          : 'current'
+        return loading(function () {
+          action('form:load publication', {
+            publisher: decodeURIComponent(match[1]),
+            project: decodeURIComponent(match[2]),
+            edition: match[3]
+            ? decodeURIComponent(match[3].substring(1))
+            : 'current'
+          })
         })
-        return loading()
       }
     } else {
       return notFound()

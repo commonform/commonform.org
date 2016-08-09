@@ -14,8 +14,9 @@ module.exports = function (action, value, state, send) {
   }
   var haveData = action === state.action && value === state.value
   if (action && !haveData) {
-    send('search:' + action, value)
-    return loading()
+    return loading(function () {
+      send('search:' + action, value)
+    })
   } else {
     return html`
       <div class=container>
