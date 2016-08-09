@@ -17,28 +17,49 @@ module.exports = function (action, value, state, send) {
     send('search:' + action, value)
     return loading()
   } else {
-    var nextAction
-    var data
     return html`
       <div class=container>
         <article class=commonform>
           ${modeButtons('search', send)}
           <h1>Search Common Forms</h1>
-          <form onsubmit=${onSubmit} class=search>
-            <input
-                class=invalid
-                oninput=${onInput}
-                type=search></input>
-          </form>
-          ${hints(action)}
+          ${action ? null : searchBox(send)}
           ${action ? results(state, send) : null}
           ${footer()}
         </article>
       </div>
     `
   }
+}
+
+function searchBox (send) {
+  var nextAction
+  var data
+
+  return html`
+    <div class=search>
+      <form onsubmit=${onSubmit}>
+        <input
+            onload=${onLoad}
+            class=invalid
+            placeholder="Enter a query and press return."
+            oninput=${onInput}
+            type=search></input>
+      </form>
+      <section class=hints>
+        <p>You can enter queries like:</p>
+        <ul class=examples>
+          ${patterns.map(hint)}
+        </ul>
+      </section>
+    </div>
+  `
+
+  function onLoad (element) {
+    element.focus()
+  }
+
   function onInput (event) {
-    var value = event.target.value.toLowerCase()
+    var value = normalizeQuery(event.target.value)
     var match
     var length = patterns.length
     for (var index = 0; index < length; index++) {
@@ -55,26 +76,12 @@ module.exports = function (action, value, state, send) {
     match = null
     data = null
   }
+
   function onSubmit (event) {
     event.preventDefault()
     if (nextAction) {
       send(nextAction, data)
     }
-  }
-}
-
-function hints (query) {
-  if (query) {
-    return null
-  } else {
-    return html`
-      <section class=hints>
-        <p>You can try searches like:</p>
-        <ul class=examples>
-          ${patterns.map(hint)}
-        </ul>
-      </section>
-    `
   }
 }
 
@@ -123,13 +130,13 @@ function result (result, send) {
 
 var patterns = [
   {
-    hint: 'definitions of involuntary transfer',
-    expression: /^(definitions of|d) (.+)$/,
+    hint: 'define involuntary transfer',
+    expression: /^(define|d) (.+)$/,
     action: 'search:definitions',
     group: 2
   },
   {
-    hint: 'defined terms starting with seller',
+    hint: 'defined terms starting with allowed',
     expression: /^(defined terms starting with|t) (.+)$/,
     action: 'search:terms',
     group: 2
@@ -141,9 +148,15 @@ var patterns = [
     group: 2
   },
   {
-    hint: 'forms with the heading indemnification',
-    expression: /^(forms with the heading|f) (.+)$/,
+    hint: 'forms under indemnification',
+    expression: /^(forms under|f) (.+)$/,
     action: 'search:forms',
     group: 2
   }
 ]
+
+function normalizeQuery (string) {
+  return string
+  .toLowerCase()
+  .replace(/[^a-z0-9 '-]/g, '')
+}
