@@ -155,13 +155,17 @@ function marginalia (tree, path, blanks, annotations, toggleFocus) {
       })
     )
   })
-  return html`
-    <aside class=marginalia onclick=${toggleFocus}>
-      ${hasError ? html`<a class=flag>\u26A0</a>` : null}
-      ${hasAnnotation ? html`<a class=flag>\u2690</a>` : null}
-      ${hasBlank ? html`<a class=flag>\u270D</a>` : null}
-    </aside>
-  `
+  if (hasError || hasAnnotation || hasBlank) {
+    return html`
+      <aside class=marginalia onclick=${toggleFocus}>
+        ${hasError ? html`<a class=flag>\u26A0</a>` : null}
+        ${hasAnnotation ? html`<a class=flag>\u2690</a>` : null}
+        ${hasBlank ? html`<a class=flag>\u270D</a>` : null}
+      </aside>
+    `
+  } else {
+    return null
+  }
 }
 
 function heading (mode, withinFocused, heading, send) {
