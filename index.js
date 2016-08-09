@@ -169,6 +169,9 @@ function update () {
 
 // Trap hyperlinks.
 window.addEventListener('click', function (event) {
+  if (event.which === 2) {
+    return
+  }
   function findLocalLinkAnchor (node) {
     if (!node) {
       return undefined
