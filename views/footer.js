@@ -17,7 +17,9 @@ module.exports = function () {
       </p>
       <p>
         <a class=openSource>
-          Common Form is open-source software.
+          Common Form is
+          <a href="https://github.com/commonform"
+            >open-source software</a>.
         </a>
       </p>
     </footer>
