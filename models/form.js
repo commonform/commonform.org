@@ -1,4 +1,5 @@
 var annotate = require('../utilities/annotate')
+var annotators = require('../annotators')
 var assert = require('assert')
 var cache = require('../cache')
 var clone = require('../utilities/clone')
@@ -16,7 +17,13 @@ var slice = Array.prototype.slice
 var splice = Array.prototype.splice
 
 module.exports = function (initialize, reduction, handler) {
+  var annotatorFlags = {}
+  annotators.forEach(function (annotator) {
+    annotatorFlags[annotator.name] = annotator.default
+  })
+
   initialize({
+    annotators: annotatorFlags,
     annotations: null,
     blanks: [],
     diff: null,
@@ -119,7 +126,7 @@ module.exports = function (initialize, reduction, handler) {
       path: [],
       projects: [],
       blanks: [],
-      annotations: annotate(action.tree),
+      annotations: annotate(state.annotators, action.tree),
       merkle: action.merkle || merkleize(action.tree),
       publications: action.publications || [],
       signaturePages: [],
@@ -277,6 +284,19 @@ module.exports = function (initialize, reduction, handler) {
         done()
       }))
     }))
+  })
+
+  reduction('annotator', function (data, state) {
+    state.annotators[data.annotator] = data.enabled
+    return {
+      annotations: annotate(state.annotators, state.tree),
+      annotators: state.annotators
+    }
+  })
+
+  handler('toggle annotator', function (data, state, reduce, done) {
+    reduce('annotator', data)
+    done()
   })
 }
 
