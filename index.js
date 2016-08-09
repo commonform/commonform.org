@@ -139,7 +139,7 @@ function render () {
       if (!match) {
         return notFound()
       } else {
-        return loading(function () {
+        return loading(form.mode, function () {
           action('form:load publication', {
             publisher: decodeURIComponent(match[1]),
             project: decodeURIComponent(match[2]),

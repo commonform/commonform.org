@@ -85,23 +85,37 @@ button
   position: fixed
   left: 0rem
   top: 0rem
+  padding: 1rem 0
   text-align: center
   font-size: 200%
   z-index: 100
+  height: 100%
+  background: #777
+  width: 2.5rem
   a
     display: block
     width: 2.5rem
+    height: 2.5rem
     text-align: center
     +notselectable
     cursor: pointer
     text-decoration: none
-    font-style: normal !important
     border: none !important
-    background: white
+    background-repeat: no-repeat
+    background-position: center center
+    margin: 0.25rem 0
+    &.search
+      background-image: url(icons/search.svg)
+    &.edit
+      background-image: url(icons/edit.svg)
+    &.browse
+      background-image: url(icons/list.svg)
+    &.settings
+      background-image: url(icons/settings.svg)
+    &.read
+      background-image: url(icons/document_text.svg)
     &.enabled
-      color: black
-    &.disabled
-      color: #eee
+      background-color: white
 
 .commonform
   a
@@ -293,12 +307,12 @@ button
   del
     color: rgb(100, 0, 0)
 
-  .edit
-    color: rgb(178, 98, 0)
-    &:before
-      content: '['
-    &:after
-      content: ']'
+  // .edit
+  //   color: rgb(178, 98, 0)
+  //   &:before
+  //     content: '['
+  //   &:after
+  //     content: ']'
 
 .search
   form
