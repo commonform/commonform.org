@@ -16,6 +16,7 @@ module.exports = function (publisher, state, send) {
         <article class=commonform>
           ${modeButtons('browse', send)}
           <h1>${publisher}’s Common Form Projects</h1>
+          ${about(state.about)}
           ${list(publisher, state.projects, send)}
           <a href="/publishers" class=nav>« list of all publishers</a>
           ${footer()}
@@ -23,6 +24,10 @@ module.exports = function (publisher, state, send) {
       </div>
     `
   }
+}
+
+function about (text) {
+  return text ? html`<p class=about>${text}</p>` : null
 }
 
 function list (publisher, projects, send) {
