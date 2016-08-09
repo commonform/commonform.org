@@ -77,16 +77,6 @@ function editionLink (publisher, project, edition, send) {
     <a
         class=publication
         href=${href}
-        onclick=${onClick}
       >${edition}</a>
   `
-  function onClick (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    send('form:load publication', {
-      publisher: publisher,
-      project: project,
-      edition: edition
-    })
-  }
 }
