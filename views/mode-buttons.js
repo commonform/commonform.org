@@ -18,6 +18,7 @@ function modeButtons (mode, send) {
       ></a>
       ${showReadModes ? modeButton('read', mode, send) : null}
       ${showReadModes ? modeButton('edit', mode, send) : null}
+      ${showReadModes ? modeButton('save', mode, send) : null}
     </div>
   `
 }

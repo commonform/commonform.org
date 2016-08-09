@@ -10,24 +10,34 @@ var signaturePages = require('./signature-pages')
 module.exports = function (state, send) {
   assert.equal(typeof state, 'object')
   assert.equal(typeof send, 'function')
-  return html`
-    <div class=container>
-      <article class=commonform>
-        ${modeButtons(state.mode, send)}
-        ${menu(state, send)}
-        ${
-          header(
-            state.merkle.digest,
-            state.publications,
-            false,
-            [],
-            send
-          )
-        }
-        ${form(state, send)}
-        ${signaturePages(state.signaturePages, send)}
-        ${footer()}
-      </article>
-    </div>
-  `
+  if (state.mode === 'save') {
+    return html`
+      <div class=container>
+        <article class=commonform>
+          ${modeButtons(state.mode, send)}
+          ${menu(state, send)}
+        </article>
+      </div>
+    `
+  } else {
+    return html`
+      <div class=container>
+        <article class=commonform>
+          ${modeButtons(state.mode, send)}
+          ${
+            header(
+              state.merkle.digest,
+              state.publications,
+              false,
+              [],
+              send
+            )
+          }
+          ${form(state, send)}
+          ${signaturePages(state.signaturePages, send)}
+          ${footer()}
+        </article>
+      </div>
+    `
+  }
 }
