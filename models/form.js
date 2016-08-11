@@ -256,7 +256,7 @@ module.exports = function (initialize, reduction, handler) {
     var offset = action.offset
     var count = action.count
     splice.apply(context, [offset, count].concat(elements))
-    fix(newTree)
+    fix(keyarray.get(newTree, action.context.slice(0, -1)))
     pushEditedTree({tree: newTree}, reduce, done)
   })
 
