@@ -1,7 +1,4 @@
 var Cache = require('level-lru-cache')
-var leveljs = require('level-js')
-var levelup = require('levelup')
-
-var level = levelup('commonform', {db: leveljs})
+var level = require('./level')
 
 module.exports = new Cache(level, 100)

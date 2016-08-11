@@ -10,6 +10,7 @@ var getForm = require('../queries/form')
 var getFormPublications = require('../queries/form-publications')
 var getPublication = require('../queries/publication')
 var keyarray = require('keyarray')
+var level = require('../level')
 var markContentElements = require('../utilities/mark-content-elements')
 var merkleize = require('commonform-merkleize')
 var runParallel = require('run-parallel')
@@ -284,17 +285,27 @@ module.exports = function (initialize, reduction, handler) {
     }))
   })
 
-  reduction('annotator', function (data, state) {
-    state.annotators[data.annotator] = data.enabled
+  reduction('annotators', function (data, state) {
     return {
-      annotations: annotate(state.annotators, state.tree),
-      annotators: state.annotators
+      annotators: data,
+      annotations: state.tree
+      ? annotate(state.annotators, state.tree)
+      : []
     }
   })
 
   handler('toggle annotator', function (data, state, reduce, done) {
-    reduce('annotator', data)
-    done()
+    var annotators = state.annotators
+    annotators[data.annotator] = data.enabled
+    var json = JSON.stringify(annotators)
+    level.put('settings.annotators', json, function (error) {
+      if (error) {
+        done(error)
+      } else {
+        reduce('annotators', state.annotators)
+        done()
+      }
+    })
   })
 }
 
