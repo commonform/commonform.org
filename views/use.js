@@ -5,10 +5,6 @@ module.exports = function (term) {
     <a  class=use
         title="Jump to definition of ${term}"
         href="#Definition:${term}"
-        onclick=${function () {
-          var definition = document.getElementById('Definition:' + term)
-          if (definition) definition.scrollIntoView()
-        }}
       >${term}</a>
   `
 }

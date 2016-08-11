@@ -5,10 +5,5 @@ module.exports = function (heading) {
     <a  class=reference
         title="Jump to ${heading}"
         href="#Heading:${heading}"
-        onclick=${function () {
-          document
-          .getElementById('Heading:' + heading)
-          .scrollIntoView()
-        }}
         >${heading}</a>`
 }

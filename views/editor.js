@@ -36,7 +36,7 @@ module.exports = function (state, send) {
   } else {
     return html`
       <div class=container>
-        <article class=commonform>
+        <article class=commonform onclick=${onClick}>
           ${modeButtons(state.mode, send)}
           ${
             header(
@@ -53,5 +53,30 @@ module.exports = function (state, send) {
         </article>
       </div>
     `
+  }
+
+  function onClick (event) {
+    var target = event.target
+    if (target.nodeName === 'A') {
+      if (target.className === 'reference') {
+        event.preventDefault()
+        event.stopPropagation()
+        var heading = document.getElementById(
+          target.getAttribute('href').slice(1)
+        )
+        if (heading) {
+          heading.scrollIntoView()
+        }
+      } else if (target.className === 'use') {
+        event.preventDefault()
+        event.stopPropagation()
+        var definition = document.getElementById(
+          target.getAttribute('href').slice(1)
+        )
+        if (definition) {
+          definition.scrollIntoView()
+        }
+      }
+    }
   }
 }
