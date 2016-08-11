@@ -6,6 +6,7 @@ var clone = require('../utilities/clone')
 var deepEqual = require('deep-equal')
 var diff = require('commonform-diff')
 var fix = require('commonform-fix-strings')
+var getComments = require('../queries/comments')
 var getForm = require('../queries/form')
 var getFormPublications = require('../queries/form-publications')
 var getPublication = require('../queries/publication')
@@ -28,6 +29,7 @@ module.exports = function (initialize, reduction, handler) {
   initialize({
     annotators: annotatorFlags,
     annotations: null,
+    comments: [],
     blanks: [],
     diff: null,
     error: null,
@@ -131,6 +133,7 @@ module.exports = function (initialize, reduction, handler) {
       projects: [],
       blanks: [],
       annotations: annotate(state.annotators, action.tree),
+      comments: null,
       merkle: action.merkle || merkleize(action.tree),
       publications: action.publications || [],
       signaturePages: [],
@@ -366,6 +369,21 @@ module.exports = function (initialize, reduction, handler) {
             }
           }
         )
+      }
+    })
+  })
+
+  reduction('comments', function (comments, state) {
+    return {comments: comments}
+  })
+
+  handler('fetch comments', function (data, state, reduce, done) {
+    getComments(state.merkle.digest, function (error, comments) {
+      if (error) {
+        done(error)
+      } else {
+        reduce('comments', comments)
+        done()
       }
     })
   })

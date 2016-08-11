@@ -18,6 +18,7 @@ function modeButtons (mode, send) {
       ></a>
       ${showReadModes ? modeButton('read', mode, send) : null}
       ${showReadModes ? modeButton('edit', mode, send) : null}
+      ${showReadModes ? modeButton('comment', mode, send) : null}
       ${showReadModes ? modeButton('save', mode, send) : null}
       ${showReadModes ? modeButton('settings', mode, send) : null}
     </div>
@@ -26,7 +27,7 @@ function modeButtons (mode, send) {
 
 function modeButton (mode, currentMode, send) {
   var enabled = mode === currentMode
-  var title = (enabled ? 'Using ' : 'Click to ') + mode + '.'
+  var title = enabled ? '' : 'Click to ' + mode + '.'
   return html`
     <a
         title=${title}
