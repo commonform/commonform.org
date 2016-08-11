@@ -293,7 +293,7 @@ function paragraph (state, send) {
 }
 
 function string (string) {
-  return html`<span class=string>${improvePunctuation(string)}</span>`
+  return html`${improvePunctuation(string)}`
 }
 
 function blank (blanks, path, send) {
