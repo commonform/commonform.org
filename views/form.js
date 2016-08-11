@@ -361,7 +361,7 @@ function commentListItem (comment, parents, other, send) {
   })
   return html`
     <li data-uuid=${comment.uuid}>
-      ${comment.text}
+      ${improvePunctuation(comment.text)}
       <span class=byline>
         ${publisherLink(comment.publisher)}
         ${new Date(parseInt(comment.timestamp)).toLocaleString()}
