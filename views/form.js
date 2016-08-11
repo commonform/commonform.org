@@ -1,5 +1,4 @@
 var assert = require('assert')
-var html = require('yo-yo')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
 var deepEqual = require('deep-equal')
@@ -9,9 +8,11 @@ var dropZone = require('./drop-zone')
 var find = require('array-find')
 var get = require('keyarray').get
 var group = require('commonform-group-series')
+var html = require('yo-yo')
 var improvePunctuation = require('../utilities/improve-punctuation')
 var input = require('./input')
 var predicates = require('commonform-predicate')
+var publisherLink = require('./publisher-link')
 var reference = require('./reference')
 var replaceUnicode = require('../utilities/replace-unicode')
 var use = require('./use')
@@ -26,11 +27,17 @@ function form (form, send) {
   var groups = group(clone(tree))
   var isFocused = deepEqual(form.focused, form.path)
   var editing = form.mode === 'edit'
+  var commenting = form.mode === 'comment'
   var annotationsHere = get(
     form.annotations,
     formKey.concat('annotations'),
     []
   )
+  var commentsHere = commenting && form.comments
+  ? form.comments.filter(function (comment) {
+    return comment.form === form.merkle.digest
+  })
+  : false
   var classes = classnames({
     conspicuous: 'conspicuous' in tree,
     focused: isFocused
@@ -89,6 +96,7 @@ function form (form, send) {
       ${groups.map(function (group) {
         var groupState = {
           mode: form.mode,
+          comments: form.comments,
           blanks: form.blanks,
           data: group,
           annotations: get(form.annotations, formKey, {}),
@@ -108,6 +116,11 @@ function form (form, send) {
         offset += group.content.length
         return result
       })}
+      ${
+        commenting && commentsHere
+        ? commentsList(commentsHere, send)
+        : null
+      }
     </section>
   `
 
@@ -203,6 +216,7 @@ function series (state, send) {
       {
         mode: state.mode,
         blanks: state.blanks,
+        comments: state.comments,
         tree: child,
         annotations: get(
           state.annotations, ['content', absoluteIndex], {}
@@ -317,5 +331,57 @@ function blank (blanks, path, send) {
         value: null
       })
     }
+  )
+}
+
+function commentsList (comments, send) {
+  var roots = comments
+  .filter(function (comment) {
+    return comment.replyTo.length === 0
+  })
+  .sort(function (a, b) {
+    return parseInt(a.timestamp) - parseInt(b.timestamp)
+  })
+  return html`
+    <ol class=comments>
+      ${roots.map(function (root) {
+        return commentListItem(root, [], comments, send)
+      })}
+    </ol>
+  `
+}
+
+function commentListItem (comment, parents, other, send) {
+  var withParent = parents.concat(comment.uuid)
+  var replies = other.filter(function (comment) {
+    return equalArrays(
+      comment.replyTo.slice(0, withParent.length),
+      withParent
+    )
+  })
+  return html`
+    <li data-uuid=${comment.uuid}>
+      ${comment.text}
+      <span class=byline>
+        ${publisherLink(comment.publisher)}
+        ${new Date(parseInt(comment.timestamp)).toLocaleString()}
+      </span>
+      ${
+        replies.length === 0
+        ? null
+        : replies.map(function (reply) {
+          return commentListItem(reply, withParent, other, send)
+        })
+      }
+    </li>
+  `
+}
+
+function equalArrays (a, b) {
+  return (
+    a.length === b.length &&
+    a.every(function (fromA, index) {
+      return fromA === b[index]
+    })
   )
 }

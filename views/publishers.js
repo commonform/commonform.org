@@ -2,6 +2,7 @@ var footer = require('./footer')
 var html = require('yo-yo')
 var loading = require('./loading')
 var modeButtons = require('./mode-buttons')
+var publisherLink = require('./publisher-link')
 
 module.exports = function browse (state, send) {
   if (!state.publishers) {
@@ -17,7 +18,9 @@ module.exports = function browse (state, send) {
           <ul>
             ${
               state.publishers.map(function (publisher) {
-                return publisherLink(publisher, send)
+                return html`
+                  <li>${publisherLink(publisher, send)}</li>
+                `
               })
             }
           </ul>
@@ -26,15 +29,4 @@ module.exports = function browse (state, send) {
       </div>
     `
   }
-}
-
-function publisherLink (publisher, send) {
-  return html`
-    <li>
-      <a
-          class=publisher
-          href="/publishers/${encodeURIComponent(publisher)}"
-        >${publisher}</a>
-    </li>
-  `
 }
