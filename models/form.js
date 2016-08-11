@@ -123,6 +123,7 @@ module.exports = function (initialize, reduction, handler) {
 
   reduction('tree', function (action, state) {
     return {
+      mode: action.mode || state.mode,
       dynamic: action.dynamic || false,
       error: null,
       tree: action.tree,
@@ -270,6 +271,7 @@ module.exports = function (initialize, reduction, handler) {
 
   handler('load form', function (digest, state, reduce, done) {
     loadForm(digest, onError(done, function (data) {
+      data.mode = 'read'
       reduce('tree', data)
       window.history.pushState(data, '', formPath(digest))
       done()
@@ -279,6 +281,7 @@ module.exports = function (initialize, reduction, handler) {
   handler('load publication', function (data, state, reduce, done) {
     getPublication(data, onError(done, function (digest) {
       loadForm(digest, onError(done, function (data) {
+        data.mode = 'read'
         reduce('tree', data)
         window.history.pushState(data, '', formPath(digest))
         done()
@@ -290,6 +293,7 @@ module.exports = function (initialize, reduction, handler) {
     var merkle = merkleize(tree)
     var root = merkle.digest
     var data = {
+      mode: 'read',
       tree: tree,
       merkle: merkle
     }
