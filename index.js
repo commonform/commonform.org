@@ -2,6 +2,7 @@ var EventEmitter = require('events').EventEmitter
 var assert = require('assert')
 var browserModel = require('./models/browser')
 var formModel = require('./models/form')
+var level = require('./level')
 var loading = require('./views/loading')
 var notFound = require('./views/not-found')
 var pathOf = require('pathname-match')
@@ -196,6 +197,19 @@ window.addEventListener('click', function (event) {
 })
 
 window.addEventListener('popstate', update)
+
+// Load Settings
+
+level.get('settings.annotators', function (error, data) {
+  if (!error && data) {
+    try {
+      var annotators = JSON.parse(data)
+      reductions.emit('form:annotators', annotators)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+})
 
 if (module.parent) {
   module.exports = render
