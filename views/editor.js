@@ -17,7 +17,6 @@ module.exports = function (state, send) {
       <div class=container>
         <article class=commonform>
           ${modeButtons(state.mode, send)}
-          <h1>Download, Open, and Share</h1>
           ${menu(state, send)}
           ${footer()}
         </article>

@@ -14,6 +14,7 @@ var level = require('../level')
 var markContentElements = require('../utilities/mark-content-elements')
 var merkleize = require('commonform-merkleize')
 var runParallel = require('run-parallel')
+var xhr = require('xhr')
 
 var slice = Array.prototype.slice
 var splice = Array.prototype.splice
@@ -285,6 +286,19 @@ module.exports = function (initialize, reduction, handler) {
     }))
   })
 
+  handler('loaded', function (tree, state, reduce, done) {
+    var merkle = merkleize(tree)
+    var root = merkle.digest
+    var data = {
+      tree: tree,
+      merkle: merkle
+    }
+    reduce('tree', data)
+    reduce('mode', 'read')
+    window.history.pushState(data, '', formPath(root))
+    done()
+  })
+
   reduction('annotators', function (data, state) {
     return {
       annotators: data,
@@ -306,6 +320,101 @@ module.exports = function (initialize, reduction, handler) {
         done()
       }
     })
+  })
+
+  handler('donate', function (data, state, reduce, done) {
+    var publisher = data.publisher
+    var password = data.password
+    var digest = state.merkle.digest
+    donate(state, publisher, password, function (error) {
+      if (error) {
+        done(error)
+      } else {
+        window.alert('Donated form ' + digest)
+        reduce('mode', 'read')
+        done()
+      }
+    })
+  })
+
+  handler('publish', function (data, state, reduce, done) {
+    var publisher = data.publisher
+    var password = data.password
+    var project = data.project
+    var edition = data.edition
+    var digest = state.merkle.digest
+    donate(state, publisher, password, function (error) {
+      if (error) {
+        done(error)
+      } else {
+        publish(
+          digest, publisher, password, project, edition,
+          function (error) {
+            if (error) {
+              done(error)
+            } else {
+              window.alert(
+                'Published ' + publisher + '\'s ' +
+                project + ' ' + edition + '.'
+              )
+              reduce('mode', 'read')
+              done()
+            }
+          }
+        )
+      }
+    })
+  })
+}
+
+function donate (state, publisher, password, callback) {
+  xhr({
+    method: 'POST',
+    uri: 'https://api.commonform.org/forms',
+    withCredentials: true,
+    username: publisher,
+    password: password,
+    body: JSON.stringify(state.tree)
+  }, function (error, response, body) {
+    if (error) {
+      callback(error)
+    } else {
+      var status = response.statusCode
+      if (status === 200 || status === 204) {
+        callback()
+      } else {
+        callback(new Error(body))
+      }
+    }
+  })
+}
+
+function publish (
+  digest, publisher, password, project, edition, callback
+) {
+  xhr({
+    method: 'POST',
+    uri: (
+      'https://api.commonform.org' +
+      '/publishers/' + encodeURIComponent(publisher) +
+      '/projects/' + encodeURIComponent(project) +
+      '/publications/' + encodeURIComponent(edition)
+    ),
+    withCredentials: true,
+    username: publisher,
+    password: password,
+    body: JSON.stringify({digest: digest})
+  }, function (error, response, body) {
+    if (error) {
+      callback(error)
+    } else {
+      var status = response.statusCode
+      if (status === 200 || status === 204) {
+        callback()
+      } else {
+        callback(new Error(body))
+      }
+    }
   })
 }
 
