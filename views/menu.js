@@ -59,7 +59,7 @@ module.exports = function (form, send) {
         this form is:
       </p>
       <p>
-        ${digestLink(form.merkle.digest, send)}
+        ${digestLink(form.merkle.digest)}
       </p>
       <p>
         Donated forms are not indexed for search or included in any

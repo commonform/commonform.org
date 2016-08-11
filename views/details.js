@@ -5,7 +5,7 @@ var improvePunctuation = require('../utilities/improve-punctuation')
 module.exports = function (digest, annotationsArray, send) {
   return html`
     <p class=details>
-      ${digestLink(digest, send)}
+      ${digestLink(digest)}
       ${annotations(annotationsArray)}
     </p>
   `

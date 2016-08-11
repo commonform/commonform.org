@@ -119,11 +119,11 @@ function resultList (results, send) {
 
 function result (result, send) {
   if (result.type === 'digest') {
-    return digestLink(result.value, send)
+    return digestLink(result.value)
   } else if (result.type === 'term') {
-    return termLink(result.value, send)
+    return termLink(result.value)
   } else if (result.type === 'heading') {
-    return headingLink(result.value, send)
+    return headingLink(result.value)
   } else {
     return html`<span>${result}</span>`
   }

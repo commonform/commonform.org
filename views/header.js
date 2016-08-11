@@ -26,7 +26,7 @@ function paragraph (digest, publications, send) {
   assert(send !== undefined)
   return html`
     <div>
-      <p>${digestLink(digest, send)}</p>
+      <p>${digestLink(digest)}</p>
       ${publicationsList(publications)}
     </div>
   `

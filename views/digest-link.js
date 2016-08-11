@@ -1,9 +1,8 @@
 var assert = require('assert')
 var html = require('yo-yo')
 
-module.exports = function (digest, send) {
+module.exports = function (digest) {
   assert.equal(typeof digest, 'string')
-  assert.equal(typeof send, 'function')
   return html`
     <a
         class=digest
