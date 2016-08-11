@@ -263,7 +263,7 @@ module.exports = function (initialize, reduction, handler) {
   handler('fetch', function (data, state, reduce, done) {
     var digest = data.digest
     loadForm(digest, onError(done, function (result) {
-      reduce(data.comapring ? 'comparing' : 'tree', result)
+      reduce(data.comparing ? 'comparing' : 'tree', result)
       done()
     }))
   })
