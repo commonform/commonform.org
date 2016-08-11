@@ -10,6 +10,7 @@ var getForm = require('../queries/form')
 var getFormPublications = require('../queries/form-publications')
 var getPublication = require('../queries/publication')
 var keyarray = require('keyarray')
+var markContentElements = require('../utilities/mark-content-elements')
 var merkleize = require('commonform-merkleize')
 var runParallel = require('run-parallel')
 
@@ -247,10 +248,7 @@ module.exports = function (initialize, reduction, handler) {
         return ''
       }
     })
-    // TODO: Automatically mark new term uses.
-    // TODO: Automatically mark new definitions.
-    // TODO: Automatically mark new references.
-    // TODO: Automatically mark new blanks.
+    elements = markContentElements(state.tree, elements)
     var newTree = clone(state.tree)
     var context = keyarray.get(newTree, action.context)
     var offset = action.offset
