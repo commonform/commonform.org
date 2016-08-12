@@ -117,7 +117,7 @@ function form (form, send) {
         return result
       })}
       ${
-        commenting && commentsHere
+        commenting && commentsHere && commentsHere.length !== 0
         ? commentsList(commentsHere, send)
         : null
       }
