@@ -54,34 +54,10 @@ module.exports = function (form, send) {
         </em>
       </p>
       <p>
-        Donate a form to commonform.org to make it available to anyone
-        who requests a copy by its fingerprint. The fingerprint of
-        this form is:
-      </p>
-      <p>
-        ${digestLink(form.merkle.digest)}
-      </p>
-      <p>
-        Donated forms are not indexed for search or included in any
-        public list.  Others who ask for the form by fingerprint can
-        determine if someone has already donated it, and what it says,
-        but not who donated it.  (Your publisher name and password
-        are not associated with the form.)  Other publishers who find
-        the form may choose to publish it under their names.
-      </p>
-      <p>
-        Answers to fill-in-the-blanks you have completed will
-        <em>not</em> be donated along with the content of the form.
-        The fact that a computer with the IP address you use donated
-        the form will appear in commonform.org’s log files for
-        a short time.  These log files are periodically cleared.
-        Log files are <em>not</em> published.
-      </p>
-      <p>
-        Anonymous donations cannot be rescinded.  There is no reliable
-        way to tell whether you donated a form, or whether someone
-        else might have donated the same form.  Others may be relying
-        on its availability here.
+        See the
+        <a href="https://github.com/commonform/new-publisher-guide"
+          >New Publisher Guide</a>
+        for more information.
       </p>
 
       <h2>Publish to commonform.org</h2>
@@ -122,33 +98,10 @@ module.exports = function (form, send) {
         </em>
       </p>
       <p>
-        Publishing a form to commonform.org means:
-      </p>
-      <ol>
-        <li>
-          anonymously donating the form to commonform.org
-        </li>
-        <li>
-          listing a link to the form as a project under your name
-        </li>
-        <li>
-          making it available to anyone who asks for it by project
-          name and edition
-        </li>
-        <li>
-          showing everyone who browses to the form the fact that you
-          published it
-        </li>
-        <li>
-          allowing commonform.org to index your form
-        </li>
-      </ol>
-      <p>
-        Publications cannot be rescinded.  To correct an error or
-        make an improvement, publish another form under the same
-        project name with a later
-        <a href="https://www.npmjs.com/package/reviewers-edition-parse"
-          >Reviewers Edition</a>.
+        See the
+        <a href="https://github.com/commonform/new-publisher-guide"
+          >New Publisher Guide</a>
+        for more information.
       </p>
     </div>
   `
