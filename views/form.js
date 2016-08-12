@@ -26,6 +26,7 @@ function form (form, send) {
   var tree = root ? form.tree : form.tree.form
   var groups = group(clone(tree))
   var isFocused = deepEqual(form.focused, form.path)
+  var inFocus = isFocused || form.withinFocused
   var editing = form.mode === 'edit'
   var commenting = form.mode === 'comment'
   var annotationsHere = get(
@@ -55,11 +56,13 @@ function form (form, send) {
     (form.focused === null || (!form.withinFocused && !isFocused))
   )
 
+  var digest = form.merkle.digest
+
   var offset = 0
   return html`
     <section
         class="${classes}"
-        data-digest="${form.merkle.digest}">
+        data-digest="${digest}">
       ${root ? null : sectionButton(toggleFocus)}
       ${
         root
@@ -73,7 +76,7 @@ function form (form, send) {
       }
       ${
         isFocused
-        ? details(form.merkle.digest, annotationsHere, send)
+        ? details(digest, annotationsHere, send)
         : null
       }
       ${
@@ -102,6 +105,7 @@ function form (form, send) {
           annotations: get(form.annotations, formKey, {}),
           focused: form.focused,
           withinFocused: isFocused || form.withinFocused,
+          parentComment: form.parentComment,
           offset: offset,
           path: form.path.concat(formKey)
         }
@@ -118,7 +122,14 @@ function form (form, send) {
       })}
       ${
         commenting && commentsHere && commentsHere.length !== 0
-        ? commentsList(commentsHere, send)
+        ? commentsList(
+          commentsHere, form.parentComment, digest, send
+        )
+        : null
+      }
+      ${
+        commenting && (inFocus || root)
+        ? commentForm(form, false, send)
         : null
       }
     </section>
@@ -224,6 +235,7 @@ function series (state, send) {
         merkle: state.merkle.content[absoluteIndex],
         focused: state.focused,
         withinFocused: state.withinFocused,
+        parentComment: state.parentComment,
         path: state.path.concat(pathSuffix)
       },
       send
@@ -334,7 +346,7 @@ function blank (blanks, path, send) {
   )
 }
 
-function commentsList (comments, send) {
+function commentsList (comments, parent, digest, send) {
   var roots = comments
   .filter(function (comment) {
     return comment.replyTo.length === 0
@@ -345,36 +357,59 @@ function commentsList (comments, send) {
   return html`
     <ol class=comments>
       ${roots.map(function (root) {
-        return commentListItem(root, [], comments, send)
+        return commentListItem(
+          root, [], comments, digest, parent, send
+        )
       })}
     </ol>
   `
 }
 
-function commentListItem (comment, parents, other, send) {
-  var withParent = parents.concat(comment.uuid)
+function commentListItem (
+  comment, parents, other, digest, parent, send
+) {
+  var withParent = [comment.uuid].concat(parents)
   var replies = other.filter(function (comment) {
     return equalArrays(
       comment.replyTo.slice(0, withParent.length),
       withParent
     )
   })
+  var uuid = comment.uuid
+
+  var reply = parent && uuid === parent.uuid
+  ? commentForm(digest, {
+    context: comment.context,
+    replyTo: withParent
+  }, send)
+  : html`<button onclick=${onClick}>Reply</button>`
   return html`
-    <li data-uuid=${comment.uuid}>
+    <li data-uuid=${uuid}>
       ${improvePunctuation(comment.text)}
       <span class=byline>
         ${publisherLink(comment.publisher)}
         ${new Date(parseInt(comment.timestamp)).toLocaleString()}
       </span>
+      <div class=buttons>
+        ${reply}
+      </div>
       ${
         replies.length === 0
         ? null
         : replies.map(function (reply) {
-          return commentListItem(reply, withParent, other, send)
+          return commentListItem(
+            reply, withParent, other, digest, parent, send
+          )
         })
       }
     </li>
   `
+
+  function onClick (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    send('form:reply to', comment)
+  }
 }
 
 function equalArrays (a, b) {
@@ -384,4 +419,58 @@ function equalArrays (a, b) {
       return fromA === b[index]
     })
   )
+}
+
+function commentForm (digest, parent, send) {
+  var context
+  if (!parent) {
+    context = html`
+      <p>
+        <label for=context>Comment on this form:</label>
+        <select name=context>
+          <option value=root
+            >Within this entire form</option>
+          <option
+              value=${digest}
+              selected
+            >Anywhere it appears</option>
+        </select>
+      </p>
+    `
+  }
+
+  return html`
+    <form onsubmit=${onSubmit} class=newComment>
+      ${context}
+      <textarea required name=text></textarea>
+      <p>
+        <input
+            type=text
+            required
+            placeholder="Publisher Name"
+            name=publisher></input>
+        <input
+            type=password
+            required
+            placeholder="Password"
+            name=password></input>
+        <button type=submit>Publish Comment</button>
+      </p>
+    </form>
+  `
+
+  function onSubmit (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    var target = event.target
+    var elements = target.elements
+    send('form:comment', {
+      context: parent ? parent.context : elements.context.value,
+      form: digest,
+      replyTo: parent ? parent.replyTo : [],
+      text: elements.text.value,
+      publisher: elements.publisher.value,
+      password: elements.password.value
+    })
+  }
 }

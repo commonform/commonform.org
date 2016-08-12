@@ -39,6 +39,7 @@ module.exports = function (initialize, reduction, handler) {
     path: [],
     projects: [],
     publications: [],
+    parentComment: null,
     signaturePages: [],
     tree: null
   })
@@ -138,6 +139,7 @@ module.exports = function (initialize, reduction, handler) {
       publications: action.publications || [],
       signaturePages: [],
       focused: null,
+      parentComment: null,
       diff: state.hasOwnProperty('comparing')
       ? diff(action.tree, state.comparing.tree)
       : null
@@ -377,13 +379,49 @@ module.exports = function (initialize, reduction, handler) {
     return {comments: comments}
   })
 
-  handler('fetch comments', function (data, state, reduce, done) {
+  handler('fetch comments', fetchComments)
+
+  function fetchComments (data, state, reduce, done) {
     getComments(state.merkle.digest, function (error, comments) {
       if (error) {
         done(error)
       } else {
         reduce('comments', comments)
         done()
+      }
+    })
+  }
+
+  reduction('reply to', function (parent, state) {
+    return {parentComment: parent}
+  })
+
+  handler('reply to', function (uuid, state, reduce, done) {
+    reduce('reply to', uuid)
+    done()
+  })
+
+  handler('comment', function (data, state, reduce, done) {
+    var publisher = data.publisher
+    var password = data.password
+    delete data.password
+    xhr({
+      method: 'POST',
+      uri: 'https://api.commonform.org/annotations',
+      withCredentials: true,
+      username: publisher,
+      password: password,
+      body: JSON.stringify(data)
+    }, function (error, response, body) {
+      if (error) {
+        done(error)
+      } else {
+        var status = response.statusCode
+        if (status === 200 && status === 204) {
+          fetchComments(data, state, reduce, done)
+        } else {
+          done(new Error(body))
+        }
       }
     })
   })
