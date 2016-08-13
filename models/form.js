@@ -93,6 +93,26 @@ module.exports = function (initialize, reduction, handler) {
     }
   })
 
+  handler('compare', function (digests, state, reduce, done) {
+    var first = digests[0]
+    var second = digests[1]
+    if (state.merkle && state.merkle.digest === first) {
+      fetchComparing()
+    } else {
+      loadForm(first, onError(done, function (result) {
+        reduce('tree', result)
+        fetchComparing()
+      }))
+    }
+    function fetchComparing () {
+      loadForm(second, onError(done, function (result) {
+        reduce('comparing', result)
+        reduce('mode', 'read')
+        done()
+      }))
+    }
+  })
+
   reduction('focus', function (path) {
     return {focused: path}
   })

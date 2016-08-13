@@ -1,6 +1,7 @@
 var EventEmitter = require('events').EventEmitter
 var assert = require('assert')
 var browserModel = require('./models/browser')
+var compare = require('./views/compare')
 var formModel = require('./models/form')
 var level = require('./level')
 var loading = require('./views/loading')
@@ -113,13 +114,20 @@ function render () {
   } else {
     var path = pathOf(window.location.href)
     var publisher
+    var split
     if (path === '' || path === '/') {
       return publishers(browser, action)
     } else if (startsWith('/forms/')) {
-      var digest = path.substring(7)
-      return read(digest, form, action)
+      var suffix = path.substring(7)
+      split = suffix.split('/')
+      var digest = split[0]
+      if (split[1]) {
+        return compare(digest, split[1], form, action)
+      } else {
+        return read(digest, form, action)
+      }
     } else if (startsWith('/search')) {
-      var split = path.split('/')
+      split = path.split('/')
       return searchView(
         decode(split[2]), decode(split[3]), search, action
       )
