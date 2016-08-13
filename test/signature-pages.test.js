@@ -1,6 +1,12 @@
 var tape = require('tape')
 var webdriver = require('./webdriver')
 
+var TEST = (
+  '543cd5e172cfc6b3c20a0d91855fea44' +
+  'b5bf2fd1da7bf6b7c69f95d6e2705c37'
+)
+var testURL = 'http://localhost:8000/forms/' + TEST
+
 tape.test('Signature Pages', function (test) {
   var addButton = '//button[contains(text(),"Add Signature Page")]'
   var deleteButton = (
@@ -14,7 +20,7 @@ tape.test('Signature Pages', function (test) {
   test.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000')
+    .url(testURL)
     .waitForExist(addButton)
     .click(addButton)
     .isExisting(pageFollows)
@@ -30,7 +36,7 @@ tape.test('Signature Pages', function (test) {
   test.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000')
+    .url(testURL)
     .waitForExist(addButton)
     .click(addButton)
     .click(addButton)
@@ -47,7 +53,7 @@ tape.test('Signature Pages', function (test) {
   test.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000')
+    .url(testURL)
     .waitForExist(addButton)
     .click(addButton)
     .waitForExist(deleteButton)

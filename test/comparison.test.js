@@ -15,10 +15,7 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url(
-      'http://localhost:8000/forms/' + apache2 +
-      '#compare:' + edited
-    )
+    .url('http://localhost:8000/forms/' + apache2 + '/' + edited)
     .isExisting('//*[contains(text(),"compared to")]')
     .then(function (existing) {
       test.assert(
@@ -31,10 +28,7 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url(
-      'http://localhost:8000/forms/' + apache2 +
-      '#compare:' + edited
-    )
+    .url('http://localhost:8000/forms/' + apache2 + '/' + edited)
     .isExisting('//del//span[contains(text(),"whether")]')
     .then(function (existing) {
       test.assert(
@@ -57,7 +51,7 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000/forms/' + abc + '#compare:' + bcd)
+    .url('http://localhost:8000/forms/' + abc + '/' + bcd)
     .waitForExist('//del//p[contains(text(),"This is A.")]')
     .isExisting('//del//p[contains(text(),"This is A.")]')
     .then(function (existing) {
@@ -71,7 +65,7 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000/forms/' + abc + '#compare:' + bcd)
+    .url('http://localhost:8000/forms/' + abc + '/' + bcd)
     .waitForExist('//ins//p[contains(text(),"This is D.")]')
     .isExisting('//ins//p[contains(text(),"This is D.")]')
     .then(function (existing) {
@@ -95,10 +89,7 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url(
-      'http://localhost:8000/forms/' + a +
-      '#compare:' + aConspicuous
-    )
+    .url('http://localhost:8000/forms/' + a + '/' + aConspicuous)
     .waitForExist('//*[contains(text(),"Made conspicuous")]')
     .isExisting('//*[contains(text(),"Made conspicuous")]')
     .then(function (existing) {
@@ -112,10 +103,7 @@ tape('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url(
-      'http://localhost:8000/forms/' + aConspicuous +
-      '#compare:' + a
-    )
+    .url('http://localhost:8000/forms/' + aConspicuous + '/' + a)
     .waitForExist('//*[contains(text(),"Made inconspicuous")]')
     .isExisting('//*[contains(text(),"Made inconspicuous")]')
     .then(function (existing) {
