@@ -1,5 +1,4 @@
 var clone = require('../utilities/clone')
-var digestLink = require('./digest-link')
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
 var html = require('yo-yo')
