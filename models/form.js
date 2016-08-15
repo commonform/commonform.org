@@ -437,7 +437,7 @@ module.exports = function (initialize, reduction, handler) {
         done(error)
       } else {
         var status = response.statusCode
-        if (status === 200 && status === 204) {
+        if (status === 200 || status === 204) {
           fetchComments(data, state, reduce, done)
         } else {
           done(new Error(body))
