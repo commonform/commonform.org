@@ -20,7 +20,6 @@ var form = {}
 var browser = {}
 var search = {}
 var state = {
-  error: null,
   browser: browser,
   form: form,
   search: search
@@ -31,8 +30,7 @@ var state = {
 var actions = new EventEmitter()
 .on('error', function (error) {
   console.error(error)
-  state.error = error
-  update()
+  window.alert(error.toString())
 })
 
 function action (/* variadic */) {
