@@ -129,7 +129,7 @@ function form (form, send) {
       }
       ${
         commenting && (inFocus || root)
-        ? commentForm(form, false, send)
+        ? commentForm(digest, false, send)
         : null
       }
     </section>
@@ -422,6 +422,8 @@ function equalArrays (a, b) {
 }
 
 function commentForm (digest, parent, send) {
+  assert(typeof digest === 'string')
+  assert(typeof send === 'function')
   var context
   if (!parent) {
     context = html`
