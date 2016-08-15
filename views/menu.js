@@ -25,6 +25,27 @@ module.exports = function (form, send) {
         </form>
       </p>
 
+      <h2>Receive E-Mail Updates for this Form</h2>
+      <form onsubmit=${subscribe}>
+        <p>
+          <input
+              type=text
+              required
+              placeholder="Publisher Name"
+              name=publisher></input>
+          <input
+              type=password
+              required
+              placeholder="Password"
+              name=password></input>
+          <button type=submit>Subscribe</button>
+        </p>
+      </form>
+      <p>
+        commonform.org will send you an e-mail when this form is
+        published in a project or a new comment is made to it.
+      </ul>
+
       <h2>Donate Anonymously to commonform.org</h2>
       <form onsubmit=${donateForm}>
         <p>
@@ -157,6 +178,14 @@ module.exports = function (form, send) {
       subject: 'Link to Common Form',
       body: 'https://commonform.org/forms/' + form.merkle.digest
     })
+  }
+
+  function subscribe (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    send('form:subscribe', fromElements(event.target.elements, [
+      'publisher', 'password'
+    ]))
   }
 
   function donateForm (event) {

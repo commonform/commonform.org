@@ -448,6 +448,34 @@ module.exports = function (initialize, reduction, handler) {
       }
     })
   })
+
+  handler('subscribe', function (data, state, reduce, done) {
+    var publisher = data.publisher
+    var password = data.password
+    var digest = state.merkle.digest
+    xhr({
+      method: 'POST',
+      uri: (
+        'https://api.commonform.org' +
+        '/forms/' + digest +
+        '/subscribers/' + publisher
+      ),
+      withCredentials: true,
+      username: publisher,
+      password: password
+    }, function (error, response, body) {
+      if (error) {
+        done(error)
+      } else {
+        var status = response.statusCode
+        if (status === 200 || status === 204 || status === 409) {
+          window.alert('Subscribed!')
+        } else {
+          done(new Error(body))
+        }
+      }
+    })
+  })
 }
 
 function donate (state, publisher, password, callback) {
