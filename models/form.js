@@ -424,6 +424,9 @@ module.exports = function (initialize, reduction, handler) {
   handler('comment', function (data, state, reduce, done) {
     var publisher = data.publisher
     var password = data.password
+    if (data.context === 'root') {
+      data.context = state.merkle.digest
+    }
     delete data.password
     xhr({
       method: 'POST',
