@@ -75,8 +75,8 @@ module.exports = function (form, send) {
           </p>
         </form>
 
-        <form class=donate onsubmit=${donateForm}>
-          <h2>Donate Anonymously to commonform.org</h2>
+        <form class=save onsubmit=${saveForm}>
+          <h2>Save to commonform.org</h2>
           <p>
             <input
                 type=text
@@ -90,7 +90,7 @@ module.exports = function (form, send) {
                 disabled=true
                 placeholder="Password"
                 name=password></input>
-            <button type=submit>Donate Form</button>
+            <button type=submit>Save Form</button>
           </p>
           <p>
             <em>
@@ -222,7 +222,7 @@ module.exports = function (form, send) {
     for (var formIndex = 0; formIndex < forms; formIndex++) {
       var form = document.forms[formIndex]
       var filter = (
-        form.className.indexOf('donate') !== -1 ||
+        form.className.indexOf('save') !== -1 ||
         form.className.indexOf('publish') !== -1
       )
       if (filter) {
@@ -235,10 +235,10 @@ module.exports = function (form, send) {
     }
   }
 
-  function donateForm (event) {
+  function saveForm (event) {
     event.preventDefault()
     event.stopPropagation()
-    send('form:donate', fromElements(event.target.elements, [
+    send('form:save', fromElements(event.target.elements, [
       'publisher', 'password'
     ]))
   }

@@ -351,15 +351,15 @@ module.exports = function (initialize, reduction, handler) {
     })
   })
 
-  handler('donate', function (data, state, reduce, done) {
+  handler('save', function (data, state, reduce, done) {
     var publisher = data.publisher
     var password = data.password
     var digest = state.merkle.digest
-    donate(state, publisher, password, function (error) {
+    save(state, publisher, password, function (error) {
       if (error) {
         done(error)
       } else {
-        window.alert('Donated form ' + digest)
+        window.alert('Saved form ' + digest)
         reduce('mode', 'read')
         done()
       }
@@ -372,7 +372,7 @@ module.exports = function (initialize, reduction, handler) {
     var project = data.project
     var edition = data.edition
     var digest = state.merkle.digest
-    donate(state, publisher, password, function (error) {
+    save(state, publisher, password, function (error) {
       if (error) {
         done(error)
       } else {
@@ -478,7 +478,7 @@ module.exports = function (initialize, reduction, handler) {
   })
 }
 
-function donate (state, publisher, password, callback) {
+function save (state, publisher, password, callback) {
   xhr({
     method: 'POST',
     uri: 'https://api.commonform.org/forms',
