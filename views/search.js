@@ -1,3 +1,4 @@
+var assert = require('assert')
 var digestLink = require('./digest-link')
 var footer = require('./footer')
 var headingLink = require('./heading-link')
@@ -9,6 +10,8 @@ var termLink = require('./term-link')
 var ACTIONS = ['definitions', 'forms', 'headings', 'terms']
 
 module.exports = function (action, value, state, send) {
+  assert(typeof state === 'object')
+  assert(typeof send === 'function')
   if (ACTIONS.indexOf(action) === -1) {
     action = undefined
   }

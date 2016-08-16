@@ -20,7 +20,7 @@ var use = require('./use')
 module.exports = form
 
 function form (form, send) {
-  assert.equal(typeof form.tree, 'object')
+  assert(typeof form.tree === 'object')
   var root = form.path.length === 0
   var formKey = root ? [] : ['form']
   var tree = root ? form.tree : form.tree.form

@@ -1,3 +1,4 @@
+var assert = require('assert')
 var comparison = require('./comparison')
 var footer = require('./footer')
 var header = require('./header')
@@ -6,6 +7,10 @@ var loading = require('./loading')
 var modeButtons = require('./mode-buttons')
 
 module.exports = function compare (a, b, state, send) {
+  assert(typeof a === 'string')
+  assert(typeof b === 'string')
+  assert(typeof state === 'object')
+  assert(typeof send === 'function')
   var haveData = state.merkle && state.diff
   if (!haveData) {
     return loading(state.mode, function () {

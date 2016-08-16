@@ -1,8 +1,11 @@
+var assert = require('assert')
 var annotators = require('../annotators')
 var find = require('array-find')
 var html = require('yo-yo')
 
 module.exports = function (state, send) {
+  assert(typeof state === 'object')
+  assert(typeof send === 'function')
   var flags = state.annotators
   return html`
     <section class=settings>

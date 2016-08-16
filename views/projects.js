@@ -1,3 +1,4 @@
+var assert = require('assert')
 var compare = require('reviewers-edition-compare')
 var footer = require('./footer')
 var html = require('yo-yo')
@@ -5,6 +6,9 @@ var loading = require('./loading')
 var modeButtons = require('./mode-buttons')
 
 module.exports = function (publisher, state, send) {
+  assert(typeof publisher === 'string')
+  assert(typeof state === 'object')
+  assert(typeof send === 'function')
   var haveData = state.publisher === publisher && state.projects
   if (!haveData) {
     return loading('browse', function () {

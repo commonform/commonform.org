@@ -6,7 +6,7 @@ var spell = require('reviewers-edition-spell')
 module.exports = function (
   digest, publications, toDigest, toPublications, send
 ) {
-  assert.equal(typeof digest, 'string')
+  assert(typeof digest === 'string')
   assert(Array.isArray(publications))
   assert(send !== undefined)
   return toDigest
@@ -21,7 +21,7 @@ module.exports = function (
 }
 
 function paragraph (digest, publications, send) {
-  assert.equal(typeof digest, 'string')
+  assert(typeof digest === 'string')
   assert(Array.isArray(publications))
   assert(send !== undefined)
   return html`

@@ -2,7 +2,7 @@ var assert = require('assert')
 var html = require('yo-yo')
 
 module.exports = function (digest) {
-  assert.equal(typeof digest, 'string')
+  assert(typeof digest === 'string')
   return html`
     <a
         class=digest

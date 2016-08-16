@@ -1,3 +1,4 @@
+var assert = require('assert')
 var capitalize = require('capitalize')
 var html = require('yo-yo')
 var clone = require('../utilities/clone')
@@ -5,6 +6,8 @@ var emptySignaturePage = require('../data/empty-signature-page')
 var input = require('./input')
 
 module.exports = function (pages, send) {
+  assert(Array.isArray(pages))
+  assert(typeof send === 'function')
   return html`
     <div class=signaturePages>
       <p class=endOfPage>

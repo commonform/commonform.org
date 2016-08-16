@@ -1,3 +1,4 @@
+var assert = require('assert')
 var html = require('yo-yo')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
@@ -10,6 +11,7 @@ var use = require('./use')
 module.exports = comparison
 
 function comparison (diff) {
+  assert(typeof diff === 'object')
   var root = !diff.hasOwnProperty('form')
   var treeLike = root ? diff : diff.form
   var groups = group(clone(treeLike))
@@ -80,6 +82,7 @@ function comparison (diff) {
 }
 
 function heading (heading) {
+  assert(Array.isArray(heading))
   var joined = heading
   .map(function (word) { return word.word })
   .join('')
@@ -91,18 +94,24 @@ function heading (heading) {
 }
 
 function word (word) {
+  assert(typeof word === 'object')
+  assert(typeof word.word === 'string')
   if (word.inserted) return html`<ins>${word.word}</ins>`
   else if (word.deleted) return html`<del>${word.word}</del>`
   else return html`<span>${word.word}</span>`
 }
 
 function series (data) {
+  assert(typeof data === 'object')
+  assert(Array.isArray(data.content))
   return data.content.map(function (child) {
     return comparison(child)
   })
 }
 
 function paragraph (data) {
+  assert(typeof data === 'object')
+  assert(Array.isArray(data.content))
   return html`
     <p class=text>
       ${

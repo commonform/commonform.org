@@ -1,3 +1,4 @@
+var assert = require('assert')
 var footer = require('./footer')
 var html = require('yo-yo')
 var loading = require('./loading')
@@ -5,6 +6,8 @@ var modeButtons = require('./mode-buttons')
 var publisherLink = require('./publisher-link')
 
 module.exports = function browse (state, send) {
+  assert(typeof state === 'object')
+  assert(typeof send === 'function')
   if (!state.publishers) {
     return loading('browse', function () {
       send('browser:get publishers')

@@ -1,3 +1,4 @@
+var assert = require('assert')
 var clone = require('../utilities/clone')
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
@@ -12,6 +13,8 @@ var GUIDE = 'https://github.com/commonform/new-publisher-guide'
 var slice = Array.prototype.slice
 
 module.exports = function (form, send) {
+  assert(typeof form === 'object')
+  assert(typeof send === 'function')
   return html`
     <div class="menu">
       <h2>Download, Open, and E-Mail</h2>

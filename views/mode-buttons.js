@@ -1,8 +1,11 @@
+var assert = require('assert')
 var html = require('yo-yo')
 
 module.exports = modeButtons
 
 function modeButtons (mode, send) {
+  assert(typeof mode === 'string')
+  assert(typeof send === 'function')
   var showReadModes = mode !== 'browse' && mode !== 'search'
   return html`
     <div class=modes>
@@ -26,6 +29,9 @@ function modeButtons (mode, send) {
 }
 
 function modeButton (mode, currentMode, send) {
+  assert(typeof mode === 'string')
+  assert(typeof currentMode === 'string')
+  assert(typeof send === 'function')
   var enabled = mode === currentMode
   var title = enabled ? '' : 'Click to ' + mode + '.'
   return html`
