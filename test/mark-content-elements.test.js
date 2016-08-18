@@ -161,3 +161,14 @@ tape('manual reference', function (test) {
   )
   test.end()
 })
+
+tape('multiple term uses', function (test) {
+  test.deepEqual(
+    mark(
+      {content: [{definition: 'Seller'}]},
+      ['Seller and Seller\'s counsel']
+    ),
+    [{use: 'Seller'}, ' and ', {use: 'Seller'}, '\'s counsel']
+  )
+  test.end()
+})

@@ -90,8 +90,8 @@ function markOccurrences (elements, pattern, substitute, callback) {
             elementToInsert,
             element.substring(occurrence.index + occurrence.length)
           )
+          index += 2
         }
-        index += 2
         if (callback) {
           callback(occurrence.value)
         }
