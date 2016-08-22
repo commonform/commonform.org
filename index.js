@@ -115,6 +115,10 @@ function render () {
     var split
     if (path === '' || path === '/') {
       return publishers(browser, action)
+    } else if (path === '/forms/new') {
+      return loading('edit', function () {
+        action('form:new form')
+      })
     } else if (startsWith('/forms/')) {
       var suffix = path.substring(7)
       split = suffix.split('/')

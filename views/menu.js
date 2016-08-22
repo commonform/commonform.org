@@ -2,10 +2,9 @@ var assert = require('assert')
 var clone = require('../utilities/clone')
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
+var fromElements = require('../utilities/from-elements')
 var html = require('yo-yo')
 var outline = require('outline-numbering')
-var parseMarkup = require('commonform-markup-parse')
-var querystring = require('querystring')
 var signaturePagesToOOXML = require('ooxml-signature-pages')
 var toMarkup = require('commonform-markup-stringify')
 
@@ -17,41 +16,15 @@ module.exports = function (form, send) {
   assert(typeof send === 'function')
   return html`
     <div class="menu">
-      <h2>Download, Open, and E-Mail</h2>
+      <h1>Save</h1>
+
+      <h2>Download and E-Mail</h2>
       <p>
         <button onclick=${downloadDOCX}>Download for Word</button>
         <button onclick=${downloadMarkup}>Download Markup</button>
-        <button onclick=${email}>E-Mail</button>
-        <form class=fileInputTrick>
-          <button>Open File</button>
-          <input
-              type=file
-              accept=".cform,.commonform,.json"
-              onchange=${selectFile}></input>
-        </form>
       </p>
 
-      <h2>Receive E-Mail Updates for this Form</h2>
-      <form onsubmit=${subscribe}>
-        <p>
-          <input
-              type=text
-              required
-              placeholder="Publisher Name"
-              name=publisher></input>
-          <input
-              type=password
-              required
-              placeholder="Password"
-              name=password></input>
-          <button type=submit>Subscribe</button>
-        </p>
-      </form>
-      <p>
-        commonform.org will send you an e-mail when this form is
-        published in a project or a new comment is made to it.
-      </ul>
-
+      <h2>Send to CommonForm.org</h2>
       <section class=dangerZone>
         <form onchange=${checkSafety}>
           <p>Before clicking any buttons down here:</p>
@@ -181,40 +154,6 @@ module.exports = function (form, send) {
     }
   }
 
-  function selectFile (event) {
-    event.preventDefault()
-    var target = event.target
-    var file = target.files[0]
-    var reader = new window.FileReader()
-    var isJSON = file.type.match(/application\/json/)
-    reader.onload = function (event) {
-      var result = event.target.result
-      var tree
-      try {
-        tree = isJSON ? JSON.parse(result) : parseMarkup(result).form
-      } catch (error) { return }
-      send('form:loaded', tree)
-    }
-    reader.readAsText(file, 'UTF-8')
-    target.value = null
-  }
-
-  function email (event) {
-    event.preventDefault()
-    window.location.href = 'mailto:?' + querystring.stringify({
-      subject: 'Link to Common Form',
-      body: 'https://commonform.org/forms/' + form.merkle.digest
-    })
-  }
-
-  function subscribe (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    send('form:subscribe', fromElements(event.target.elements, [
-      'publisher', 'password'
-    ]))
-  }
-
   function checkSafety (event) {
     event.preventDefault()
     var allChecked = slice.call(event.target.form.elements)
@@ -252,15 +191,6 @@ module.exports = function (form, send) {
     send('form:publish', fromElements(event.target.elements, [
       'publisher', 'password', 'project', 'edition'
     ]))
-  }
-
-  function fromElements (elements, names) {
-    var returned = {}
-    names.forEach(function (name) {
-      returned[name] = elements[name].value
-      elements[name].value = ''
-    })
-    return returned
   }
 }
 

@@ -19,10 +19,16 @@ function modeButtons (mode, send) {
           class="browse ${enableIf(mode === 'browse')}"
           title="Click to browse forms."
       ></a>
+      <a
+          href="/forms/new"
+          class="new ${enableIf(mode === 'new')}"
+          title="Click to create a new form."
+      ></a>
       ${showReadModes ? modeButton('read', mode, send) : null}
       ${showReadModes ? modeButton('edit', mode, send) : null}
       ${showReadModes ? modeButton('comment', mode, send) : null}
       ${showReadModes ? modeButton('save', mode, send) : null}
+      ${showReadModes ? modeButton('mail', mode, send) : null}
       ${showReadModes ? modeButton('settings', mode, send) : null}
     </div>
   `

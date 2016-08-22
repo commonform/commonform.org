@@ -303,6 +303,15 @@ module.exports = function (initialize, reduction, handler) {
     }))
   })
 
+  handler('new form', function (action, state, reduce, done) {
+    var tree = {content: ['Click to edit.']}
+    reduce('tree', {tree: tree})
+    reduce('mode', 'edit')
+    var path = formPath(state.merkle.digest)
+    window.history.pushState(tree, '', path)
+    done()
+  })
+
   handler('load publication', function (data, state, reduce, done) {
     getPublication(data, onError(done, function (digest) {
       loadForm(digest, onError(done, function (data) {
