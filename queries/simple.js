@@ -6,9 +6,11 @@ module.exports = function (uri, callback) {
       callback(error)
     } else {
       if (response.statusCode !== 200) {
-        callback(
-          new Error('Server responded ' + response.statusCode + '.')
+        var newError = new Error(
+          'Server responded ' + response.statusCode + '.'
         )
+        newError.statusCode = response.statusCode
+        callback(newError)
       } else {
         if (!body) {
           callback(new Error('No body received,'))
