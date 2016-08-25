@@ -22,7 +22,7 @@ module.exports = function (state, send) {
         </article>
       </div>
     `
-  } if (mode === 'mail') {
+  } else if (mode === 'mail') {
     return html`
       <div class=container>
         <article class=commonform>

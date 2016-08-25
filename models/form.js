@@ -5,6 +5,8 @@ var cache = require('../cache')
 var clone = require('../utilities/clone')
 var deepEqual = require('deep-equal')
 var diff = require('commonform-diff')
+var docx = require('commonform-docx')
+var filesaver = require('filesaver.js').saveAs
 var fix = require('commonform-fix-strings')
 var getComments = require('../queries/comments')
 var getForm = require('../queries/form')
@@ -14,7 +16,13 @@ var keyarray = require('keyarray')
 var level = require('../level')
 var markContentElements = require('../utilities/mark-content-elements')
 var merkleize = require('commonform-merkleize')
+var outline = require('outline-numbering')
+var querystring = require('querystring')
+var rename = require('commonform-rename')
 var runParallel = require('run-parallel')
+var signaturePagesToOOXML = require('ooxml-signature-pages')
+var simplify = require('commonform-simplify-structure')
+var toMarkup = require('commonform-markup-stringify')
 var xhr = require('xhr')
 
 var slice = Array.prototype.slice
@@ -485,6 +493,73 @@ module.exports = function (initialize, reduction, handler) {
       }
     })
   })
+
+  handler('email', function (data, state, reduce, done) {
+    window.location.href = 'mailto:?' + querystring.stringify({
+      subject: 'Link to Common Form',
+      body: 'https://commonform.org/forms/' + state.merkle.digest
+    })
+  })
+
+  handler('download docx', function (data, state, reduce, done) {
+    var title = window.prompt('Enter a document title', 'Untitled Form')
+    if (title !== null) {
+      var options = {title: title, numbering: outline}
+      if (state.signatures) {
+        options.after = signaturePagesToOOXML(state.signatures)
+      }
+      filesaver(
+        docx(clone(state.tree), state.blanks, options)
+        .generate({type: 'blob'}),
+        fileName(title, 'docx')
+      )
+    }
+  })
+
+  handler('download markup', function (data, state, reduce, done) {
+    var title = window.prompt('Enter a document title', 'Untitled Form')
+    if (title !== null) {
+      var blob = new window.Blob(
+        [toMarkup(state.tree)],
+        {type: 'text/plain;charset=utf-8'}
+      )
+      filesaver(blob, fileName(title, 'cform'))
+    }
+  })
+
+  handler('rename term', function (data, state, reduce, done) {
+    var newTree = clone(state.tree)
+    var target = window.prompt('Heading to replace:')
+    if (target === null || target === '') {
+      return
+    }
+    var replacement = window.prompt('Replacement heading:')
+    if (replacement === null || replacement === '') {
+      return
+    }
+    rename.term(target, replacement, newTree)
+    pushEditedTree({tree: newTree}, reduce, done)
+  })
+
+  handler('rename heading', function (data, state, reduce, done) {
+    var newTree = clone(state.tree)
+    var target = window.prompt('Term to replace:')
+    if (target === null || target === '') {
+      return
+    }
+    var replacement = window.prompt('Replacement term:')
+    if (replacement === null || replacement === '') {
+      return
+    }
+    rename.heading(target, replacement, newTree)
+    pushEditedTree({tree: newTree}, reduce, done)
+  })
+
+  handler('simplify', function (data, state, reduce, done) {
+    var newTree = clone(state.tree)
+    simplify(newTree)
+    pushEditedTree({tree: newTree}, reduce, done)
+  })
 }
 
 function save (state, publisher, password, callback) {
@@ -589,4 +664,9 @@ function onError (onError, onSuccess) {
       onSuccess.apply(null, slice.call(arguments, 1))
     }
   }
+}
+
+function fileName (title, extension) {
+  var date = new Date().toISOString()
+  return '' + title + ' ' + date + '.' + extension
 }

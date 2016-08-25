@@ -1,12 +1,6 @@
 var assert = require('assert')
-var clone = require('../utilities/clone')
-var docx = require('commonform-docx')
-var filesaver = require('filesaver.js').saveAs
 var fromElements = require('../utilities/from-elements')
 var html = require('yo-yo')
-var outline = require('outline-numbering')
-var signaturePagesToOOXML = require('ooxml-signature-pages')
-var toMarkup = require('commonform-markup-stringify')
 
 var GUIDE = 'https://github.com/commonform/new-publisher-guide'
 var slice = Array.prototype.slice
@@ -16,15 +10,6 @@ module.exports = function (form, send) {
   assert(typeof send === 'function')
   return html`
     <div class="menu">
-      <h1>Save</h1>
-
-      <h2>Download and E-Mail</h2>
-      <p>
-        <button onclick=${downloadDOCX}>Download for Word</button>
-        <button onclick=${downloadMarkup}>Download Markup</button>
-      </p>
-
-      <h2>Send to CommonForm.org</h2>
       <section class=dangerZone>
         <form onchange=${checkSafety}>
           <p>Before clicking any buttons down here:</p>
@@ -126,34 +111,6 @@ module.exports = function (form, send) {
     </div>
   `
 
-  function downloadDOCX (event) {
-    event.preventDefault()
-    var title = window.prompt('Enter a document title', 'Untitled Form')
-    if (title !== null) {
-      var options = {title: title, numbering: outline}
-      if (form.signatures) {
-        options.after = signaturePagesToOOXML(form.signatures)
-      }
-      filesaver(
-        docx(clone(form.tree), form.blanks, options)
-        .generate({type: 'blob'}),
-        fileName(title, 'docx')
-      )
-    }
-  }
-
-  function downloadMarkup (event) {
-    event.preventDefault()
-    var title = window.prompt('Enter a document title', 'Untitled Form')
-    if (title !== null) {
-      var blob = new window.Blob(
-        [toMarkup(form.tree)],
-        {type: 'text/plain;charset=utf-8'}
-      )
-      filesaver(blob, fileName(title, 'cform'))
-    }
-  }
-
   function checkSafety (event) {
     event.preventDefault()
     var allChecked = slice.call(event.target.form.elements)
@@ -192,9 +149,4 @@ module.exports = function (form, send) {
       'publisher', 'password', 'project', 'edition'
     ]))
   }
-}
-
-function fileName (title, extension) {
-  var date = new Date().toISOString()
-  return '' + title + ' ' + date + '.' + extension
 }

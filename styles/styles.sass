@@ -84,6 +84,66 @@ button
   h2
     font-size: 100%
 
+.tools a, .modes a
+  display: block
+  width: 2.5rem
+  height: 2.5rem
+  text-align: center
+  +notselectable
+  cursor: pointer
+  text-decoration: none
+  border: none !important
+  background-repeat: no-repeat
+  background-position: center center
+  background-size: 80%
+  margin: 0.25rem auto
+
+.tools
+  position: relative
+  .toolbox
+    display: block
+    z-index: 100
+    width: 11rem
+    height: 11rem
+    padding: 0.5rem
+    border: 1px solid black
+    border-radius: 1rem
+    background: white
+    position: absolute
+    left: 100%
+    top: -9rem
+    text-align: left
+    &.closed
+      display: none
+    &.open
+      display: inherit
+    a
+      display: inline-block
+      margin: 0.5rem
+      &.docx
+        background-image: url(icons/basic_case.svg)
+      &.save
+        background-image: url(icons/basic_elaboration_cloud_upload.svg)
+        // background-image: url(icons/basic_book.svg)
+      &.markup
+        background-image: url(icons/basic_floppydisk.svg)
+      &.mail
+        background-image: url(icons/basic_mail.svg)
+      &.renameTerm
+        background-image: url(icons/arrows_drag_right.svg)
+      &.renameHeading
+        background-image: url(icons/arrows_rotate.svg)
+      &.subscribe
+        background-image: url(icons/basic_rss.svg)
+      &.open
+        background-image: url(icons/basic_folder.svg)
+      &.simplify
+        background-image: url(icons/arrows_shrink.svg)
+      &.markTerms
+        background-image: url(icons/basic_target.svg)
+      &.blankForm
+        background-image: url(icons/basic_sheet.svg)
+
 .modes
   position: fixed
   left: 0rem
@@ -93,26 +153,12 @@ button
   z-index: 100
   width: 2.5rem
   a
-    display: block
-    width: 2.5rem
-    height: 2.5rem
-    text-align: center
-    +notselectable
-    cursor: pointer
-    text-decoration: none
-    border: none !important
-    background-repeat: no-repeat
-    background-position: center center
-    background-size: 80%
-    margin: 0.25rem auto
     &.search
       background-image: url(icons/basic_magnifier.svg)
     &.comment
       background-image: url(icons/basic_message_multiple.svg)
     &.edit
-      background-image: url(icons/basic_sheet_pencil.svg)
-    &.mail
-      background-image: url(icons/basic_mail.svg)
+      background-image: url(icons/software_pencil.svg)
     &.browse
       background-image: url(icons/basic_folder_multiple.svg)
     &.settings
@@ -121,8 +167,8 @@ button
       background-image: url(icons/basic_sheet.svg)
     &.read
       background-image: url(icons/basic_eye.svg)
-    &.save
-      background-image: url(icons/basic_floppydisk.svg)
+    &.tools
+      background-image: url(icons/basic_settings.svg)
     &.enabled
       background-color: white
     &.disabled
