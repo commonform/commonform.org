@@ -16,7 +16,7 @@ module.exports = function () {
           >Matthew Butterick</a>.
       </p>
       <p>
-        PICOL icons from <a href="http://picol.org">picol.org</a>.
+        <a href="http://www.linea.io">linea icons</a> by Dario Ferrando.
       </p>
       <p>
         <a class=openSource>
