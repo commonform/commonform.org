@@ -35,7 +35,7 @@ function toolbox (send) {
         onmouseover=${onMouseOver}
         onmouseout=${onMouseOut}
       ><a
-          title="Click to open toolbox."
+          title="Toolbox"
           class="tools disabled"
         ></a>
       <div class="toolbox closed">
