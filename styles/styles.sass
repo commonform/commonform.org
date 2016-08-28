@@ -445,3 +445,16 @@ button
   textarea
     width: 100%
     padding: 0
+
+.editions
+  margin: 0
+  padding: 0
+  display: inline
+  li
+    display: inline
+    list-style-type: none
+    &:after
+      content: ', '
+    &:last-child
+      &:after
+        content: ''

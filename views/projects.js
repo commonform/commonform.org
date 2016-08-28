@@ -59,13 +59,17 @@ function projectItem (publisher, project, editions, send) {
   return html`
     <li>
       ${project}:
-      ${
-        editions
-        .sort(compare)
-        .map(function (edition) {
-          return editionLink(publisher, project, edition, send)
-        })
-      }
+      <ul class=editions>
+        ${
+          editions
+          .sort(compare)
+          .map(function (edition) {
+            return html`
+              <li>${editionLink(publisher, project, edition, send)}</li>
+            `
+          })
+        }
+      </ul>
     </li>
   `
 }
