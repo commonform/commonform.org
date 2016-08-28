@@ -19,7 +19,11 @@ module.exports = function browse (state, send) {
         <article class=commonform>
           ${sidebar('browse', send)}
           <h1>Common Forms</h1>
-          <h2>From Your Computer</h2>
+          <button
+              onclick=${function () {
+                send('form:new form')
+              }}
+            >Start a New Form from Scratch</button>
           <form class=fileInputTrick>
             <button>Open File</button>
             <input

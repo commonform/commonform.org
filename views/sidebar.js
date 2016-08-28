@@ -47,7 +47,6 @@ function toolbox (send) {
               send('form:mode', 'mail')
             }}
           ></a>
-        ${tool('blankForm', send)}
         <a
             title="Store with CommonForm.org"
             class="save"
@@ -108,10 +107,6 @@ var TOOLS = {
   markTerms: {
     title: 'Mark defined terms.',
     action: null
-  },
-  blankForm: {
-    title: 'Start a form from scratch.',
-    action: 'form:new form'
   }
 }
 
