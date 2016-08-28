@@ -4,6 +4,7 @@
     "async.map": "^0.5.2",
     "capitalize": "^1.0.0",
     "classnames": "^2.2.5",
+    "clipboard": "^1.5.12",
     "commonform-archaic": "^1.2.1",
     "commonform-diff": "^1.0.0",
     "commonform-docx": "^0.11.3",

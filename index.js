@@ -1,4 +1,5 @@
 var EventEmitter = require('events').EventEmitter
+var Clipboard = require('clipboard')
 var assert = require('assert')
 var browserModel = require('./models/browser')
 var compare = require('./views/compare')
@@ -203,6 +204,14 @@ window.addEventListener('click', function (event) {
 })
 
 window.addEventListener('popstate', update)
+
+// Copy Links
+
+new Clipboard('.copy')
+.on('success', function (event) {
+  window.alert('Copied')
+  event.clearSelection()
+})
 
 // Load Settings
 
