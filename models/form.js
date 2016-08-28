@@ -505,8 +505,8 @@ module.exports = function (initialize, reduction, handler) {
     var title = window.prompt('Enter a document title', 'Untitled Form')
     if (title !== null) {
       var options = {title: title, numbering: outline}
-      if (state.signatures) {
-        options.after = signaturePagesToOOXML(state.signatures)
+      if (state.signaturePages) {
+        options.after = signaturePagesToOOXML(state.signaturePages)
       }
       filesaver(
         docx(clone(state.tree), state.blanks, options)
