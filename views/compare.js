@@ -4,7 +4,7 @@ var footer = require('./footer')
 var header = require('./header')
 var html = require('yo-yo')
 var loading = require('./loading')
-var modeButtons = require('./mode-buttons')
+var sidebar = require('./sidebar')
 
 module.exports = function compare (a, b, state, send) {
   assert(typeof a === 'string')
@@ -20,7 +20,7 @@ module.exports = function compare (a, b, state, send) {
     return html`
       <div class=container>
         <article class=commonform>
-          ${modeButtons(state.mode, send)}
+          ${sidebar(state.mode, send)}
           ${
             header(
               state.merkle.digest,

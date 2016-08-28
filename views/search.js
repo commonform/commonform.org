@@ -4,7 +4,7 @@ var footer = require('./footer')
 var headingLink = require('./heading-link')
 var html = require('yo-yo')
 var loading = require('./loading')
-var modeButtons = require('./mode-buttons')
+var sidebar = require('./sidebar')
 var termLink = require('./term-link')
 
 var ACTIONS = ['definitions', 'forms', 'headings', 'terms']
@@ -24,7 +24,7 @@ module.exports = function (action, value, state, send) {
     return html`
       <div class=container>
         <article class=commonform>
-          ${modeButtons('search', send)}
+          ${sidebar('search', send)}
           <h1>Search Common Forms</h1>
           ${action ? null : searchBox(send)}
           ${action ? results(state, send) : null}

@@ -2,9 +2,9 @@ var assert = require('assert')
 var footer = require('./footer')
 var html = require('yo-yo')
 var loading = require('./loading')
-var modeButtons = require('./mode-buttons')
 var parseMarkup = require('commonform-markup-parse')
 var publisherLink = require('./publisher-link')
+var sidebar = require('./sidebar')
 
 module.exports = function browse (state, send) {
   assert(typeof state === 'object')
@@ -17,7 +17,7 @@ module.exports = function browse (state, send) {
     return html`
       <div class=container>
         <article class=commonform>
-          ${modeButtons('browse', send)}
+          ${sidebar('browse', send)}
           <h1>Common Forms</h1>
           <h2>From Your Computer</h2>
           <form class=fileInputTrick>

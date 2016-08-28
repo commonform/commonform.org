@@ -3,7 +3,7 @@ var compare = require('reviewers-edition-compare')
 var footer = require('./footer')
 var html = require('yo-yo')
 var loading = require('./loading')
-var modeButtons = require('./mode-buttons')
+var sidebar = require('./sidebar')
 
 module.exports = function (publisher, state, send) {
   assert(typeof publisher === 'string')
@@ -18,7 +18,7 @@ module.exports = function (publisher, state, send) {
     return html`
       <div class=container>
         <article class=commonform>
-          ${modeButtons('browse', send)}
+          ${sidebar('browse', send)}
           <h1>${publisher}’s Common Form Projects</h1>
           ${about(state.about)}
           ${list(publisher, state.projects, send)}

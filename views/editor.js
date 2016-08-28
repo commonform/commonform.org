@@ -5,7 +5,7 @@ var header = require('./header')
 var html = require('yo-yo')
 var mailMenu = require('./mail-menu')
 var menu = require('./menu')
-var modeButtons = require('./mode-buttons')
+var sidebar = require('./sidebar')
 var signaturePages = require('./signature-pages')
 
 module.exports = function (state, send) {
@@ -16,7 +16,7 @@ module.exports = function (state, send) {
     return html`
       <div class=container>
         <article class=commonform>
-          ${modeButtons(state.mode, send)}
+          ${sidebar(state.mode, send)}
           ${menu(state, send)}
           ${footer()}
         </article>
@@ -26,7 +26,7 @@ module.exports = function (state, send) {
     return html`
       <div class=container>
         <article class=commonform>
-          ${modeButtons(state.mode, send)}
+          ${sidebar(state.mode, send)}
           ${mailMenu(state, send)}
           ${footer()}
         </article>
@@ -42,7 +42,7 @@ module.exports = function (state, send) {
     return html`
       <div class=container>
         <article class=commonform onclick=${onClick}>
-          ${modeButtons(state.mode, send)}
+          ${sidebar(state.mode, send)}
           ${
             header(
               state.merkle.digest,

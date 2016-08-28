@@ -1,6 +1,6 @@
 var assert = require('assert')
 var html = require('yo-yo')
-var modeButtons = require('./mode-buttons')
+var sidebar = require('./sidebar')
 
 module.exports = function (mode, onLoad) {
   assert(typeof mode === 'string')
@@ -9,7 +9,7 @@ module.exports = function (mode, onLoad) {
   return html`
     <div class=container>
       <article class=commonform onload=${onLoad}>
-        ${modeButtons(mode, function () {})}
+        ${sidebar(mode, function () {})}
         Loading…
       </article>
     </div>
