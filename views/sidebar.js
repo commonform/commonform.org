@@ -58,6 +58,7 @@ function toolbox (send) {
         ${tool('simplify', send)}
         ${tool('renameTerm', send)}
         ${tool('renameHeading', send)}
+        ${tool('identify', send)}
         ${tool('docx', send)}
         ${tool('markup', send)}
         ${tool('mail', send)}
@@ -107,6 +108,10 @@ var TOOLS = {
   markTerms: {
     title: 'Mark defined terms.',
     action: null
+  },
+  identify: {
+    title: 'Identify terms and references.',
+    action: 'form:identify'
   }
 }
 

@@ -560,6 +560,21 @@ module.exports = function (initialize, reduction, handler) {
     simplify(newTree)
     pushEditedTree({tree: newTree}, reduce, done)
   })
+
+  handler('identify', function (data, state, reduce, done) {
+    var newTree = clone(state.tree)
+    identify(newTree, newTree)
+    pushEditedTree({tree: newTree}, reduce, done)
+  })
+}
+
+function identify (wholeTree, subTree) {
+  subTree.content = markContentElements(wholeTree, subTree.content)
+  subTree.content.forEach(function (element) {
+    if (element.hasOwnProperty('form')) {
+      identify(wholeTree, element.form)
+    }
+  })
 }
 
 function save (state, publisher, password, callback) {
