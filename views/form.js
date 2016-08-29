@@ -64,6 +64,7 @@ function form (form, send) {
         class="${classes}"
         data-digest="${digest}">
       ${root ? null : sectionButton(toggleFocus)}
+      ${isFocused && editing ? editControls(form, send) : null}
       ${
         root
         ? null
@@ -85,12 +86,6 @@ function form (form, send) {
           annotationsHere, toggleFocus
         )
       }
-      ${
-        (isFocused && editing)
-        ? conspicuousToggle('conspicuous' in tree, form.path, send)
-        : null
-      }
-      ${isFocused && editing ? deleteButton(form.path, send) : null}
       ${
         groups[0].type === 'series'
         ? dropZone(
@@ -154,24 +149,30 @@ function sectionButton (toggleFocus) {
   `
 }
 
+function editControls (form, send) {
+  assert(typeof send === 'function')
+  var conspicuous = form.tree.form && 'conspicuous' in form.tree.form
+  return html`
+    <div class=editControls>
+      ${deleteButton(form.path, send)}
+      ${conspicuousToggle(conspicuous, form.path, send)}
+    </div>
+  `
+}
+
 function conspicuousToggle (conspicuous, path, send) {
   assert(conspicuous === true || conspicuous === false)
   assert(Array.isArray(path))
   assert(typeof send === 'function')
   return html`
-  <label>
-    <input
-        type=checkbox
-        value=yes
-        ${conspicuous ? 'checked' : ''}
-        onchange=${onChange}></input>
-    Conspicuous
-  </label>
+    <button onclick=${onClick}>
+      ${conspicuous ? 'Make Inconspicuous' : 'Make Conspicuous'}
+    </button>
   `
-  function onChange (event) {
+  function onClick (event) {
     send('form:conspicuous', {
       path: path,
-      conspicuous: event.target.checked
+      conspicuous: !conspicuous
     })
   }
 }
@@ -180,7 +181,7 @@ function deleteButton (path, send) {
   return html`
     <button
         onclick=${onClick}
-      >Delete</button>
+      >Delete Form</button>
   `
   function onClick (event) {
     event.preventDefault()
