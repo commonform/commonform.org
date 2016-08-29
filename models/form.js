@@ -244,6 +244,19 @@ module.exports = function (initialize, reduction, handler) {
     pushEditedTree({tree: newTree}, reduce, done)
   })
 
+  handler('conspicuous', function (action, state, reduce, done) {
+    var path = action.path
+    var conspicuous = action.conspicuous
+    var newTree = clone(state.tree)
+    var suffix = ['form', 'conspicuous']
+    if (conspicuous === true) {
+      keyarray.set(newTree, path.concat(suffix), 'yes')
+    } else {
+      keyarray.delete(newTree, path.concat(suffix))
+    }
+    pushEditedTree({tree: newTree}, reduce, done)
+  })
+
   handler('edit', function (action, state, reduce, done) {
     assert(action.element)
     assert(Array.isArray(action.context))

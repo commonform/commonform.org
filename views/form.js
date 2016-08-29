@@ -85,6 +85,11 @@ function form (form, send) {
           annotationsHere, toggleFocus
         )
       }
+      ${
+        (isFocused && editing)
+        ? conspicuousToggle('conspicuous' in tree, form.path, send)
+        : null
+      }
       ${isFocused && editing ? deleteButton(form.path, send) : null}
       ${
         groups[0].type === 'series'
@@ -147,6 +152,28 @@ function sectionButton (toggleFocus) {
       onclick=${toggleFocus}
       title="Click to focus.">§</a>
   `
+}
+
+function conspicuousToggle (conspicuous, path, send) {
+  assert(conspicuous === true || conspicuous === false)
+  assert(Array.isArray(path))
+  assert(typeof send === 'function')
+  return html`
+  <label>
+    <input
+        type=checkbox
+        value=yes
+        ${conspicuous ? 'checked' : ''}
+        onchange=${onChange}></input>
+    Conspicuous
+  </label>
+  `
+  function onChange (event) {
+    send('form:conspicuous', {
+      path: path,
+      conspicuous: event.target.checked
+    })
+  }
 }
 
 function deleteButton (path, send) {
