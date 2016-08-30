@@ -4,6 +4,7 @@ var TERM = '([A-Za-z0-9][A-Za-z0-9 -\']*[A-Za-z0-9])'
 var DEFINITION = new RegExp(QUOTE + TERM + QUOTE)
 var USE = new RegExp('<' + TERM + '>')
 var REFERENCE = new RegExp('{' + TERM + '}')
+var CHILD = '[...]'
 
 module.exports = function (tree, elements) {
   var namespaces = findTermsAndHeadings(tree)
@@ -27,10 +28,11 @@ module.exports = function (tree, elements) {
   // Keep terms sorted.
   namespaces.terms.sort(fromLongestToShortest)
 
-  // Mark blanks, term uses, and heading references.
+  // Mark blanks, term uses, heading references, and children.
   return withDefinitions.reduce(function (returned, element) {
     if (typeof element === 'string') {
       var results = [element]
+      markOccurrences(results, CHILD, {form: {content: ['...']}})
       markOccurrences(results, BLANK, {blank: ''})
       namespaces.terms.forEach(function (term) {
         markOccurrences(results, term, 'use')
