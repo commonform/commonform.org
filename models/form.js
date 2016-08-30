@@ -12,12 +12,14 @@ var getComments = require('../queries/comments')
 var getForm = require('../queries/form')
 var getFormPublications = require('../queries/form-publications')
 var getPublication = require('../queries/publication')
+var isSHA256 = require('is-sha-256-hex-digest')
 var keyarray = require('keyarray')
 var level = require('../level')
 var markContentElements = require('../utilities/mark-content-elements')
 var merkleize = require('commonform-merkleize')
 var outline = require('outline-numbering')
 var querystring = require('querystring')
+var removeEmptyForms = require('../utilities/remove-empty-forms')
 var rename = require('commonform-rename')
 var runParallel = require('run-parallel')
 var signaturePagesToOOXML = require('ooxml-signature-pages')
@@ -177,6 +179,7 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   function pushEditedTree (data, reduce, callback) {
+    removeEmptyForms(data.tree)
     var merkle = data.merkle = merkleize(data.tree)
     var root = merkle.digest
     var path = formPath(root)
@@ -580,6 +583,87 @@ module.exports = function (initialize, reduction, handler) {
     var newTree = clone(state.tree)
     identify(newTree, newTree)
     pushEditedTree({tree: newTree}, reduce, done)
+  })
+
+  handler('replace', function (data, state, reduce, done) {
+    var path = data.path
+    var prompt = data.digest
+    ? 'Enter a form digest:'
+    : 'Enter a publication like "goldplate\'s enforcement 1e":'
+    var replacement = window.prompt(prompt)
+    if (!replacement) {
+      return
+    }
+    replacement = replacement
+    .trim()
+    .toLowerCase()
+    if (isSHA256(replacement)) {
+      getForm(replacement, function (error, tree) {
+        if (error) {
+          window.alert('Could not find form.')
+        } else {
+          replaceWith(tree)
+        }
+      })
+    } else {
+      var PROJECT_NAME_GROUP = '([a-z0-9-]+)'
+      var match = new RegExp(
+        '^' +
+        '([a-z]+)' + // [1] publisher
+        '\'s? ' +
+        '(' + // [2]
+        PROJECT_NAME_GROUP + // [3] project
+        '|' +
+        '(' + // [4]
+        '(current|latest)' + ' ' + // [5] edition
+        PROJECT_NAME_GROUP + // [6] project
+        ')' +
+        '|' +
+        '(' + // [7]
+        PROJECT_NAME_GROUP + ' ' +// [8] project
+        '([0-9eucd]+)' + // [9] edition
+        ')' +
+        ')' +
+        '$'
+      )
+      .exec(replacement)
+      if (!match) {
+        window.alert('Bad digest or publication')
+      } else {
+        var query = {
+          publisher: match[1],
+          edition: 'current'
+        }
+        if (match[3]) {
+          query.project = match[3]
+        } else if (match[4]) {
+          query.edition = match[5]
+          query.project = match[6]
+        } else if (match[7]) {
+          query.project = match[8]
+          query.edition = match[9]
+        }
+        getPublication(query, function (error, digest) {
+          if (error) {
+            window.alert('Could not find ' + replacement)
+          } else {
+            loadForm(digest, function (error, result) {
+              if (error) {
+                window.alert('Could not fetch ' + digest)
+              } else {
+                replaceWith(result.tree)
+              }
+            })
+          }
+        })
+      }
+    }
+
+    function replaceWith (tree) {
+      var newTree = clone(state.tree)
+      keyarray.set(newTree, path.concat('form'), tree)
+      pushEditedTree({tree: newTree}, reduce, done)
+    }
   })
 }
 

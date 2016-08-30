@@ -156,6 +156,8 @@ function editControls (form, send) {
     <div class=editControls>
       ${deleteButton(form.path, send)}
       ${conspicuousToggle(conspicuous, form.path, send)}
+      ${replace(form.path, true, send)}
+      ${replace(form.path, false, send)}
     </div>
   `
 }
@@ -177,11 +179,28 @@ function conspicuousToggle (conspicuous, path, send) {
   }
 }
 
+function replace (path, digest, send) {
+  assert(Array.isArray(path))
+  assert(digest === true || digest === false)
+  assert(typeof send === 'function')
+  return html`
+    <button
+        onclick=${onClick}
+      >Replace w/ ${digest ? 'Digest' : 'Publication'}</button>
+  `
+  function onClick () {
+    send('form:replace', {
+      path: path,
+      digest: digest
+    })
+  }
+}
+
 function deleteButton (path, send) {
   return html`
     <button
         onclick=${onClick}
-      >Delete Form</button>
+      >Delete</button>
   `
   function onClick (event) {
     event.preventDefault()
