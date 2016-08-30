@@ -6,6 +6,7 @@ var clone = require('../utilities/clone')
 var deepEqual = require('deep-equal')
 var diff = require('commonform-diff')
 var docx = require('commonform-docx')
+var ecb = require('ecb')
 var filesaver = require('filesaver.js').saveAs
 var fix = require('commonform-fix-strings')
 var getComments = require('../queries/comments')
@@ -111,13 +112,13 @@ module.exports = function (initialize, reduction, handler) {
     if (state.merkle && state.merkle.digest === first) {
       fetchComparing()
     } else {
-      loadForm(first, onError(done, function (result) {
+      loadForm(first, ecb(done, function (result) {
         reduce('tree', result)
         fetchComparing()
       }))
     }
     function fetchComparing () {
-      loadForm(second, onError(done, function (result) {
+      loadForm(second, ecb(done, function (result) {
         reduce('comparing', result)
         reduce('mode', 'read')
         done()
@@ -184,7 +185,7 @@ module.exports = function (initialize, reduction, handler) {
     var root = merkle.digest
     var path = formPath(root)
     var json = JSON.stringify(data.tree)
-    cache.put(root, json, onError(callback, function () {
+    cache.put(root, json, ecb(callback, function () {
       window.history.pushState(data, '', path)
       reduce('tree', data)
       callback()
@@ -314,14 +315,14 @@ module.exports = function (initialize, reduction, handler) {
 
   handler('fetch', function (data, state, reduce, done) {
     var digest = data.digest
-    loadForm(digest, onError(done, function (result) {
+    loadForm(digest, ecb(done, function (result) {
       reduce(data.comparing ? 'comparing' : 'tree', result)
       done()
     }))
   })
 
   handler('load form', function (digest, state, reduce, done) {
-    loadForm(digest, onError(done, function (data) {
+    loadForm(digest, ecb(done, function (data) {
       data.mode = 'read'
       reduce('tree', data)
       window.history.pushState(data, '', formPath(digest))
@@ -339,7 +340,7 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   handler('load publication', function (data, state, reduce, done) {
-    getPublicationForm(data, onError(done, function (tree, digest) {
+    getPublicationForm(data, ecb(done, function (tree, digest) {
       data.mode = 'read'
       reduce('tree', {tree: tree})
       window.history.pushState(tree, '', formPath(digest))
@@ -374,29 +375,21 @@ module.exports = function (initialize, reduction, handler) {
     var annotators = state.annotators
     annotators[data.annotator] = data.enabled
     var json = JSON.stringify(annotators)
-    level.put('settings.annotators', json, function (error) {
-      if (error) {
-        done(error)
-      } else {
-        reduce('annotators', state.annotators)
-        done()
-      }
-    })
+    level.put('settings.annotators', json, ecb(done, function () {
+      reduce('annotators', state.annotators)
+      done()
+    }))
   })
 
   handler('save', function (data, state, reduce, done) {
     var publisher = data.publisher
     var password = data.password
     var digest = state.merkle.digest
-    save(state, publisher, password, function (error) {
-      if (error) {
-        done(error)
-      } else {
-        window.alert('Saved form ' + digest)
-        reduce('mode', 'read')
-        done()
-      }
-    })
+    save(state, publisher, password, ecb(done, function () {
+      window.alert('Saved form ' + digest)
+      reduce('mode', 'read')
+      done()
+    }))
   })
 
   handler('publish', function (data, state, reduce, done) {
@@ -405,27 +398,19 @@ module.exports = function (initialize, reduction, handler) {
     var project = data.project
     var edition = data.edition
     var digest = state.merkle.digest
-    save(state, publisher, password, function (error) {
-      if (error) {
-        done(error)
-      } else {
-        publish(
-          digest, publisher, password, project, edition,
-          function (error) {
-            if (error) {
-              done(error)
-            } else {
-              window.alert(
-                'Published ' + publisher + '\'s ' +
-                project + ' ' + edition + '.'
-              )
-              reduce('mode', 'read')
-              done()
-            }
-          }
-        )
-      }
-    })
+    save(state, publisher, password, ecb(done, function () {
+      publish(
+        digest, publisher, password, project, edition,
+        ecb(done, function () {
+          window.alert(
+            'Published ' + publisher + '\'s ' +
+            project + ' ' + edition + '.'
+          )
+          reduce('mode', 'read')
+          done()
+        })
+      )
+    }))
   })
 
   reduction('comments', function (comments, state) {
@@ -435,14 +420,11 @@ module.exports = function (initialize, reduction, handler) {
   handler('fetch comments', fetchComments)
 
   function fetchComments (data, state, reduce, done) {
-    getComments(state.merkle.digest, function (error, comments) {
-      if (error) {
-        done(error)
-      } else {
-        reduce('comments', comments)
-        done()
-      }
-    })
+    var digest = state.markle.digest
+    getComments(digest, ecb(done, function (comments) {
+      reduce('comments', comments)
+      done()
+    }))
   }
 
   reduction('reply to', function (parent, state) {
@@ -468,18 +450,14 @@ module.exports = function (initialize, reduction, handler) {
       username: publisher,
       password: password,
       body: JSON.stringify(data)
-    }, function (error, response, body) {
-      if (error) {
-        done(error)
+    }, ecb(done, function (response, body) {
+      var status = response.statusCode
+      if (status === 200 || status === 204) {
+        fetchComments(data, state, reduce, done)
       } else {
-        var status = response.statusCode
-        if (status === 200 || status === 204) {
-          fetchComments(data, state, reduce, done)
-        } else {
-          done(new Error(body))
-        }
+        done(new Error(body))
       }
-    })
+    }))
   })
 
   handler('subscribe', function (data, state, reduce, done) {
@@ -496,18 +474,14 @@ module.exports = function (initialize, reduction, handler) {
       withCredentials: true,
       username: publisher,
       password: password
-    }, function (error, response, body) {
-      if (error) {
-        done(error)
+    }, ecb(done, function (response, body) {
+      var status = response.statusCode
+      if (status === 200 || status === 204 || status === 409) {
+        window.alert('Subscribed!')
       } else {
-        var status = response.statusCode
-        if (status === 200 || status === 204 || status === 409) {
-          window.alert('Subscribed!')
-        } else {
-          done(new Error(body))
-        }
+        done(new Error(body))
       }
-    })
+    }))
   })
 
   handler('email', function (data, state, reduce, done) {
@@ -676,18 +650,14 @@ function save (state, publisher, password, callback) {
     username: publisher,
     password: password,
     body: JSON.stringify(state.tree)
-  }, function (error, response, body) {
-    if (error) {
-      callback(error)
+  }, ecb(callback, function (response, body) {
+    var status = response.statusCode
+    if (status === 200 || status === 204) {
+      callback()
     } else {
-      var status = response.statusCode
-      if (status === 200 || status === 204) {
-        callback()
-      } else {
-        callback(new Error(body))
-      }
+      callback(new Error(body))
     }
-  })
+  }))
 }
 
 function publish (
@@ -705,18 +675,14 @@ function publish (
     username: publisher,
     password: password,
     body: JSON.stringify({digest: digest})
-  }, function (error, response, body) {
-    if (error) {
-      callback(error)
+  }, ecb(callback, function (response, body) {
+    var status = response.statusCode
+    if (status === 200 || status === 204) {
+      callback()
     } else {
-      var status = response.statusCode
-      if (status === 200 || status === 204) {
-        callback()
-      } else {
-        callback(new Error(body))
-      }
+      callback(new Error(body))
     }
-  })
+  }))
 }
 
 function formPath (digest) {
@@ -727,13 +693,9 @@ function loadForm (digest, callback) {
   runParallel(
     [
       function (done) {
-        getForm(digest, function (error, tree) {
-          if (error) {
-            done(error)
-          } else {
-            done(null, tree)
-          }
-        })
+        getForm(digest, ecb(done, function (tree) {
+          done(null, tree)
+        }))
       },
       function (done) {
         getFormPublications(
@@ -748,28 +710,13 @@ function loadForm (digest, callback) {
         )
       }
     ],
-    function (error, results) {
-      if (error) {
-        callback(error)
-      } else {
-        callback(null, {
-          tree: results[0],
-          publications: results[1]
-        })
-      }
-    }
+    ecb(callback, function (results) {
+      callback(null, {
+        tree: results[0],
+        publications: results[1]
+      })
+    })
   )
-}
-
-function onError (onError, onSuccess) {
-  return function () {
-    var error = arguments[0]
-    if (error) {
-      onError(error)
-    } else {
-      onSuccess.apply(null, slice.call(arguments, 1))
-    }
-  }
 }
 
 function fileName (title, extension) {

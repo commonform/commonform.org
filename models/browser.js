@@ -1,4 +1,5 @@
 var asyncMap = require('async.map')
+var ecb = require('ecb')
 var getEditions = require('../queries/editions')
 var getProjects = require('../queries/projects')
 var getPublisher = require('../queries/publisher')
@@ -20,14 +21,10 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   handler('get publishers', function (action, state, reduce, done) {
-    getPublishers(function (error, publishers) {
-      if (error) {
-        done(error)
-      } else {
-        reduce('publishers', publishers)
-        done()
-      }
-    })
+    getPublishers(ecb(done, function (publishers) {
+      reduce('publishers', publishers)
+      done()
+    }))
   })
 
   reduction('projects', function (data, state) {
@@ -43,28 +40,20 @@ module.exports = function (initialize, reduction, handler) {
     runParallel(
       [
         function (done) {
-          getProjects(publisher, function (error, projects) {
-            if (error) {
-              done(error)
-            } else {
-              asyncMap(projects, fetchEditions, done)
-            }
+          getProjects(publisher, ecb(done, function (projects) {
+            asyncMap(projects, fetchEditions, done)
             function fetchEditions (project, done) {
               getEditions(
                 publisher, project,
-                function (error, editions) {
-                  if (error) {
-                    done(error)
-                  } else {
-                    done(null, {
-                      name: project,
-                      editions: editions
-                    })
-                  }
-                }
+                ecb(done, function (editions) {
+                  done(null, {
+                    name: project,
+                    editions: editions
+                  })
+                })
               )
             }
-          })
+          }))
         },
         function (done) {
           getPublisher(publisher, function (error, result) {
@@ -76,18 +65,14 @@ module.exports = function (initialize, reduction, handler) {
           })
         }
       ],
-      function (error, results) {
-        if (error) {
-          done(error)
-        } else {
-          reduce('projects', {
-            about: results[1].about,
-            publisher: publisher,
-            projects: results[0]
-          })
-          done()
-        }
-      }
+      ecb(done, function (results) {
+        reduce('projects', {
+          about: results[1].about,
+          publisher: publisher,
+          projects: results[0]
+        })
+        done()
+      })
     )
   })
 }
