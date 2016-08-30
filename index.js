@@ -1,6 +1,7 @@
 var EventEmitter = require('events').EventEmitter
 var Clipboard = require('clipboard')
 var assert = require('assert')
+var assign = require('object-assign')
 var browserModel = require('./models/browser')
 var compare = require('./views/compare')
 var formModel = require('./models/form')
@@ -52,7 +53,7 @@ function useModel (scope, model) {
   function initialize (scope) {
     return function (initializer) {
       initializers[scope] = initializer
-      Object.assign(state[scope], initializer())
+      assign(state[scope], initializer())
     }
   }
 
@@ -66,7 +67,7 @@ function useModel (scope, model) {
         'just one listener for ' + event
       )
       reductions.on(event, function (data) {
-        Object.assign(state[scope], handler(data, state[scope]))
+        assign(state[scope], handler(data, state[scope]))
       })
     }
   }
@@ -103,7 +104,7 @@ function useModel (scope, model) {
 
 function resetStates (scopes) {
   scopes.forEach(function (scope) {
-    Object.assign(state[scope], initializers[scope]())
+    assign(state[scope], initializers[scope]())
   })
 }
 
