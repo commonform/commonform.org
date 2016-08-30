@@ -29,13 +29,13 @@ function modeButtons (mode, send) {
 
 function toolbox (send) {
   assert(typeof send === 'function')
+  var hidden = true
   return html`
     <div
         class=tools
-        onmouseover=${onMouseOver}
-        onmouseout=${onMouseOut}
+        onclick=${onClick}
       ><a
-          title="Toolbox"
+          title="Click to open toolbox."
           class="tools disabled"
         ></a>
       <div class="toolbox closed">
@@ -65,18 +65,21 @@ function toolbox (send) {
       </div>
     </div>
   `
-  function onMouseOver (event) {
-    this.getElementsByClassName('tools')[0]
-    .className = 'tools enabled'
-    this.getElementsByClassName('toolbox')[0]
-    .className = 'toolbox open'
-  }
 
-  function onMouseOut (event) {
-    this.getElementsByClassName('tools')[0]
-    .className = 'tools disabled'
-    this.getElementsByClassName('toolbox')[0]
-    .className = 'toolbox closed'
+  function onClick (event) {
+    var icon = this.getElementsByClassName('tools')[0]
+    var box = this.getElementsByClassName('toolbox')[0]
+    if (hidden) {
+      icon.title = 'Click to close toolbox.'
+      icon.className = 'tools enabled'
+      box.className = 'toolbox open'
+      hidden = false
+    } else {
+      icon.title = 'Click to open toolbox.'
+      icon.className = 'tools disabled'
+      box.className = 'toolbox closed'
+      hidden = true
+    }
   }
 }
 
