@@ -11,7 +11,7 @@ var fix = require('commonform-fix-strings')
 var getComments = require('../queries/comments')
 var getForm = require('../queries/form')
 var getFormPublications = require('../queries/form-publications')
-var getPublication = require('../queries/publication')
+var getPublicationForm = require('../queries/publication-form')
 var isSHA256 = require('is-sha-256-hex-digest')
 var keyarray = require('keyarray')
 var level = require('../level')
@@ -339,13 +339,11 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   handler('load publication', function (data, state, reduce, done) {
-    getPublication(data, onError(done, function (digest) {
-      loadForm(digest, onError(done, function (data) {
-        data.mode = 'read'
-        reduce('tree', data)
-        window.history.pushState(data, '', formPath(digest))
-        done()
-      }))
+    getPublicationForm(data, onError(done, function (tree, digest) {
+      data.mode = 'read'
+      reduce('tree', {tree: tree})
+      window.history.pushState(tree, '', formPath(digest))
+      done()
     }))
   })
 
@@ -643,17 +641,11 @@ module.exports = function (initialize, reduction, handler) {
           query.project = match[8]
           query.edition = match[9]
         }
-        getPublication(query, function (error, digest) {
+        getPublicationForm(query, function (error, tree, digest) {
           if (error) {
-            window.alert('Could not find ' + replacement)
+            window.alert('Could not find "' + replacement + '"')
           } else {
-            loadForm(digest, function (error, result) {
-              if (error) {
-                window.alert('Could not fetch ' + digest)
-              } else {
-                replaceWith(result.tree)
-              }
-            })
+            replaceWith(tree)
           }
         })
       }

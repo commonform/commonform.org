@@ -23,6 +23,7 @@
     "commonform-wordy": "^1.0.0",
     "deep-equal": "^1.0.1",
     "doubleplus-numbers": "^0.2.1",
+    "ecb": "^1.0.0",
     "filesaver.js": "^0.2.0",
     "is-sha-256-hex-digest": "^1.0.0",
     "keyarray": "^0.1.2",
