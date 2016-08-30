@@ -3,11 +3,13 @@ var simpleQuery = require('../queries/simple')
 var API = 'https://api.commonform.org'
 
 module.exports = function (initialize, reduction, handler) {
-  initialize({
-    action: null,
-    value: null,
-    query: null,
-    results: null
+  initialize(function () {
+    return {
+      action: null,
+      value: null,
+      query: null,
+      results: null
+    }
   })
 
   reduction('results', function (data, state) {

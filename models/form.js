@@ -34,22 +34,24 @@ module.exports = function (initialize, reduction, handler) {
     annotatorFlags[annotator.name] = annotator.default
   })
 
-  initialize({
-    annotators: annotatorFlags,
-    annotations: null,
-    comments: [],
-    blanks: [],
-    diff: null,
-    error: null,
-    focused: null,
-    merkle: null,
-    mode: 'read',
-    path: [],
-    projects: [],
-    publications: [],
-    parentComment: null,
-    signaturePages: [],
-    tree: null
+  initialize(function () {
+    return {
+      annotators: annotatorFlags,
+      annotations: null,
+      comments: [],
+      blanks: [],
+      diff: null,
+      error: null,
+      focused: null,
+      merkle: null,
+      mode: 'read',
+      path: [],
+      projects: [],
+      publications: [],
+      parentComment: null,
+      signaturePages: [],
+      tree: null
+    }
   })
 
   reduction('mode', function (mode) {

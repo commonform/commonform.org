@@ -44,13 +44,15 @@ function action (/* variadic */) {
 }
 
 var reductions = new EventEmitter()
+var initializers = {}
 
 function useModel (scope, model) {
   model(initialize(scope), reduce(scope), handle(scope))
 
   function initialize (scope) {
-    return function (initialState) {
-      Object.assign(state[scope], initialState)
+    return function (initializer) {
+      initializers[scope] = initializer
+      Object.assign(state[scope], initializer())
     }
   }
 
@@ -99,6 +101,12 @@ function useModel (scope, model) {
   }
 }
 
+function resetStates (scopes) {
+  scopes.forEach(function (scope) {
+    Object.assign(state[scope], initializers[scope]())
+  })
+}
+
 useModel('form', formModel)
 useModel('browser', browserModel)
 useModel('search', searchModel)
@@ -115,8 +123,10 @@ function render () {
     var publisher
     var split
     if (path === '' || path === '/') {
+      resetStates(['form', 'search'])
       return publishers(browser, action)
     } else if (startsWith('/forms/')) {
+      resetStates(['browser', 'search'])
       var suffix = path.substring(7)
       split = suffix.split('/')
       var digest = split[0]
@@ -126,16 +136,20 @@ function render () {
         return read(digest, form, action)
       }
     } else if (startsWith('/search')) {
+      resetStates(['browser', 'form'])
       split = path.split('/')
       return searchView(
         decode(split[2]), decode(split[3]), search, action
       )
     } else if (path === '/publishers' || path === '/publishers') {
+      resetStates(['form', 'search'])
       return publishers(browser, action)
     } else if (startsWith('/publishers/')) {
+      resetStates(['form', 'search'])
       publisher = decodeURIComponent(path.substring(12))
       return projects(publisher, browser, action)
     } else if (startsWith('/publications/')) {
+      resetStates(['form', 'search'])
       var match = new RegExp(
         '^' +
         '/publications' +

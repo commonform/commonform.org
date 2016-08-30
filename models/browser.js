@@ -6,11 +6,13 @@ var getPublishers = require('../queries/publishers')
 var runParallel = require('run-parallel')
 
 module.exports = function (initialize, reduction, handler) {
-  initialize({
-    about: null,
-    projects: null,
-    publisher: null,
-    publishers: null
+  initialize(function () {
+    return {
+      about: null,
+      projects: null,
+      publisher: null,
+      publishers: null
+    }
   })
 
   reduction('publishers', function (publishers, state) {
