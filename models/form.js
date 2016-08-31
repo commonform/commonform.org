@@ -8,6 +8,7 @@ var diff = require('commonform-diff')
 var docx = require('commonform-docx')
 var ecb = require('ecb')
 var filesaver = require('filesaver.js').saveAs
+var find = require('array-find')
 var fix = require('commonform-fix-strings')
 var getComments = require('../queries/comments')
 var getForm = require('../queries/form')
@@ -18,7 +19,7 @@ var keyarray = require('keyarray')
 var level = require('../level')
 var markContentElements = require('../utilities/mark-content-elements')
 var merkleize = require('commonform-merkleize')
-var outline = require('outline-numbering')
+var numberings = require('../numberings')
 var querystring = require('querystring')
 var removeEmptyForms = require('../utilities/remove-empty-forms')
 var rename = require('commonform-rename')
@@ -32,14 +33,14 @@ var slice = Array.prototype.slice
 var splice = Array.prototype.splice
 
 module.exports = function (initialize, reduction, handler) {
-  var annotatorFlags = {}
-  annotators.forEach(function (annotator) {
-    annotatorFlags[annotator.name] = annotator.default
-  })
-
   initialize(function () {
+    var annotatorFlags = {}
+    annotators.forEach(function (annotator) {
+      annotatorFlags[annotator.name] = annotator.default
+    })
     return {
       annotators: annotatorFlags,
+      numbering: numberings[0].name,
       annotations: null,
       comments: [],
       blanks: [],
@@ -362,6 +363,26 @@ module.exports = function (initialize, reduction, handler) {
     done()
   })
 
+  reduction('numbering', function (data, state) {
+    assert(numberings.some(function (numbering) {
+      return numbering.name === data.name
+    }))
+    return {
+      numbering: data.name
+    }
+  })
+
+  handler('numbering', function (name, state, reduce, done) {
+    assert(numberings.some(function (numbering) {
+      return numbering.name === name
+    }))
+    var json = JSON.stringify(name)
+    level.put('settings.numbering', json, ecb(done, function () {
+      reduce('numbering', {name: name})
+      done()
+    }))
+  })
+
   reduction('annotators', function (data, state) {
     return {
       annotators: data,
@@ -494,7 +515,14 @@ module.exports = function (initialize, reduction, handler) {
   handler('download docx', function (data, state, reduce, done) {
     var title = window.prompt('Enter a document title', 'Untitled Form')
     if (title !== null) {
-      var options = {title: title, numbering: outline}
+      var numberingName = state.numbering
+      var options = {
+        title: title,
+        numbering: find(numberings, function (numbering) {
+          return numbering.name === numberingName
+        })
+        .numbering
+      }
       if (state.signaturePages) {
         options.after = signaturePagesToOOXML(state.signaturePages)
       }

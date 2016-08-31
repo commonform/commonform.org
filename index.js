@@ -1,5 +1,5 @@
-var EventEmitter = require('events').EventEmitter
 var Clipboard = require('clipboard')
+var EventEmitter = require('events').EventEmitter
 var assert = require('assert')
 var assign = require('object-assign')
 var browserModel = require('./models/browser')
@@ -12,6 +12,7 @@ var pathOf = require('pathname-match')
 var projects = require('./views/projects')
 var publishers = require('./views/publishers')
 var read = require('./views/read')
+var runParallel = require('run-parallel')
 var searchModel = require('./models/search')
 var searchView = require('./views/search')
 var showError = require('./views/error')
@@ -114,7 +115,7 @@ useModel('search', searchModel)
 
 // Rendering
 
-var rendered = render()
+var rendered
 
 function render () {
   if (state.error) {
@@ -228,21 +229,39 @@ new Clipboard('.copy')
   event.clearSelection()
 })
 
-// Load Settings
-
-level.get('settings.annotators', function (error, data) {
-  if (!error && data) {
-    try {
-      var annotators = JSON.parse(data)
-      reductions.emit('form:annotators', annotators)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-})
-
 if (module.parent) {
   module.exports = render
 } else {
-  document.body.appendChild(rendered)
+  // Load Settings
+  runParallel([
+    function (done) {
+      level.get('settings.annotators', function (error, data) {
+        if (!error && data) {
+          try {
+            var annotators = JSON.parse(data)
+            reductions.emit('form:annotators', annotators)
+          } catch (error) {
+            console.error(error)
+          }
+        }
+        done()
+      })
+    },
+    function (done) {
+      level.get('settings.numbering', function (error, data) {
+        if (!error && data) {
+          try {
+            var name = JSON.parse(data)
+            reductions.emit('form:numbering', {name: name})
+          } catch (error) {
+            console.error(error)
+          }
+        }
+        done()
+      })
+    }
+  ], function () {
+    rendered = render()
+    document.body.appendChild(rendered)
+  })
 }
