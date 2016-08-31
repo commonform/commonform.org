@@ -1,11 +1,8 @@
-
+var API = require('../api-server')
 var simple = require('./simple')
 
 module.exports = function (digest, callback) {
-  var uri = (
-    'https://api.commonform.org/annotations' +
-    '?context=' + digest
-  )
+  var uri = API + '/annotations' + '?context=' + digest
   simple(uri, function (error, comments) {
     if (error) {
       var status = error.statusCode

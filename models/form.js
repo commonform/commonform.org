@@ -1,3 +1,4 @@
+var API = require('../api-server')
 var annotate = require('../utilities/annotate')
 var annotators = require('../annotators')
 var assert = require('assert')
@@ -343,9 +344,14 @@ module.exports = function (initialize, reduction, handler) {
   handler('load publication', function (data, state, reduce, done) {
     getPublicationForm(data, ecb(done, function (tree, digest) {
       data.mode = 'read'
-      reduce('tree', {tree: tree})
-      window.history.pushState(tree, '', formPath(digest))
-      done()
+      getFormPublications(digest, function (error, publications) {
+        reduce('tree', {
+          tree: tree,
+          publications: error ? [] : publications
+        })
+        window.history.pushState(tree, '', formPath(digest))
+        done()
+      })
     }))
   })
 
@@ -466,7 +472,7 @@ module.exports = function (initialize, reduction, handler) {
     delete data.password
     xhr({
       method: 'POST',
-      uri: 'https://api.commonform.org/annotations',
+      uri: API + '/annotations',
       withCredentials: true,
       username: publisher,
       password: password,
@@ -487,11 +493,7 @@ module.exports = function (initialize, reduction, handler) {
     var digest = state.merkle.digest
     xhr({
       method: 'POST',
-      uri: (
-        'https://api.commonform.org' +
-        '/forms/' + digest +
-        '/subscribers/' + publisher
-      ),
+      uri: API + '/forms/' + digest + '/subscribers/' + publisher,
       withCredentials: true,
       username: publisher,
       password: password
@@ -673,7 +675,7 @@ function identify (wholeTree, subTree) {
 function save (state, publisher, password, callback) {
   xhr({
     method: 'POST',
-    uri: 'https://api.commonform.org/forms',
+    uri: API + '/forms',
     withCredentials: true,
     username: publisher,
     password: password,
@@ -694,7 +696,7 @@ function publish (
   xhr({
     method: 'POST',
     uri: (
-      'https://api.commonform.org' +
+      API +
       '/publishers/' + encodeURIComponent(publisher) +
       '/projects/' + encodeURIComponent(project) +
       '/publications/' + encodeURIComponent(edition)
