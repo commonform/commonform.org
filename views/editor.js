@@ -5,6 +5,7 @@ var header = require('./header')
 var html = require('yo-yo')
 var mailMenu = require('./mail-menu')
 var menu = require('./menu')
+var settings = require('./settings')
 var sidebar = require('./sidebar')
 var signaturePages = require('./signature-pages')
 
@@ -54,6 +55,7 @@ module.exports = function (state, send) {
           }
           ${form(state, send)}
           ${signaturePages(state.signaturePages, send)}
+          ${settings(state, send)}
           ${footer()}
         </article>
       </div>

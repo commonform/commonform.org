@@ -9,10 +9,9 @@ module.exports = function (state, send) {
   var flags = state.annotators
   return html`
     <section class=settings>
-      <h1>Settings</h1>
-      <section>
-        <h2>Automatic Annotations</h2>
+      <p>
         <form onchange=${onChange}>
+          Annotate:
           ${Object.keys(flags).map(function (name) {
             return checkBox(
               find(annotators, function (annotator) {
@@ -23,7 +22,7 @@ module.exports = function (state, send) {
             )
           })}
         </form>
-      </section>
+      </p>
     </section>
   `
   function onChange (event) {
@@ -37,16 +36,13 @@ module.exports = function (state, send) {
 }
 
 function checkBox (annotator, enabled, send) {
-  var name = annotator.name
-  var id = 'checkbox:' + name
   return html`
-    <fieldset>
+    <label>
       <input
-          id=${id}
           type=checkbox
           ${enabled ? 'checked' : ''}
-          value=${name}/>
-        <label for=${id}>${name}: ${annotator.summary}</label>
-    </fieldset>
+          value=${annotator.name}/>
+      ${annotator.summary}
+    </label>
   `
 }
