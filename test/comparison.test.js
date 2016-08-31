@@ -1,7 +1,7 @@
 var tape = require('tape')
 var webdriver = require('./webdriver')
 
-tape('Comparison', function (suite) {
+tape.skip('Comparison', function (suite) {
   var apache2 = (
     '5d912ab4e9be029a2b3d137aefeb918a' +
     'd1f001463e0f554ca24008dc70494eb0'

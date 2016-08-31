@@ -1,9 +1,10 @@
+var API = require('../api-server')
 var ecb = require('ecb')
 var simple = require('./simple')
 
 module.exports = function (publication, callback) {
   var uri = (
-    'https://api.commonform.org' +
+    API +
     '/publishers/' + publication.publisher +
     '/projects/' + publication.project +
     '/publications/' + publication.edition

@@ -38,4 +38,4 @@ http
     ecstatic(request, response)
   }
 })
-.listen(process.env.PORT || 8000)
+.listen(8000)

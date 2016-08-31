@@ -1,7 +1,6 @@
+var API = require('../api-server')
 var ecb = require('ecb')
 var simpleQuery = require('../queries/simple')
-
-var API = 'https://api.commonform.org'
 
 module.exports = function (initialize, reduction, handler) {
   initialize(function () {

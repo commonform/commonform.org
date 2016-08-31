@@ -1,8 +1,10 @@
+var API = require('../api-server')
 var simple = require('./simple')
 
 module.exports = function (publisher, callback) {
   var uri = (
-    'https://api.commonform.org/publishers/' +
+    API +
+    '/publishers/' +
     encodeURIComponent(publisher) +
     '/projects'
   )
