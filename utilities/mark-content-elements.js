@@ -4,7 +4,7 @@ var TERM = '([A-Za-z0-9][A-Za-z0-9 -\']*[A-Za-z0-9])'
 var DEFINITION = new RegExp(QUOTE + QUOTE + TERM + QUOTE + QUOTE)
 var USE = new RegExp('<' + TERM + '>')
 var REFERENCE = new RegExp('{' + TERM + '}')
-var CHILD = '[...]'
+var CHILD = '||'
 
 module.exports = function (tree, elements) {
   var namespaces = findTermsAndHeadings(tree)
