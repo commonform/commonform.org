@@ -86,7 +86,7 @@ tape('single definition', function (test) {
   test.deepEqual(
     mark(
       {content: ['Irrelevant']},
-      ['This has a "New Term" defined in it.']
+      ['This has a ""New Term"" defined in it.']
     ),
     ['This has a ', {definition: 'New Term'}, ' defined in it.']
   )
@@ -97,7 +97,7 @@ tape('definition also a term', function (test) {
   test.deepEqual(
     mark(
       {content: [{use: 'New Term'}]},
-      ['This has a "New Term" defined in it.']
+      ['This has a ""New Term"" defined in it.']
     ),
     ['This has a ', {definition: 'New Term'}, ' defined in it.']
   )
@@ -108,7 +108,7 @@ tape('definition and use', function (test) {
   test.deepEqual(
     mark(
       {content: [{use: 'New Term'}]},
-      ['This has a "New Term" defined in it.']
+      ['This has a ""New Term"" defined in it.']
     ),
     ['This has a ', {definition: 'New Term'}, ' defined in it.']
   )
@@ -119,7 +119,7 @@ tape('use then new definition', function (test) {
   test.deepEqual(
     mark(
       {content: ['Irrelevant']},
-      ['Hooray for us. "Hooray" means be happy.']
+      ['Hooray for us. ""Hooray"" means be happy.']
     ),
     [
       {use: 'Hooray'}, ' for us. ',

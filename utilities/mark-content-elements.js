@@ -1,7 +1,7 @@
 var BLANK = /_{2,}/
 var QUOTE = '["\u201c\u201d]'
 var TERM = '([A-Za-z0-9][A-Za-z0-9 -\']*[A-Za-z0-9])'
-var DEFINITION = new RegExp(QUOTE + TERM + QUOTE)
+var DEFINITION = new RegExp(QUOTE + QUOTE + TERM + QUOTE + QUOTE)
 var USE = new RegExp('<' + TERM + '>')
 var REFERENCE = new RegExp('{' + TERM + '}')
 var CHILD = '[...]'
