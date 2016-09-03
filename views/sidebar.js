@@ -3,10 +3,12 @@ var html = require('yo-yo')
 
 module.exports = modeButtons
 
+var nonReadModes = ['browse', 'search', 'error']
+
 function modeButtons (mode, send) {
   assert(typeof mode === 'string')
   assert(typeof send === 'function')
-  var showReadModes = mode !== 'browse' && mode !== 'search'
+  var showReadModes = nonReadModes.indexOf(mode) === -1
   return html`
     <div class=modes>
       <a

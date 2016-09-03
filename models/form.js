@@ -114,17 +114,25 @@ module.exports = function (initialize, reduction, handler) {
     if (state.merkle && state.merkle.digest === first) {
       fetchComparing()
     } else {
-      loadForm(first, ecb(done, function (result) {
-        reduce('tree', result)
-        fetchComparing()
-      }))
+      loadForm(first, function (error, result) {
+        if (error) {
+          onFormLoadError(first, error, reduce, done)
+        } else {
+          reduce('tree', result)
+          fetchComparing()
+        }
+      })
     }
     function fetchComparing () {
-      loadForm(second, ecb(done, function (result) {
-        reduce('comparing', result)
-        reduce('mode', 'read')
-        done()
-      }))
+      loadForm(second, function (error, result) {
+        if (error) {
+          onFormLoadError(second, error, reduce, done)
+        } else {
+          reduce('comparing', result)
+          reduce('mode', 'read')
+          done()
+        }
+      })
     }
   })
 
@@ -317,19 +325,27 @@ module.exports = function (initialize, reduction, handler) {
 
   handler('fetch', function (data, state, reduce, done) {
     var digest = data.digest
-    loadForm(digest, ecb(done, function (result) {
-      reduce(data.comparing ? 'comparing' : 'tree', result)
-      done()
-    }))
+    loadForm(digest, function (error, result) {
+      if (error) {
+        onFormLoadError(digest, error, reduce, done)
+      } else {
+        reduce(data.comparing ? 'comparing' : 'tree', result)
+        done()
+      }
+    })
   })
 
   handler('load form', function (digest, state, reduce, done) {
-    loadForm(digest, ecb(done, function (data) {
-      data.mode = 'read'
-      reduce('tree', data)
-      window.history.pushState(data, '', formPath(digest))
-      done()
-    }))
+    loadForm(digest, function (error, data) {
+      if (error) {
+        onFormLoadError(digest, error, reduce, done)
+      } else {
+        data.mode = 'read'
+        reduce('tree', data)
+        window.history.pushState(data, '', formPath(digest))
+        done()
+      }
+    })
   })
 
   handler('new form', function (action, state, reduce, done) {
@@ -342,17 +358,29 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   handler('load publication', function (data, state, reduce, done) {
-    getPublicationForm(data, ecb(done, function (tree, digest) {
-      data.mode = 'read'
-      getFormPublications(digest, function (error, publications) {
-        reduce('tree', {
-          tree: tree,
-          publications: error ? [] : publications
+    getPublicationForm(data, function (error, tree, digest) {
+      if (error) {
+        if (error.statusCode === 404) {
+          reduce('error', (
+            data.publisher + ' has not published ' +
+            'called ' + data.project + ' ' + data.edition
+          ))
+          done()
+        } else {
+          done(error)
+        }
+      } else {
+        data.mode = 'read'
+        getFormPublications(digest, function (error, publications) {
+          reduce('tree', {
+            tree: tree,
+            publications: error ? [] : publications
+          })
+          window.history.pushState(tree, '', formPath(digest))
+          done()
         })
-        window.history.pushState(tree, '', formPath(digest))
-        done()
-      })
-    }))
+      }
+    })
   })
 
   handler('loaded', function (tree, state, reduce, done) {
@@ -661,6 +689,17 @@ module.exports = function (initialize, reduction, handler) {
       pushEditedTree({tree: newTree}, reduce, done)
     }
   })
+
+  reduction('error', function (message, state) {
+    return {
+      error: message
+    }
+  })
+
+  handler('clear error', function (data, state, reduce, done) {
+    reduce('error', undefined)
+    done()
+  })
 }
 
 function identify (wholeTree, subTree) {
@@ -752,4 +791,16 @@ function loadForm (digest, callback) {
 function fileName (title, extension) {
   var date = new Date().toISOString()
   return '' + title + ' ' + date + '.' + extension
+}
+
+function onFormLoadError (digest, error, reduce, done) {
+  if (error.statusCode === 404) {
+    reduce('error', (
+      'CommonForm.org doesn\u2019t have a copy ' +
+      'of any form with the digest ' + digest + '.'
+    ))
+    done()
+  } else {
+    done(error)
+  }
 }
