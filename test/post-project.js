@@ -16,9 +16,15 @@ module.exports = function (
   assert(typeof callback === 'function')
   var digest = merkleize(form).digest
   runSeries([
-    postForm.bind(null, form),
-    createPublisher.bind(null, publisher),
-    publish.bind(null, publisher, project, edition, digest)
+    function (done) {
+      postForm(form, done)
+    },
+    function (done) {
+      createPublisher(publisher, done)
+    },
+    function (done) {
+      publish(publisher, project, edition, digest, done)
+    }
   ], callback)
 }
 
