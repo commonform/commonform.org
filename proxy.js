@@ -6,8 +6,13 @@ var http = require('http')
 var httpProxy = require('http-proxy')
 
 var proxy = httpProxy.createProxyServer({})
-.on('proxyRes', function (proxyResponse, request, response) {
-  var headers = [
+
+http
+.createServer(corsify(function (request, response) {
+  var newHeaders = [
+    ['Pragma', 'no-cache'],
+    ['Expires', '0'],
+    ['Cache-Control', 'no-cache, no-store, must-revalidate'],
     ['Access-Control-Allow-Origin', 'http://localhost:8000'],
     ['Access-Control-Allow-Credentials', 'true'],
     [
@@ -30,16 +35,19 @@ var proxy = httpProxy.createProxyServer({})
       ].join()
     ]
   ]
-  headers.forEach(function (header) {
-    response.setHeader(header[0], header[1])
-  })
-  doNotCache(response)
-})
-
-http
-.createServer(corsify(function (request, response) {
+  var oldWriteHead = response.writeHead
+  response.writeHead = function (code, headers) {
+    newHeaders.forEach(function (newHeader) {
+      response.setHeader(newHeader[0], newHeader[1])
+      if (headers && headers[newHeader[0]]) {
+        delete headers[newHeader[0]]
+      }
+    })
+    oldWriteHead.apply(response, arguments)
+  }
   proxy.web(request, response, {
-    target: 'http://localhost:8081'
+    target: process.env.TARGET || 'http://localhost:8081',
+    secure: false
   })
 }))
 .listen(process.env.PORT || 8080)
