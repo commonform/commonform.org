@@ -447,7 +447,7 @@ module.exports = function (initialize, reduction, handler) {
   handler('fetch comments', fetchComments)
 
   function fetchComments (data, state, reduce, done) {
-    var digest = state.markle.digest
+    var digest = state.merkle.digest
     getComments(digest, ecb(done, function (comments) {
       reduce('comments', comments)
       done()
