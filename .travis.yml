@@ -4,3 +4,8 @@ node_js: node
 sudo: false
 script:
 - npm run lint
+addons:
+  apt:
+    sources: [ "ubuntu-toolchain-r-test" ]
+    packages: [ "g++-4.8" ]
+env: [ "CXX=g++-4.8 RUN_SLOW_TESTS=true TEST_DELAY=100" ]
