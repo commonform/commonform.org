@@ -1,7 +1,6 @@
 // Proxy HTTP requests to the local test API server on port 8081,
 // modifying headers to enable CORS and prevent caching.
 var corsify = require('corsify')
-var doNotCache = require('do-not-cache')
 var http = require('http')
 var httpProxy = require('http-proxy')
 

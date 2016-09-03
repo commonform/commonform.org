@@ -48,7 +48,6 @@
     "commonform-server": "^4.2.0",
     "cors-anywhere": "^0.4.0",
     "corsify": "^2.1.0",
-    "do-not-cache": "^1.0.0",
     "ecstatic": "^1.4.1",
     "envify": "^3.4.1",
     "es2020": "^1.1.7",
