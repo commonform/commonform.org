@@ -26,6 +26,7 @@ function modeButtons (mode, send) {
       <a
           href=http://help.commonform.org
           class="help disabled"
+          rel=noreferrer
           target=_blank
           title="Click for help."
       ></a>
