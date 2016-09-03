@@ -1,26 +1,6 @@
 ---
-language: "node_js"
-node_js: "5"
+language: node_js
+node_js: node
 sudo: false
-cache:
-  directories:
-    - "node_modules"
-before_install:
-  - "npm config set spin false"
-install:
-  - "npm install"
-before_script:
-  - "npm run start &"
-  - "echo \"$!\" > server.pid"
-  - "npm run build"
 script:
-  - "npm test"
-  - "npm run lint"
-after_script:
-  - "kill $(cat server.pid)"
-addons:
-  sauce_connect: true
-env:
-  global:
-    - "SAUCE_USERNAME=kemitchell"
-    - secure: "MFHMDsAi9xLj3w0wstrsvqQnomxuMn3Z4oXDkUi9CSc+BEvYyF9hV9Va+uzIITq4ANb74JHnEkhw3az9wB0317xcg7QKZeH7AZXoNkLOzqZ3LfqLvYoYpDsRjrxj/jOL9Bvt0H+BJ20+B1gZD3rlFqFZ8Ph8Y38rA+a3wp0gakc="
+- npm run lint
