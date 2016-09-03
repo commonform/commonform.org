@@ -86,7 +86,7 @@
     "start:db": "PORT=4444 BLOBS=memory LEVELDOWN=memory tcp-log-server",
     "start:proxy": "PORT=8080 node proxy.js",
     "test": "tape test/*.test.js",
-    "lint": "standard --env browser",
+    "lint": "standard",
     "licensee": "licensee 2>&1",
     "watch:css": "node-sass --watch --source-map true --output build styles/styles.sass",
     "watch:js": "watchify index.js -o build/browser.js -dv"
