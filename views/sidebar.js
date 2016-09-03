@@ -23,6 +23,12 @@ function modeButtons (mode, send) {
       ${showReadModes ? modeButton('edit', mode, send) : null}
       ${showReadModes ? modeButton('comment', mode, send) : null}
       ${showReadModes ? toolbox(send) : null}
+      <a
+          href=http://help.commonform.org
+          class="help disabled"
+          target=_blank
+          title="Click for help."
+      ></a>
     </div>
   `
 }
