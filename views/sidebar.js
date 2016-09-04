@@ -42,15 +42,18 @@ function toolbox (send) {
         class=tools
         onclick=${onClick}
       ><a
+          id=toolsLink
           title="Click to open toolbox."
           class="tools disabled"
         ></a>
-      <div class="toolbox closed">
+      <div id=toolbox class="toolbox closed">
         <a
             title="Subscribe via e-mail."
             class="subscribe"
             onclick=${function (event) {
               event.preventDefault()
+              event.stopPropagation()
+              closeToolbox()
               send('form:mode', 'mail')
             }}
           ></a>
@@ -59,34 +62,54 @@ function toolbox (send) {
             class="save"
             onclick=${function (event) {
               event.preventDefault()
+              event.stopPropagation()
+              closeToolbox()
               send('form:mode', 'save')
             }}
           ></a>
-        ${tool('simplify', send)}
-        ${tool('renameTerm', send)}
-        ${tool('renameHeading', send)}
-        ${tool('identify', send)}
-        ${tool('docx', send)}
-        ${tool('markup', send)}
-        ${tool('mail', send)}
+        ${tool('simplify', closeToolbox, send)}
+        ${tool('renameTerm', closeToolbox, send)}
+        ${tool('renameHeading', closeToolbox, send)}
+        ${tool('identify', closeToolbox, send)}
+        ${tool('docx', closeToolbox, send)}
+        ${tool('markup', closeToolbox, send)}
+        ${tool('mail', closeToolbox, send)}
       </div>
     </div>
   `
 
   function onClick (event) {
-    var icon = this.getElementsByClassName('tools')[0]
-    var box = this.getElementsByClassName('toolbox')[0]
     if (hidden) {
-      icon.title = 'Click to close toolbox.'
-      icon.className = 'tools enabled'
-      box.className = 'toolbox open'
-      hidden = false
+      openToolbox()
     } else {
-      icon.title = 'Click to open toolbox.'
-      icon.className = 'tools disabled'
-      box.className = 'toolbox closed'
-      hidden = true
+      closeToolbox()
     }
+  }
+
+  function openToolbox () {
+    var icon = getIcon()
+    var box = getToolbox()
+    icon.title = 'Click to close toolbox.'
+    icon.className = 'tools enabled'
+    box.className = 'toolbox open'
+    hidden = false
+  }
+
+  function closeToolbox () {
+    var icon = getIcon()
+    var box = getToolbox()
+    icon.title = 'Click to open toolbox.'
+    icon.className = 'tools disabled'
+    box.className = 'toolbox closed'
+    hidden = true
+  }
+
+  function getIcon () {
+    return document.getElementById('toolsLink')
+  }
+
+  function getToolbox () {
+    return document.getElementById('toolbox')
   }
 }
 
@@ -125,7 +148,7 @@ var TOOLS = {
   }
 }
 
-function tool (name, send) {
+function tool (name, closeToolbox, send) {
   assert(typeof name === 'string')
   assert(TOOLS.hasOwnProperty(name))
   assert(typeof send === 'function')
@@ -137,6 +160,7 @@ function tool (name, send) {
           event.preventDefault()
           event.stopPropagation()
           send(tool.action)
+          closeToolbox()
         }}
         title=${tool.title}
       ></a>
