@@ -81,7 +81,7 @@
     "build:js": "NODE_ENV=production browserify -p [ browserify-header --file header.js ] -p licensify index.js | uglifyjs --comments warnings=false > build/browser.js",
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "npm-run-all --parallel start:*",
-    "start:api": "PORT=8081 ADMINISTRATOR_PASSWORD=test commonform-server",
+    "start:api": "PORT=8081 LEVELDB=memory ADMINISTRATOR_PASSWORD=test commonform-server",
     "start:app": "PORT=8000 node server.js",
     "start:db": "PORT=4444 BLOBS=memory LEVELDOWN=memory tcp-log-server",
     "start:proxy": "PORT=8080 node proxy.js",
