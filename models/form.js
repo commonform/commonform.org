@@ -531,7 +531,8 @@ module.exports = function (initialize, reduction, handler) {
       filesaver(
         docx(clone(state.tree), state.blanks, options)
         .generate({type: 'blob'}),
-        fileName(title, 'docx')
+        fileName(title, 'docx'),
+        true
       )
     }
   })
@@ -543,7 +544,7 @@ module.exports = function (initialize, reduction, handler) {
         [toMarkup(state.tree)],
         {type: 'text/plain;charset=ascii'}
       )
-      filesaver(blob, fileName(title, 'cform'))
+      filesaver(blob, fileName(title, 'cform'), true)
     }
   })
 
