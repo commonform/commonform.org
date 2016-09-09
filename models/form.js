@@ -541,7 +541,7 @@ module.exports = function (initialize, reduction, handler) {
     if (title !== null) {
       var blob = new window.Blob(
         [toMarkup(state.tree)],
-        {type: 'text/plain;charset=utf-8'}
+        {type: 'text/plain;charset=ascii'}
       )
       filesaver(blob, fileName(title, 'cform'))
     }
