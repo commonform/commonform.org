@@ -66,7 +66,6 @@ module.exports = function browse (state, send) {
   function fetchDigest (event) {
     event.preventDefault()
     var digest = event.target.elements.digest.value
-    console.log(digest)
     if (isSHA256(digest)) {
       var path = '/forms/' + digest
       window.history.pushState({}, null, path)
