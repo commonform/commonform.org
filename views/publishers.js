@@ -86,7 +86,10 @@ module.exports = function browse (state, send) {
         tree = isJSON
         ? JSON.parse(result)
         : parseMarkup(result).form
-      } catch (error) { return }
+      } catch (error) {
+        window.alert(error.message)
+        return
+      }
       send('form:loaded', tree)
     }
     reader.readAsText(file, 'UTF-8')
