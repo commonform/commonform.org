@@ -54,7 +54,7 @@
     "http-proxy": "^1.14.0",
     "licensify": "^3.1.2",
     "node-sass": "^3.4.2",
-    "npm-run-all": "^2.3.0",
+    "npm-run-all": "^3.1.0",
     "standard": "^8.0.0",
     "stream-replace": "^1.0.0",
     "tape": "^4.4.0",
