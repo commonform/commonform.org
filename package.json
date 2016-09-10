@@ -28,7 +28,7 @@
     "is-sha-256-hex-digest": "^1.0.0",
     "keyarray": "^1.0.0",
     "level-js": "^2.2.4",
-    "level-lru-cache": "^0.1.5",
+    "level-lru-cache": "^1.0.0",
     "levelup": "^1.3.2",
     "object-assign": "^4.1.0",
     "ooxml-signature-pages": "^1.0.1",
