@@ -11,7 +11,7 @@
     "commonform-fix-strings": "^0.2.3",
     "commonform-group-series": "^0.5.1",
     "commonform-lint": "^0.6.2",
-    "commonform-markup-parse": "^0.2.2",
+    "commonform-markup-parse": "^0.4.0",
     "commonform-markup-stringify": "^0.1.0",
     "commonform-merkleize": "^0.3.2",
     "commonform-mscd": "^0.1.2",
