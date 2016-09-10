@@ -15,7 +15,7 @@
     "commonform-markup-stringify": "^0.1.0",
     "commonform-merkleize": "^0.3.2",
     "commonform-mscd": "^0.1.2",
-    "commonform-predicate": "^0.4.3",
+    "commonform-predicate": "^1.0.0",
     "commonform-rename": "^1.0.1",
     "commonform-simplify-structure": "^1.0.0",
     "commonform-treeify-annotations": "^0.1.1",
