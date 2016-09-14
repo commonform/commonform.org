@@ -475,7 +475,8 @@ module.exports = function (initialize, reduction, handler) {
       uri: API + '/annotations',
       withCredentials: true,
       headers: {
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json'
       },
       username: publisher,
       password: password,
@@ -499,7 +500,8 @@ module.exports = function (initialize, reduction, handler) {
       uri: API + '/forms/' + digest + '/subscribers/' + publisher,
       withCredentials: true,
       headers: {
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json'
       },
       username: publisher,
       password: password
@@ -685,7 +687,8 @@ function save (state, publisher, password, callback) {
     uri: API + '/forms',
     withCredentials: true,
     headers: {
-      'X-Requested-With': 'XMLHttpRequest'
+      'X-Requested-With': 'XMLHttpRequest',
+      'Content-Type': 'application/json'
     },
     username: publisher,
     password: password,
@@ -713,7 +716,8 @@ function publish (
     ),
     withCredentials: true,
     headers: {
-      'X-Requested-With': 'XMLHttpRequest'
+      'X-Requested-With': 'XMLHttpRequest',
+      'Content-Type': 'application/json'
     },
     username: publisher,
     password: password,

@@ -6,7 +6,8 @@ module.exports = function (uri, callback) {
     uri: uri,
     json: true,
     headers: {
-      'X-Requested-With': 'XMLHttpRequest'
+      'X-Requested-With': 'XMLHttpRequest',
+      'Content-Type': 'application/json'
     }
   }
   xhr(options, ecb(callback, function (response, body) {
