@@ -1,8 +1,15 @@
 var ecb = require('ecb')
-var http = require('xhr')
+var xhr = require('xhr')
 
 module.exports = function (uri, callback) {
-  http(uri, {json: true}, ecb(callback, function (response, body) {
+  var options = {
+    uri: uri,
+    json: true,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  }
+  xhr(options, ecb(callback, function (response, body) {
     if (response.statusCode !== 200) {
       var newError = new Error(
         'Server responded ' + response.statusCode + '.'

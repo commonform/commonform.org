@@ -474,6 +474,9 @@ module.exports = function (initialize, reduction, handler) {
       method: 'POST',
       uri: API + '/annotations',
       withCredentials: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
       username: publisher,
       password: password,
       body: JSON.stringify(data)
@@ -495,6 +498,9 @@ module.exports = function (initialize, reduction, handler) {
       method: 'POST',
       uri: API + '/forms/' + digest + '/subscribers/' + publisher,
       withCredentials: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
       username: publisher,
       password: password
     }, ecb(done, function (response, body) {
@@ -678,6 +684,9 @@ function save (state, publisher, password, callback) {
     method: 'POST',
     uri: API + '/forms',
     withCredentials: true,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    },
     username: publisher,
     password: password,
     body: JSON.stringify(state.tree)
@@ -703,6 +712,9 @@ function publish (
       '/publications/' + encodeURIComponent(edition)
     ),
     withCredentials: true,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    },
     username: publisher,
     password: password,
     body: JSON.stringify({digest: digest})
