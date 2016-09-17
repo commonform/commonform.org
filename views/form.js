@@ -80,7 +80,9 @@ function form (form, send) {
       ${
         marginalia(
           tree, form.path, form.blanks,
-          annotationsHere, toggleFocus
+          annotationsHere,
+          (commentsHere && commentsHere.length !== 0),
+          toggleFocus
         )
       }
       ${
@@ -204,7 +206,9 @@ function deleteButton (path, send) {
   }
 }
 
-function marginalia (tree, path, blanks, annotations, toggleFocus) {
+function marginalia (
+  tree, path, blanks, annotations, hasComment, toggleFocus
+) {
   var hasError = annotations.some(function (a) {
     return a.level === 'error'
   })
@@ -228,6 +232,7 @@ function marginalia (tree, path, blanks, annotations, toggleFocus) {
         ${hasError ? html`<a class=flag>\u26A0</a>` : null}
         ${hasAnnotation ? html`<a class=flag>\u2690</a>` : null}
         ${hasBlank ? html`<a class=flag>\u270D</a>` : null}
+        ${hasComment ? html`<a class=flag>\u2696</a>` : null}
       </aside>
     `
   } else {
