@@ -27,7 +27,6 @@ var rename = require('commonform-rename')
 var runParallel = require('run-parallel')
 var signaturePagesToOOXML = require('ooxml-signature-pages')
 var simplify = require('commonform-simplify-structure')
-var toMarkup = require('commonform-markup-stringify')
 var xhr = require('xhr')
 
 var slice = Array.prototype.slice
@@ -545,12 +544,18 @@ module.exports = function (initialize, reduction, handler) {
     }
   })
 
-  handler('download markup', function (data, state, reduce, done) {
-    var title = window.prompt('Enter a document title', 'Untitled Form')
+  handler('download project', function (data, state, reduce, done) {
+    var title = window.prompt('Enter a file name', 'Untitled Form')
     if (title !== null) {
       var blob = new window.Blob(
-        [toMarkup(state.tree)],
-        {type: 'text/plain;charset=ascii'}
+        [
+          JSON.stringify({
+            blanks: state.blanks,
+            signaturePages: state.signaturePages,
+            tree: state.tree
+          })
+        ],
+        {type: 'application/json;charset=utf-8'}
       )
       filesaver(blob, fileName(title, 'cform'), true)
     }

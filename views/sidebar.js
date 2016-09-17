@@ -70,7 +70,7 @@ function toolbox (send) {
         ${tool('renameHeading', closeToolbox, send)}
         ${tool('identify', closeToolbox, send)}
         ${tool('docx', closeToolbox, send)}
-        ${tool('markup', closeToolbox, send)}
+        ${tool('project', closeToolbox, send)}
         ${tool('mail', closeToolbox, send)}
       </div>
     </div>
@@ -112,9 +112,9 @@ function toolbox (send) {
 }
 
 var TOOLS = {
-  markup: {
-    title: 'Save markup file.',
-    action: 'form:download markup'
+  project: {
+    title: 'Save project file.',
+    action: 'form:download project'
   },
   docx: {
     title: 'Save Word file.',

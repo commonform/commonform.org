@@ -3,7 +3,6 @@ var footer = require('./footer')
 var html = require('yo-yo')
 var isSHA256 = require('is-sha-256-hex-digest')
 var loading = require('./loading')
-var parseMarkup = require('commonform-markup-parse')
 var publisherLink = require('./publisher-link')
 var sidebar = require('./sidebar')
 
@@ -78,19 +77,22 @@ module.exports = function browse (state, send) {
     var target = event.target
     var file = target.files[0]
     var reader = new window.FileReader()
-    var isJSON = file.type.match(/application\/json/)
     reader.onload = function (event) {
       var result = event.target.result
-      var tree
+      var json
       try {
-        tree = isJSON
-        ? JSON.parse(result)
-        : parseMarkup(result).form
+        json = JSON.parse(result)
       } catch (error) {
         window.alert(error.message)
         return
       }
-      send('form:loaded', tree)
+      if (json.hasOwnProperty('content')) {
+        send('form:loaded', json)
+      } else if (json.hasOwnProperty('tree')) {
+        send('form:loaded', json.tree)
+      } else {
+        window.alert('Not a Common Form project file.')
+      }
     }
     reader.readAsText(file, 'UTF-8')
     target.value = null
