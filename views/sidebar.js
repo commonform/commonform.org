@@ -168,7 +168,7 @@ function tool (name, closeToolbox, send) {
 function readButton () {
   return html`
     <a
-        title="Review form."
+        title="Reviewing form."
         class="enabled read"
       ></a>
   `
