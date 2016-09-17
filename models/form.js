@@ -102,8 +102,8 @@ module.exports = function (initialize, reduction, handler) {
         publications: action.publications
       },
       diff: state.hasOwnProperty('tree')
-      ? diff(state.tree, action.tree)
-      : null
+        ? diff(state.tree, action.tree)
+        : null
     }
   })
 
@@ -141,8 +141,8 @@ module.exports = function (initialize, reduction, handler) {
     var operand
     if (action.operation === 'push') {
       operand = action.key.length === 0
-      ? pages
-      : keyarray.get(pages, action.key)
+        ? pages
+        : keyarray.get(pages, action.key)
       operand.push(action.value)
     } else if (action.operation === 'splice') {
       operand = keyarray.get(pages, action.key.slice(0, -1))
@@ -175,8 +175,8 @@ module.exports = function (initialize, reduction, handler) {
       focused: null,
       parentComment: null,
       diff: state.hasOwnProperty('comparing')
-      ? diff(action.tree, state.comparing.tree)
-      : null
+        ? diff(action.tree, state.comparing.tree)
+        : null
     }
   })
 
@@ -232,8 +232,8 @@ module.exports = function (initialize, reduction, handler) {
       var toIndex = toPath[toPath.length - 1]
       hasTarget.splice(toIndex, 0, moving)
       var oldIndex = toIndex > fromIndex
-      ? hasMoving.indexOf(moving)
-      : hasMoving.lastIndexOf(moving)
+        ? hasMoving.indexOf(moving)
+        : hasMoving.lastIndexOf(moving)
       hasMoving.splice(oldIndex, 1)
       pushEditedTree({tree: newTree}, reduce, done)
     }
@@ -392,8 +392,8 @@ module.exports = function (initialize, reduction, handler) {
     return {
       annotators: data,
       annotations: state.tree
-      ? annotate(state.annotators, state.tree)
-      : []
+        ? annotate(state.annotators, state.tree)
+        : []
     }
   })
 
@@ -602,8 +602,8 @@ module.exports = function (initialize, reduction, handler) {
   handler('replace', function (data, state, reduce, done) {
     var path = data.path
     var prompt = data.digest
-    ? 'Enter a form digest:'
-    : 'Enter a publication like "goldplate\'s enforcement 1e":'
+      ? 'Enter a form digest:'
+      : 'Enter a publication like "goldplate\'s enforcement 1e":'
     var replacement = window.prompt(prompt)
     if (!replacement) {
       return

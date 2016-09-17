@@ -52,24 +52,24 @@ function comparison (diff) {
               ${root ? null : html`<a class=sigil>\u00A7</a>`}
               ${
                 Array.isArray(diff.heading)
-                ? heading(diff.heading)
-                : null
+                  ? heading(diff.heading)
+                  : null
               }
               ${
                 madeInconspicuous
-                ? html`<p class=edit>Made inconspicuous.</p>`
-                : null
+                  ? html`<p class=edit>Made inconspicuous.</p>`
+                  : null
               }
               ${
                 madeConspicuous
-                ? html`<p class=edit>Made conspicuous.</p>`
-                : null
+                  ? html`<p class=edit>Made conspicuous.</p>`
+                  : null
               }
               ${
                 groups.map(function (group) {
                   var renderer = group.type === 'series'
-                  ? series
-                  : paragraph
+                    ? series
+                    : paragraph
                   return renderer(group)
                 })
               }

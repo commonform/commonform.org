@@ -168,8 +168,8 @@ function render () {
             publisher: decodeURIComponent(match[1]),
             project: decodeURIComponent(match[2]),
             edition: match[3]
-            ? decodeURIComponent(match[3].substring(1))
-            : 'current'
+              ? decodeURIComponent(match[3].substring(1))
+              : 'current'
           })
         })
       }

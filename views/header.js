@@ -10,14 +10,14 @@ module.exports = function (
   assert(Array.isArray(publications))
   assert(send !== undefined)
   return toDigest
-  ? html`
-    <header>
-      ${paragraph(digest, publications, send)}
-      <p>compared to</p>
-      ${paragraph(toDigest, toPublications, send)}
-    </header>
-  `
-  : paragraph(digest, publications, send)
+    ? html`
+      <header>
+        ${paragraph(digest, publications, send)}
+        <p>compared to</p>
+        ${paragraph(toDigest, toPublications, send)}
+      </header>
+    `
+    : paragraph(digest, publications, send)
 }
 
 function paragraph (digest, publications, send) {

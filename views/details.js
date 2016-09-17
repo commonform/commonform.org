@@ -43,7 +43,7 @@ function deduplicate (annotations) {
         element.message === otherElement.message &&
         element.url === otherElement.url
     })
-    ? annotations
-    : annotations.concat(element)
+      ? annotations
+      : annotations.concat(element)
   }, [])
 }

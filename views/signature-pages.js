@@ -13,10 +13,10 @@ module.exports = function (pages, send) {
       <p class=endOfPage>
         ${
           pages.length > 0
-          ? pages.length === 1
-            ? '[Signature Page Follows]'
-            : '[Signature Pages Follow]'
-          : null
+            ? pages.length === 1
+              ? '[Signature Page Follows]'
+              : '[Signature Pages Follow]'
+            : null
         }
       </p>
       ${pages.map(function (element, index) {
@@ -91,42 +91,42 @@ function signaturePage (page, path, send) {
       <p>Name: ${inputFor('name')}</p>
       ${
         entities.length > 0
-        ? (function () {
-          var lastIndex = entities.length - 1
-          var byPath = path.concat('entities', lastIndex, 'by')
-          return html`
-            <p>Title:
-              ${input(
-                entities[lastIndex].by,
-                function (value) {
-                  send(
-                    'form:signatures',
-                    {
-                      operation: 'set',
-                      key: byPath,
-                      value: value
-                    }
-                  )
-                },
-                function () {
-                  send(
-                    'form:signatures',
-                    {
-                      operation: 'delete',
-                      key: byPath
-                    }
-                  )
-                })
-              }
-            </p>`
-        })()
-        : null
+          ? (function () {
+            var lastIndex = entities.length - 1
+            var byPath = path.concat('entities', lastIndex, 'by')
+            return html`
+              <p>Title:
+                ${input(
+                  entities[lastIndex].by,
+                  function (value) {
+                    send(
+                      'form:signatures',
+                      {
+                        operation: 'set',
+                        key: byPath,
+                        value: value
+                      }
+                    )
+                  },
+                  function () {
+                    send(
+                      'form:signatures',
+                      {
+                        operation: 'delete',
+                        key: byPath
+                      }
+                    )
+                  })
+                }
+              </p>`
+          })()
+          : null
       }
       ${
         optional.map(function (text) {
           var display = text === 'email'
-          ? 'E-Mail'
-          : capitalize(text)
+            ? 'E-Mail'
+            : capitalize(text)
           if (information.indexOf(text) > -1) {
             return html`<p>${display}:`
           } else {
@@ -269,34 +269,34 @@ function signatureEntity (state, send) {
       ${needsBy ? 'its' : null}
       ${
         needsBy
-        ? (function () {
-          var by = state.by
-          var byPath = state.byPath
-          return input(
-            by,
-            function (value) {
-              send(
-                'form:signatures',
-                {
-                  operation: 'set',
-                  key: byPath,
-                  value: value
-                }
-              )
-            },
-            function () {
-              send(
-                'form:signatures',
-                {
-                  operation: 'delete',
-                  key: byPath
-                }
-              )
-            },
-            'Role'
-          )
-        })()
-        : null
+          ? (function () {
+            var by = state.by
+            var byPath = state.byPath
+            return input(
+              by,
+              function (value) {
+                send(
+                  'form:signatures',
+                  {
+                    operation: 'set',
+                    key: byPath,
+                    value: value
+                  }
+                )
+              },
+              function () {
+                send(
+                  'form:signatures',
+                  {
+                    operation: 'delete',
+                    key: byPath
+                  }
+                )
+              },
+              'Role'
+            )
+          })()
+          : null
       }
       <button
           onclick=${

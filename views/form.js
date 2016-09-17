@@ -32,10 +32,10 @@ function form (form, send) {
     []
   )
   var commentsHere = form.comments
-  ? form.comments.filter(function (comment) {
-    return comment.form === form.merkle.digest
-  })
-  : false
+    ? form.comments.filter(function (comment) {
+      return comment.form === form.merkle.digest
+    })
+    : false
   var showComments = (
     (root || isFocused || form.withinFocused) &&
     commentsHere &&
@@ -64,18 +64,18 @@ function form (form, send) {
       ${isFocused ? editControls(form, send) : null}
       ${
         root
-        ? null
-        : heading(
-          form.mode,
-          isFocused || form.withinFocused,
-          form.tree.heading,
-          setHeading
-        )
+          ? null
+          : heading(
+            form.mode,
+            isFocused || form.withinFocused,
+            form.tree.heading,
+            setHeading
+          )
       }
       ${
         isFocused
-        ? details(digest, annotationsHere, send)
-        : null
+          ? details(digest, annotationsHere, send)
+          : null
       }
       ${
         marginalia(
@@ -87,12 +87,12 @@ function form (form, send) {
       }
       ${
         groups[0].type === 'series'
-        ? dropZone(
-          form.focused ? 'move' : 'child',
-          form.path.concat(formKey, 'content', 0),
-          send
-        )
-        : null
+          ? dropZone(
+            form.focused ? 'move' : 'child',
+            form.path.concat(formKey, 'content', 0),
+            send
+          )
+          : null
       }
       ${groups.map(function (group) {
         var groupState = {
@@ -120,15 +120,15 @@ function form (form, send) {
       })}
       ${
         showComments
-        ? commentsList(
-          commentsHere, form.parentComment, digest, send
-        )
-        : null
+          ? commentsList(
+            commentsHere, form.parentComment, digest, send
+          )
+          : null
       }
       ${
         isFocused
-        ? commentForm(digest, false, send)
-        : null
+          ? commentForm(digest, false, send)
+          : null
       }
     </section>
   `
@@ -364,8 +364,8 @@ function blank (blanks, path, send) {
     return deepEqual(element.blank, path)
   })
   var value = direction
-  ? improvePunctuation(direction.value)
-  : ''
+    ? improvePunctuation(direction.value)
+    : ''
   return input(
     value,
     function (value) {
@@ -415,11 +415,11 @@ function commentListItem (
   var uuid = comment.uuid
 
   var reply = parent && uuid === parent.uuid
-  ? commentForm(digest, {
-    context: comment.context,
-    replyTo: withParent
-  }, send)
-  : html`<button onclick=${onClick}>Reply</button>`
+    ? commentForm(digest, {
+      context: comment.context,
+      replyTo: withParent
+    }, send)
+    : html`<button onclick=${onClick}>Reply</button>`
   return html`
     <li data-uuid=${uuid}>
       ${improvePunctuation(comment.text)}
@@ -432,12 +432,12 @@ function commentListItem (
       </div>
       ${
         replies.length === 0
-        ? null
-        : replies.map(function (reply) {
-          return commentListItem(
-            reply, withParent, other, digest, parent, send
-          )
-        })
+          ? null
+          : replies.map(function (reply) {
+            return commentListItem(
+              reply, withParent, other, digest, parent, send
+            )
+          })
       }
     </li>
   `
