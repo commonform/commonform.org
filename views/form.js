@@ -36,6 +36,11 @@ function form (form, send) {
     return comment.form === form.merkle.digest
   })
   : false
+  var showComments = (
+    (root || isFocused || form.withinFocused) &&
+    commentsHere &&
+    commentsHere.length !== 0
+  )
   var classes = classnames({
     conspicuous: 'conspicuous' in tree,
     focused: isFocused
@@ -112,7 +117,7 @@ function form (form, send) {
         return result
       })}
       ${
-        commentsHere && commentsHere.length !== 0
+        showComments
         ? commentsList(
           commentsHere, form.parentComment, digest, send
         )
