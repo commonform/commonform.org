@@ -229,15 +229,24 @@ function marginalia (
   if (hasError || hasAnnotation || hasBlank) {
     return html`
       <aside class=marginalia onclick=${toggleFocus}>
-        ${hasError ? html`<a class=flag>\u26A0</a>` : null}
-        ${hasAnnotation ? html`<a class=flag>\u2690</a>` : null}
-        ${hasBlank ? html`<a class=flag>\u270D</a>` : null}
-        ${hasComment ? html`<a class=flag>\u2696</a>` : null}
+        ${hasError ? flag('error', '\u26A0') : null}
+        ${hasAnnotation ? flag('annotation', '\u2690') : null}
+        ${hasBlank ? flag('blank', '\u270D') : null}
+        ${hasComment ? flag('comment', '\u2696') : null}
       </aside>
     `
   } else {
     return null
   }
+}
+
+function flag (type, character) {
+  return html`
+    <a
+        class=flag
+        title="Click to show ${type}s here."
+      >${character}</a>
+  `
 }
 
 function heading (mode, withinFocused, heading, send) {
