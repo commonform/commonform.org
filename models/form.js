@@ -168,7 +168,7 @@ module.exports = function (initialize, reduction, handler) {
       projects: [],
       blanks: [],
       annotations: annotate(state.annotators, action.tree),
-      comments: null,
+      comments: action.comments || null,
       merkle: action.merkle || merkleize(action.tree),
       publications: action.publications || [],
       signaturePages: [],
@@ -442,8 +442,6 @@ module.exports = function (initialize, reduction, handler) {
   reduction('comments', function (comments, state) {
     return {comments: comments}
   })
-
-  handler('fetch comments', fetchComments)
 
   function fetchComments (data, state, reduce, done) {
     var digest = state.merkle.digest
@@ -760,12 +758,22 @@ function loadForm (digest, callback) {
             }
           }
         )
+      },
+      function (done) {
+        getComments(digest, function (error, comments) {
+          if (error) {
+            done(null, null)
+          } else {
+            done(null, comments)
+          }
+        })
       }
     ],
     ecb(callback, function (results) {
       callback(null, {
         tree: results[0],
-        publications: results[1]
+        publications: results[1],
+        comments: results[2]
       })
     })
   )
