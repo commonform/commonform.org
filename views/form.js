@@ -159,7 +159,7 @@ function conspicuousToggle (conspicuous, path, send) {
   assert(typeof send === 'function')
   return html`
     <button onclick=${onClick}>
-      ${conspicuous ? 'Make Inconspicuous' : 'Make Conspicuous'}
+      ${conspicuous ? 'Inconspicuous' : 'Conspicuous'}
     </button>
   `
   function onClick (event) {
