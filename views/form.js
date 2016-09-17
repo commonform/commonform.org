@@ -26,15 +26,12 @@ function form (form, send) {
   var tree = root ? form.tree : form.tree.form
   var groups = group(clone(tree))
   var isFocused = deepEqual(form.focused, form.path)
-  var inFocus = isFocused || form.withinFocused
-  var editing = form.mode === 'edit'
-  var commenting = form.mode === 'comment'
   var annotationsHere = get(
     form.annotations,
     formKey.concat('annotations'),
     []
   )
-  var commentsHere = commenting && form.comments
+  var commentsHere = form.comments
   ? form.comments.filter(function (comment) {
     return comment.form === form.merkle.digest
   })
@@ -51,11 +48,6 @@ function form (form, send) {
     })
   }
 
-  var shouldShowDropZone = (
-    editing &&
-    (form.focused === null || (!form.withinFocused && !isFocused))
-  )
-
   var digest = form.merkle.digest
 
   var offset = 0
@@ -64,7 +56,7 @@ function form (form, send) {
         class="${classes}"
         data-digest="${digest}">
       ${root ? null : sectionButton(toggleFocus)}
-      ${isFocused && editing ? editControls(form, send) : null}
+      ${isFocused ? editControls(form, send) : null}
       ${
         root
         ? null
@@ -89,7 +81,6 @@ function form (form, send) {
       ${
         groups[0].type === 'series'
         ? dropZone(
-          shouldShowDropZone,
           form.focused ? 'move' : 'child',
           form.path.concat(formKey, 'content', 0),
           send
@@ -121,14 +112,14 @@ function form (form, send) {
         return result
       })}
       ${
-        commenting && commentsHere && commentsHere.length !== 0
+        commentsHere && commentsHere.length !== 0
         ? commentsList(
           commentsHere, form.parentComment, digest, send
         )
         : null
       }
       ${
-        commenting && (inFocus || root)
+        isFocused
         ? commentForm(digest, false, send)
         : null
       }
@@ -240,7 +231,7 @@ function marginalia (tree, path, blanks, annotations, toggleFocus) {
 }
 
 function heading (mode, withinFocused, heading, send) {
-  if (mode === 'edit' && (heading || withinFocused)) {
+  if (heading || withinFocused) {
     return html`
       <input
           type=text
@@ -251,15 +242,6 @@ function heading (mode, withinFocused, heading, send) {
             send(event.target.value)
           }}
           value=${heading || ''}/>
-    `
-  } else if (mode !== 'edit' && heading) {
-    return html`
-      <input
-          type=text
-          class=heading
-          id="Heading:${heading}"
-          value=${heading || ''}
-          readonly />
     `
   } else {
     return null
@@ -287,14 +269,9 @@ function series (state, send) {
       },
       send
     )
-    var shouldShowDropZone = (
-      state.mode === 'edit' &&
-      (state.focused === null || !state.withinFocused)
-    )
     return [
       result,
       dropZone(
-        shouldShowDropZone,
         state.focused ? 'move' : 'child',
         state.path.concat('content', absoluteIndex + 1),
         send
@@ -307,34 +284,27 @@ function paragraph (state, send) {
   var elementCount = state.data.content.length
   var offset = state.offset
   var lastIndex = state.offset + elementCount
-  var editing = state.mode === 'edit'
-  var shouldShowDropZone = (
-    editing &&
-    (state.focused === null || !state.withinFocused)
-  )
-  if (editing) {
-    var onBlur = function (event) {
+  var onBlur = function (event) {
+    event.stopPropagation()
+    send('form:edit', {
+      element: event.target,
+      context: state.path.concat('content'),
+      offset: offset,
+      count: elementCount
+    })
+  }
+  var onKeyDown = function (event) {
+    if (event.which === 13 /* RETURN */) {
+      event.preventDefault()
       event.stopPropagation()
-      send('form:edit', {
-        element: event.target,
-        context: state.path.concat('content'),
-        offset: offset,
-        count: elementCount
-      })
-    }
-    var onKeyDown = function (event) {
-      if (event.which === 13 /* RETURN */) {
-        event.preventDefault()
-        event.stopPropagation()
-        event.target.blur()
-      }
+      event.target.blur()
     }
   }
   return html`
     <div>
       <p
           class=text
-          contenteditable=${editing ? 'true' : 'false'}
+          contenteditable=true
           onblur=${onBlur}
           onkeydown=${onKeyDown}
         >${
@@ -355,12 +325,13 @@ function paragraph (state, send) {
           })
         }
       </p>
-      ${dropZone(
-        shouldShowDropZone,
-        state.focused ? 'move' : 'child',
-        state.path.concat('content', lastIndex),
-        send
-      )}
+      ${
+        dropZone(
+          state.focused ? 'move' : 'child',
+          state.path.concat('content', lastIndex),
+          send
+        )
+      }
     </div>
   `
 }

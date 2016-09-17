@@ -34,12 +34,6 @@ module.exports = function (state, send) {
       </div>
     `
   } else {
-    var needComments = (
-      state.comments === null && state.mode === 'comment'
-    )
-    if (needComments) {
-      send('form:fetch comments')
-    }
     return html`
       <div class=container>
         <article class=commonform onclick=${onClick}>

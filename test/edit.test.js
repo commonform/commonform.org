@@ -36,8 +36,6 @@ tape('Edits', function (suite) {
       webdriver
       .url(testURL)
       .waitForExist(firstHeading)
-      // Change to edit mode.
-      .click('//a[contains(@class, "edit")]')
       // Select the only heading.
       .click(firstHeading)
       // Backspace the current heading.

@@ -7,6 +7,12 @@
   -o-user-select: none
   user-select: none;
 
+=commentBorder
+  border-left: 1px solid black
+
+=horizontalBorder
+  border-top: 1px solid black
+
 @media all
   html
     font-size: 23px
@@ -111,7 +117,7 @@ button
     background: white
     position: absolute
     left: 100%
-    top: -9rem
+    top: -5rem
     text-align: left
     &.closed
       display: none
@@ -168,7 +174,7 @@ button
     &.new
       background-image: url(icons/basic_sheet.svg)
     &.read
-      background-image: url(icons/basic_eye.svg)
+      background-image: url(icons/basic_sheet_pencil.svg)
     &.tools
       background-image: url(icons/basic_settings.svg)
     &.help
@@ -228,7 +234,7 @@ button
         background: white
 
   footer, section.settings
-    border-top: 1px solid black
+    +horizontalBorder
     margin: 0.5rem 0
     padding: 0.5rem 0
 
@@ -253,7 +259,6 @@ button
     padding-left: 3rem
 
   .heading
-    height: 1rem
     display: block
     width: 100%
     border: none
@@ -372,6 +377,7 @@ button
     text-align: center
 
   .signaturePages
+    +horizontalBorder
     .page
       &> *:not(:first-child):not(:last-child)
         margin-left: 30%
@@ -431,19 +437,28 @@ button
         background: rgb(225,255,208)
 
 .dropZone
+  //height: 0.75rem
   cursor: pointer
-  height: 1rem
-  margin: 4px 0
-  border: 1px dashed #ccc
-  &.disabled
-    border: 1px solid white
-    cursor: auto
+  padding: 0 0 0 3rem
+  margin: 0
+  border: 1px solid white
+  color: white
+  position: relative
+  &:before
+    content: '§'
+    position: absolute
+    left: 0
+  &:hover
+    height: auto
+    border: 1px dashed #ccc
+    color: #ccc
 
 .comments
   list-style-type: none
   padding: 0
   li
-    border-left: 3px solid #777
+    +commentBorder
+    border-left: 1px solid #777
     padding: 0.25rem 0 0.25rem 1rem
   .byline
     text-align: right
@@ -452,7 +467,7 @@ button
     text-align: right
 
 .newComment
-  border-left: 3px solid #777
+  +commentBorder
   padding: 0 0 0 1rem
   textarea
     width: 100%

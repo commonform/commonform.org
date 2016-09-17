@@ -19,9 +19,7 @@ function modeButtons (mode, send) {
           class="browse ${enableIf(mode === 'browse')}"
           title="Click to browse forms."
       ></a>
-      ${showReadModes ? modeButton('read', mode, send) : null}
-      ${showReadModes ? modeButton('edit', mode, send) : null}
-      ${showReadModes ? modeButton('comment', mode, send) : null}
+      ${showReadModes ? readButton() : null}
       ${showReadModes ? toolbox(send) : null}
       <a
           href=http://help.commonform.org
@@ -167,20 +165,11 @@ function tool (name, closeToolbox, send) {
   `
 }
 
-function modeButton (mode, currentMode, send) {
-  assert(typeof mode === 'string')
-  assert(typeof currentMode === 'string')
-  assert(typeof send === 'function')
-  var enabled = mode === currentMode
-  var title = enabled ? '' : 'Click to ' + mode + '.'
+function readButton () {
   return html`
     <a
-        title=${title}
-        class="${mode} ${enabled ? 'enabled' : 'disabled'}"
-        onclick=${function (event) {
-          event.preventDefault()
-          send('form:mode', mode)
-        }}
+        title="Review form."
+        class="enabled read"
       ></a>
   `
 }
