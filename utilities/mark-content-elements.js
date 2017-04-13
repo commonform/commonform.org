@@ -117,7 +117,7 @@ function findTermsAndHeadings (form) {
   function recurse (form, results) {
     form.content.forEach(function (element) {
       if (typeof element === 'string') {
-        return
+        // pass
       } else if ('reference' in element) {
         pushIfMissing(results.headings, element.reference)
       } else if ('use' in element) {

@@ -16,4 +16,3 @@ module.exports = function (digest) {
     </div>
   `
 }
-

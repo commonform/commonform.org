@@ -79,4 +79,3 @@ function numbering (selected, send) {
     send('form:numbering', event.target.value)
   }
 }
-

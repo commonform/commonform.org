@@ -10,4 +10,3 @@ module.exports = function (heading) {
       >${heading}</a>
   `
 }
-
