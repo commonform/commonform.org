@@ -77,7 +77,7 @@
     "build": "npm-run-all --parallel build:*",
     "build:css": "node-sass --output-style compressed styles/styles.sass > build/styles.css",
     "build:licenses": "brlicenses -f full index.js > build/LICENSES",
-    "build:js": "NODE_ENV=production browserify -p [ browserify-header --file header.js ] -p licensify index.js | uglifyjs --comments warnings=false > build/browser.js",
+    "build:js": "browserify -p [ browserify-header --file header.js ] -p licensify index.js | uglifyjs --comments warnings=false > build/browser.js",
     "chromedriver": "chromedriver --url-base=/wd/hub",
     "start": "npm-run-all --parallel start:*",
     "start:api": "PORT=8081 LEVELDB=memory ADMINISTRATOR_PASSWORD=test commonform-server",

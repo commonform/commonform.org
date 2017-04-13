@@ -45,7 +45,7 @@ REF=${1:-HEAD}
 	mv npm-shrinkwrap.json build/npm-shrinkwrap.json
 
 	# Build.
-	npm run build
+	NODE_ENV=production npm run build
 
 	# Replace the "RELEASE" placeholder in the HTML index with the path of
 	# this build as deployed to ROOT on commonform.org.
