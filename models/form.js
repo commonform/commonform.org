@@ -348,7 +348,7 @@ module.exports = function (initialize, reduction, handler) {
           tree: tree,
           publications: error ? [] : publications
         })
-        window.history.pushState(tree, '', formPath(digest))
+        window.history.replaceState(tree, '', formPath(digest))
         done()
       })
     }))
