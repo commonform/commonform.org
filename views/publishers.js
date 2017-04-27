@@ -31,8 +31,6 @@ module.exports = function browse (state, send) {
                   send('form:new form')
                 }}
             >Start a New Form from Scratch</button>
-          </p>
-          <p>
             <form class=fileInputTrick>
               <button>Open a File</button>
               <input
