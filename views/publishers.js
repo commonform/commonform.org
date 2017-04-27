@@ -50,7 +50,7 @@ module.exports = function browse (state, send) {
               <button type=submit>Fetch from commonform.org</button>
             </form>
           </p>
-          <h2>Browse Publications by Publisher</h2>
+          <h2>Browse by Publisher</h2>
           <ul>
             ${
               state.publishers.map(function (publisher) {
