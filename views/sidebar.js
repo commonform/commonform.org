@@ -54,7 +54,7 @@ function toolbox (send) {
               closeToolbox()
               send('form:mode', 'mail')
             }}
-          ></a>
+          >Subscribe</a>
         <a
             title="Store with CommonForm.org"
             class="save"
@@ -64,14 +64,14 @@ function toolbox (send) {
               closeToolbox()
               send('form:mode', 'save')
             }}
-          ></a>
-        ${tool('simplify', closeToolbox, send)}
-        ${tool('renameTerm', closeToolbox, send)}
-        ${tool('renameHeading', closeToolbox, send)}
-        ${tool('identify', closeToolbox, send)}
-        ${tool('docx', closeToolbox, send)}
-        ${tool('project', closeToolbox, send)}
-        ${tool('mail', closeToolbox, send)}
+          >Store Online</a>
+        ${tool('simplify', 'Simplify Structure', closeToolbox, send)}
+        ${tool('renameTerm', 'Rename Term', closeToolbox, send)}
+        ${tool('renameHeading', 'Rename Heading', closeToolbox, send)}
+        ${tool('identify', 'Mark Terms', closeToolbox, send)}
+        ${tool('saveDOCX', 'Save DOCX', closeToolbox, send)}
+        ${tool('saveProject', 'Save Project', closeToolbox, send)}
+        ${tool('mail', 'E-Mail', closeToolbox, send)}
       </div>
     </div>
   `
@@ -112,11 +112,11 @@ function toolbox (send) {
 }
 
 var TOOLS = {
-  project: {
+  saveProject: {
     title: 'Save project file.',
     action: 'form:download project'
   },
-  docx: {
+  saveDOCX: {
     title: 'Save Word file.',
     action: 'form:download docx'
   },
@@ -146,7 +146,7 @@ var TOOLS = {
   }
 }
 
-function tool (name, closeToolbox, send) {
+function tool (name, label, closeToolbox, send) {
   assert(typeof name === 'string')
   assert(TOOLS.hasOwnProperty(name))
   assert(typeof send === 'function')
@@ -161,7 +161,7 @@ function tool (name, closeToolbox, send) {
           closeToolbox()
         }}
         title=${tool.title}
-      ></a>
+      >${label}</a>
   `
 }
 
