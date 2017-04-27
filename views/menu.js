@@ -3,7 +3,6 @@ var fromElements = require('../utilities/from-elements')
 var html = require('yo-yo')
 
 var GUIDE = 'https://github.com/commonform/new-publisher-guide'
-var slice = Array.prototype.slice
 
 module.exports = function (form, send) {
   assert(typeof form === 'object')
@@ -113,10 +112,11 @@ module.exports = function (form, send) {
 
   function checkSafety (event) {
     event.preventDefault()
-    var allChecked = slice.call(event.target.form.elements)
-    .every(function (element) {
-      return element.checked
-    })
+    var allChecked = Array.prototype.slice
+      .call(event.target.form.elements)
+      .every(function (element) {
+        return element.checked
+      })
     var forms = document.forms.length
     for (var formIndex = 0; formIndex < forms; formIndex++) {
       var form = document.forms[formIndex]

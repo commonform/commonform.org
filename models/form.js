@@ -29,9 +29,6 @@ var signaturePagesToOOXML = require('ooxml-signature-pages')
 var simplify = require('commonform-simplify-structure')
 var xhr = require('xhr')
 
-var slice = Array.prototype.slice
-var splice = Array.prototype.splice
-
 module.exports = function (initialize, reduction, handler) {
   initialize(function () {
     var annotatorFlags = {}
@@ -270,7 +267,7 @@ module.exports = function (initialize, reduction, handler) {
     assert(Number.isInteger(action.offset))
     assert(Number.isInteger(action.count))
     var element = action.element
-    var children = slice.call(element.childNodes)
+    var children = Array.prototype.slice.call(element.childNodes)
     var elements = children.map(function (element) {
       var nodeType = element.nodeType
       var tagName = element.tagName
@@ -309,7 +306,8 @@ module.exports = function (initialize, reduction, handler) {
     var context = keyarray.get(newTree, action.context)
     var offset = action.offset
     var count = action.count
-    splice.apply(context, [offset, count].concat(elements))
+    Array.prototype.splice.apply(context, [offset, count]
+      .concat(elements))
     fix(keyarray.get(newTree, action.context.slice(0, -1)))
     pushEditedTree({tree: newTree}, reduce, done)
   })
