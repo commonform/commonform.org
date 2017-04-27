@@ -56,6 +56,10 @@ module.exports = function browse (state, send) {
               })
             }
           </ul>
+          <p>
+            If you would like to publish forms, e-mail
+            <a href="mailto:kyle@kemitchell.com">Kyle Mitchell</a>.
+          </p>
           ${footer()}
         </article>
       </div>
