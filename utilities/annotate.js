@@ -9,11 +9,11 @@ module.exports = function (flags, form) {
       find(annotators, function (annotator) {
         return annotator.name === name
       })
-      .annotate(form)
-      .forEach(function (annotation) {
-        annotation.path = annotation.path.slice(0, -2)
-        annotations.push(annotation)
-      })
+        .annotate(form)
+        .forEach(function (annotation) {
+          annotation.path = annotation.path.slice(0, -2)
+          annotations.push(annotation)
+        })
     }
   })
   return treeify(annotations)

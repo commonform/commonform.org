@@ -26,17 +26,17 @@ tape.test('Signature Pages', function (test) {
     postForm(form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url(testURL)
-      .waitForExist(addButton)
-      .click(addButton)
-      .isExisting(pageFollows)
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'On clicking "Add Signature Page", ' +
-          'the text "Signature Page Follows" appears.'
-        )
-      })
+        .url(testURL)
+        .waitForExist(addButton)
+        .click(addButton)
+        .isExisting(pageFollows)
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'On clicking "Add Signature Page", ' +
+            'the text "Signature Page Follows" appears.'
+          )
+        })
     })
   })
 
@@ -45,18 +45,18 @@ tape.test('Signature Pages', function (test) {
     postForm(form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url(testURL)
-      .waitForExist(addButton)
-      .click(addButton)
-      .click(addButton)
-      .isExisting(pagesFollow)
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'On clicking "Add Signature Page" twice, ' +
-          'the text "Signature Pages Follow" appears.'
-        )
-      })
+        .url(testURL)
+        .waitForExist(addButton)
+        .click(addButton)
+        .click(addButton)
+        .isExisting(pagesFollow)
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'On clicking "Add Signature Page" twice, ' +
+            'the text "Signature Pages Follow" appears.'
+          )
+        })
     })
   })
 
@@ -65,20 +65,20 @@ tape.test('Signature Pages', function (test) {
     postForm(form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url(testURL)
-      .waitForExist(addButton)
-      .click(addButton)
-      .waitForExist(deleteButton)
-      .click(deleteButton)
-      .isExisting(pageFollows)
-      .then(function (existing) {
-        test.assert(
-          !existing,
-          'On clicking "Add Signature Page" ' +
-          'and then "Delete this Signature Page", ' +
-          'the text "Signature Page Follows" disappears.'
-        )
-      })
+        .url(testURL)
+        .waitForExist(addButton)
+        .click(addButton)
+        .waitForExist(deleteButton)
+        .click(deleteButton)
+        .isExisting(pageFollows)
+        .then(function (existing) {
+          test.assert(
+            !existing,
+            'On clicking "Add Signature Page" ' +
+            'and then "Delete this Signature Page", ' +
+            'the text "Signature Page Follows" disappears.'
+          )
+        })
     })
   })
 })

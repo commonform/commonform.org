@@ -15,27 +15,27 @@ tape.skip('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000/forms/' + apache2 + '/' + edited)
-    .isExisting('//*[contains(text(),"compared to")]')
-    .then(function (existing) {
-      test.assert(
-        existing,
-        'Displays "compared to" when diffing.'
-      )
-    })
+      .url('http://localhost:8000/forms/' + apache2 + '/' + edited)
+      .isExisting('//*[contains(text(),"compared to")]')
+      .then(function (existing) {
+        test.assert(
+          existing,
+          'Displays "compared to" when diffing.'
+        )
+      })
   })
 
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000/forms/' + apache2 + '/' + edited)
-    .isExisting('//del//span[contains(text(),"whether")]')
-    .then(function (existing) {
-      test.assert(
-        existing,
-        'Displays "whether" as a deletion.'
-      )
-    })
+      .url('http://localhost:8000/forms/' + apache2 + '/' + edited)
+      .isExisting('//del//span[contains(text(),"whether")]')
+      .then(function (existing) {
+        test.assert(
+          existing,
+          'Displays "whether" as a deletion.'
+        )
+      })
   })
 
   var abc = (
@@ -51,29 +51,29 @@ tape.skip('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000/forms/' + abc + '/' + bcd)
-    .waitForExist('//del//p[contains(text(),"This is A.")]')
-    .isExisting('//del//p[contains(text(),"This is A.")]')
-    .then(function (existing) {
-      test.assert(
-        existing,
-        'Displays This is A." as a deletion.'
-      )
-    })
+      .url('http://localhost:8000/forms/' + abc + '/' + bcd)
+      .waitForExist('//del//p[contains(text(),"This is A.")]')
+      .isExisting('//del//p[contains(text(),"This is A.")]')
+      .then(function (existing) {
+        test.assert(
+          existing,
+          'Displays This is A." as a deletion.'
+        )
+      })
   })
 
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000/forms/' + abc + '/' + bcd)
-    .waitForExist('//ins//p[contains(text(),"This is D.")]')
-    .isExisting('//ins//p[contains(text(),"This is D.")]')
-    .then(function (existing) {
-      test.assert(
-        existing,
-        'Displays "This is D." as an insertion.'
-      )
-    })
+      .url('http://localhost:8000/forms/' + abc + '/' + bcd)
+      .waitForExist('//ins//p[contains(text(),"This is D.")]')
+      .isExisting('//ins//p[contains(text(),"This is D.")]')
+      .then(function (existing) {
+        test.assert(
+          existing,
+          'Displays "This is D." as an insertion.'
+        )
+      })
   })
 
   var a = (
@@ -89,28 +89,28 @@ tape.skip('Comparison', function (suite) {
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000/forms/' + a + '/' + aConspicuous)
-    .waitForExist('//*[contains(text(),"Made conspicuous")]')
-    .isExisting('//*[contains(text(),"Made conspicuous")]')
-    .then(function (existing) {
-      test.assert(
-        existing,
-        'Displays "Made conspicuous".'
-      )
-    })
+      .url('http://localhost:8000/forms/' + a + '/' + aConspicuous)
+      .waitForExist('//*[contains(text(),"Made conspicuous")]')
+      .isExisting('//*[contains(text(),"Made conspicuous")]')
+      .then(function (existing) {
+        test.assert(
+          existing,
+          'Displays "Made conspicuous".'
+        )
+      })
   })
 
   suite.test(function (test) {
     test.plan(1)
     webdriver
-    .url('http://localhost:8000/forms/' + aConspicuous + '/' + a)
-    .waitForExist('//*[contains(text(),"Made inconspicuous")]')
-    .isExisting('//*[contains(text(),"Made inconspicuous")]')
-    .then(function (existing) {
-      test.assert(
-        existing,
-        'Displays "Made inconspicuous".'
-      )
-    })
+      .url('http://localhost:8000/forms/' + aConspicuous + '/' + a)
+      .waitForExist('//*[contains(text(),"Made inconspicuous")]')
+      .isExisting('//*[contains(text(),"Made inconspicuous")]')
+      .then(function (existing) {
+        test.assert(
+          existing,
+          'Displays "Made inconspicuous".'
+        )
+      })
   })
 })

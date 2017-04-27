@@ -16,18 +16,18 @@ tape('Loading from API', function (suite) {
     postForm(form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/forms/' + digest)
-      .waitForExist(
-        '//*[contains(text(),"This is a test form.")]',
-        2000
-      )
-      .isExisting('//*[contains(text(),"This is a test form.")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays form from API.'
+        .url('http://localhost:8000/forms/' + digest)
+        .waitForExist(
+          '//*[contains(text(),"This is a test form.")]',
+          2000
         )
-      })
+        .isExisting('//*[contains(text(),"This is a test form.")]')
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Page displays form from API.'
+          )
+        })
     })
   })
 
@@ -36,18 +36,18 @@ tape('Loading from API', function (suite) {
     postProject('test', 'test', '1e', form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/publications/test/test')
-      .waitForExist(
-        '//*[contains(text(),"This is a test form.")]',
-        2000
-      )
-      .isExisting('//*[contains(text(),"This is a test form.")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays form from API.'
+        .url('http://localhost:8000/publications/test/test')
+        .waitForExist(
+          '//*[contains(text(),"This is a test form.")]',
+          2000
         )
-      })
+        .isExisting('//*[contains(text(),"This is a test form.")]')
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Page displays form from API.'
+          )
+        })
     })
   })
 
@@ -56,15 +56,15 @@ tape('Loading from API', function (suite) {
     postProject('test', 'test', '1e', form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/publications/test/test/1e')
-      .waitForExist('//*[contains(text(),"test")]', 2000)
-      .isExisting('//*[contains(text(),"test")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays project name.'
-        )
-      })
+        .url('http://localhost:8000/publications/test/test/1e')
+        .waitForExist('//*[contains(text(),"test")]', 2000)
+        .isExisting('//*[contains(text(),"test")]')
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Page displays project name.'
+          )
+        })
     })
   })
 
@@ -73,20 +73,20 @@ tape('Loading from API', function (suite) {
     postProject('test', 'test', '1e', form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/publications/test/test/1e')
-      .waitForExist('//abbr[contains(text(), "1e")]', 2000)
-      .isExisting(
-        '//abbr[' +
-        'contains(@title,"first edition") and ' +
-        'contains(text(), "1e")' +
-        ']'
-      )
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays project name.'
+        .url('http://localhost:8000/publications/test/test/1e')
+        .waitForExist('//abbr[contains(text(), "1e")]', 2000)
+        .isExisting(
+          '//abbr[' +
+          'contains(@title,"first edition") and ' +
+          'contains(text(), "1e")' +
+          ']'
         )
-      })
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Page displays project name.'
+          )
+        })
     })
   })
 
@@ -95,17 +95,17 @@ tape('Loading from API', function (suite) {
     postProject('test', 'test', '1e', form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/publications/test/test/latest')
-      .waitForExist(
-        '//*[contains(text(),"This is a test form.")]', 2000
-      )
-      .isExisting('//*[contains(text(),"This is a test form.")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays form from API.'
+        .url('http://localhost:8000/publications/test/test/latest')
+        .waitForExist(
+          '//*[contains(text(),"This is a test form.")]', 2000
         )
-      })
+        .isExisting('//*[contains(text(),"This is a test form.")]')
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Page displays form from API.'
+          )
+        })
     })
   })
 
@@ -114,17 +114,17 @@ tape('Loading from API', function (suite) {
     postProject('test', 'test', '1e', form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/publications/test/test')
-      .waitForExist(
-        '//*[contains(text(),"This is a test form.")]', 2000
-      )
-      .isExisting('//*[contains(text(),"This is a test form.")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays form from API.'
+        .url('http://localhost:8000/publications/test/test')
+        .waitForExist(
+          '//*[contains(text(),"This is a test form.")]', 2000
         )
-      })
+        .isExisting('//*[contains(text(),"This is a test form.")]')
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Page displays form from API.'
+          )
+        })
     })
   })
 
@@ -133,17 +133,17 @@ tape('Loading from API', function (suite) {
     postProject('test', 'test', '1e', form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/publications/test/test/current')
-      .waitForExist(
-        '//*[contains(text(),"This is a test form.")]', 2000
-      )
-      .isExisting('//*[contains(text(),"This is a test form.")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Page displays form from API.'
+        .url('http://localhost:8000/publications/test/test/current')
+        .waitForExist(
+          '//*[contains(text(),"This is a test form.")]', 2000
         )
-      })
+        .isExisting('//*[contains(text(),"This is a test form.")]')
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Page displays form from API.'
+          )
+        })
     })
   })
 })

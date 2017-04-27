@@ -13,14 +13,14 @@ tape('Typography', function (suite) {
     postForm(form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/forms/' + digest)
-      .isExisting('//*[contains(text(),"Wouldn’t")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Displays "Wouldn’t" with nice quote.'
-        )
-      })
+        .url('http://localhost:8000/forms/' + digest)
+        .isExisting('//*[contains(text(),"Wouldn’t")]')
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Displays "Wouldn’t" with nice quote.'
+          )
+        })
     })
   })
 
@@ -33,14 +33,14 @@ tape('Typography', function (suite) {
     postForm(form, function (error) {
       test.ifError(error, 'no error')
       webdriver
-      .url('http://localhost:8000/forms/' + digest)
-      .isExisting('//*[contains(text(),"“quotation marks”")]')
-      .then(function (existing) {
-        test.assert(
-          existing,
-          'Displays “quotation marks” with nice quotes.'
-        )
-      })
+        .url('http://localhost:8000/forms/' + digest)
+        .isExisting('//*[contains(text(),"“quotation marks”")]')
+        .then(function (existing) {
+          test.assert(
+            existing,
+            'Displays “quotation marks” with nice quotes.'
+          )
+        })
     })
   })
 })

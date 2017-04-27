@@ -43,11 +43,11 @@ function createPublisher (publisher, callback) {
       callback(new Error('Responded ' + code))
     }
   })
-  .end(JSON.stringify({
-    about: '',
-    email: publisher + '@example.com',
-    password: TERRIBLE_PASSWORD
-  }))
+    .end(JSON.stringify({
+      about: '',
+      email: publisher + '@example.com',
+      password: TERRIBLE_PASSWORD
+    }))
 }
 
 function publish (publisher, project, edition, digest, callback) {
@@ -69,7 +69,7 @@ function publish (publisher, project, edition, digest, callback) {
       callback(new Error('Responded ' + code))
     }
   })
-  .end(JSON.stringify({
-    digest: digest
-  }))
+    .end(JSON.stringify({
+      digest: digest
+    }))
 }

@@ -535,7 +535,7 @@ module.exports = function (initialize, reduction, handler) {
       }
       filesaver(
         docx(clone(state.tree), state.blanks, options)
-        .generate({type: 'blob'}),
+          .generate({type: 'blob'}),
         fileName(title, 'docx'),
         true
       )

@@ -1,9 +1,9 @@
 var webdriver = module.exports = (function () {
   return require('webdriverio')
-  .remote(configuration())
-  .init()
-  .timeouts('script', 1000)
-  .timeouts('implicit', 1000)
+    .remote(configuration())
+    .init()
+    .timeouts('script', 1000)
+    .timeouts('implicit', 1000)
 })()
 
 function configuration () {

@@ -224,10 +224,10 @@ window.addEventListener('popstate', update)
 // Copy Links
 
 new Clipboard('.copy')
-.on('success', function (event) {
-  window.alert('Copied')
-  event.clearSelection()
-})
+  .on('success', function (event) {
+    window.alert('Copied')
+    event.clearSelection()
+  })
 
 if (module.parent) {
   module.exports = render

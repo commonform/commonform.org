@@ -161,6 +161,6 @@ var patterns = [
 
 function normalizeQuery (string) {
   return string
-  .toLowerCase()
-  .replace(/[^a-z0-9 '-]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9 '-]/g, '')
 }
