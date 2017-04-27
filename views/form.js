@@ -336,7 +336,7 @@ function paragraph (state, send) {
               return definition(child.definition)
             } else if (predicates.blank(child)) {
               var childPath = state.path
-              .concat('content', offset + index)
+                .concat('content', offset + index)
               return blank(state.blanks, childPath, send)
             } else if (predicates.reference(child)) {
               return reference(child.reference)
@@ -385,12 +385,12 @@ function blank (blanks, path, send) {
 
 function commentsList (comments, parent, digest, send) {
   var roots = comments
-  .filter(function (comment) {
-    return comment.replyTo.length === 0
-  })
-  .sort(function (a, b) {
-    return parseInt(a.timestamp) - parseInt(b.timestamp)
-  })
+    .filter(function (comment) {
+      return comment.replyTo.length === 0
+    })
+    .sort(function (a, b) {
+      return parseInt(a.timestamp) - parseInt(b.timestamp)
+    })
   return html`
     <ol class=comments>
       ${roots.map(function (root) {

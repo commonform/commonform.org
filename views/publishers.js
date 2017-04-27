@@ -6,6 +6,11 @@ var loading = require('./loading')
 var publisherLink = require('./publisher-link')
 var sidebar = require('./sidebar')
 
+var MAILTO = (
+  'mailto:kyle@kemitchell.com' +
+  '?subject=CommonForm.org%20Publisher%20Account'
+)
+
 module.exports = function browse (state, send) {
   assert(typeof state === 'object')
   assert(typeof send === 'function')
@@ -62,7 +67,7 @@ module.exports = function browse (state, send) {
           </ul>
           <p>
             If you would like to publish forms, e-mail
-            <a href="mailto:kyle@kemitchell.com">Kyle Mitchell</a>.
+            <a href="${MAILTO}">Kyle Mitchell</a>.
           </p>
           ${footer()}
         </article>

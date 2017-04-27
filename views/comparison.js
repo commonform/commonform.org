@@ -84,8 +84,8 @@ function comparison (diff) {
 function heading (heading) {
   assert(Array.isArray(heading))
   var joined = heading
-  .map(function (word) { return word.word })
-  .join('')
+    .map(function (word) { return word.word })
+    .join('')
   return html`
     <p class=heading id=${joined}>
       ${heading.map(word)}

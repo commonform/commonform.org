@@ -526,7 +526,7 @@ module.exports = function (initialize, reduction, handler) {
         numbering: find(numberings, function (numbering) {
           return numbering.name === numberingName
         })
-        .numbering
+          .numbering
       }
       if (state.signaturePages) {
         options.after = signaturePagesToOOXML(state.signaturePages)
@@ -607,8 +607,8 @@ module.exports = function (initialize, reduction, handler) {
       return
     }
     replacement = replacement
-    .trim()
-    .toLowerCase()
+      .trim()
+      .toLowerCase()
     if (isSHA256(replacement)) {
       getForm(replacement, function (error, tree) {
         if (error) {
@@ -638,7 +638,7 @@ module.exports = function (initialize, reduction, handler) {
         ')' +
         '$'
       )
-      .exec(replacement)
+        .exec(replacement)
       if (!match) {
         window.alert('Bad digest or publication')
       } else {
