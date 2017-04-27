@@ -20,6 +20,12 @@ module.exports = function browse (state, send) {
           ${sidebar('browse', send)}
           <h1>Common Forms</h1>
           <p>
+            commonform.org is a free, open respository of legal forms.
+            Browse published forms by publisher name below, or create
+            your own form online.  Click the lifesaver to the left
+            for help.
+          </p>
+          <p>
             <button
                 onclick=${function () {
                   send('form:new form')
