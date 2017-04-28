@@ -1,6 +1,6 @@
 var assert = require('assert')
 var digestLink = require('./digest-link')
-var html = require('yo-yo')
+var html = require('bel')
 var spell = require('reviewers-edition-spell')
 
 module.exports = function (

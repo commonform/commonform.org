@@ -1,4 +1,4 @@
-var html = require('yo-yo')
+var html = require('bel')
 
 module.exports = function () {
   return html`

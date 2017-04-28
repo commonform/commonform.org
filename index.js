@@ -7,6 +7,7 @@ var compare = require('./views/compare')
 var formModel = require('./models/form')
 var level = require('./level')
 var loading = require('./views/loading')
+var nanomorph = require('nanomorph')
 var notFound = require('./views/not-found')
 var pathOf = require('pathname-match')
 var projects = require('./views/projects')
@@ -16,7 +17,6 @@ var runParallel = require('run-parallel')
 var searchModel = require('./models/search')
 var searchView = require('./views/search')
 var showError = require('./views/error')
-var yo = require('yo-yo')
 
 // State
 var form = {}
@@ -187,7 +187,7 @@ function decode (argument) {
 }
 
 function update () {
-  yo.update(rendered, render())
+  nanomorph(rendered, render())
 }
 
 // History

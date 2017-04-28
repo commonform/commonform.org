@@ -1,5 +1,5 @@
 var assert = require('assert')
-var html = require('yo-yo')
+var html = require('bel')
 
 module.exports = function (term) {
   assert(typeof term === 'string')

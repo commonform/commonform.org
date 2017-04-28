@@ -1,5 +1,5 @@
 var assert = require('assert')
-var html = require('yo-yo')
+var html = require('bel')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
 var group = require('commonform-group-series')

@@ -1,4 +1,4 @@
-var html = require('yo-yo')
+var html = require('bel')
 
 module.exports = function input (value, set, clear, placeholder) {
   if (value && value.length > 0) {

@@ -1,6 +1,6 @@
 var assert = require('assert')
 var capitalize = require('capitalize')
-var html = require('yo-yo')
+var html = require('bel')
 var clone = require('../utilities/clone')
 var emptySignaturePage = require('../data/empty-signature-page')
 var input = require('./input')

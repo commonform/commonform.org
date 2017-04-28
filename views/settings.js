@@ -1,7 +1,7 @@
 var annotators = require('../annotators')
 var assert = require('assert')
 var find = require('array-find')
-var html = require('yo-yo')
+var html = require('bel')
 var numberings = require('../numberings')
 
 module.exports = function (state, send) {
