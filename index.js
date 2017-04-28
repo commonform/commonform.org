@@ -4,6 +4,7 @@ var assert = require('assert')
 var assign = require('object-assign')
 var browserModel = require('./models/browser')
 var compare = require('./views/compare')
+var findLocalLinkAnchor = require('./utilities/find-local-link-anchor')
 var formModel = require('./models/form')
 var level = require('./level')
 var loading = require('./views/loading')
@@ -31,10 +32,10 @@ var state = {
 // Data Modeling
 
 var actions = new EventEmitter()
-.on('error', function (error) {
-  console.error(error)
-  window.alert(error.toString())
-})
+  .on('error', function (error) {
+    console.error(error)
+    window.alert(error.toString())
+  })
 
 function action (/* variadic */) {
   var event = arguments[0]
@@ -196,19 +197,6 @@ function update () {
 window.addEventListener('click', function (event) {
   if (event.which === 2) {
     return
-  }
-  function findLocalLinkAnchor (node) {
-    if (!node) {
-      return undefined
-    } else {
-      var checkParent = (
-        !node ||
-        node.localName !== 'a' ||
-        node.href === undefined ||
-        window.location.host !== node.host
-      )
-      return checkParent ? findLocalLinkAnchor(node.parentNode) : node
-    }
   }
   var node = findLocalLinkAnchor(event.target)
   if (node) {
