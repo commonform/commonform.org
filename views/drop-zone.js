@@ -16,7 +16,7 @@ function dropZone (effect, path, send) {
     onClick = function (event) {
       send('form:child', {path: path})
     }
-    text = '\u2026'
+    text = 'Click to add here.'
   } else /* if (effect === 'move') */ {
     onClick = function (event) {
       send('form:move', {path: path})
