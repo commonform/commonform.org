@@ -10,6 +10,7 @@ var level = require('./level')
 var loading = require('./views/loading')
 var nanomorph = require('nanomorph')
 var notFound = require('./views/not-found')
+var parseJSON = require('json-parse-errback')
 var pathOf = require('pathname-match')
 var projects = require('./views/projects')
 var publishers = require('./views/publishers')
@@ -225,27 +226,32 @@ if (module.parent) {
     function (done) {
       level.get('settings.annotators', function (error, data) {
         if (!error && data) {
-          try {
-            var annotators = JSON.parse(data)
-            reductions.emit('form:annotators', annotators)
-          } catch (error) {
-            console.error(error)
-          }
+          parseJSON(data, function (error, annotators) {
+            if (error) {
+              console.error(error)
+            } else {
+              reductions.emit('form:annotators', annotators)
+            }
+            done()
+          })
+        } else {
+          done()
         }
-        done()
       })
     },
     function (done) {
       level.get('settings.numbering', function (error, data) {
         if (!error && data) {
-          try {
-            var name = JSON.parse(data)
-            reductions.emit('form:numbering', {name: name})
-          } catch (error) {
-            console.error(error)
-          }
+          parseJSON(data, function (error, name) {
+            if (error) {
+              console.error(error)
+            } else {
+              reductions.emit('form:numbering', {name: name})
+            }
+          })
+        } else {
+          done()
         }
-        done()
       })
     }
   ], function () {

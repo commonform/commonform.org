@@ -25,6 +25,7 @@
     "ecb": "^1.0.0",
     "filesaver.js": "^0.2.0",
     "is-sha-256-hex-digest": "^1.0.0",
+    "json-parse-errback": "^2.0.1",
     "keyarray": "^1.0.0",
     "level-js": "^2.2.4",
     "level-lru-cache": "^1.0.0",
