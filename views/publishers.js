@@ -49,7 +49,7 @@ module.exports = function browse (state, send) {
               <input
                   name=digest
                   required
-                  placeholder="Paste a digest here"
+                  placeholder="Paste a form ID here."
                   pattern="[a-z0-9]{64}"
                   type=text></input>
               <button type=submit>Fetch from commonform.org</button>
