@@ -279,8 +279,8 @@ module.exports = function (initialize, reduction, handler) {
       // dfn
       } else if (tagName === 'DFN') {
         return {definition: element.textContent}
-      // span.useGroup
-      } else if (tagName === 'SPAN' && className === 'useGroup') {
+      // useGroup
+      } else if (className === 'useGroup') {
         return {use: element.dataset.term}
       // a.reference
       } else if (tagName === 'A' && className === 'reference') {

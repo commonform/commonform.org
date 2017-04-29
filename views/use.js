@@ -4,16 +4,17 @@ var html = require('bel')
 module.exports = function (term, path, send) {
   assert(typeof term === 'string')
   return html`
-    <span class=useGroup data-term=${term}>
-      <a  class=use
+    <div class=useGroup data-term=${term}>
+      <span class=use>${term}</span>
+      <a  class=jumpToDefinition
           title="Jump to definition of ${term}."
           href="#Definition:${term}"
-        >${term}</a>
-      <a  class=notAUse
+          ></a>
+      <a  class=unmarkUse
           title="Unmark as a defined term."
           onclick=${unmarkUse}
         ></a>
-    </span>
+    </div>
   `
   function unmarkUse () {
     send('form:unmark use', {

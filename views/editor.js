@@ -68,7 +68,7 @@ module.exports = function (state, send) {
         if (heading) {
           heading.scrollIntoView()
         }
-      } else if (target.className === 'use') {
+      } else if (target.className === 'jumpToDefinition') {
         event.preventDefault()
         event.stopPropagation()
         var definition = document.getElementById(
