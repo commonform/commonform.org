@@ -278,8 +278,7 @@ module.exports = function (initialize, reduction, handler) {
         return element.textContent
       // dfn
       } else if (tagName === 'DFN') {
-        // TODO Use element.dataset.term
-        return {definition: element.textContent}
+        return {definition: element.dataset.term}
       // useGroup
       } else if (className === 'useGroup') {
         return {use: element.dataset.term}

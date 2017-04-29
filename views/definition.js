@@ -6,6 +6,7 @@ module.exports = function (term) {
   return html`
     <dfn
         title="Definition of ${term}"
+        data-term="${term}"
         id="Definition:${term}"
       >${term}</dfn>
   `
