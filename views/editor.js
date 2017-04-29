@@ -59,7 +59,7 @@ module.exports = function (state, send) {
   function onClick (event) {
     var target = event.target
     if (target.nodeName === 'A') {
-      if (target.className === 'jumpToHeading') {
+      if (target.className === 'reference') {
         event.preventDefault()
         event.stopPropagation()
         var heading = document.getElementById(
@@ -68,7 +68,7 @@ module.exports = function (state, send) {
         if (heading) {
           heading.scrollIntoView()
         }
-      } else if (target.className === 'jumpToDefinition') {
+      } else if (target.className === 'use') {
         event.preventDefault()
         event.stopPropagation()
         var definition = document.getElementById(

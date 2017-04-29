@@ -5,11 +5,10 @@ module.exports = function (heading, path, send) {
   assert(typeof heading === 'string')
   return html`
     <div class=referenceGroup data-heading=${heading}>
-      <span class=reference>${heading}</span>
-      <a  class=jumpToHeading
+      <a  class=reference
           title="Jump to ${heading}."
           href="#Heading:${heading}"
-          ></a>
+          >${heading}</a>
       <a  class=unmarkReference
           title="Unmark as a reference."
           onclick=${unmark}

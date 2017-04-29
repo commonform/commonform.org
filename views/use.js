@@ -5,11 +5,10 @@ module.exports = function (term, path, send) {
   assert(typeof term === 'string')
   return html`
     <div class=useGroup data-term=${term}>
-      <span class=use>${term}</span>
-      <a  class=jumpToDefinition
+      <a  class=use
           title="Jump to definition of ${term}."
           href="#Definition:${term}"
-          ></a>
+          >${term}</a>
       <a  class=unmarkUse
           title="Unmark as a defined term."
           onclick=${unmarkUse}
