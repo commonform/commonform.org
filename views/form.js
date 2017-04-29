@@ -328,14 +328,17 @@ function paragraph (state, send) {
           onkeydown=${onKeyDown}
         >${
           state.data.content.map(function (child, index) {
+            var childPath
             if (predicates.text(child)) {
               return string(child)
             } else if (predicates.use(child)) {
-              return use(child.use)
+              childPath = state.path
+                .concat('content', offset + index)
+              return use(child.use, childPath, send)
             } else if (predicates.definition(child)) {
               return definition(child.definition)
             } else if (predicates.blank(child)) {
-              var childPath = state.path
+              childPath = state.path
                 .concat('content', offset + index)
               return blank(state.blanks, childPath, send)
             } else if (predicates.reference(child)) {

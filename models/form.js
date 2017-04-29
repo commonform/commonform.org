@@ -279,9 +279,9 @@ module.exports = function (initialize, reduction, handler) {
       // dfn
       } else if (tagName === 'DFN') {
         return {definition: element.textContent}
-      // a.use
-      } else if (tagName === 'A' && className === 'use') {
-        return {use: element.textContent}
+      // span.useGroup
+      } else if (tagName === 'SPAN' && className === 'useGroup') {
+        return {use: element.dataset.term}
       // a.reference
       } else if (tagName === 'A' && className === 'reference') {
         return {reference: element.textContent}
@@ -670,6 +670,17 @@ module.exports = function (initialize, reduction, handler) {
       keyarray.set(newTree, path.concat('form'), tree)
       pushEditedTree({tree: newTree}, reduce, done)
     }
+  })
+
+  handler('unmark use', function (action, state, reduce, done) {
+    assert(Array.isArray(action.path))
+    var newTree = clone(state.tree)
+    var path = action.path
+    var array = keyarray.get(newTree, path.slice(0, -1))
+    var index = path[path.length - 1]
+    array.splice(index, 1, array[index].use)
+    fix(newTree)
+    pushEditedTree({tree: newTree}, reduce, done)
   })
 }
 

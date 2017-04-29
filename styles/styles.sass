@@ -1,4 +1,5 @@
 @import 'normalize'
+$inlineButtonSize: 0.8rem
 
 =notselectable
   -webkit-user-select: none
@@ -209,15 +210,14 @@ button
     font-size: 75%
 
   .copy
-    $copySize: 0.8rem
     cursor: pointer
     display: inline-block
-    height: $copySize
-    width: $copySize
+    height: $inlineButtonSize
+    width: $inlineButtonSize
     background-image: url(icons/basic_todo.svg)
     background-repeat: no-repeat
     background-position: right
-    background-size: $copySize
+    background-size: $inlineButtonSize
 
   header
     padding: 0 0 1rem 0
@@ -360,6 +360,16 @@ button
   .use:hover,
   .reference:hover
     text-decoration: underline
+
+  .notAUse
+    cursor: pointer
+    display: inline-block
+    height: $inlineButtonSize
+    width: $inlineButtonSize
+    background-image: url(icons/arrows_circle_remove.svg)
+    background-repeat: no-repeat
+    background-position: right
+    background-size: $copySize
 
   aside
     p
