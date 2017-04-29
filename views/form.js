@@ -332,17 +332,16 @@ function paragraph (state, send) {
             if (predicates.text(child)) {
               return string(child)
             } else if (predicates.use(child)) {
-              childPath = state.path
-                .concat('content', offset + index)
+              childPath = state.path.concat('content', offset + index)
               return use(child.use, childPath, send)
             } else if (predicates.definition(child)) {
               return definition(child.definition)
             } else if (predicates.blank(child)) {
-              childPath = state.path
-                .concat('content', offset + index)
+              childPath = state.path.concat('content', offset + index)
               return blank(state.blanks, childPath, send)
             } else if (predicates.reference(child)) {
-              return reference(child.reference)
+              childPath = state.path.concat('content', offset + index)
+              return reference(child.reference, childPath, send)
             }
           })
         }

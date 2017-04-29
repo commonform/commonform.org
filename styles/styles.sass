@@ -348,11 +348,8 @@ button
   .reference
     font-style: italic
 
-  .reference:before
-    content: '☞ '
-
   .use,
-  .refkerence
+  .reference
     text-decoration: none
     color: inherit
     font-style: italic
@@ -361,23 +358,23 @@ button
   .reference:hover
     text-decoration: underline
 
-  .useGroup
+  .useGroup, .referenceGroup
     display: inline-block
 
-    .unmarkUse, .jumpToDefinition
-      cursor: pointer
-      display: inline-block
-      height: $inlineButtonSize
-      width: $inlineButtonSize
-      background-repeat: no-repeat
-      background-position: right
-      background-size: $inlineButtonSize
+  .unmarkUse, .jumpToDefinition, .jumpToHeading, .unmarkReference
+    cursor: pointer
+    display: inline-block
+    height: $inlineButtonSize
+    width: $inlineButtonSize
+    background-repeat: no-repeat
+    background-position: right
+    background-size: $inlineButtonSize
 
-    .unmarkUse
-      background-image: url(icons/arrows_circle_remove.svg)
+  .unmarkUse, .unmarkReference
+    background-image: url(icons/arrows_circle_remove.svg)
 
-    .jumpToDefinition
-      background-image: url(icons/basic_magnifier.svg)
+  .jumpToDefinition, .jumpToHeading
+    background-image: url(icons/basic_magnifier.svg)
 
   aside
     p

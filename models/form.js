@@ -278,13 +278,14 @@ module.exports = function (initialize, reduction, handler) {
         return element.textContent
       // dfn
       } else if (tagName === 'DFN') {
+        // TODO Use element.dataset.term
         return {definition: element.textContent}
       // useGroup
       } else if (className === 'useGroup') {
         return {use: element.dataset.term}
       // a.reference
-      } else if (tagName === 'A' && className === 'reference') {
-        return {reference: element.textContent}
+      } else if (className === 'referenceGroup') {
+        return {reference: element.dataset.heading}
       // input.blank
       } else if (tagName === 'INPUT' && className === 'blank') {
         return {blank: ''}
@@ -672,16 +673,21 @@ module.exports = function (initialize, reduction, handler) {
     }
   })
 
-  handler('unmark use', function (action, state, reduce, done) {
+  handler('unmark use', unmark.bind(null, 'use'))
+
+  handler('unmark reference', unmark.bind(null, 'reference'))
+
+  function unmark (stringValueKey, action, state, reduce, done) {
     assert(Array.isArray(action.path))
     var newTree = clone(state.tree)
     var path = action.path
     var array = keyarray.get(newTree, path.slice(0, -1))
     var index = path[path.length - 1]
-    array.splice(index, 1, array[index].use)
+    assert(typeof array[index][stringValueKey] === 'string')
+    array.splice(index, 1, array[index][stringValueKey])
     fix(newTree)
     pushEditedTree({tree: newTree}, reduce, done)
-  })
+  }
 }
 
 function identify (wholeTree, subTree) {

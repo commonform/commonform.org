@@ -59,7 +59,7 @@ module.exports = function (state, send) {
   function onClick (event) {
     var target = event.target
     if (target.nodeName === 'A') {
-      if (target.className === 'reference') {
+      if (target.className === 'jumpToHeading') {
         event.preventDefault()
         event.stopPropagation()
         var heading = document.getElementById(
