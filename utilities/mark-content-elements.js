@@ -34,9 +34,11 @@ module.exports = function (tree, elements) {
       var results = [element]
       markOccurrences(results, CHILD, {form: {content: ['...']}})
       markOccurrences(results, BLANK, {blank: ''})
+      // TODO Mark terms as use candidates.
       namespaces.terms.forEach(function (term) {
         markOccurrences(results, term, 'use')
       })
+      // TODO Mark headings as reference candidates.
       namespaces.headings.forEach(function (term) {
         markOccurrences(results, term, 'reference')
       })
