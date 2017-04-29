@@ -1,6 +1,10 @@
 var assert = require('assert')
 var html = require('bel')
 
+// HACK: Unmark link uses onmousedown events to prevent surrounding
+// contenteditable elements from getting focus, and then triggering
+// automatic use and reference detection on blur.
+
 module.exports = function (term, path, send) {
   assert(typeof term === 'string')
   return html`
@@ -11,11 +15,13 @@ module.exports = function (term, path, send) {
           >${term}</a>
       <a  class=unmarkUse
           title="Unmark as a defined term."
-          onclick=${unmarkUse}
+          onmousedown=${unmarkUse}
         ></a>
     </div>
   `
-  function unmarkUse () {
+  function unmarkUse (event) {
+    event.preventDefault()
+    event.stopPropagation()
     send('form:unmark use', {
       path: path
     })
