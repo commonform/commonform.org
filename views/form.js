@@ -88,7 +88,9 @@ function form (form, send) {
       ${
         groups[0].type === 'series'
           ? dropZone(
-            form.focused ? 'move' : 'child',
+            form.focused
+              ? ((isFocused || form.withinFocused) ? 'none' : 'move')
+              : 'child',
             form.path.concat(formKey, 'content', 0),
             send
           )
@@ -291,7 +293,9 @@ function series (state, send) {
     return [
       result,
       dropZone(
-        state.focused ? 'move' : 'child',
+        state.focused
+          ? (state.withinFocused ? 'none' : 'move')
+          : 'child',
         state.path.concat('content', absoluteIndex + 1),
         send
       )
@@ -346,7 +350,9 @@ function paragraph (state, send) {
       </p>
       ${
         dropZone(
-          state.focused ? 'move' : 'child',
+          state.focused
+            ? (state.withinFocused ? 'none' : 'move')
+            : 'child',
           state.path.concat('content', lastIndex),
           send
         )

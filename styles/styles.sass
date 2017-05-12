@@ -444,7 +444,7 @@ button
         background: rgb(225,255,208)
 
 .dropZone
-  //height: 0.75rem
+  height: 1.5rem
   cursor: pointer
   padding: 0 0 0 3rem
   margin: 0
@@ -456,9 +456,15 @@ button
     position: absolute
     left: 0
   &:hover
-    height: auto
+    //height: auto
     border: 1px dashed #ccc
     color: #ccc
+  &.placeholder
+    cursor: normal
+    &:before
+      content: ''
+    &:hover
+      border: 1px solid transparent
 
 .comments
   list-style-type: none
