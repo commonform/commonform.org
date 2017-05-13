@@ -120,8 +120,15 @@ useModel('search', searchModel)
 var rendered
 
 function render () {
-  if (state.error) {
-    return showError(state.error)
+  console.log(state)
+  var hasError = Object.keys(state).find(function (model) {
+    return state[model].error
+  })
+  if (hasError) {
+    // FIXME: Terrible hack
+    var rendered = showError(state, hasError, action)
+    state[hasError].error = null
+    return rendered
   } else {
     var path = pathOf(window.location.href)
     var publisher

@@ -4,8 +4,7 @@ var sidebar = require('./sidebar')
 
 module.exports = function (mode, onLoad) {
   assert(typeof mode === 'string')
-  assert(typeof onLoad === 'function' || onLoad === undefined)
-  onLoad = onLoad || function () { }
+  assert(typeof onLoad === 'function')
   return html`
     <div class=container>
       <article class=commonform onload=${onLoad}>

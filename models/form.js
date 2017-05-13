@@ -59,6 +59,10 @@ module.exports = function (initialize, reduction, handler) {
     return {mode: mode}
   })
 
+  reduction('error', function (error) {
+    return {error: error}
+  })
+
   handler('mode', function (mode, state, reduce, done) {
     reduce('mode', mode)
     done()
@@ -108,19 +112,29 @@ module.exports = function (initialize, reduction, handler) {
     var first = digests[0]
     var second = digests[1]
     if (state.merkle && state.merkle.digest === first) {
-      fetchComparing()
+      requestComparing()
     } else {
-      loadForm(first, ecb(done, function (result) {
-        reduce('tree', result)
-        fetchComparing()
-      }))
+      requestForm(first, function (error, result) {
+        if (error) {
+          reduce('error', error)
+          done()
+        } else {
+          reduce('tree', result)
+          requestComparing()
+        }
+      })
     }
-    function fetchComparing () {
-      loadForm(second, ecb(done, function (result) {
-        reduce('comparing', result)
-        reduce('mode', 'read')
-        done()
-      }))
+    function requestComparing () {
+      requestForm(second, function (error, result) {
+        if (error) {
+          reduce('error', error)
+          done()
+        } else {
+          reduce('comparing', result)
+          reduce('mode', 'read')
+          done()
+        }
+      })
     }
   })
 
@@ -314,19 +328,29 @@ module.exports = function (initialize, reduction, handler) {
 
   handler('fetch', function (data, state, reduce, done) {
     var digest = data.digest
-    loadForm(digest, ecb(done, function (result) {
-      reduce(data.comparing ? 'comparing' : 'tree', result)
-      done()
-    }))
+    requestForm(digest, function (error, result) {
+      if (error) {
+        reduce('error', error)
+        done()
+      } else {
+        reduce(data.comparing ? 'comparing' : 'tree', result)
+        done()
+      }
+    })
   })
 
   handler('load form', function (digest, state, reduce, done) {
-    loadForm(digest, ecb(done, function (data) {
-      data.mode = 'read'
-      reduce('tree', data)
-      window.history.pushState(data, '', formPath(digest))
-      done()
-    }))
+    requestForm(digest, function (error, data) {
+      if (error) {
+        reduce('error', error)
+        done()
+      } else {
+        data.mode = 'read'
+        reduce('tree', data)
+        window.history.pushState(data, '', formPath(digest))
+        done()
+      }
+    })
   })
 
   handler('new form', function (action, state, reduce, done) {
@@ -339,17 +363,23 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   handler('load publication', function (data, state, reduce, done) {
-    getPublicationForm(data, ecb(done, function (tree, digest) {
-      data.mode = 'read'
-      getFormPublications(digest, function (error, publications) {
-        reduce('tree', {
-          tree: tree,
-          publications: error ? [] : publications
-        })
-        window.history.replaceState(tree, '', formPath(digest))
+    getPublicationForm(data, function (error, tree, digest) {
+      if (error) {
+        reduce('error', error)
         done()
-      })
-    }))
+      } else {
+        data.mode = 'read'
+        // TODO: Revisit error handling.
+        getFormPublications(digest, function (error, publications) {
+          reduce('tree', {
+            tree: tree,
+            publications: error ? [] : publications
+          })
+          window.history.replaceState(tree, '', formPath(digest))
+          done()
+        })
+      }
+    })
   })
 
   handler('loaded', function (tree, state, reduce, done) {
@@ -441,12 +471,17 @@ module.exports = function (initialize, reduction, handler) {
     return {comments: comments}
   })
 
-  function fetchComments (data, state, reduce, done) {
+  function requestComments (data, state, reduce, done) {
     var digest = state.merkle.digest
-    getComments(digest, ecb(done, function (comments) {
-      reduce('comments', comments)
-      done()
-    }))
+    getComments(digest, function (error, comments) {
+      if (error) {
+        reduce('error', error)
+        done()
+      } else {
+        reduce('comments', comments)
+        done()
+      }
+    })
   }
 
   reduction('reply to', function (parent, state) {
@@ -479,9 +514,10 @@ module.exports = function (initialize, reduction, handler) {
     }, ecb(done, function (response, body) {
       var status = response.statusCode
       if (status === 200 || status === 204) {
-        fetchComments(data, state, reduce, done)
+        requestComments(data, state, reduce, done)
       } else {
-        done(new Error(body))
+        reduce('error', new Error(body))
+        done()
       }
     }))
   })
@@ -505,7 +541,8 @@ module.exports = function (initialize, reduction, handler) {
       if (status === 200 || status === 204 || status === 409) {
         window.alert('Subscribed!')
       } else {
-        done(new Error(body))
+        reduce('error', new Error(body))
+        done()
       }
     }))
   })
@@ -737,7 +774,7 @@ function formPath (digest) {
   return '/forms/' + digest
 }
 
-function loadForm (digest, callback) {
+function requestForm (digest, callback) {
   runParallel(
     [
       function (done) {

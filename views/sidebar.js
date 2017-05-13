@@ -6,7 +6,11 @@ module.exports = modeButtons
 function modeButtons (mode, send) {
   assert(typeof mode === 'string')
   assert(typeof send === 'function')
-  var showReadModes = mode !== 'browse' && mode !== 'search'
+  var showReadModes = (
+    mode !== 'browse' &&
+    mode !== 'search' &&
+    mode !== 'none'
+  )
   return html`
     <div class=modes>
       <a
