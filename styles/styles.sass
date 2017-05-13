@@ -386,8 +386,11 @@ button
   .signaturePages
     +horizontalBorder
     .page
-      &> *:not(:first-child):not(:last-child)
+      &> *
         margin-left: 30%
+      &> .header,
+      &> .samePage
+        margin-left: 0
       .header input
         width: 100%
 

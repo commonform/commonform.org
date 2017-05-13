@@ -1,22 +1,26 @@
 var assert = require('assert')
 var capitalize = require('capitalize')
-var html = require('bel')
+var classnames = require('classnames')
 var clone = require('../utilities/clone')
 var emptySignaturePage = require('../data/empty-signature-page')
+var html = require('bel')
 var input = require('./input')
 
 module.exports = function (pages, send) {
   assert(Array.isArray(pages))
   assert(typeof send === 'function')
+  var newPageCount = pages.reduce(function (count, page) {
+    return page.samePage ? count : count + 1
+  }, 0)
   return html`
     <div class=signaturePages>
       <p class=endOfPage>
         ${
-          pages.length > 0
-            ? pages.length === 1
+          newPageCount === 0
+            ? null
+            : pages.length === 1
               ? '[Signature Page Follows]'
               : '[Signature Pages Follow]'
-            : null
         }
       </p>
       ${pages.map(function (element, index) {
@@ -41,7 +45,7 @@ module.exports = function (pages, send) {
   `
 }
 
-var optional = ['date', 'email', 'address']
+var OPTIONAL_INFORMATION = ['date', 'email', 'address']
 
 function signaturePage (page, path, send) {
   var entities = page.entities
@@ -82,8 +86,29 @@ function signaturePage (page, path, send) {
     )
   }
 
+  var classes = classnames('page', {samePage: page.samePage})
+
+  console.log(page)
+
   return html`
-    <div class=page>
+    <div class=${classes}>
+      <p class=samePage>
+        <input
+          type=checkbox
+          onclick=${function () {
+            send(
+              'form:signatures',
+              {
+                operation: 'set',
+                key: path.concat('samePage'),
+                value: !page.samePage
+              }
+            )
+          }}
+          ${page.samePage ? 'checked' : ''}
+          >
+        Same page
+      </p>
       <p class=header>${inputFor('header', 'Signature Page Header')}</p>
       <p>${inputFor('term', 'Party Defined Term')}:</p>
       ${entitiesParagraphs(entities, path.concat('entities'), send)}
@@ -123,7 +148,7 @@ function signaturePage (page, path, send) {
           : null
       }
       ${
-        optional.map(function (text) {
+        OPTIONAL_INFORMATION.map(function (text) {
           var display = text === 'email'
             ? 'E-Mail'
             : capitalize(text)
@@ -137,7 +162,7 @@ function signaturePage (page, path, send) {
                       function (event) {
                         event.preventDefault()
                         var infoPath = path.concat('information')
-                        var newValue = optional.filter(
+                        var newValue = OPTIONAL_INFORMATION.filter(
                           function (filtering) {
                             return (
                               filtering === text ||
