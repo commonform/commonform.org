@@ -362,7 +362,7 @@ function paragraph (state, send) {
 }
 
 function string (string) {
-  return html`${improvePunctuation(string)}`
+  return document.createTextNode(improvePunctuation(string))
 }
 
 function blank (blanks, path, send) {

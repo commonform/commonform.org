@@ -50,7 +50,7 @@ function publicationLine (publication) {
           >${publisher}</a>
         published this form as
         <strong>
-          ${project}
+          ${project}&nbsp;
           <abbr title=${spell(edition)}>${edition}</abbr>
         </strong>
       </p>
