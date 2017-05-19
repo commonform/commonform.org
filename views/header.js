@@ -17,7 +17,11 @@ module.exports = function (
         ${paragraph(toDigest, toPublications, send)}
       </header>
     `
-    : paragraph(digest, publications, send)
+    : html`
+      <header>
+      ${paragraph(digest, publications, send)}
+      </header>
+    `
 }
 
 function paragraph (digest, publications, send) {
