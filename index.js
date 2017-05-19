@@ -120,7 +120,6 @@ useModel('search', searchModel)
 var rendered
 
 function render () {
-  console.log(state)
   var hasError = Object.keys(state).find(function (model) {
     return state[model].error
   })

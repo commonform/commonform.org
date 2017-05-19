@@ -38,12 +38,11 @@ module.exports = function (action, value, state, send) {
 function searchBox (send) {
   var nextAction
   var data
-
   return html`
     <div class=search>
       <form onsubmit=${onSubmit}>
         <input
-            onload=${onLoad}
+            id=searchQuery
             class=invalid
             placeholder="Enter a query and press return."
             oninput=${onInput}
@@ -57,10 +56,6 @@ function searchBox (send) {
       </section>
     </div>
   `
-
-  function onLoad (element) {
-    element.focus()
-  }
 
   function onInput (event) {
     var value = normalizeQuery(event.target.value)
