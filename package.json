@@ -2,7 +2,7 @@
   "dependencies": {
     "array-find": "^1.0.0",
     "async.map": "^0.5.2",
-    "bel": "^4.6.0",
+    "bel": "^5.0.0",
     "capitalize": "^1.0.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.5.12",
