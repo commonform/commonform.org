@@ -118,8 +118,21 @@ function form (form, send) {
         }
         var result = renderer(groupState, send)
         offset += group.content.length
-        return result
-      })}
+        return renderer === series
+          ? [result]
+          : [
+            result,
+            dropZone(
+              groupState.focused
+                ? (groupState.withinFocused ? 'none' : 'move')
+                : 'child',
+              groupState.path.concat(
+                'content', groupState.offset + groupState.data.length
+              ),
+              send
+            )
+          ]
+      }).reduce(function (x, y) { return x.concat(y) })}
       ${
         showComments
           ? commentsList(
@@ -306,7 +319,6 @@ function series (state, send) {
 function paragraph (state, send) {
   var elementCount = state.data.content.length
   var offset = state.offset
-  var lastIndex = state.offset + elementCount
   var onBlur = function (event) {
     event.stopPropagation()
     send('form:edit', {
@@ -324,40 +336,29 @@ function paragraph (state, send) {
     }
   }
   return html`
-    <div>
-      <p
-          class=text
-          contenteditable=true
-          onblur=${onBlur}
-          onkeydown=${onKeyDown}
-        >${
-          state.data.content.map(function (child, index) {
-            if (predicates.text(child)) {
-              return string(child)
-            } else if (predicates.use(child)) {
-              return use(child.use)
-            } else if (predicates.definition(child)) {
-              return definition(child.definition)
-            } else if (predicates.blank(child)) {
-              var childPath = state.path
-                .concat('content', offset + index)
-              return blank(state.blanks, childPath, send)
-            } else if (predicates.reference(child)) {
-              return reference(child.reference)
-            }
-          })
-        }
-      </p>
-      ${
-        dropZone(
-          state.focused
-            ? (state.withinFocused ? 'none' : 'move')
-            : 'child',
-          state.path.concat('content', lastIndex),
-          send
-        )
+    <p
+        class=text
+        contenteditable=true
+        onblur=${onBlur}
+        onkeydown=${onKeyDown}
+      >${
+        state.data.content.map(function (child, index) {
+          if (predicates.text(child)) {
+            return string(child)
+          } else if (predicates.use(child)) {
+            return use(child.use)
+          } else if (predicates.definition(child)) {
+            return definition(child.definition)
+          } else if (predicates.blank(child)) {
+            var childPath = state.path
+              .concat('content', offset + index)
+            return blank(state.blanks, childPath, send)
+          } else if (predicates.reference(child)) {
+            return reference(child.reference)
+          }
+        })
       }
-    </div>
+    </p>
   `
 }
 
