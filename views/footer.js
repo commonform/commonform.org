@@ -7,22 +7,24 @@ module.exports = function () {
         <a href="http://typographyforlawyers.com/equity.html">
           Equity
         </a>
-        and
+        ${document.createTextNode(' and ')}
         <a href="http://typographyforlawyers.com/triplicate.html">
           Triplicate
         </a>
-        typefaces by
-        <a href="http://typographyforlawyers.com/about.html"
-          >Matthew Butterick</a>.
+        ${document.createTextNode(' typefaces by ')}
+        <a href="http://typographyforlawyers.com/about.html">
+          Matthew Butterick
+        </a>.
       </p>
       <p>
         <a href="http://www.linea.io">linea icons</a> by Dario Ferrando.
       </p>
       <p>
         <a class=openSource>
-          Common Form is
-          <a href="https://github.com/commonform"
-            >open-source software</a>.
+          ${document.createTextNode('Common Form is ')}
+          <a href="https://github.com/commonform">
+            open-source software
+          </a>.
         </a>
       </p>
     </footer>

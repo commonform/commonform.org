@@ -52,10 +52,9 @@ function publicationLine (publication) {
             class=publisher
             href="/publishers/${encodeURIComponent(publisher)}"
           >${publisher}</a>
-        published this form as
+        ${document.createTextNode(' published this form as ')}
         <strong>
-          ${project}
-          <abbr title=${spell(edition)}>${edition}</abbr>
+          ${project} <abbr title=${spell(edition)}>${edition}</abbr>
         </strong>
       </p>
     `
@@ -63,14 +62,13 @@ function publicationLine (publication) {
     return html`
       <p class=publication>
         <strong>${publisher}</strong>
-        published this form within
+        ${document.createTextNode(' published this form within ')}
         <strong>
           <a
               class=publication
               href=${link}
               title="Read ${publisher}'s ${project} ${spell(edition)}">
-            ${project}
-            <abbr title=${spell(edition)}>${edition}</abbr>
+            ${project} <abbr title=${spell(edition)}>${edition}</abbr>
           </a>
         </strong>
       </p>
