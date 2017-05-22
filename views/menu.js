@@ -1,6 +1,6 @@
 var assert = require('assert')
 var fromElements = require('../utilities/from-elements')
-var html = require('bel')
+var html = require('../html')
 
 var GUIDE = 'https://github.com/commonform/new-publisher-guide'
 

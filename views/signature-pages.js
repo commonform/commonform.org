@@ -3,7 +3,7 @@ var capitalize = require('capitalize')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
 var emptySignaturePage = require('../data/empty-signature-page')
-var html = require('bel')
+var html = require('../html')
 var input = require('./input')
 
 module.exports = function (pages, send) {

@@ -1,4 +1,4 @@
-var html = require('bel')
+var html = require('../html')
 
 module.exports = function () {
   return html`

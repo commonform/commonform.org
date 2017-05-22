@@ -2,7 +2,7 @@ var assert = require('assert')
 var comparison = require('./comparison')
 var footer = require('./footer')
 var header = require('./header')
-var html = require('bel')
+var html = require('../html')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
 

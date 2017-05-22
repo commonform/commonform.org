@@ -1,6 +1,6 @@
 var assert = require('assert')
 var fromElements = require('../utilities/from-elements')
-var html = require('bel')
+var html = require('../html')
 
 module.exports = function (form, send) {
   assert(typeof form === 'object')

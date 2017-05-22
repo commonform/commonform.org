@@ -1,4 +1,4 @@
-var html = require('bel')
+var html = require('../html')
 
 module.exports = function input (value, set, clear, placeholder) {
   if (value && value.length > 0) {

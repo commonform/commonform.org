@@ -1,6 +1,6 @@
 var assert = require('assert')
 var footer = require('./footer')
-var html = require('bel')
+var html = require('../html')
 var isSHA256 = require('is-sha-256-hex-digest')
 var loading = require('./loading')
 var publisherLink = require('./publisher-link')

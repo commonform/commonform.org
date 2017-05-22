@@ -1,5 +1,5 @@
 var assert = require('assert')
-var html = require('bel')
+var html = require('../html')
 var digestLink = require('./digest-link')
 var improvePunctuation = require('../utilities/improve-punctuation')
 

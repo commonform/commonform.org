@@ -1,5 +1,5 @@
 var assert = require('assert')
-var html = require('bel')
+var html = require('../html')
 var sidebar = require('./sidebar')
 
 module.exports = function (mode, onLoadEvent) {

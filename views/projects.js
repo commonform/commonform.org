@@ -1,7 +1,7 @@
 var assert = require('assert')
 var compare = require('reviewers-edition-compare')
 var footer = require('./footer')
-var html = require('bel')
+var html = require('../html')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
 
