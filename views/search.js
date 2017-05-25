@@ -46,7 +46,8 @@ function searchBox (send) {
             class=invalid
             placeholder="Enter a query and press return."
             oninput=${onInput}
-            type=search></input>
+            type=search
+            autofocus></input>
       </form>
       <section class=hints>
         <p>You can enter queries like:</p>
