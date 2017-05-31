@@ -38,11 +38,8 @@ REF=${1:-HEAD}
 	# Install dependencies.
 	npm install
 
-	# Create a shrinkwrap manifest as a build artifact. The project itself
-	# isn't actually shrinkwrapped. It's just have these manifests handy
-	# in the deployed directories for debugging later.
-	npm shrinkwrap --dev
-	mv npm-shrinkwrap.json build/npm-shrinkwrap.json
+	# Copy package-lock.json to the build.
+	cp package-lock.json build/package-lock.json
 
 	# Build.
 	NODE_ENV=production npm run build
