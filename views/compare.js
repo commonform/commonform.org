@@ -17,7 +17,7 @@ module.exports = function compare (a, b, state, send) {
       send('form:compare', [a, b])
     })
   } else {
-    return html`
+    return html.collapseSpace`
       <div class=container>
         <article class=commonform>
           ${sidebar(state.mode, send)}

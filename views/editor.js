@@ -14,7 +14,7 @@ module.exports = function (state, send) {
   assert.equal(typeof send, 'function')
   var mode = state.mode
   if (mode === 'save') {
-    return html`
+    return html.collapseSpace`
       <div class=container>
         <article class=commonform>
           ${sidebar(state.mode, send)}
@@ -24,7 +24,7 @@ module.exports = function (state, send) {
       </div>
     `
   } else if (mode === 'mail') {
-    return html`
+    return html.collapseSpace`
       <div class=container>
         <article class=commonform>
           ${sidebar(state.mode, send)}
@@ -34,7 +34,7 @@ module.exports = function (state, send) {
       </div>
     `
   } else {
-    return html`
+    return html.collapseSpace`
       <div class=container>
         <article class=commonform onclick=${onClick}>
           ${sidebar(state.mode, send)}
