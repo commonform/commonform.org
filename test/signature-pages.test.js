@@ -18,8 +18,8 @@ tape.test('Signature Pages', function (test) {
     'contains(text(),"Delete this Signature Page")' +
     ']'
   )
-  var pageFollows = '//*[contains(text(),"Signature Page Follows")]'
-  var pagesFollow = '//*[contains(text(),"Signature Pages Follow")]'
+  var pageFollows = '//*[text()[contains(.,"Signature Page Follows")]]'
+  var pagesFollow = '//*[text()[contains(.,"Signature Pages Follow")]]'
 
   test.test(function (test) {
     test.plan(2)
@@ -29,6 +29,7 @@ tape.test('Signature Pages', function (test) {
         .url(testURL)
         .waitForExist(addButton)
         .click(addButton)
+        .waitForExist(pageFollows)
         .isExisting(pageFollows)
         .then(function (existing) {
           test.assert(
