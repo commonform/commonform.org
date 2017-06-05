@@ -6,7 +6,7 @@ module.exports = function (mode, onLoadEvent) {
   assert(typeof mode === 'string')
   assert(typeof onLoadEvent === 'function')
   onLoadEvent()
-  return html`
+  return html.collapseSpace`
     <div class=container>
       <article class=commonform>
         ${sidebar(mode, function () {})}

@@ -43,7 +43,7 @@ function comparison (diff) {
     })
   })
 
-  return html`
+  return html.collapseSpace`
     <section class=${classNames}>
       ${
         wrapper(

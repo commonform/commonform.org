@@ -15,7 +15,7 @@ module.exports = function (publisher, state, send) {
       send('browser:get projects', publisher)
     })
   } else {
-    return html`
+    return html.collapseSpace`
       <div class=container>
         <article class=commonform>
           ${sidebar('browse', send)}
@@ -38,7 +38,7 @@ function list (publisher, projects, send) {
   if (projects.length === 0) {
     return html`<p>No publications</p>`
   } else {
-    return html`
+    return html.collapseSpace`
       <ul>
         ${
           projects.map(function (project) {
@@ -56,7 +56,7 @@ function list (publisher, projects, send) {
 }
 
 function projectItem (publisher, project, editions, send) {
-  return html`
+  return html.collapseSpace`
     <li>
       ${project}:
       <ul class=editions>

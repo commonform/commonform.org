@@ -7,7 +7,7 @@ module.exports = function (digest, annotationsArray, send) {
   assert(typeof digest === 'string')
   assert(Array.isArray(annotationsArray))
   assert(typeof send === 'function')
-  return html`
+  return html.collapseSpace`
     <p class=details>
       ${digestLink(digest)}
       ${annotations(annotationsArray)}

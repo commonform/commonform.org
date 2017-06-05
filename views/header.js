@@ -10,14 +10,14 @@ module.exports = function (
   assert(Array.isArray(publications))
   assert(send !== undefined)
   return toDigest
-    ? html`
+    ? html.collapseSpace`
       <header>
         ${paragraph(digest, publications, send)}
         <p>compared to</p>
         ${paragraph(toDigest, toPublications, send)}
       </header>
     `
-    : html`
+    : html.collapseSpace`
       <header>
       ${paragraph(digest, publications, send)}
       </header>
@@ -28,7 +28,7 @@ function paragraph (digest, publications, send) {
   assert(typeof digest === 'string')
   assert(Array.isArray(publications))
   assert(send !== undefined)
-  return html`
+  return html.collapseSpace`
     <div>
       <p>${digestLink(digest)}</p>
       ${publicationsList(publications)}
