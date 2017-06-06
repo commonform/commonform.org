@@ -43,11 +43,11 @@ function comparison (diff) {
     })
   })
 
-  return html.collapseSpace`
+  return html`
     <section class=${classNames}>
       ${
         wrapper(
-          html`
+          html.preserveSpace`
             <div>
               ${root ? null : html`<a class=sigil>\u00A7</a>`}
               ${
@@ -86,7 +86,7 @@ function heading (heading) {
   var joined = heading
     .map(function (word) { return word.word })
     .join('')
-  return html`
+  return html.preserveSpace`
     <p class=heading id=${joined}>
       ${heading.map(word)}
     </p>
@@ -112,7 +112,7 @@ function series (data) {
 function paragraph (data) {
   assert(typeof data === 'object')
   assert(Array.isArray(data.content))
-  return html`
+  return html.preserveSpace`
     <p class=text>
       ${
         data.content.reduce(function (output, child) {

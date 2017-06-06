@@ -56,7 +56,7 @@ function form (form, send) {
   var digest = form.merkle.digest
 
   var offset = 0
-  return html.collapseSpace`
+  return html`
     <section
         class="${classes}"
         data-digest="${digest}">
@@ -155,7 +155,7 @@ function form (form, send) {
 }
 
 function sectionButton (toggleFocus) {
-  return html.collapseSpace`
+  return html`
     <a class=sigil
       onclick=${toggleFocus}
       title="Click to focus.">§</a>
@@ -165,7 +165,7 @@ function sectionButton (toggleFocus) {
 function editControls (form, send) {
   assert(typeof send === 'function')
   var conspicuous = form.tree.form && 'conspicuous' in form.tree.form
-  return html.collapseSpace`
+  return html`
     <div class=editControls>
       ${deleteButton(form.path, send)}
       ${conspicuousToggle(conspicuous, form.path, send)}
@@ -179,7 +179,7 @@ function conspicuousToggle (conspicuous, path, send) {
   assert(conspicuous === true || conspicuous === false)
   assert(Array.isArray(path))
   assert(typeof send === 'function')
-  return html.collapseSpace`
+  return html`
     <button onclick=${onClick}>
       ${conspicuous ? 'Inconspicuous' : 'Conspicuous'}
     </button>
@@ -196,7 +196,7 @@ function replace (path, digest, send) {
   assert(Array.isArray(path))
   assert(digest === true || digest === false)
   assert(typeof send === 'function')
-  return html.collapseSpace`
+  return html`
     <button
         onclick=${onClick}
       >Replace w/ ${digest ? 'Digest' : 'Publication'}</button>
@@ -210,7 +210,7 @@ function replace (path, digest, send) {
 }
 
 function deleteButton (path, send) {
-  return html.collapseSpace`
+  return html`
     <button
         onclick=${onClick}
       >Delete</button>
@@ -242,7 +242,7 @@ function marginalia (
     )
   })
   if (hasError || hasAnnotation || hasBlank) {
-    return html.collapseSpace`
+    return html`
       <aside class=marginalia onclick=${toggleFocus}>
         ${hasError ? flag('error', '\u26A0') : null}
         ${hasAnnotation ? flag('annotation', '\u2690') : null}
@@ -266,7 +266,7 @@ function flag (type, character) {
 
 function heading (mode, withinFocused, heading, send) {
   if (heading || withinFocused) {
-    return html.collapseSpace`
+    return html`
       <input
           type=text
           class=heading
@@ -335,7 +335,7 @@ function paragraph (state, send) {
       event.target.blur()
     }
   }
-  return html`
+  return html.preserveSpace`
     <p
         class=text
         contenteditable=true
@@ -398,7 +398,7 @@ function commentsList (comments, parent, digest, send) {
     .sort(function (a, b) {
       return parseInt(a.timestamp) - parseInt(b.timestamp)
     })
-  return html.collapseSpace`
+  return html`
     <ol class=comments>
       ${roots.map(function (root) {
         return commentListItem(
@@ -427,7 +427,7 @@ function commentListItem (
       replyTo: withParent
     }, send)
     : html`<button onclick=${onClick}>Reply</button>`
-  return html`
+  return html.preserveSpace`
     <li data-uuid=${uuid}>
       ${improvePunctuation(comment.text)}
       <span class=byline>
@@ -470,7 +470,7 @@ function commentForm (digest, parent, send) {
   assert(typeof send === 'function')
   var context
   if (!parent) {
-    context = html.collapseSpace`
+    context = html`
       <p>
         <label for=context>Comment on this form:</label>
         <select name=context>
@@ -485,7 +485,7 @@ function commentForm (digest, parent, send) {
     `
   }
 
-  return html.collapseSpace`
+  return html`
     <form onsubmit=${onSubmit} class=newComment>
       ${context}
       <textarea required name=text></textarea>

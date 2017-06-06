@@ -5,7 +5,7 @@ var html = require('../html')
 module.exports = function (form, send) {
   assert(typeof form === 'object')
   assert(typeof send === 'function')
-  return html.collapseSpace`
+  return html`
     <div class="menu">
       <h1>Receive E-Mail Updates for this Form</h1>
       <form onsubmit=${subscribe}>

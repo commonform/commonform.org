@@ -12,7 +12,7 @@ module.exports = function (pages, send) {
   var newPageCount = pages.reduce(function (count, page) {
     return page.samePage ? count : count + 1
   }, 0)
-  return html.collapseSpace`
+  return html`
     <div class=signaturePages>
       <p class=endOfPage>
         ${
@@ -90,7 +90,7 @@ function signaturePage (page, path, send) {
 
   console.log(page)
 
-  return html.collapseSpace`
+  return html`
     <div class=${classes}>
       <p class=samePage>
         <input
@@ -119,7 +119,7 @@ function signaturePage (page, path, send) {
           ? (function () {
             var lastIndex = entities.length - 1
             var byPath = path.concat('entities', lastIndex, 'by')
-            return html`
+            return html.preserveSpace`
               <p>Title:
                 ${input(
                   entities[lastIndex].by,
@@ -155,7 +155,7 @@ function signaturePage (page, path, send) {
           if (information.indexOf(text) > -1) {
             return html`<p>${display}:`
           } else {
-            return html.collapseSpace`
+            return html`
               <p>
                 <button
                     onclick=${
@@ -209,7 +209,7 @@ function newPage () {
 
 function entitiesParagraphs (entities, path, send) {
   entities = entities || []
-  return html.collapseSpace`
+  return html`
     <div class=entities>
       ${
         entities.map(function (entity, index, entities) {
@@ -285,7 +285,7 @@ function signatureEntity (state, send) {
     )
   }
 
-  return html.collapseSpace`
+  return html`
     <p class=entity>
       ${needsBy ? 'By:' : null}
       ${inputFor('name', 'Name')}, a

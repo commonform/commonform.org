@@ -19,7 +19,7 @@ module.exports = function browse (state, send) {
       send('browser:get publishers')
     })
   } else {
-    return html`
+    return html.preserveSpace`
       <div class=container>
         <article class=commonform>
           ${sidebar('browse', send)}

@@ -7,7 +7,7 @@ var GUIDE = 'https://github.com/commonform/new-publisher-guide'
 module.exports = function (form, send) {
   assert(typeof form === 'object')
   assert(typeof send === 'function')
-  return html`
+  return html.preserveSpace`
     <div class="menu">
       <section class=dangerZone>
         <form onchange=${checkSafety}>

@@ -3,7 +3,7 @@ var html = require('../html')
 
 module.exports = function (digest) {
   assert(typeof digest === 'string')
-  return html`
+  return html.preserveSpace`
     <div>
       <a
           class=digest

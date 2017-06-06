@@ -8,7 +8,7 @@ module.exports = function (state, send) {
   assert(typeof state === 'object')
   assert(typeof send === 'function')
   var flags = state.annotators
-  return html.collapseSpace`
+  return html`
     <section class=settings>
       <p>${annotatorCheckBoxes(flags, send)}</p>
       <p>${numbering(state.numbering, send)}</p>
@@ -17,7 +17,7 @@ module.exports = function (state, send) {
 }
 
 function annotatorCheckBoxes (flags, send) {
-  return html.collapseSpace`
+  return html`
     <form onchange=${onChange}>
       Annotate:
       ${Object.keys(flags).map(function (name) {
@@ -43,7 +43,7 @@ function annotatorCheckBoxes (flags, send) {
 }
 
 function checkBox (annotator, enabled, send) {
-  return html.collapseSpace`
+  return html`
     <label>
       <input
           type=checkbox
@@ -56,13 +56,13 @@ function checkBox (annotator, enabled, send) {
 
 function numbering (selected, send) {
   assert(typeof selected === 'string')
-  return html.collapseSpace`
+  return html`
     <form onchange=${onChange}>
       Word File Numbering:
       <select>
         ${numberings.map(function (numbering) {
           var name = numbering.name
-          return html`
+          return html.preserveSpace`
             <option
                 ${selected === name ? 'selected' : ''}
                 value=${name}>

@@ -2,7 +2,7 @@ var html = require('../html')
 var sidebar = require('./sidebar')
 
 module.exports = function (state, hasError, send) {
-  return html.collapseSpace`
+  return html`
     <div class=container>
       <article class=commonform>
         ${sidebar('none', send)}

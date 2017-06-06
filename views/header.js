@@ -10,14 +10,14 @@ module.exports = function (
   assert(Array.isArray(publications))
   assert(send !== undefined)
   return toDigest
-    ? html.collapseSpace`
+    ? html`
       <header>
         ${paragraph(digest, publications, send)}
         <p>compared to</p>
         ${paragraph(toDigest, toPublications, send)}
       </header>
     `
-    : html.collapseSpace`
+    : html`
       <header>
       ${paragraph(digest, publications, send)}
       </header>
@@ -28,7 +28,7 @@ function paragraph (digest, publications, send) {
   assert(typeof digest === 'string')
   assert(Array.isArray(publications))
   assert(send !== undefined)
-  return html.collapseSpace`
+  return html`
     <div>
       <p>${digestLink(digest)}</p>
       ${publicationsList(publications)}
@@ -46,7 +46,7 @@ function publicationLine (publication) {
   var publisher = publication.publisher
   var link = `/publications/${publisher}/${project}/${edition}`
   if (publication.root) {
-    return html`
+    return html.preserveSpace`
       <p class=publication>
         <a
             class=publisher
@@ -60,7 +60,7 @@ function publicationLine (publication) {
       </p>
     `
   } else {
-    return html`
+    return html.preserveSpace`
       <p class=publication>
         <strong>${publisher}</strong>
         published this form within

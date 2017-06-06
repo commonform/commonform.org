@@ -21,7 +21,7 @@ module.exports = function (action, value, state, send) {
       send('search:' + action, value)
     })
   } else {
-    return html.collapseSpace`
+    return html`
       <div class=container>
         <article class=commonform>
           ${sidebar('search', send)}
@@ -38,7 +38,7 @@ module.exports = function (action, value, state, send) {
 function searchBox (send) {
   var nextAction
   var data
-  return html.collapseSpace`
+  return html`
     <div class=search>
       <form onsubmit=${onSubmit}>
         <input
@@ -91,7 +91,7 @@ function hint (pattern) {
 
 function results (state, send) {
   if (state.query) {
-    return html.collapseSpace`
+    return html`
       <div class=results>
         <p class=query>${state.query}:</p>
         ${resultList(state.results, send)}
@@ -106,7 +106,7 @@ function resultList (results, send) {
   if (results.length === 0) {
     return html`<p>No results</p>`
   } else {
-    return html.collapseSpace`
+    return html`
       <ul class=results>
         ${results.map(function (r) {
           return html`<li>${result(r, send)}</li>`

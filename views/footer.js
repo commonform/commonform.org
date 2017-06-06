@@ -1,7 +1,7 @@
 var html = require('../html')
 
 module.exports = function () {
-  return html`
+  return html.preserveSpace`
     <footer>
       <p>
         <a href="http://typographyforlawyers.com/equity.html">
