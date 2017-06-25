@@ -506,10 +506,9 @@ module.exports = function (initialize, reduction, handler) {
       withCredentials: true,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(publisher + ':' + password)
       },
-      username: publisher,
-      password: password,
       body: JSON.stringify(data)
     }, ecb(done, function (response, body) {
       var status = response.statusCode
@@ -532,10 +531,9 @@ module.exports = function (initialize, reduction, handler) {
       withCredentials: true,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(publisher + ':' + password)
       },
-      username: publisher,
-      password: password
     }, ecb(done, function (response, body) {
       var status = response.statusCode
       if (status === 200 || status === 204 || status === 409) {
@@ -726,10 +724,9 @@ function save (state, publisher, password, callback) {
     withCredentials: true,
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + btoa(publisher + ':' + password)
     },
-    username: publisher,
-    password: password,
     body: JSON.stringify(state.tree)
   }, ecb(callback, function (response, body) {
     var status = response.statusCode
@@ -755,10 +752,9 @@ function publish (
     withCredentials: true,
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + btoa(publisher + ':' + password)
     },
-    username: publisher,
-    password: password,
     body: JSON.stringify({digest: digest})
   }, ecb(callback, function (response, body) {
     var status = response.statusCode
