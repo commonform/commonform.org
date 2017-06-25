@@ -38,18 +38,6 @@ module.exports = function (form, send) {
         <form class=save onsubmit=${saveForm}>
           <h2>Save to commonform.org</h2>
           <p>
-            <input
-                type=text
-                required
-                disabled=true
-                placeholder="Publisher Name"
-                name=publisher></input>
-            <input
-                type=password
-                required
-                disabled=true
-                placeholder="Password"
-                name=password></input>
             <button type=submit>Save Form</button>
           </p>
           <p>
@@ -74,14 +62,6 @@ module.exports = function (form, send) {
                 disabled=true
                 placeholder="Publisher Name"
                 name=publisher></input>
-            <input
-                type=password
-                required
-                disabled=true
-                placeholder="Password"
-                name=password></input>
-          </p>
-          <p>
             <input
                 type=text
                 required
@@ -137,16 +117,14 @@ module.exports = function (form, send) {
   function saveForm (event) {
     event.preventDefault()
     event.stopPropagation()
-    send('form:save', fromElements(event.target.elements, [
-      'publisher', 'password'
-    ]))
+    send('form:save', {})
   }
 
   function publishForm (event) {
     event.preventDefault()
     event.stopPropagation()
     send('form:publish', fromElements(event.target.elements, [
-      'publisher', 'password', 'project', 'edition'
+      'publisher', 'project', 'edition'
     ]))
   }
 }

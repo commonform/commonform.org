@@ -15,11 +15,6 @@ module.exports = function (form, send) {
               required
               placeholder="Publisher Name"
               name=publisher></input>
-          <input
-              type=password
-              required
-              placeholder="Password"
-              name=password></input>
           <button type=submit>Subscribe</button>
         </p>
       </form>
@@ -34,7 +29,7 @@ module.exports = function (form, send) {
     event.preventDefault()
     event.stopPropagation()
     send('form:subscribe', fromElements(event.target.elements, [
-      'publisher', 'password'
+      'publisher'
     ]))
   }
 }

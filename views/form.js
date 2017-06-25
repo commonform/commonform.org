@@ -495,11 +495,6 @@ function commentForm (digest, parent, send) {
             required
             placeholder="Publisher Name"
             name=publisher></input>
-        <input
-            type=password
-            required
-            placeholder="Password"
-            name=password></input>
         <button type=submit>Publish Comment</button>
       </p>
     </form>
@@ -515,8 +510,7 @@ function commentForm (digest, parent, send) {
       form: digest,
       replyTo: parent ? parent.replyTo : [],
       text: elements.text.value,
-      publisher: elements.publisher.value,
-      password: elements.password.value
+      publisher: elements.publisher.value
     })
   }
 }

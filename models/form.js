@@ -436,10 +436,8 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   handler('save', function (data, state, reduce, done) {
-    var publisher = data.publisher
-    var password = data.password
     var digest = state.merkle.digest
-    save(state, publisher, password, ecb(done, function () {
+    save(state, ecb(done, function () {
       window.alert('Saved form ' + digest)
       reduce('mode', 'read')
       done()
@@ -448,13 +446,12 @@ module.exports = function (initialize, reduction, handler) {
 
   handler('publish', function (data, state, reduce, done) {
     var publisher = data.publisher
-    var password = data.password
     var project = data.project
     var edition = data.edition
     var digest = state.merkle.digest
-    save(state, publisher, password, ecb(done, function () {
+    save(state, publisher, ecb(done, function () {
       publish(
-        digest, publisher, password, project, edition,
+        digest, publisher, project, edition,
         ecb(done, function () {
           window.alert(
             'Published ' + publisher + '\'s ' +
@@ -494,20 +491,16 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   handler('comment', function (data, state, reduce, done) {
-    var publisher = data.publisher
-    var password = data.password
     if (data.context === 'root') {
       data.context = state.merkle.digest
     }
-    delete data.password
     xhr({
       method: 'POST',
       uri: API + '/annotations',
       withCredentials: true,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(publisher + ':' + password)
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     }, ecb(done, function (response, body) {
@@ -523,7 +516,6 @@ module.exports = function (initialize, reduction, handler) {
 
   handler('subscribe', function (data, state, reduce, done) {
     var publisher = data.publisher
-    var password = data.password
     var digest = state.merkle.digest
     xhr({
       method: 'POST',
@@ -531,8 +523,7 @@ module.exports = function (initialize, reduction, handler) {
       withCredentials: true,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(publisher + ':' + password)
+        'Content-Type': 'application/json'
       },
     }, ecb(done, function (response, body) {
       var status = response.statusCode
@@ -717,15 +708,14 @@ function identify (wholeTree, subTree) {
   })
 }
 
-function save (state, publisher, password, callback) {
+function save (state, callback) {
   xhr({
     method: 'POST',
     uri: API + '/forms',
     withCredentials: true,
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + btoa(publisher + ':' + password)
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(state.tree)
   }, ecb(callback, function (response, body) {
@@ -739,7 +729,7 @@ function save (state, publisher, password, callback) {
 }
 
 function publish (
-  digest, publisher, password, project, edition, callback
+  digest, publisher, project, edition, callback
 ) {
   xhr({
     method: 'POST',
@@ -752,8 +742,7 @@ function publish (
     withCredentials: true,
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + btoa(publisher + ':' + password)
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({digest: digest})
   }, ecb(callback, function (response, body) {
