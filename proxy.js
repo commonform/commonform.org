@@ -1,7 +1,26 @@
 // Proxy HTTP requests to the local test API server on port 8081,
 // modifying headers to enable CORS and prevent caching.
-var corsify = require('corsify')
 var http = require('http')
+var corsify = require('corsify')({
+  'Access-Control-Allow-Origin': 'http://localhost:8000',
+  'Access-Control-Allow-Credentials': 'true',
+  'Access-Control-Allow-Headers': [
+    'Authorization',
+    'Cache-Control',
+    'Content-Type',
+    'DNT',
+    'If-Modified-Since',
+    'Keep-Alive',
+    'User-Agent',
+    'X-CustomHeader',
+    'X-Requested-With'
+  ].join(', '),
+  'Access-Control-Allow-Methods': http.METHODS.join(', '),
+  'Access-Control-Expose-Headers': [
+    'Content-Type',
+    'Location'
+  ].join()
+})
 var httpProxy = require('http-proxy')
 
 var proxy = httpProxy.createProxyServer({})
@@ -11,28 +30,7 @@ http
     var newHeaders = [
       ['Pragma', 'no-cache'],
       ['Expires', '0'],
-      ['Cache-Control', 'no-cache, no-store, must-revalidate'],
-      ['Access-Control-Allow-Origin', 'http://localhost:8000'],
-      ['Access-Control-Allow-Credentials', 'true'],
-      [
-        'Access-Control-Allow-Headers', [
-          'Cache-Control',
-          'Content-Type',
-          'DNT',
-          'If-Modified-Since',
-          'Keep-Alive',
-          'User-Agent',
-          'X-CustomHeader',
-          'X-Requested-With'
-        ].join(', ')
-      ],
-      ['Access-Control-Allow-Methods', http.METHODS.join(', ')],
-      [
-        'Access-Control-Expose-Headers', [
-          'Content-Type',
-          'Location'
-        ].join()
-      ]
+      ['Cache-Control', 'no-cache, no-store, must-revalidate']
     ]
     var oldWriteHead = response.writeHead
     response.writeHead = function (code, headers) {
