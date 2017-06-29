@@ -23,6 +23,7 @@
     "doubleplus-numbers": "^0.2.1",
     "ecb": "^1.0.0",
     "filesaver.js": "^0.2.0",
+    "hyperscript": "^2.0.2",
     "hyperx": "^2.3.0",
     "is-sha-256-hex-digest": "^1.0.0",
     "json-parse-errback": "^2.0.1",

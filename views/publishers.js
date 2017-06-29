@@ -1,7 +1,7 @@
 var assert = require('assert')
 var footer = require('./footer')
+var h = require('hyperscript')
 var isSHA256 = require('is-sha-256-hex-digest')
-var literal = require('../html/literal')
 var loading = require('./loading')
 var publisherLink = require('./publisher-link')
 var sidebar = require('./sidebar')
@@ -19,60 +19,55 @@ module.exports = function browse (state, send) {
       send('browser:get publishers')
     })
   } else {
-    return literal`
-      <div class=container>
-        <article class=commonform>
-          ${sidebar('browse', send)}
-          <h1>Common Forms</h1>
-          <p>
-            commonform.org is a free, open respository of legal forms.
-            Browse published forms by publisher name below, or create
-            your own form online.  Click the lifesaver to the left
-            for help.
-          </p>
-          <p>
-            <button
-                onclick=${function () {
-                  send('form:new form')
-                }}
-            >Start a New Form from Scratch</button>
-            <form class=fileInputTrick>
-              <button>Open a File</button>
-              <input
-                  type=file
-                  accept=".cform,.commonform,.json"
-                  onchange=${selectFile}></input>
-            </form>
-          </p>
-          <p>
-            <form class=fetchDigest onsubmit=${fetchDigest}>
-              <input
-                  name=digest
-                  required
-                  placeholder="Paste a form ID here."
-                  pattern="[a-z0-9]{64}"
-                  type=text></input>
-              <button type=submit>Fetch from commonform.org</button>
-            </form>
-          </p>
-          <h2>Browse by Publisher</h2>
-          <ul>
-            ${
-              state.publishers.map(function (publisher) {
-                var li = document.createElement('li')
-                li.appendChild(publisherLink(publisher, send))
-                return li
-              })
+    return h('div.container',
+      h('article.commonform',
+        sidebar('browse', send),
+        h('h1', 'Common Forms'),
+        h('p',
+          'commonform.org is a free, open repository of legal forms.',
+          'Browse published forms by publisher name below, or create',
+          'your own form online.  Click the lifesaver to the left',
+          'for help.'
+        ),
+        h('p',
+          h('button', {
+            onclick: function () {
+              send('form:new form')
             }
-          </ul>
-          <p>
-            If you would like to publish forms, e-mail
-            <a href="${MAILTO}">Kyle Mitchell</a>.
-          </p>
-          ${footer()}
-        </article>
-      </div>
-    `
+          }, 'Start a New Form from Scratch'),
+          h('form.fileInputTrick',
+            h('button', 'Open a File'),
+            h('input', {
+              type: 'file',
+              accept: '.cform,.commonform,.json',
+              onchange: selectFile
+            })
+          )
+        ),
+        h('p',
+          h('form.fetchDigest', {onsubmit: fetchDigest},
+            h('input', {
+              name: 'digest',
+              required: true,
+              placeholder: 'Past a form ID here.',
+              pattern: '[a-z0-9]{64}',
+              type: 'text'
+            }),
+            h('button', {type: 'submit'}, 'Fetch from commonform.org')
+          )
+        ),
+        h('h2', 'Browse by Publisher'),
+        h('ul', state.publishers.map(function (publisher) {
+          return h('li', publisherLink(publisher, send))
+        })),
+        h('p',
+          'If you would like to publish forms, e-mail ',
+          h('a', {href: MAILTO}, 'Kyle Mitchell'),
+          '.'
+        ),
+        footer()
+      )
+    )
   }
 
   function fetchDigest (event) {

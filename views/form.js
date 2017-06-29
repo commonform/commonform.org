@@ -1,6 +1,5 @@
 var assert = require('assert')
 var classnames = require('classnames')
-var collapsed = require('../html/collapsed')
 var deepEqual = require('deep-equal')
 var definition = require('./definition')
 var details = require('./details')
@@ -8,9 +7,9 @@ var dropZone = require('./drop-zone')
 var find = require('array-find')
 var get = require('keyarray').get
 var group = require('commonform-group-series')
+var h = require('hyperscript')
 var improvePunctuation = require('../utilities/improve-punctuation')
 var input = require('./input')
-var literal = require('../html/literal')
 var predicates = require('commonform-predicate')
 var publisherLink = require('./publisher-link')
 var reference = require('./reference')
@@ -56,47 +55,38 @@ function form (form, send) {
   var digest = form.merkle.digest
 
   var offset = 0
-  return collapsed`
-    <section
-        class="${classes}"
-        data-digest="${digest}">
-      ${root ? null : sectionButton(toggleFocus)}
-      ${isFocused ? editControls(form, send) : null}
-      ${
-        root
-          ? null
-          : heading(
-            form.mode,
-            isFocused || form.withinFocused,
-            form.tree.heading,
-            setHeading
-          )
-      }
-      ${
-        isFocused
-          ? details(digest, annotationsHere, send)
-          : null
-      }
-      ${
-        marginalia(
-          tree, form.path, form.blanks,
-          annotationsHere,
-          (commentsHere && commentsHere.length !== 0),
-          toggleFocus
-        )
-      }
-      ${
-        groups[0].type === 'series'
-          ? dropZone(
-            form.focused
-              ? ((isFocused || form.withinFocused) ? 'none' : 'move')
-              : 'child',
-            form.path.concat(formKey, 'content', 0),
-            send
-          )
-          : null
-      }
-      ${groups.map(function (group) {
+
+  return h('section', {className: classes, 'data-digest': digest},
+    (root ? null : sectionButton(toggleFocus)),
+    (isFocused ? editControls(form, send) : null),
+    (root
+      ? null
+      : heading(
+        form.mode,
+        isFocused || form.withinFocused,
+        form.tree.heading,
+        setHeading
+      )
+    ),
+    (isFocused ? details(digest, annotationsHere, send) : null),
+    (marginalia(
+      tree, form.path, form.blanks,
+      annotationsHere,
+      (commentsHere && commentsHere.length !== 0),
+      toggleFocus
+    )),
+    (groups[0].type === 'series'
+      ? dropZone(
+        form.focused
+          ? ((isFocused || form.withinFocused) ? 'none' : 'move')
+          : 'child',
+        form.path.concat(formKey, 'content', 0),
+        send
+      )
+      : null
+    ),
+    groups
+      .map(function (group) {
         var groupState = {
           mode: form.mode,
           comments: form.comments,
@@ -132,21 +122,16 @@ function form (form, send) {
               send
             )
           ]
-      }).reduce(function (x, y) { return x.concat(y) })}
-      ${
-        showComments
-          ? commentsList(
-            commentsHere, form.parentComment, digest, send
-          )
-          : null
-      }
-      ${
-        isFocused
-          ? commentForm(digest, false, send)
-          : null
-      }
-    </section>
-  `
+      })
+      .reduce(function (x, y) {
+        return x.concat(y)
+      }),
+    (showComments
+      ? commentsList(commentsHere, form.parentComment, digest, send)
+      : null
+    ),
+    (isFocused ? commentForm(digest, false, send) : null)
+  )
 
   function toggleFocus (event) {
     event.stopPropagation()
@@ -343,27 +328,28 @@ function paragraph (state, send) {
       event.target.blur()
     }
   }
-  var p = document.createElement('p')
-  p.className = 'text'
-  p.setAttribute('contenteditable', 'true')
-  p.onblur = onBlur
-  p.onkeydown = onKeyDown
-  state.data.content.forEach(function (child, index) {
-    if (predicates.text(child)) {
-      p.appendChild(string(child))
-    } else if (predicates.use(child)) {
-      p.appendChild(use(child.use))
-    } else if (predicates.definition(child)) {
-      p.appendChild(definition(child.definition))
-    } else if (predicates.blank(child)) {
-      var childPath = state.path
-        .concat('content', offset + index)
-      p.appendChild(blank(state.blanks, childPath, send))
-    } else if (predicates.reference(child)) {
-      p.appendChild(reference(child.reference))
-    }
-  })
-  return p
+  return h('p.text',
+    {
+      contenteditable: true,
+      onblur: onBlur,
+      onkeydown: onKeyDown
+    },
+    state.data.content.map(function (child, index) {
+      if (predicates.text(child)) {
+        return string(child)
+      } else if (predicates.use(child)) {
+        return use(child.use)
+      } else if (predicates.definition(child)) {
+        return definition(child.definition)
+      } else if (predicates.blank(child)) {
+        var childPath = state.path
+          .concat('content', offset + index)
+        return blank(state.blanks, childPath, send)
+      } else if (predicates.reference(child)) {
+        return reference(child.reference)
+      }
+    })
+  )
 }
 
 function string (string) {
@@ -432,27 +418,23 @@ function commentListItem (
       replyTo: withParent
     }, send)
     : replyButton()
-  return literal`
-    <li data-uuid=${uuid}>
-      ${improvePunctuation(comment.text)}
-      <span class=byline>
-        ${publisherLink(comment.publisher)}
-        ${new Date(parseInt(comment.timestamp)).toLocaleString()}
-      </span>
-      <div class=buttons>
-        ${reply}
-      </div>
-      ${
-        replies.length === 0
-          ? null
-          : replies.map(function (reply) {
-            return commentListItem(
-              reply, withParent, other, digest, parent, send
-            )
-          })
-      }
-    </li>
-  `
+
+  return h('li', {'data-uuid': uuid},
+    improvePunctuation(comment.text),
+    h('span.byline',
+      publisherLink(comment.publisher),
+      new Date(parseInt(comment.timestamp)).toLocaleString()
+    ),
+    h('div.buttons', reply),
+    (replies.length === 0
+      ? null
+      : replies.map(function (reply) {
+        return commentListItem(
+          reply, withParent, other, digest, parent, send
+        )
+      })
+    )
+  )
 
   function replyButton () {
     var button = document.createElement('button')
@@ -480,40 +462,38 @@ function commentForm (digest, parent, send) {
   assert(typeof send === 'function')
   var context
   if (!parent) {
-    context = collapsed`
-      <p>
-        <label for=context>Comment on this form:</label>
-        <select name=context>
-          <option value=root
-            >Within this entire form</option>
-          <option
-              value=${digest}
-              selected
-            >Anywhere it appears</option>
-        </select>
-      </p>
-    `
+    context = h('p',
+      h('label', {for: 'context'},
+        'Comment on this form: '
+      ),
+      h('select', {name: 'context'},
+        h('option', {value: 'root'}, 'In this context'),
+        h('option', {value: digest, selected: 'selected'},
+          'Anywhere it appears'
+        )
+      )
+    )
   }
 
-  return collapsed`
-    <form onsubmit=${onSubmit} class=newComment>
-      ${context}
-      <textarea required name=text></textarea>
-      <p>
-        <input
-            type=text
-            required
-            placeholder="Publisher Name"
-            name=publisher></input>
-        <input
-            type=password
-            required
-            placeholder="Password"
-            name=password></input>
-        <button type=submit>Publish Comment</button>
-      </p>
-    </form>
-  `
+  return h('form.newComment', {onsubmit: onSubmit},
+    context,
+    h('textarea', {required: 'required', name: 'text'}),
+    h('p',
+      h('input', {
+        type: 'text',
+        required: 'required',
+        placeholder: 'Publisher Name',
+        name: 'publisher'
+      }),
+      h('input', {
+        type: 'password',
+        required: 'required',
+        placeholder: 'Password',
+        name: 'password'
+      }),
+      h('button', {type: 'submit'}, 'Publish Comment')
+    )
+  )
 
   function onSubmit (event) {
     event.preventDefault()
