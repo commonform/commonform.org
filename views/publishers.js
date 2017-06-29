@@ -1,5 +1,4 @@
 var assert = require('assert')
-var collapsed = require('../html/collapsed')
 var footer = require('./footer')
 var isSHA256 = require('is-sha-256-hex-digest')
 var literal = require('../html/literal')
@@ -60,9 +59,9 @@ module.exports = function browse (state, send) {
           <ul>
             ${
               state.publishers.map(function (publisher) {
-                return collapsed`
-                  <li>${publisherLink(publisher, send)}</li>
-                `
+                var li = document.createElement('li')
+                li.appendChild(publisherLink(publisher, send))
+                return li
               })
             }
           </ul>

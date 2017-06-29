@@ -7,32 +7,42 @@ module.exports = function (digest, annotationsArray, send) {
   assert(typeof digest === 'string')
   assert(Array.isArray(annotationsArray))
   assert(typeof send === 'function')
-  return collapsed`
-    <p class=details>
-      ${digestLink(digest)}
-      ${annotations(annotationsArray)}
-    </p>
-  `
+  var p = document.createElement('p')
+  p.className = 'details'
+  p.appendChild(digestLink(digest))
+  p.appendChild(annotations(annotationsArray))
+  return p
 }
 
 function annotations (array) {
   assert(Array.isArray(array))
-  return collapsed`<aside>${deduplicate(array).map(annotation)}</aside>`
+  var aside = document.createElement('aside')
+  deduplicate(array).forEach(function (element) {
+    aside.appendChild(annotation(element))
+  })
+  return aside
 }
 
 function annotation (data) {
   assert(typeof data === 'object')
   assert(typeof data.message === 'string')
   var message = improvePunctuation(data.message)
-  return collapsed`
-    <p class=${data.level}>${annotationText(data.url, message)}</p>
-  `
+  var p = document.createElement('p')
+  p.className = data.level
+  p.appendChild(annotationText(data.url, message))
+  return p
 }
 
 function annotationText (url, message) {
   assert(typeof message === 'string')
-  if (url) return collapsed`<a href=${url}>${message}</a>`
-  else return collapsed`${message}`
+  if (url) {
+    var a = document.createElement('a')
+    a.href = url
+    a.appendChild(document.createTextNode(message))
+    return a
+  } else {
+    return document.createTextNode(message)
+  }
 }
 
 function deduplicate (annotations) {

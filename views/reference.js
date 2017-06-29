@@ -1,11 +1,11 @@
 var assert = require('assert')
-var collapsed = require('../html/collapsed')
 
 module.exports = function (heading) {
   assert(typeof heading === 'string')
-  return collapsed`
-    <a  class=reference
-        title="Jump to ${heading}"
-        href="#Heading:${heading}"
-        >${heading}</a>`
+  var a = document.createElement('a')
+  a.className = 'reference'
+  a.title = 'Jump to ' + heading
+  a.href = '#Heading:' + heading
+  a.appendChild(document.createTextNode(heading))
+  return a
 }

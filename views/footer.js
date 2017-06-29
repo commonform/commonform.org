@@ -1,30 +1,59 @@
-var literal = require('../html/literal')
+module.exports = function footer () {
+  var footer = document.createElement('footer')
+  footer.appendChild(fontsCredit())
+  footer.appendChild(iconsCredit())
+  footer.appendChild(openSource())
+  return footer
+}
 
-module.exports = function () {
-  return literal`
-    <footer>
-      <p>
-        <a href="http://typographyforlawyers.com/equity.html">
-          Equity
-        </a>
-        and
-        <a href="http://typographyforlawyers.com/triplicate.html">
-          Triplicate
-        </a>
-        typefaces by
-        <a href="http://typographyforlawyers.com/about.html"
-          >Matthew Butterick</a>.
-      </p>
-      <p>
-        <a href="http://www.linea.io">linea icons</a> by Dario Ferrando.
-      </p>
-      <p>
-        <a class=openSource>
-          Common Form is
-          <a href="https://github.com/commonform"
-            >open-source software</a>.
-        </a>
-      </p>
-    </footer>
-  `
+function fontsCredit () {
+  var p = document.createElement('p')
+
+  var equity = document.createElement('a')
+  equity.href = 'http://typographyforlawyers.com/equity.html'
+  equity.appendChild(document.createTextNode('Equity'))
+  p.appendChild(equity)
+
+  p.appendChild(document.createTextNode(' and '))
+
+  var triplicate = document.createElement('a')
+  triplicate.href = 'http://typographyforlawyers.com/triplicate.html'
+  triplicate.appendChild(document.createTextNode('Triplicate'))
+  p.appendChild(triplicate)
+
+  p.appendChild(document.createTextNode(' typefaces by '))
+
+  var butterick = document.createElement('a')
+  butterick.href = 'http://typographyforlawyers.com/about.html'
+  butterick.appendChild(document.createTextNode('Matthew Butterick'))
+  p.appendChild(butterick)
+
+  p.appendChild(document.createTextNode('.'))
+
+  return p
+}
+
+function iconsCredit () {
+  var p = document.createElement('p')
+
+  var linea = document.createElement('a')
+  linea.href = 'http://www.linea.io'
+  linea.appendChild(document.createTextNode('linea icons'))
+  p.appendChild(linea)
+
+  p.appendChild(document.createTextNode(' by Dario Ferrando.'))
+
+  return p
+}
+
+function openSource () {
+  var p = document.createElement('p')
+
+  var a = document.createElement('a')
+  a.className = 'openSource'
+  a.href = 'https://github.com/commonform'
+  a.appendChild(document.createTextNode('Common Form is open-source software.'))
+  p.appendChild(a)
+
+  return p
 }

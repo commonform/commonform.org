@@ -1,27 +1,27 @@
-var collapsed = require('../html/collapsed')
-
 module.exports = function input (value, set, clear, placeholder) {
   if (value && value.length > 0) {
-    return collapsed`
-      <span class=blank>
-        ${value}
-        <a  class=clear
-            title="Clear"
-            onclick=${function (e) {
-              e.preventDefault()
-              clear()
-            }}></a>
-      </span>
-    `
+    var span = document.createElement('span')
+    span.className = 'blank'
+    span.appendChild(document.createTextNode(value))
+    var a = document.createElement('a')
+    a.className = 'clear'
+    a.title = 'Clear'
+    a.onclick = function (event) {
+      event.preventDefault()
+      clear()
+    }
+    span.appendChild(a)
+    return span
   } else {
-    return collapsed`
-      <input
-          class=blank
-          placeholder="${placeholder || ''}"
-          onchange=${function (e) {
-            e.preventDefault()
-            set(e.target.value)
-          }}>
-    `
+    var input = document.createElement('input')
+    input.className = 'blank'
+    if (placeholder) {
+      input.setAttribute('placeholder', placeholder)
+    }
+    input.onchange = function (event) {
+      event.preventDefault()
+      set(event.target.value)
+    }
+    return input
   }
 }

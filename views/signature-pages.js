@@ -5,7 +5,6 @@ var clone = require('../utilities/clone')
 var collapsed = require('../html/collapsed')
 var emptySignaturePage = require('../data/empty-signature-page')
 var input = require('./input')
-var literal = require('../html/literal')
 
 module.exports = function (pages, send) {
   assert(Array.isArray(pages))
@@ -118,31 +117,31 @@ function signaturePage (page, path, send) {
           ? (function () {
             var lastIndex = entities.length - 1
             var byPath = path.concat('entities', lastIndex, 'by')
-            return literal`
-              <p>Title:
-                ${input(
-                  entities[lastIndex].by,
-                  function (value) {
-                    send(
-                      'form:signatures',
-                      {
-                        operation: 'set',
-                        key: byPath,
-                        value: value
-                      }
-                    )
-                  },
-                  function () {
-                    send(
-                      'form:signatures',
-                      {
-                        operation: 'delete',
-                        key: byPath
-                      }
-                    )
-                  })
-                }
-              </p>`
+            var p = document.createElement('p')
+            p.appendChild(document.createTextNode('Title: '))
+            p.appendChild(input(
+              entities[lastIndex].by,
+              function (value) {
+                send(
+                  'form:signatures',
+                  {
+                    operation: 'set',
+                    key: byPath,
+                    value: value
+                  }
+                )
+              },
+              function () {
+                send(
+                  'form:signatures',
+                  {
+                    operation: 'delete',
+                    key: byPath
+                  }
+                )
+              }
+            ))
+            return p
           })()
           : null
       }
@@ -152,7 +151,9 @@ function signaturePage (page, path, send) {
             ? 'E-Mail'
             : capitalize(text)
           if (information.indexOf(text) > -1) {
-            return collapsed`<p>${display}:`
+            var p = document.createElement('p')
+            p.appendChild(document.createTextNode(display + ':'))
+            return p
           } else {
             return collapsed`
               <p>
@@ -208,40 +209,35 @@ function newPage () {
 
 function entitiesParagraphs (entities, path, send) {
   entities = entities || []
-  return collapsed`
-    <div class=entities>
-      ${
-        entities.map(function (entity, index, entities) {
-          return signatureEntity({
-            by: index > 0 ? entities[index - 1].by : false,
-            byPath: path.concat(index - 1, 'by'),
-            entity: entity,
-            needsBy: index > 0,
-            path: path.concat(index)
-          },
-          send
-          )
-        })
+  var div = document.createElement('div')
+  div.className = 'entities'
+  entities.forEach(function (entity, index, entities) {
+    div.appendChild(
+      signatureEntity({
+        by: index > 0 ? entities[index - 1].by : false,
+        byPath: path.concat(index - 1, 'by'),
+        entity: entity,
+        needsBy: index > 0,
+        path: path.concat(index)
+      }, send)
+    )
+  })
+  var p = document.createElement('p')
+  var button = document.createElement('button')
+  button.onclick = function (event) {
+    event.preventDefault()
+    send(
+      'form:signatures',
+      {
+        operation: 'push',
+        key: path,
+        value: {}
       }
-      <p>
-        <button
-            onclick=${
-              function (event) {
-                event.preventDefault()
-                send(
-                  'form:signatures',
-                  {
-                    operation: 'push',
-                    key: path,
-                    value: {}
-                  }
-                )
-              }
-            }
-          >Add Entity</button>
-      </p>
-    </div>
-  `
+    )
+  }
+  button.appendChild(document.createTextNode('Add Entity'))
+  div.appendChild(p)
+  return div
 }
 
 function signatureEntity (state, send) {
@@ -284,55 +280,52 @@ function signatureEntity (state, send) {
     )
   }
 
-  return collapsed`
-    <p class=entity>
-      ${needsBy ? 'By:' : null}
-      ${inputFor('name', 'Name')}, a
-      ${inputFor('jurisdiction', 'Jurisdiction')}
-      ${inputFor('form', 'Entity Type')}
-      ${needsBy ? 'its' : null}
-      ${
-        needsBy
-          ? (function () {
-            var by = state.by
-            var byPath = state.byPath
-            return input(
-              by,
-              function (value) {
-                send(
-                  'form:signatures',
-                  {
-                    operation: 'set',
-                    key: byPath,
-                    value: value
-                  }
-                )
-              },
-              function () {
-                send(
-                  'form:signatures',
-                  {
-                    operation: 'delete',
-                    key: byPath
-                  }
-                )
-              },
-              'Role'
-            )
-          })()
-          : null
-      }
-      <button
-          onclick=${
-            function (event) {
-              event.preventDefault()
-              send('form:signatures', {
-                operation: 'splice',
-                key: path
-              })
-            }
+  var p = document.createElement('p')
+  p.className = 'entity'
+  if (needsBy) {
+    p.appendChild(document.createTextNode('By:'))
+  }
+  p.appendChild(inputFor('name', 'Name'))
+  p.appendChild(document.createTextNode('a'))
+  p.appendChild(inputFor('jurisdiction', 'Jurisdiction'))
+  p.appendChild(inputFor('form', 'Entity Type'))
+  if (needsBy) {
+    p.appendChild(document.createTextNode('its'))
+    var by = state.by
+    var byPath = state.byPath
+    p.appendChild(input(
+      by,
+      function (value) {
+        send(
+          'form:signatures',
+          {
+            operation: 'set',
+            key: byPath,
+            value: value
           }
-        >Delete Entity</button>
-    </p>
-  `
+        )
+      },
+      function () {
+        send(
+          'form:signatures',
+          {
+            operation: 'delete',
+            key: byPath
+          }
+        )
+      },
+      'Role'
+    ))
+  }
+  var button = document.createElement('button')
+  button.onclick = function (event) {
+    event.preventDefault()
+    send('form:signatures', {
+      operation: 'splice',
+      key: path
+    })
+  }
+  button.appendChild(document.createTextNode('Delete Entity'))
+  p.appendChild(button)
+  return p
 }

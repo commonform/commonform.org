@@ -1,5 +1,4 @@
 var assert = require('assert')
-var collapsed = require('../html/collapsed')
 
 module.exports = modeButtons
 
@@ -11,84 +10,100 @@ function modeButtons (mode, send) {
     mode !== 'search' &&
     mode !== 'none'
   )
-  return collapsed`
-    <div class=modes>
-      <a
-          href="/search"
-          class="search ${enableIf(mode === 'search')}"
-          title="Click to search forms."
-      ></a>
-      <a
-          href="/publishers"
-          class="browse ${enableIf(mode === 'browse')}"
-          title="Click to browse forms."
-      ></a>
-      ${showReadModes ? readButton() : null}
-      ${showReadModes ? toolbox(send) : null}
-      <a
-          href=http://help.commonform.org
-          class="help disabled"
-          rel=noreferrer
-          target=_blank
-          title="Click for help."
-      ></a>
-    </div>
-  `
+  var div = document.createElement('div')
+  div.className = 'modes'
+
+  var search = document.createElement('a')
+  search.href = '/search'
+  search.className = 'search ' + enableIf(mode === 'search')
+  search.title = 'Click to search forms.'
+  div.appendChild(search)
+
+  var publishers = document.createElement('a')
+  publishers.href = '/publishers'
+  publishers.className = 'browse ' + enableIf(mode === 'browse')
+  publishers.title = 'Click to browse forms.'
+  div.appendChild(publishers)
+
+  if (showReadModes) {
+    div.appendChild(readButton())
+    div.appendChild(toolbox(send))
+  }
+
+  var help = document.createElement('a')
+  help.href = 'http://help.commonform.org'
+  help.className = 'help disabled'
+  help.setAttribute('rel', 'noreferrer')
+  help.setAttribute('target', '_blank')
+  help.title = 'Click for help.'
+  div.appendChild(help)
+
+  return div
 }
 
 function toolbox (send) {
   assert(typeof send === 'function')
   var hidden = true
-  return collapsed`
-    <div
-        class=tools
-        onclick=${onClick}
-      ><a
-          id=toolsLink
-          title="Click to open toolbox."
-          class="tools disabled"
-        ></a>
-      <div id=toolbox class="toolbox closed">
-        <a
-            title="Subscribe via e-mail."
-            class="subscribe"
-            onclick=${function (event) {
-              event.preventDefault()
-              event.stopPropagation()
-              closeToolbox()
-              send('form:mode', 'mail')
-            }}
-          >Subscribe</a>
-        <a
-            title="Store with CommonForm.org"
-            class="save"
-            onclick=${function (event) {
-              event.preventDefault()
-              event.stopPropagation()
-              closeToolbox()
-              send('form:mode', 'save')
-            }}
-          >Store Online</a>
-        ${tool('simplify', 'Simplify Structure', closeToolbox, send)}
-        ${tool('renameTerm', 'Rename Term', closeToolbox, send)}
-        ${tool('renameHeading', 'Rename Heading', closeToolbox, send)}
-        ${tool('identify', 'Mark Terms', closeToolbox, send)}
-        ${tool('saveDOCX', 'Save DOCX', closeToolbox, send)}
-        ${tool('saveProject', 'Save Project', closeToolbox, send)}
-        ${tool('mail', 'E-Mail', closeToolbox, send)}
-      </div>
-    </div>
-  `
+
+  var div = document.createElement('div')
+  div.className = 'tools'
+  div.onclick = onClick
+
+  var tools = document.createElement('a')
+  tools.id = 'toolsLink'
+  tools.title = 'Click to open toolbox.'
+  tools.className = 'tools disabled'
+  div.appendChild(tools)
+
+  var box = document.createElement('div')
+  box.id = 'toolbox'
+  box.className = 'toolbox closed'
+
+  var subscribe = document.createElement('a')
+  subscribe.title = 'Subscribe via e-mail.'
+  subscribe.className = 'subscribe'
+  subscribe.onclick = function (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    close()
+    send('form:mode', 'mail')
+  }
+  subscribe.appendChild(document.createTextNode('Subscribe'))
+  box.appendChild(subscribe)
+
+  var save = document.createElement('a')
+  save.title = 'Store with CommonForm.org'
+  save.className = 'save'
+  save.onclick = function (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    close()
+    send('form:mode', 'save')
+  }
+  save.appendChild(document.createTextNode('Store Online'))
+  box.appendChild(save)
+
+  box.appendChild(tool('simplify', 'Simplify Structure', close, send))
+  box.appendChild(tool('renameTerm', 'Rename Term', close, send))
+  box.appendChild(tool('renameHeading', 'Rename Heading', close, send))
+  box.appendChild(tool('identify', 'Mark Terms', close, send))
+  box.appendChild(tool('saveDOCX', 'Save DOCX', close, send))
+  box.appendChild(tool('saveProject', 'Save Project', close, send))
+  box.appendChild(tool('mail', 'E-Mail', close, send))
+
+  div.appendChild(box)
+
+  return div
 
   function onClick (event) {
     if (hidden) {
-      openToolbox()
+      open()
     } else {
-      closeToolbox()
+      close()
     }
   }
 
-  function openToolbox () {
+  function open () {
     var icon = getIcon()
     var box = getToolbox()
     icon.title = 'Click to close toolbox.'
@@ -97,7 +112,7 @@ function toolbox (send) {
     hidden = false
   }
 
-  function closeToolbox () {
+  function close () {
     var icon = getIcon()
     var box = getToolbox()
     icon.title = 'Click to open toolbox.'
@@ -155,27 +170,24 @@ function tool (name, label, closeToolbox, send) {
   assert(TOOLS.hasOwnProperty(name))
   assert(typeof send === 'function')
   var tool = TOOLS[name]
-  return collapsed`
-    <a
-        class=${name}
-        onclick=${function (event) {
-          event.preventDefault()
-          event.stopPropagation()
-          send(tool.action)
-          closeToolbox()
-        }}
-        title=${tool.title}
-      >${label}</a>
-  `
+  var a = document.createElement('a')
+  a.className = name
+  a.onclick = function (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    send(tool.action)
+    closeToolbox()
+  }
+  a.title = tool.title
+  a.appendChild(document.createTextNode(label))
+  return a
 }
 
 function readButton () {
-  return collapsed`
-    <a
-        title="Reviewing form."
-        class="enabled read"
-      ></a>
-  `
+  var a = document.createElement('a')
+  a.title = 'Reviewing form.'
+  a.className = 'enabled read'
+  return a
 }
 
 function enableIf (argument) {

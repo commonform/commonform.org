@@ -155,70 +155,72 @@ function form (form, send) {
 }
 
 function sectionButton (toggleFocus) {
-  return collapsed`
-    <a class=sigil
-      onclick=${toggleFocus}
-      title="Click to focus.">§</a>
-  `
+  var a = document.createElement('a')
+  a.className = 'sigil'
+  a.onclick = toggleFocus
+  a.title = 'Click to focus.'
+  a.appendChild(document.createTextNode('§'))
+  return a
 }
 
 function editControls (form, send) {
   assert(typeof send === 'function')
   var conspicuous = form.tree.form && 'conspicuous' in form.tree.form
-  return collapsed`
-    <div class=editControls>
-      ${deleteButton(form.path, send)}
-      ${conspicuousToggle(conspicuous, form.path, send)}
-      ${replace(form.path, true, send)}
-      ${replace(form.path, false, send)}
-    </div>
-  `
+  var div = document.createElement('div')
+  div.className = 'editControls'
+  div.appendChild(deleteButton(form.path, send))
+  div.appendChild(conspicuousToggle(conspicuous, form.path, send))
+  div.appendChild(replace(form.path, true, send))
+  div.appendChild(replace(form.path, false, send))
+  return div
 }
 
 function conspicuousToggle (conspicuous, path, send) {
   assert(conspicuous === true || conspicuous === false)
   assert(Array.isArray(path))
   assert(typeof send === 'function')
-  return collapsed`
-    <button onclick=${onClick}>
-      ${conspicuous ? 'Inconspicuous' : 'Conspicuous'}
-    </button>
-  `
-  function onClick (event) {
+  var button = document.createElement('button')
+  button.onclick = function () {
     send('form:conspicuous', {
       path: path,
       conspicuous: !conspicuous
     })
   }
+  button.appendChild(
+    document.createTextNode(
+      conspicuous ? 'Inconspicuous' : 'Conspicuous'
+    )
+  )
+  return button
 }
 
 function replace (path, digest, send) {
   assert(Array.isArray(path))
   assert(digest === true || digest === false)
   assert(typeof send === 'function')
-  return collapsed`
-    <button
-        onclick=${onClick}
-      >Replace w/ ${digest ? 'Digest' : 'Publication'}</button>
-  `
-  function onClick () {
+  var button = document.createElement('button')
+  button.onclick = function () {
     send('form:replace', {
       path: path,
       digest: digest
     })
   }
+  button.appendChild(
+    document.createTextNode(
+      'Replace w/ ' + (digest ? 'Digest' : 'Publication')
+    )
+  )
+  return button
 }
 
 function deleteButton (path, send) {
-  return collapsed`
-    <button
-        onclick=${onClick}
-      >Delete</button>
-  `
-  function onClick (event) {
+  var button = document.createElement('button')
+  button.onclick = function (event) {
     event.preventDefault()
     send('form:splice', {path: path})
   }
+  button.appendChild(document.createTextNode(('Delete')))
+  return button
 }
 
 function marginalia (
@@ -242,41 +244,47 @@ function marginalia (
     )
   })
   if (hasError || hasAnnotation || hasBlank) {
-    return collapsed`
-      <aside class=marginalia onclick=${toggleFocus}>
-        ${hasError ? flag('error', '\u26A0') : null}
-        ${hasAnnotation ? flag('annotation', '\u2690') : null}
-        ${hasBlank ? flag('blank', '\u270D') : null}
-        ${hasComment ? flag('comment', '\u2696') : null}
-      </aside>
-    `
+    var aside = document.createElement('aside')
+    aside.className = 'marginalia'
+    aside.onclick = toggleFocus
+    if (hasError) {
+      aside.appendChild(flag('error', '\u26A0'))
+    }
+    if (hasAnnotation) {
+      aside.appendChild(flag('annotation', '\u2690'))
+    }
+    if (hasBlank) {
+      aside.appendChild(flag('blank', '\u270D'))
+    }
+    if (hasComment) {
+      aside.appendChild(flag('comment', '\u2696'))
+    }
+    return aside
   } else {
     return null
   }
 }
 
 function flag (type, character) {
-  return collapsed`
-    <a
-        class=flag
-        title="Click to show ${type}s here."
-      >${character}</a>
-  `
+  var a = document.createElement('a')
+  a.className = 'flag'
+  a.title = 'Click to show ' + type + 's here.'
+  a.appendChild(document.createTextNode(character))
+  return a
 }
 
 function heading (mode, withinFocused, heading, send) {
   if (heading || withinFocused) {
-    return collapsed`
-      <input
-          type=text
-          class=heading
-          placeholder="Click to add heading"
-          id="Heading:${heading}"
-          onchange=${function (event) {
-            send(event.target.value)
-          }}
-          value=${heading || ''}/>
-    `
+    var input = document.createElement('input')
+    input.setAttribute('type', 'text')
+    input.className = 'heading'
+    input.setAttribute('placeholder', 'Click to add heading')
+    input.id = 'Heading:' + heading
+    input.onchange = function (event) {
+      send(event.target.value)
+    }
+    input.value = heading || ''
+    return input
   } else {
     return null
   }
@@ -335,35 +343,31 @@ function paragraph (state, send) {
       event.target.blur()
     }
   }
-  return literal`
-    <p
-        class=text
-        contenteditable=true
-        onblur=${onBlur}
-        onkeydown=${onKeyDown}
-      >${
-        state.data.content.map(function (child, index) {
-          if (predicates.text(child)) {
-            return string(child)
-          } else if (predicates.use(child)) {
-            return use(child.use)
-          } else if (predicates.definition(child)) {
-            return definition(child.definition)
-          } else if (predicates.blank(child)) {
-            var childPath = state.path
-              .concat('content', offset + index)
-            return blank(state.blanks, childPath, send)
-          } else if (predicates.reference(child)) {
-            return reference(child.reference)
-          }
-        })
-      }
-    </p>
-  `
+  var p = document.createElement('p')
+  p.className = 'text'
+  p.setAttribute('contenteditable', 'true')
+  p.onblur = onBlur
+  p.onkeydown = onKeyDown
+  state.data.content.forEach(function (child, index) {
+    if (predicates.text(child)) {
+      p.appendChild(string(child))
+    } else if (predicates.use(child)) {
+      p.appendChild(use(child.use))
+    } else if (predicates.definition(child)) {
+      p.appendChild(definition(child.definition))
+    } else if (predicates.blank(child)) {
+      var childPath = state.path
+        .concat('content', offset + index)
+      p.appendChild(blank(state.blanks, childPath, send))
+    } else if (predicates.reference(child)) {
+      p.appendChild(reference(child.reference))
+    }
+  })
+  return p
 }
 
 function string (string) {
-  return collapsed`${improvePunctuation(string)}`
+  return document.createTextNode(improvePunctuation(string))
 }
 
 function blank (blanks, path, send) {
@@ -398,15 +402,16 @@ function commentsList (comments, parent, digest, send) {
     .sort(function (a, b) {
       return parseInt(a.timestamp) - parseInt(b.timestamp)
     })
-  return collapsed`
-    <ol class=comments>
-      ${roots.map(function (root) {
-        return commentListItem(
-          root, [], comments, digest, parent, send
-        )
-      })}
-    </ol>
-  `
+  var ol = document.createElement('ol')
+  ol.className = 'comments'
+  roots.forEach(function (root) {
+    ol.appendChild(
+      commentListItem(
+        root, [], comments, digest, parent, send
+      )
+    )
+  })
+  return ol
 }
 
 function commentListItem (
@@ -426,7 +431,7 @@ function commentListItem (
       context: comment.context,
       replyTo: withParent
     }, send)
-    : collapsed`<button onclick=${onClick}>Reply</button>`
+    : replyButton()
   return literal`
     <li data-uuid=${uuid}>
       ${improvePunctuation(comment.text)}
@@ -449,10 +454,15 @@ function commentListItem (
     </li>
   `
 
-  function onClick (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    send('form:reply to', comment)
+  function replyButton () {
+    var button = document.createElement('button')
+    button.onclick = function (event) {
+      event.preventDefault()
+      event.stopPropagation()
+      send('form:reply to', comment)
+    }
+    button.appendChild(document.createTextNode('Reply'))
+    return button
   }
 }
 

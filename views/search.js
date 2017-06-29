@@ -2,7 +2,6 @@ var assert = require('assert')
 var digestLink = require('./digest-link')
 var footer = require('./footer')
 var headingLink = require('./heading-link')
-var collapsed = require('../html/collapsed')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
 var termLink = require('./term-link')
@@ -21,42 +20,57 @@ module.exports = function (action, value, state, send) {
       send('search:' + action, value)
     })
   } else {
-    return collapsed`
-      <div class=container>
-        <article class=commonform>
-          ${sidebar('search', send)}
-          <h1>Search Common Forms</h1>
-          ${action ? null : searchBox(send)}
-          ${action ? results(state, send) : null}
-          ${footer()}
-        </article>
-      </div>
-    `
+    var div = document.createElement('div')
+    div.className = 'container'
+    var article = document.createElement('article')
+    article.className = 'commonform'
+    article.appendChild(sidebar('search', send))
+    var h1 = document.createElement('h1')
+    h1.appendChild(document.createTextNode('Search Common Forms'))
+    article.appendChild(h1)
+    article.appendChild(action ? results(state, send) : searchBox(send))
+    article.appendChild(footer())
+    div.appendChild(article)
+    return div
   }
 }
 
 function searchBox (send) {
   var nextAction
   var data
-  return collapsed`
-    <div class=search>
-      <form onsubmit=${onSubmit}>
-        <input
-            id=searchQuery
-            class=invalid
-            placeholder="Enter a query and press return."
-            oninput=${onInput}
-            type=search
-            autofocus></input>
-      </form>
-      <section class=hints>
-        <p>You can enter queries like:</p>
-        <ul class=examples>
-          ${patterns.map(hint)}
-        </ul>
-      </section>
-    </div>
-  `
+  var div = document.createElement('div')
+  div.className = 'search'
+
+  var form = document.createElement('form')
+
+  var input = document.createElement('input')
+  input.id = 'searchQuery'
+  input.className = 'invalid'
+  input.setAttribute('placeholder', 'Enter a query and press return.')
+  input.oninput = onInput
+  input.setAttribute('type', 'search')
+  input.setAttribute('autofocus', 'true')
+  form.appendChild(input)
+
+  div.appendChild(form)
+
+  var section = document.createElement('section')
+  section.className = 'hints'
+
+  var p = document.createElement('p')
+  p.appendChild(document.createTextNode('You can enter queries like:'))
+  section.appendChild(p)
+
+  var ul = document.createElement('ul')
+  ul.className = 'examples'
+  patterns.forEach(function (pattern) {
+    ul.appendChild(hint(pattern))
+  })
+  section.appendChild(ul)
+
+  div.appendChild(section)
+
+  return div
 
   function onInput (event) {
     var value = normalizeQuery(event.target.value)
@@ -86,17 +100,21 @@ function searchBox (send) {
 }
 
 function hint (pattern) {
-  return collapsed`<li>“${pattern.hint}”</li>`
+  var li = document.createElement('li')
+  li.appendChild(document.createTextNode('“' + pattern.hint + '”'))
+  return li
 }
 
 function results (state, send) {
   if (state.query) {
-    return collapsed`
-      <div class=results>
-        <p class=query>${state.query}:</p>
-        ${resultList(state.results, send)}
-      </div>
-    `
+    var div = document.createElement('div')
+    div.className = 'results'
+    var p = document.createElement('p')
+    p.className = 'query'
+    p.appendChild(document.createTextNode(state.query))
+    div.appendChild(resultList(state.results, send))
+    div.appendChild(p)
+    return div
   } else {
     return null
   }
@@ -104,15 +122,17 @@ function results (state, send) {
 
 function resultList (results, send) {
   if (results.length === 0) {
-    return collapsed`<p>No results</p>`
+    var p = document.createElement('p')
+    p.appendChild(document.createTextNode('No results'))
+    return p
   } else {
-    return collapsed`
-      <ul class=results>
-        ${results.map(function (r) {
-          return collapsed`<li>${result(r, send)}</li>`
-        })}
-      </ul>
-    `
+    var ul = document.createElement('ul')
+    results.forEach(function (r) {
+      var li = document.createElement('li')
+      li.appendChild(result(r, send))
+      ul.appendChild(li)
+    })
+    return ul
   }
 }
 
@@ -124,7 +144,9 @@ function result (result, send) {
   } else if (result.type === 'heading') {
     return headingLink(result.value)
   } else {
-    return collapsed`<span>${result}</span>`
+    var span = document.createElement('span')
+    span.appendChild(document.createTextNode(result))
+    return span
   }
 }
 
