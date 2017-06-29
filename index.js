@@ -39,10 +39,9 @@ var actions = new EventEmitter()
   })
 
 function action (/* variadic */) {
-  var event = arguments[0]
   assert(
-    actions.listenerCount(event) > 0,
-    'no listeners for action ' + event
+    actions.listenerCount(arguments[0]) > 0,
+    'no listeners for action ' + arguments[0]
   )
   actions.emit.apply(actions, arguments)
 }
