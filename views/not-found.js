@@ -1,15 +1,21 @@
 var assert = require('assert')
-var collapsed = require('../html/collapsed')
 var sidebar = require('./sidebar')
 
 module.exports = function (send) {
   assert(typeof send === 'function')
-  return collapsed`
-    <div class=container>
-      <article class=commonform>
-        ${sidebar(null, send)}
-        <p>Not found.</p>
-      </article>
-    </div>
-  `
+  var div = document.createElement('div')
+  div.className = 'container'
+
+  var article = document.createElement('article')
+  article.className = 'commonform'
+
+  article.appendChild(sidebar(null, send))
+
+  var p = document.createElement('p')
+  p.appendChild(document.createTextNode('Not found.'))
+  article.appendChild(p)
+
+  div.appendChild(article)
+
+  return div
 }

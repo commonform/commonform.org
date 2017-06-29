@@ -1,13 +1,20 @@
-var collapsed = require('../html/collapsed')
 var sidebar = require('./sidebar')
 
 module.exports = function (state, hasError, send) {
-  return collapsed`
-    <div class=container>
-      <article class=commonform>
-        ${sidebar('none', send)}
-        <p class=error>${state[hasError].error.message}</p>
-      </article>
-    </div>
-  `
+  var div = document.createElement('div')
+  div.className = 'container'
+
+  var article = document.createElement('article')
+  article.className = 'commonform'
+  article.appendChild(sidebar('none', send))
+
+  var p = document.createElement('p')
+  p.className = 'error'
+  p.appendChild(document.createTextNode(state[hasError].error.message))
+
+  article.appendChild(p)
+
+  div.appendChild(article)
+
+  return div
 }

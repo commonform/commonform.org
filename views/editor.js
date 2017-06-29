@@ -2,7 +2,6 @@ var assert = require('assert')
 var footer = require('./footer')
 var form = require('./form')
 var header = require('./header')
-var collapsed = require('../html/collapsed')
 var mailMenu = require('./mail-menu')
 var menu = require('./menu')
 var settings = require('./settings')
@@ -13,48 +12,31 @@ module.exports = function (state, send) {
   assert.equal(typeof state, 'object')
   assert.equal(typeof send, 'function')
   var mode = state.mode
+  var div = document.createElement('div')
+  div.className = 'container'
+  var article = document.createElement('article')
+  article.className = 'commonform'
+  div.appendChild(article)
   if (mode === 'save') {
-    return collapsed`
-      <div class=container>
-        <article class=commonform>
-          ${sidebar(state.mode, send)}
-          ${menu(state, send)}
-          ${footer()}
-        </article>
-      </div>
-    `
+    article.appendChild(sidebar(state.mode, send))
+    article.appendChild(menu(state, send))
+    article.appendChild(footer())
   } else if (mode === 'mail') {
-    return collapsed`
-      <div class=container>
-        <article class=commonform>
-          ${sidebar(state.mode, send)}
-          ${mailMenu(state, send)}
-          ${footer()}
-        </article>
-      </div>
-    `
+    article.appendChild(sidebar(state.mode, send))
+    article.appendChild(mailMenu(state, send))
+    article.appendChild(footer())
   } else {
-    return collapsed`
-      <div class=container>
-        <article class=commonform onclick=${onClick}>
-          ${sidebar(state.mode, send)}
-          ${
-            header(
-              state.merkle.digest,
-              state.publications,
-              false,
-              [],
-              send
-            )
-          }
-          ${form(state, send)}
-          ${signaturePages(state.signaturePages, send)}
-          ${settings(state, send)}
-          ${footer()}
-        </article>
-      </div>
-    `
+    article.onclick = onClick
+    article.appendChild(sidebar(state.mode, send))
+    article.appendChild(
+      header(state.merkle.digest, state.publications, false, [], send)
+    )
+    article.appendChild(form(state, send))
+    article.appendChild(signaturePages(state.signaturePages, send))
+    article.appendChild(settings(state, send))
+    article.appendChild(footer())
   }
+  return div
 
   function onClick (event) {
     var target = event.target

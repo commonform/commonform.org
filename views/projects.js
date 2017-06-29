@@ -1,7 +1,6 @@
 var assert = require('assert')
 var compare = require('reviewers-edition-compare')
 var footer = require('./footer')
-var collapsed = require('../html/collapsed')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
 
@@ -15,65 +14,72 @@ module.exports = function (publisher, state, send) {
       send('browser:get projects', publisher)
     })
   } else {
-    return collapsed`
-      <div class=container>
-        <article class=commonform>
-          ${sidebar('browse', send)}
-          <h1>${publisher}’s Common Form Projects</h1>
-          ${about(state.about)}
-          ${list(publisher, state.projects, send)}
-          <a href="/publishers" class=nav>« list of all publishers</a>
-          ${footer()}
-        </article>
-      </div>
-    `
+    var div = document.createElement('div')
+    div.className = 'container'
+    var article = document.createElement('article')
+    article.className = 'commonform'
+    article.appendChild(sidebar('browse', send))
+    var h1 = document.createElement('h1')
+    h1.appendChild(document.createTextNode(
+      publisher + '’s Common Form Projects'
+    ))
+    article.appendChild(h1)
+    if (state.about) {
+      article.appendChild(about(state.about))
+    }
+    article.appendChild(list(publisher, state.projects, send))
+    var a = document.createElement('a')
+    a.className = 'nav'
+    a.href = '/publishers'
+    a.appendChild(document.createTextNode('« list of all publishers'))
+    article.appendChild(a)
+    article.appendChild(footer())
+    div.appendChild(article)
+    return div
   }
 }
 
 function about (text) {
-  return text ? collapsed`<p class=about>${text}</p>` : null
+  var p = document.createElement('p')
+  p.className = 'about'
+  p.appendChild(document.createTextNode(text))
+  return p
 }
 
 function list (publisher, projects, send) {
   if (projects.length === 0) {
-    return collapsed`<p>No publications</p>`
+    var p = document.createElement('p')
+    p.appendChild(document.createTextNode('No publications'))
+    return p
   } else {
-    return collapsed`
-      <ul>
-        ${
-          projects.map(function (project) {
-            return projectItem(
-              publisher,
-              project.name,
-              project.editions,
-              send
-            )
-          })
-        }
-      </ul>
-    `
+    var ul = document.createElement('ul')
+    projects.forEach(function (project) {
+      ul.appendChild(projectItem(
+        publisher,
+        project.name,
+        project.editions,
+        send
+      ))
+    })
+    return ul
   }
 }
 
 function projectItem (publisher, project, editions, send) {
-  return collapsed`
-    <li>
-      ${project}:
-      <ul class=editions>
-        ${
-          editions
-            .sort(compare)
-            .map(function (edition) {
-              return collapsed`
-                <li>${
-                  editionLink(publisher, project, edition, send)
-                }</li>
-              `
-            })
-        }
-      </ul>
-    </li>
-  `
+  var li = document.createElement('li')
+  li.appendChild(document.createTextNode(project + ':'))
+  var ul = document.createElement('ul')
+  ul.className = 'editions'
+  editions
+    .sort(compare)
+    .forEach(function (edition) {
+      var li = document.createElement('li')
+      li.appendChild(editionLink(publisher, project, edition, send))
+      ul.appendChild(li)
+      return li
+    })
+  li.appendChild(ul)
+  return li
 }
 
 function editionLink (publisher, project, edition, send) {
@@ -83,10 +89,9 @@ function editionLink (publisher, project, edition, send) {
     '/' + encodeURIComponent(project) +
     '/' + encodeURIComponent(edition)
   )
-  return collapsed`
-    <a
-        class=publication
-        href=${href}
-      >${edition}</a>
-  `
+  var a = document.createElement('a')
+  a.classNaem = 'publication'
+  a.href = href
+  a.appendChild(document.createTextNode(edition))
+  return a
 }

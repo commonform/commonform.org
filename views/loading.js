@@ -1,17 +1,16 @@
 var assert = require('assert')
-var collapsed = require('../html/collapsed')
 var sidebar = require('./sidebar')
 
 module.exports = function (mode, onLoadEvent) {
   assert(typeof mode === 'string')
   assert(typeof onLoadEvent === 'function')
   onLoadEvent()
-  return collapsed`
-    <div class=container>
-      <article class=commonform>
-        ${sidebar(mode, function () {})}
-        Loading…
-      </article>
-    </div>
-  `
+  var div = document.createElement('div')
+  div.className = 'container'
+  var article = document.createElement('article')
+  article.className = 'commonform'
+  article.appendChild(sidebar(mode, function () { }))
+  article.appendChild(document.createTextNode('Loading…'))
+  div.appendChild(article)
+  return div
 }
