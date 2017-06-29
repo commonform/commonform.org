@@ -1,9 +1,9 @@
 var assert = require('assert')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 
 module.exports = function (term) {
   assert.equal(typeof term, 'string')
-  return html`
+  return collapsed`
     <a
         class=term
         href="/search/definitions/${encodeURIComponent(term)}"

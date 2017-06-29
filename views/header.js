@@ -1,23 +1,24 @@
 var assert = require('assert')
+var collapsed = require('../html/collapsed')
 var digestLink = require('./digest-link')
-var html = require('../html')
+var literal = require('../html/literal')
 var spell = require('reviewers-edition-spell')
 
-module.exports = function (
+module.exports = function header (
   digest, publications, toDigest, toPublications, send
 ) {
   assert(typeof digest === 'string')
   assert(Array.isArray(publications))
   assert(send !== undefined)
   return toDigest
-    ? html`
+    ? collapsed`
       <header>
         ${paragraph(digest, publications, send)}
         <p>compared to</p>
         ${paragraph(toDigest, toPublications, send)}
       </header>
     `
-    : html`
+    : collapsed`
       <header>
       ${paragraph(digest, publications, send)}
       </header>
@@ -28,7 +29,7 @@ function paragraph (digest, publications, send) {
   assert(typeof digest === 'string')
   assert(Array.isArray(publications))
   assert(send !== undefined)
-  return html`
+  return collapsed`
     <div>
       <p>${digestLink(digest)}</p>
       ${publicationsList(publications)}
@@ -37,7 +38,7 @@ function paragraph (digest, publications, send) {
 }
 
 function publicationsList (publications) {
-  return html`<p>${publications.map(publicationLine)}</p>`
+  return collapsed`<p>${publications.map(publicationLine)}</p>`
 }
 
 function publicationLine (publication) {
@@ -46,7 +47,7 @@ function publicationLine (publication) {
   var publisher = publication.publisher
   var link = `/publications/${publisher}/${project}/${edition}`
   if (publication.root) {
-    return html.preserveSpace`
+    return literal`
       <p class=publication>
         <a
             class=publisher
@@ -60,7 +61,7 @@ function publicationLine (publication) {
       </p>
     `
   } else {
-    return html.preserveSpace`
+    return literal`
       <p class=publication>
         <strong>${publisher}</strong>
         published this form within

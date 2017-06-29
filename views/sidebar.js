@@ -1,5 +1,5 @@
 var assert = require('assert')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 
 module.exports = modeButtons
 
@@ -11,7 +11,7 @@ function modeButtons (mode, send) {
     mode !== 'search' &&
     mode !== 'none'
   )
-  return html`
+  return collapsed`
     <div class=modes>
       <a
           href="/search"
@@ -39,7 +39,7 @@ function modeButtons (mode, send) {
 function toolbox (send) {
   assert(typeof send === 'function')
   var hidden = true
-  return html`
+  return collapsed`
     <div
         class=tools
         onclick=${onClick}
@@ -155,7 +155,7 @@ function tool (name, label, closeToolbox, send) {
   assert(TOOLS.hasOwnProperty(name))
   assert(typeof send === 'function')
   var tool = TOOLS[name]
-  return html`
+  return collapsed`
     <a
         class=${name}
         onclick=${function (event) {
@@ -170,7 +170,7 @@ function tool (name, label, closeToolbox, send) {
 }
 
 function readButton () {
-  return html`
+  return collapsed`
     <a
         title="Reviewing form."
         class="enabled read"

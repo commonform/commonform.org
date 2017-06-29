@@ -1,10 +1,10 @@
 var assert = require('assert')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 var sidebar = require('./sidebar')
 
 module.exports = function (send) {
   assert(typeof send === 'function')
-  return html`
+  return collapsed`
     <div class=container>
       <article class=commonform>
         ${sidebar(null, send)}

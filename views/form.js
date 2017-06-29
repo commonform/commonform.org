@@ -1,6 +1,6 @@
 var assert = require('assert')
 var classnames = require('classnames')
-var clone = require('../utilities/clone')
+var collapsed = require('../html/collapsed')
 var deepEqual = require('deep-equal')
 var definition = require('./definition')
 var details = require('./details')
@@ -8,9 +8,9 @@ var dropZone = require('./drop-zone')
 var find = require('array-find')
 var get = require('keyarray').get
 var group = require('commonform-group-series')
-var html = require('../html')
 var improvePunctuation = require('../utilities/improve-punctuation')
 var input = require('./input')
+var literal = require('../html/literal')
 var predicates = require('commonform-predicate')
 var publisherLink = require('./publisher-link')
 var reference = require('./reference')
@@ -24,7 +24,7 @@ function form (form, send) {
   var root = form.path.length === 0
   var formKey = root ? [] : ['form']
   var tree = root ? form.tree : form.tree.form
-  var groups = group(clone(tree))
+  var groups = group(tree)
   var isFocused = deepEqual(form.focused, form.path)
   var annotationsHere = get(
     form.annotations,
@@ -56,7 +56,7 @@ function form (form, send) {
   var digest = form.merkle.digest
 
   var offset = 0
-  return html`
+  return collapsed`
     <section
         class="${classes}"
         data-digest="${digest}">
@@ -155,7 +155,7 @@ function form (form, send) {
 }
 
 function sectionButton (toggleFocus) {
-  return html`
+  return collapsed`
     <a class=sigil
       onclick=${toggleFocus}
       title="Click to focus.">§</a>
@@ -165,7 +165,7 @@ function sectionButton (toggleFocus) {
 function editControls (form, send) {
   assert(typeof send === 'function')
   var conspicuous = form.tree.form && 'conspicuous' in form.tree.form
-  return html`
+  return collapsed`
     <div class=editControls>
       ${deleteButton(form.path, send)}
       ${conspicuousToggle(conspicuous, form.path, send)}
@@ -179,7 +179,7 @@ function conspicuousToggle (conspicuous, path, send) {
   assert(conspicuous === true || conspicuous === false)
   assert(Array.isArray(path))
   assert(typeof send === 'function')
-  return html`
+  return collapsed`
     <button onclick=${onClick}>
       ${conspicuous ? 'Inconspicuous' : 'Conspicuous'}
     </button>
@@ -196,7 +196,7 @@ function replace (path, digest, send) {
   assert(Array.isArray(path))
   assert(digest === true || digest === false)
   assert(typeof send === 'function')
-  return html`
+  return collapsed`
     <button
         onclick=${onClick}
       >Replace w/ ${digest ? 'Digest' : 'Publication'}</button>
@@ -210,7 +210,7 @@ function replace (path, digest, send) {
 }
 
 function deleteButton (path, send) {
-  return html`
+  return collapsed`
     <button
         onclick=${onClick}
       >Delete</button>
@@ -242,7 +242,7 @@ function marginalia (
     )
   })
   if (hasError || hasAnnotation || hasBlank) {
-    return html`
+    return collapsed`
       <aside class=marginalia onclick=${toggleFocus}>
         ${hasError ? flag('error', '\u26A0') : null}
         ${hasAnnotation ? flag('annotation', '\u2690') : null}
@@ -256,7 +256,7 @@ function marginalia (
 }
 
 function flag (type, character) {
-  return html`
+  return collapsed`
     <a
         class=flag
         title="Click to show ${type}s here."
@@ -266,7 +266,7 @@ function flag (type, character) {
 
 function heading (mode, withinFocused, heading, send) {
   if (heading || withinFocused) {
-    return html`
+    return collapsed`
       <input
           type=text
           class=heading
@@ -335,7 +335,7 @@ function paragraph (state, send) {
       event.target.blur()
     }
   }
-  return html.preserveSpace`
+  return literal`
     <p
         class=text
         contenteditable=true
@@ -363,7 +363,7 @@ function paragraph (state, send) {
 }
 
 function string (string) {
-  return html`${improvePunctuation(string)}`
+  return collapsed`${improvePunctuation(string)}`
 }
 
 function blank (blanks, path, send) {
@@ -398,7 +398,7 @@ function commentsList (comments, parent, digest, send) {
     .sort(function (a, b) {
       return parseInt(a.timestamp) - parseInt(b.timestamp)
     })
-  return html`
+  return collapsed`
     <ol class=comments>
       ${roots.map(function (root) {
         return commentListItem(
@@ -426,8 +426,8 @@ function commentListItem (
       context: comment.context,
       replyTo: withParent
     }, send)
-    : html`<button onclick=${onClick}>Reply</button>`
-  return html.preserveSpace`
+    : collapsed`<button onclick=${onClick}>Reply</button>`
+  return literal`
     <li data-uuid=${uuid}>
       ${improvePunctuation(comment.text)}
       <span class=byline>
@@ -470,7 +470,7 @@ function commentForm (digest, parent, send) {
   assert(typeof send === 'function')
   var context
   if (!parent) {
-    context = html`
+    context = collapsed`
       <p>
         <label for=context>Comment on this form:</label>
         <select name=context>
@@ -485,7 +485,7 @@ function commentForm (digest, parent, send) {
     `
   }
 
-  return html`
+  return collapsed`
     <form onsubmit=${onSubmit} class=newComment>
       ${context}
       <textarea required name=text></textarea>

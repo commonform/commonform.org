@@ -1,9 +1,9 @@
 var assert = require('assert')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 
 module.exports = function (term) {
   assert(typeof term === 'string')
-  return html`
+  return collapsed`
     <dfn
         title="Definition of ${term}"
         id="Definition:${term}"

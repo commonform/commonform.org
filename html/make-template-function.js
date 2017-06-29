@@ -13,10 +13,7 @@ var BOOLEAN_PROPERTIES = [
   'willvalidate'
 ]
 
-module.exports = makeTemplateFunction(true)
-module.exports.preserveSpace = makeTemplateFunction(false)
-
-function makeTemplateFunction (collapseWhitespace) {
+module.exports = function makeTemplateFunction (collapseWhitespace) {
   return hx(function (tag, properties, children) {
     var element = document.createElement(tag)
     for (var property in properties) {

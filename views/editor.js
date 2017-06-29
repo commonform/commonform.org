@@ -2,7 +2,7 @@ var assert = require('assert')
 var footer = require('./footer')
 var form = require('./form')
 var header = require('./header')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 var mailMenu = require('./mail-menu')
 var menu = require('./menu')
 var settings = require('./settings')
@@ -14,7 +14,7 @@ module.exports = function (state, send) {
   assert.equal(typeof send, 'function')
   var mode = state.mode
   if (mode === 'save') {
-    return html`
+    return collapsed`
       <div class=container>
         <article class=commonform>
           ${sidebar(state.mode, send)}
@@ -24,7 +24,7 @@ module.exports = function (state, send) {
       </div>
     `
   } else if (mode === 'mail') {
-    return html`
+    return collapsed`
       <div class=container>
         <article class=commonform>
           ${sidebar(state.mode, send)}
@@ -34,7 +34,7 @@ module.exports = function (state, send) {
       </div>
     `
   } else {
-    return html`
+    return collapsed`
       <div class=container>
         <article class=commonform onclick=${onClick}>
           ${sidebar(state.mode, send)}

@@ -1,8 +1,8 @@
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 
 module.exports = function input (value, set, clear, placeholder) {
   if (value && value.length > 0) {
-    return html`
+    return collapsed`
       <span class=blank>
         ${value}
         <a  class=clear
@@ -14,7 +14,7 @@ module.exports = function input (value, set, clear, placeholder) {
       </span>
     `
   } else {
-    return html`
+    return collapsed`
       <input
           class=blank
           placeholder="${placeholder || ''}"

@@ -1,8 +1,8 @@
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 var sidebar = require('./sidebar')
 
 module.exports = function (state, hasError, send) {
-  return html`
+  return collapsed`
     <div class=container>
       <article class=commonform>
         ${sidebar('none', send)}

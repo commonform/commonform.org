@@ -1,10 +1,11 @@
 var assert = require('assert')
-var html = require('../html')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
-var group = require('commonform-group-series')
-var predicates = require('commonform-predicate')
+var collapsed = require('../html/collapsed')
 var definition = require('./definition')
+var group = require('commonform-group-series')
+var literal = require('../html/literal')
+var predicates = require('commonform-predicate')
 var reference = require('./reference')
 var use = require('./use')
 
@@ -18,11 +19,11 @@ function comparison (diff) {
   var wrapper
   if (diff.hasOwnProperty('inserted')) {
     wrapper = function (argument) {
-      return html`<ins>${argument}</ins>`
+      return collapsed`<ins>${argument}</ins>`
     }
   } else if (diff.hasOwnProperty('deleted')) {
     wrapper = function (argument) {
-      return html`<del>${argument}</del>`
+      return collapsed`<del>${argument}</del>`
     }
   } else {
     wrapper = function (argument) {
@@ -43,13 +44,13 @@ function comparison (diff) {
     })
   })
 
-  return html`
+  return collapsed`
     <section class=${classNames}>
       ${
         wrapper(
-          html.preserveSpace`
+          literal`
             <div>
-              ${root ? null : html`<a class=sigil>\u00A7</a>`}
+              ${root ? null : collapsed`<a class=sigil>\u00A7</a>`}
               ${
                 Array.isArray(diff.heading)
                   ? heading(diff.heading)
@@ -57,12 +58,12 @@ function comparison (diff) {
               }
               ${
                 madeInconspicuous
-                  ? html`<p class=edit>Made inconspicuous.</p>`
+                  ? collapsed`<p class=edit>Made inconspicuous.</p>`
                   : null
               }
               ${
                 madeConspicuous
-                  ? html`<p class=edit>Made conspicuous.</p>`
+                  ? collapsed`<p class=edit>Made conspicuous.</p>`
                   : null
               }
               ${
@@ -86,7 +87,7 @@ function heading (heading) {
   var joined = heading
     .map(function (word) { return word.word })
     .join('')
-  return html.preserveSpace`
+  return literal`
     <p class=heading id=${joined}>
       ${heading.map(word)}
     </p>
@@ -96,9 +97,9 @@ function heading (heading) {
 function word (word) {
   assert(typeof word === 'object')
   assert(typeof word.word === 'string')
-  if (word.inserted) return html`<ins>${word.word}</ins>`
-  else if (word.deleted) return html`<del>${word.word}</del>`
-  else return html`<span>${word.word}</span>`
+  if (word.inserted) return collapsed`<ins>${word.word}</ins>`
+  else if (word.deleted) return collapsed`<del>${word.word}</del>`
+  else return collapsed`<span>${word.word}</span>`
 }
 
 function series (data) {
@@ -112,18 +113,18 @@ function series (data) {
 function paragraph (data) {
   assert(typeof data === 'object')
   assert(Array.isArray(data.content))
-  return html.preserveSpace`
+  return literal`
     <p class=text>
       ${
         data.content.reduce(function (output, child) {
           var wrapper
           if (child.hasOwnProperty('inserted')) {
             wrapper = function (argument) {
-              return html`<ins>${argument}</ins>`
+              return collapsed`<ins>${argument}</ins>`
             }
           } else if (child.hasOwnProperty('deleted')) {
             wrapper = function (argument) {
-              return html`<del>${argument}</del>`
+              return collapsed`<del>${argument}</del>`
             }
           } else {
             wrapper = doNotWrap
@@ -140,14 +141,14 @@ function paragraph (data) {
               }
             } else {
               return output.concat(
-                wrapper(html`<span>${child.word}</span>`))
+                wrapper(collapsed`<span>${child.word}</span>`))
             }
           } else if (predicates.use(child)) {
             return output.concat(wrapper(use(child.use)))
           } else if (predicates.definition(child)) {
             return output.concat(wrapper(definition(child.definition)))
           } else if (predicates.blank(child)) {
-            return output.concat(html`<span class=blank></span>`)
+            return output.concat(collapsed`<span class=blank></span>`)
           } else if (predicates.reference(child)) {
             return output.concat(reference(child.reference))
           }

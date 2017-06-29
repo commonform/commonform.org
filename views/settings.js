@@ -1,14 +1,15 @@
 var annotators = require('../annotators')
 var assert = require('assert')
+var collapsed = require('../html/collapsed')
 var find = require('array-find')
-var html = require('../html')
+var literal = require('../html/literal')
 var numberings = require('../numberings')
 
 module.exports = function (state, send) {
   assert(typeof state === 'object')
   assert(typeof send === 'function')
   var flags = state.annotators
-  return html`
+  return collapsed`
     <section class=settings>
       <p>${annotatorCheckBoxes(flags, send)}</p>
       <p>${numbering(state.numbering, send)}</p>
@@ -17,7 +18,7 @@ module.exports = function (state, send) {
 }
 
 function annotatorCheckBoxes (flags, send) {
-  return html`
+  return collapsed`
     <form onchange=${onChange}>
       Annotate:
       ${Object.keys(flags).map(function (name) {
@@ -43,7 +44,7 @@ function annotatorCheckBoxes (flags, send) {
 }
 
 function checkBox (annotator, enabled, send) {
-  return html`
+  return collapsed`
     <label>
       <input
           type=checkbox
@@ -56,13 +57,13 @@ function checkBox (annotator, enabled, send) {
 
 function numbering (selected, send) {
   assert(typeof selected === 'string')
-  return html`
+  return collapsed`
     <form onchange=${onChange}>
       Word File Numbering:
       <select>
         ${numberings.map(function (numbering) {
           var name = numbering.name
-          return html.preserveSpace`
+          return literal`
             <option
                 ${selected === name ? 'selected' : ''}
                 value=${name}>

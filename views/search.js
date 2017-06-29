@@ -2,7 +2,7 @@ var assert = require('assert')
 var digestLink = require('./digest-link')
 var footer = require('./footer')
 var headingLink = require('./heading-link')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
 var termLink = require('./term-link')
@@ -21,7 +21,7 @@ module.exports = function (action, value, state, send) {
       send('search:' + action, value)
     })
   } else {
-    return html`
+    return collapsed`
       <div class=container>
         <article class=commonform>
           ${sidebar('search', send)}
@@ -38,7 +38,7 @@ module.exports = function (action, value, state, send) {
 function searchBox (send) {
   var nextAction
   var data
-  return html`
+  return collapsed`
     <div class=search>
       <form onsubmit=${onSubmit}>
         <input
@@ -86,12 +86,12 @@ function searchBox (send) {
 }
 
 function hint (pattern) {
-  return html`<li>“${pattern.hint}”</li>`
+  return collapsed`<li>“${pattern.hint}”</li>`
 }
 
 function results (state, send) {
   if (state.query) {
-    return html`
+    return collapsed`
       <div class=results>
         <p class=query>${state.query}:</p>
         ${resultList(state.results, send)}
@@ -104,12 +104,12 @@ function results (state, send) {
 
 function resultList (results, send) {
   if (results.length === 0) {
-    return html`<p>No results</p>`
+    return collapsed`<p>No results</p>`
   } else {
-    return html`
+    return collapsed`
       <ul class=results>
         ${results.map(function (r) {
-          return html`<li>${result(r, send)}</li>`
+          return collapsed`<li>${result(r, send)}</li>`
         })}
       </ul>
     `
@@ -124,7 +124,7 @@ function result (result, send) {
   } else if (result.type === 'heading') {
     return headingLink(result.value)
   } else {
-    return html`<span>${result}</span>`
+    return collapsed`<span>${result}</span>`
   }
 }
 

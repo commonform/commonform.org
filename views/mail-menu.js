@@ -1,11 +1,11 @@
 var assert = require('assert')
 var fromElements = require('../utilities/from-elements')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 
 module.exports = function (form, send) {
   assert(typeof form === 'object')
   assert(typeof send === 'function')
-  return html`
+  return collapsed`
     <div class="menu">
       <h1>Receive E-Mail Updates for this Form</h1>
       <form onsubmit=${subscribe}>

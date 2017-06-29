@@ -2,9 +2,10 @@ var assert = require('assert')
 var capitalize = require('capitalize')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
+var collapsed = require('../html/collapsed')
 var emptySignaturePage = require('../data/empty-signature-page')
-var html = require('../html')
 var input = require('./input')
+var literal = require('../html/literal')
 
 module.exports = function (pages, send) {
   assert(Array.isArray(pages))
@@ -12,7 +13,7 @@ module.exports = function (pages, send) {
   var newPageCount = pages.reduce(function (count, page) {
     return page.samePage ? count : count + 1
   }, 0)
-  return html`
+  return collapsed`
     <div class=signaturePages>
       <p class=endOfPage>
         ${
@@ -90,7 +91,7 @@ function signaturePage (page, path, send) {
 
   console.log(page)
 
-  return html`
+  return collapsed`
     <div class=${classes}>
       <p class=samePage>
         <input
@@ -119,7 +120,7 @@ function signaturePage (page, path, send) {
           ? (function () {
             var lastIndex = entities.length - 1
             var byPath = path.concat('entities', lastIndex, 'by')
-            return html.preserveSpace`
+            return literal`
               <p>Title:
                 ${input(
                   entities[lastIndex].by,
@@ -153,9 +154,9 @@ function signaturePage (page, path, send) {
             ? 'E-Mail'
             : capitalize(text)
           if (information.indexOf(text) > -1) {
-            return html`<p>${display}:`
+            return collapsed`<p>${display}:`
           } else {
-            return html`
+            return collapsed`
               <p>
                 <button
                     onclick=${
@@ -209,7 +210,7 @@ function newPage () {
 
 function entitiesParagraphs (entities, path, send) {
   entities = entities || []
-  return html`
+  return collapsed`
     <div class=entities>
       ${
         entities.map(function (entity, index, entities) {
@@ -285,7 +286,7 @@ function signatureEntity (state, send) {
     )
   }
 
-  return html`
+  return collapsed`
     <p class=entity>
       ${needsBy ? 'By:' : null}
       ${inputFor('name', 'Name')}, a

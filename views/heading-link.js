@@ -1,9 +1,9 @@
 var assert = require('assert')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 
 module.exports = function (heading) {
   assert(typeof heading === 'string')
-  return html`
+  return collapsed`
     <a
         class=heading
         href="/search/forms/${encodeURIComponent(heading)}"

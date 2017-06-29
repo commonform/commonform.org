@@ -1,13 +1,13 @@
 var assert = require('assert')
 var fromElements = require('../utilities/from-elements')
-var html = require('../html')
+var literal = require('../html/literal')
 
 var GUIDE = 'https://github.com/commonform/new-publisher-guide'
 
 module.exports = function (form, send) {
   assert(typeof form === 'object')
   assert(typeof send === 'function')
-  return html.preserveSpace`
+  return literal`
     <div class="menu">
       <section class=dangerZone>
         <form onchange=${checkSafety}>

@@ -1,5 +1,5 @@
 var assert = require('assert')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 
 module.exports = dropZone
 
@@ -27,7 +27,7 @@ function dropZone (effect, path, send) {
     onClick = null
     text = ''
   }
-  return html`
+  return collapsed`
     <div
         class=${classes}
         onclick=${onClick}

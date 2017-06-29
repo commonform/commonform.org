@@ -1,10 +1,10 @@
 var assert = require('assert')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 
 module.exports = function publisherLink (publisher, send) {
   assert(typeof publisher === 'string')
   assert(typeof send === 'function')
-  return html`
+  return collapsed`
     <a
         class=publisher
         href="/publishers/${encodeURIComponent(publisher)}"

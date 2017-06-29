@@ -1,7 +1,7 @@
 var assert = require('assert')
 var compare = require('reviewers-edition-compare')
 var footer = require('./footer')
-var html = require('../html')
+var collapsed = require('../html/collapsed')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
 
@@ -15,7 +15,7 @@ module.exports = function (publisher, state, send) {
       send('browser:get projects', publisher)
     })
   } else {
-    return html`
+    return collapsed`
       <div class=container>
         <article class=commonform>
           ${sidebar('browse', send)}
@@ -31,14 +31,14 @@ module.exports = function (publisher, state, send) {
 }
 
 function about (text) {
-  return text ? html`<p class=about>${text}</p>` : null
+  return text ? collapsed`<p class=about>${text}</p>` : null
 }
 
 function list (publisher, projects, send) {
   if (projects.length === 0) {
-    return html`<p>No publications</p>`
+    return collapsed`<p>No publications</p>`
   } else {
-    return html`
+    return collapsed`
       <ul>
         ${
           projects.map(function (project) {
@@ -56,7 +56,7 @@ function list (publisher, projects, send) {
 }
 
 function projectItem (publisher, project, editions, send) {
-  return html`
+  return collapsed`
     <li>
       ${project}:
       <ul class=editions>
@@ -64,7 +64,7 @@ function projectItem (publisher, project, editions, send) {
           editions
             .sort(compare)
             .map(function (edition) {
-              return html`
+              return collapsed`
                 <li>${
                   editionLink(publisher, project, edition, send)
                 }</li>
@@ -83,7 +83,7 @@ function editionLink (publisher, project, edition, send) {
     '/' + encodeURIComponent(project) +
     '/' + encodeURIComponent(edition)
   )
-  return html`
+  return collapsed`
     <a
         class=publication
         href=${href}

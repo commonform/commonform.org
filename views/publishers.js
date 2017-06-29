@@ -1,7 +1,8 @@
 var assert = require('assert')
+var collapsed = require('../html/collapsed')
 var footer = require('./footer')
-var html = require('../html')
 var isSHA256 = require('is-sha-256-hex-digest')
+var literal = require('../html/literal')
 var loading = require('./loading')
 var publisherLink = require('./publisher-link')
 var sidebar = require('./sidebar')
@@ -19,7 +20,7 @@ module.exports = function browse (state, send) {
       send('browser:get publishers')
     })
   } else {
-    return html.preserveSpace`
+    return literal`
       <div class=container>
         <article class=commonform>
           ${sidebar('browse', send)}
@@ -59,7 +60,7 @@ module.exports = function browse (state, send) {
           <ul>
             ${
               state.publishers.map(function (publisher) {
-                return html`
+                return collapsed`
                   <li>${publisherLink(publisher, send)}</li>
                 `
               })

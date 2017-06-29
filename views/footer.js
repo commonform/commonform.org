@@ -1,7 +1,7 @@
-var html = require('../html')
+var literal = require('../html/literal')
 
 module.exports = function () {
-  return html.preserveSpace`
+  return literal`
     <footer>
       <p>
         <a href="http://typographyforlawyers.com/equity.html">
