@@ -13,6 +13,8 @@ var BOOLEAN_PROPERTIES = [
   'willvalidate'
 ]
 
+var options = {attrToProp: false}
+
 module.exports = function makeTemplateFunction (collapseWhitespace) {
   return hx(function (tag, properties, children) {
     var element = document.createElement(tag)
@@ -36,7 +38,7 @@ module.exports = function makeTemplateFunction (collapseWhitespace) {
     }
     appendChildren(element, children, collapseWhitespace)
     return element
-  })
+  }, options)
 }
 
 function appendChildren (element, children, collapseWhitespace) {

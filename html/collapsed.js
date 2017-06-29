@@ -1,2 +1,2 @@
 var makeTemplateFunction = require('./make-template-function')
-module.exports = makeTemplateFunction(true).bind(null)
+module.exports = makeTemplateFunction(true)
