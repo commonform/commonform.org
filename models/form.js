@@ -151,14 +151,22 @@ module.exports = function (initialize, reduction, handler) {
   reduction('signatures', function (action, state) {
     var pages = clone(state.signaturePages)
     var operand
-    if (action.operation === 'push') {
+    var operation = action.operation
+    if (operation === 'push') {
       operand = action.key.length === 0
         ? pages
         : keyarray.get(pages, action.key)
       operand.push(action.value)
-    } else if (action.operation === 'splice') {
+    } else if (operation === 'splice') {
       operand = keyarray.get(pages, action.key.slice(0, -1))
       operand.splice(action.key.slice(-1), 1)
+    } else if (operation === 'push') {
+      operand = keyarray.get(pages, action.key)
+      operand.push(action.value)
+    } else if (operation === 'toggle') {
+      var lastKey = action.key[action.key.length - 1]
+      operand = keyarray.get(pages, action.key.slice(0, -1))
+      operand[lastKey] = !operand[lastKey]
     } else {
       keyarray[action.operation](pages, action.key, action.value)
     }

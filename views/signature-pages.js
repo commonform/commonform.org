@@ -2,8 +2,8 @@ var assert = require('assert')
 var capitalize = require('capitalize')
 var classnames = require('classnames')
 var clone = require('../utilities/clone')
-var collapsed = require('../html/collapsed')
 var emptySignaturePage = require('../data/empty-signature-page')
+var h = require('hyperscript')
 var input = require('./input')
 
 module.exports = function (pages, send) {
@@ -12,44 +12,39 @@ module.exports = function (pages, send) {
   var newPageCount = pages.reduce(function (count, page) {
     return page.samePage ? count : count + 1
   }, 0)
-  return collapsed`
-    <div class=signaturePages>
-      <p class=endOfPage>
-        ${
-          newPageCount === 0
-            ? null
-            : pages.length === 1
-              ? '[Signature Page Follows]'
-              : '[Signature Pages Follow]'
-        }
-      </p>
-      ${pages.map(function (element, index) {
-        return signaturePage(element, [index], send)
-      })}
-      <p>
-        <button
-            onclick=${function (event) {
-              event.preventDefault()
-              send(
-                'form:signatures',
-                {
-                  operation: 'push',
-                  key: [],
-                  value: newPage()
-                }
-              )
-            }}
-          >Add Signature Page</button>
-      </p>
-    </div>
-  `
+
+  return h('div.signaturePages',
+    h('p.endOfPage', [
+      newPageCount === 0
+        ? null
+        : pages.length === 1
+          ? '[Signature Page Follows]'
+          : '[Signature Pages Follow]'
+    ]),
+    pages.map(function (element, index) {
+      return signaturePage(element, [index], send)
+    }),
+    h('p',
+      h('button', {onclick: function (event) {
+        event.preventDefault()
+        send(
+          'form:signatures',
+          {
+            operation: 'push',
+            key: [],
+            value: newPage()
+          }
+        )
+      }}, 'Add Signature Page')
+    )
+  )
 }
 
 var OPTIONAL_INFORMATION = ['date', 'email', 'address']
 
 function signaturePage (page, path, send) {
   var entities = page.entities
-  var information = page.information || []
+  var information = page.information
 
   function updateValue (key, value) {
     var keyPath = path.concat(key)
@@ -88,119 +83,89 @@ function signaturePage (page, path, send) {
 
   var classes = classnames('page', {samePage: page.samePage})
 
-  return collapsed`
-    <div class=${classes}>
-      <p class=samePage>
-        <input
-          type=checkbox
-          onclick=${function () {
+  return h('div.' + classes,
+    h('p.samePage',
+      h('input', {
+        type: 'checkbox',
+        onclick: function () {
+          send('form:signatures', {
+            operation: 'toggle',
+            key: path.concat('samePage')
+          })
+        },
+        checked: page.samePage
+      }),
+      'Same page'
+    ),
+    h('p.header', inputFor('header', 'Signature Page Header')),
+    entitiesParagraphs(entities, path.concat('entities'), send),
+    h('p', 'By:'),
+    h('p', 'Name:', inputFor('name')),
+    entities.length > 0
+      ? (function () {
+        var lastIndex = entities.length - 1
+        var byPath = path.concat('entities', lastIndex, 'by')
+        var p = document.createElement('p')
+        p.appendChild(document.createTextNode('Title: '))
+        p.appendChild(input(
+          entities[lastIndex].by,
+          function (value) {
             send(
               'form:signatures',
               {
                 operation: 'set',
-                key: path.concat('samePage'),
-                value: !page.samePage
+                key: byPath,
+                value: value
               }
             )
-          }}
-          ${page.samePage ? 'checked' : ''}
-          >
-        Same page
-      </p>
-      <p class=header>${inputFor('header', 'Signature Page Header')}</p>
-      <p>${inputFor('term', 'Party Defined Term')}:</p>
-      ${entitiesParagraphs(entities, path.concat('entities'), send)}
-      <p>By:</p>
-      <p>Name: ${inputFor('name')}</p>
-      ${
-        entities.length > 0
-          ? (function () {
-            var lastIndex = entities.length - 1
-            var byPath = path.concat('entities', lastIndex, 'by')
-            var p = document.createElement('p')
-            p.appendChild(document.createTextNode('Title: '))
-            p.appendChild(input(
-              entities[lastIndex].by,
-              function (value) {
-                send(
-                  'form:signatures',
-                  {
-                    operation: 'set',
-                    key: byPath,
-                    value: value
-                  }
-                )
-              },
-              function () {
-                send(
-                  'form:signatures',
-                  {
-                    operation: 'delete',
-                    key: byPath
-                  }
-                )
+          },
+          function () {
+            send(
+              'form:signatures',
+              {
+                operation: 'delete',
+                key: byPath
               }
-            ))
-            return p
-          })()
-          : null
-      }
-      ${
-        OPTIONAL_INFORMATION.map(function (text) {
-          var display = text === 'email'
-            ? 'E-Mail'
-            : capitalize(text)
-          if (information.indexOf(text) > -1) {
-            var p = document.createElement('p')
-            p.appendChild(document.createTextNode(display + ':'))
-            return p
-          } else {
-            return collapsed`
-              <p>
-                <button
-                    onclick=${
-                      function (event) {
-                        event.preventDefault()
-                        var infoPath = path.concat('information')
-                        var newValue = OPTIONAL_INFORMATION.filter(
-                          function (filtering) {
-                            return (
-                              filtering === text ||
-                              information.indexOf(filtering) > -1
-                            )
-                          }
-                        )
-                        send(
-                          'form:signatures',
-                          {
-                            operation: 'set',
-                            key: infoPath,
-                            value: newValue
-                          }
-                        )
-                      }
-                    }
-                >Require ${display}</button>
-              </p>
-            `
+            )
           }
-        })
-      }
-      <p>
-        <button
-            onclick=${
-              function (event) {
-                event.preventDefault()
-                send('form:signatures', {
-                  operation: 'splice',
-                  key: path
-                })
-              }
+        ))
+        return p
+      })()
+      : null,
+    OPTIONAL_INFORMATION.map(function (text) {
+      var display = text === 'email'
+        ? 'E-Mail'
+        : capitalize(text)
+      if (information.indexOf(text) !== -1) {
+        return h('p', display + ':')
+      } else {
+        return h('p',
+          h('button', {
+            onclick: function (event) {
+              event.preventDefault()
+              // TODO: Fix multiple information items selected
+              send('form:signatures', {
+                operation: 'push',
+                key: path.concat('information'),
+                value: text
+              })
             }
-          >Delete this Signature Page
-        </button>
-      </p>
-  `
+          }, 'Require ' + display)
+        )
+      }
+    }),
+    h('p',
+      h('button', {
+        onclick: function (event) {
+          event.preventDefault()
+          send('form:signatures', {
+            operation: 'splice',
+            key: path
+          })
+        }
+      }, 'Delete this Signature Page')
+    )
+  )
 }
 
 function newPage () {

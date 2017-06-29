@@ -1,6 +1,5 @@
 var annotators = require('../annotators')
 var assert = require('assert')
-var collapsed = require('../html/collapsed')
 var find = require('array-find')
 var numberings = require('../numberings')
 
@@ -75,7 +74,7 @@ function numbering (selected, send) {
   var select = document.createElement('select')
   numberings.forEach(function (numbering) {
     var option = document.createElement('option')
-    if (selected === name) {
+    if (selected === numbering.name) {
       option.setAttribute('selected', 'true')
     }
     option.value = numbering.name

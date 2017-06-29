@@ -253,6 +253,7 @@ if (module.parent) {
             } else {
               reductions.emit('form:numbering', {name: name})
             }
+            done()
           })
         } else {
           done()
