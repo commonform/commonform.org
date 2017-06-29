@@ -89,8 +89,6 @@ function signaturePage (page, path, send) {
 
   var classes = classnames('page', {samePage: page.samePage})
 
-  console.log(page)
-
   return collapsed`
     <div class=${classes}>
       <p class=samePage>
