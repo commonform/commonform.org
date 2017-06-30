@@ -8,7 +8,6 @@ var findLocalLinkAnchor = require('./utilities/find-local-link-anchor')
 var formModel = require('./models/form')
 var level = require('./level')
 var loading = require('./views/loading')
-var nanomorph = require('nanomorph')
 var notFound = require('./views/not-found')
 var parseJSON = require('json-parse-errback')
 var pathOf = require('pathname-match')
@@ -19,6 +18,10 @@ var runParallel = require('run-parallel')
 var searchModel = require('./models/search')
 var searchView = require('./views/search')
 var showError = require('./views/error')
+
+var diff = require('virtual-dom/diff')
+var patch = require('virtual-dom/patch')
+var createElement = require('virtual-dom/create-element')
 
 // State
 var form = {}
@@ -117,6 +120,7 @@ useModel('search', searchModel)
 // Rendering
 
 var rendered
+var root
 
 function render () {
   var hasError = Object.keys(state).find(function (model) {
@@ -194,7 +198,10 @@ function decode (argument) {
 }
 
 function update () {
-  nanomorph(rendered, render())
+  var newTree = render()
+  var plan = diff(rendered, newTree)
+  patch(root, plan)
+  rendered = newTree
 }
 
 // History
@@ -262,6 +269,7 @@ if (module.parent) {
     }
   ], function () {
     rendered = render()
-    document.body.appendChild(rendered)
+    root = createElement(rendered)
+    document.body.appendChild(root)
   })
 }

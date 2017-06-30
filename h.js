@@ -1,1 +1,1 @@
-module.exports = require('hyperscript')
+module.exports = require('virtual-dom/h')

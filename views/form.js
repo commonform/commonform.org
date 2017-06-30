@@ -59,6 +59,7 @@ function form (form, send) {
 
   var section = h('section',
     {
+      key: digest,
       className: classnames({
         conspicuous: 'conspicuous' in tree,
         focused: isFocused
@@ -137,6 +138,7 @@ function form (form, send) {
     ]
   )
 
+  /*
   section.isSameNode = function (target) {
     return (
       // Section element.
@@ -152,6 +154,7 @@ function form (form, send) {
       target.dataset.containsFocused === 'false'
     )
   }
+  */
 
   return section
 
@@ -163,6 +166,7 @@ function form (form, send) {
 
 function sectionButton (toggleFocus) {
   return h('a.sigil', {
+    key: 'sectionButton',
     onclick: toggleFocus,
     title: 'Click to focus.'
   }, '§')
@@ -359,6 +363,7 @@ function paragraph (state, send) {
     })
   )
 
+  /*
   returned.isSameNode = function (target) {
     return (
       target &&
@@ -370,6 +375,7 @@ function paragraph (state, send) {
       target.dataset.hasBlank === 'false'
     )
   }
+  */
 
   return returned
 }

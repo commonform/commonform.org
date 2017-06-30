@@ -31,7 +31,6 @@
     "level-js": "^2.2.4",
     "level-lru-cache": "^1.0.0",
     "levelup": "^1.3.2",
-    "nanomorph": "^5.1.2",
     "object-assign": "^4.1.0",
     "ooxml-signature-pages": "^1.0.1",
     "outline-numbering": "^1.0.0",
@@ -40,6 +39,7 @@
     "reviewers-edition-spell": "^1.0.2",
     "run-parallel": "^1.1.6",
     "unicode-ascii-equivalents": "^0.1.1",
+    "virtual-dom": "^2.1.1",
     "xhr": "^2.2.2"
   },
   "devDependencies": {
