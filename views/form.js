@@ -61,16 +61,18 @@ function form (form, send) {
   // element in its `dataset`, so we can refer to compare
   // them after the next render in `isSameNode`.
   section.dataset.digest = digest
-  section.dataset.comments = String(commentsHere)
+  section.dataset.commentsHere = String(commentsHere)
   section.dataset.containsFocused = String(containsFocused)
   section.isSameNode = function (target) {
     return (
       // Section element.
-      target && target.nodeName && target.nodeName === 'SECTION' &&
+      target &&
+      target.nodeName &&
+      target.nodeName === 'SECTION' &&
       target.dataset.digest === digest &&
       // No comments.
       commentsHere === false &&
-      target.dataset.comments === 'false' &&
+      target.dataset.commentsHere === 'false' &&
       // Does not contain focused form.
       containsFocused === false &&
       target.dataset.containsFocused === 'false'
@@ -141,20 +143,11 @@ function form (form, send) {
       offset: offset,
       path: form.path.concat(formKey)
     }
-    var renderer
     if (group.type === 'series') {
-      renderer = series
       groupState.merkle = form.merkle
+      appendSeries(groupState, send, section)
     } else {
-      renderer = paragraph
-    }
-    var result = renderer(groupState, send)
-    if (renderer === series) {
-      for (var n = 0; n < result.length; n++) {
-        section.appendChild(result[n])
-      }
-    } else {
-      section.appendChild(result)
+      section.appendChild(paragraph(groupState, send))
       section.appendChild(
         dropZone(
           groupState.focused
@@ -335,19 +328,16 @@ function heading (heading, send) {
   return input
 }
 
-function series (state, send) {
-  var returned = []
+function appendSeries (state, send, parent) {
   var content = state.data.content
   for (var index = 0; index < content.length; index++) {
-    var child = content[index]
     var absoluteIndex = index + state.offset
-    var pathSuffix = ['content', absoluteIndex]
-    var result = form(
-      {
+    parent.appendChild(
+      form({
         mode: state.mode,
         blanks: state.blanks,
         comments: state.comments,
-        tree: child,
+        tree: content[index],
         annotations: get(
           state.annotations, ['content', absoluteIndex], {}
         ),
@@ -355,12 +345,10 @@ function series (state, send) {
         focused: state.focused,
         withinFocused: state.withinFocused,
         parentComment: state.parentComment,
-        path: state.path.concat(pathSuffix)
-      },
-      send
+        path: state.path.concat(['content', absoluteIndex])
+      }, send)
     )
-    returned.push(result)
-    returned.push(
+    parent.appendChild(
       dropZone(
         state.focused
           ? (state.withinFocused ? 'none' : 'move')
@@ -370,7 +358,6 @@ function series (state, send) {
       )
     )
   }
-  return returned
 }
 
 function paragraph (state, send) {
@@ -409,8 +396,7 @@ function paragraph (state, send) {
       returned.appendChild(definition(element.definition))
     } else if (predicates.blank(element)) {
       hasBlank = true
-      var elementPath = state.path
-        .concat('content', offset + index)
+      var elementPath = state.path.concat('content', offset + index)
       returned.appendChild(blank(state.blanks, elementPath, send))
     } else if (predicates.reference(element)) {
       returned.appendChild(reference(element.reference))
@@ -420,7 +406,9 @@ function paragraph (state, send) {
 
   returned.isSameNode = function (target) {
     return (
-      target && target.nodeName && target.nodeName === 'P' &&
+      target &&
+      target.nodeName &&
+      target.nodeName === 'P' &&
       target.className === 'text' &&
       target.parentNode.dataset.digest === state.parentDigest &&
       hasBlank === false &&
