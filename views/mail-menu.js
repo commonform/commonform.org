@@ -1,7 +1,7 @@
 var assert = require('assert')
 var fromElements = require('../utilities/from-elements')
 
-module.exports = function (form, send) {
+module.exports = function mailMenu (form, send) {
   assert(typeof form === 'object')
   assert(typeof send === 'function')
 

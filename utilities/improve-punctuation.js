@@ -10,8 +10,10 @@ var replacements = [
   [/'/g, RIGHT_SINGLE]
 ]
 
-module.exports = function (string) {
-  return replacements.reduce(function (returned, replacement) {
-    return returned.replace(replacement[0], replacement[1])
-  }, string)
+module.exports = function improvePunctuation (string) {
+  for (var index = 0; index < replacements.length; index++) {
+    var replacement = replacements[index]
+    string = string.replace(replacement[0], replacement[1])
+  }
+  return string
 }

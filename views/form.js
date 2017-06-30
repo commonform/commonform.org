@@ -6,7 +6,7 @@ var details = require('./details')
 var dropZone = require('./drop-zone')
 var find = require('array-find')
 var get = require('keyarray').get
-var group = require('commonform-group-series')
+var groupSeries = require('commonform-group-series')
 var h = require('hyperscript')
 var improvePunctuation = require('../utilities/improve-punctuation')
 var input = require('./input')
@@ -23,115 +23,164 @@ function form (form, send) {
   var root = form.path.length === 0
   var formKey = root ? [] : ['form']
   var tree = root ? form.tree : form.tree.form
-  var groups = group(tree)
-  var isFocused = deepEqual(form.focused, form.path)
+  var groups = groupSeries(tree)
+  var isFocused = form.focused && deepEqual(form.focused, form.path)
+  var containsFocused = form.focused && (
+    isFocused ||
+    deepEqual(form.focused, form.path.slice(0, form.focused.length - 1))
+  )
   var annotationsHere = get(
     form.annotations,
     formKey.concat('annotations'),
     []
   )
-  var commentsHere = form.comments
-    ? form.comments.filter(function (comment) {
-      return comment.form === form.merkle.digest
-    })
-    : false
+  var commentsHere = false
+  if (form.comments) {
+    for (var c = 0; c < form.comments.length; c++) {
+      var comment = form.comments[c]
+      if (comment.form === form.merkle.digest) {
+        commentsHere = true
+        break
+      }
+    }
+  }
   var showComments = (
     (root || isFocused || form.withinFocused) &&
     commentsHere &&
     commentsHere.length !== 0
   )
-  var classes = classnames({
-    conspicuous: 'conspicuous' in tree,
-    focused: isFocused
-  })
-
-  var setHeading = function (newValue) {
-    send('form:heading', {
-      path: form.path,
-      heading: newValue
-    })
-  }
 
   var digest = form.merkle.digest
 
-  var offset = 0
+  var section = document.createElement('section')
+  section.className = classnames({
+    conspicuous: 'conspicuous' in tree,
+    focused: isFocused
+  })
+  // Encode some facts about the state that produced the
+  // element in its `dataset`, so we can refer to compare
+  // them after the next render in `isSameNode`.
+  section.dataset.digest = digest
+  section.dataset.comments = String(commentsHere)
+  section.dataset.containsFocused = String(containsFocused)
+  section.isSameNode = function (target) {
+    return (
+      // Section element.
+      target && target.nodeName && target.nodeName === 'SECTION' &&
+      target.dataset.digest === digest &&
+      // No comments.
+      commentsHere === false &&
+      target.dataset.comments === 'false' &&
+      // Does not contain focused form.
+      containsFocused === false &&
+      target.dataset.containsFocused === 'false'
+    )
+  }
 
-  return h('section', {className: classes, 'data-digest': digest},
-    (root ? null : sectionButton(toggleFocus)),
-    (isFocused ? editControls(form, send) : null),
-    (root
-      ? null
-      : heading(
-        form.mode,
-        isFocused || form.withinFocused,
-        form.tree.heading,
-        setHeading
-      )
-    ),
-    (isFocused ? details(digest, annotationsHere, send) : null),
-    (marginalia(
-      tree, form.path, form.blanks,
-      annotationsHere,
-      (commentsHere && commentsHere.length !== 0),
-      toggleFocus
-    )),
-    (groups[0].type === 'series'
-      ? dropZone(
+  if (!root) {
+    section.appendChild(sectionButton(toggleFocus))
+  }
+
+  if (isFocused) {
+    section.appendChild(editControls(form, send))
+  }
+
+  if (!root && (form.tree.heading || isFocused || form.withinFocused)) {
+    section.appendChild(
+      heading(form.tree.heading, function (newValue) {
+        send('form:heading', {
+          path: form.path,
+          heading: newValue
+        })
+      })
+    )
+  }
+
+  if (isFocused) {
+    section.appendChild(
+      details(digest, annotationsHere, send)
+    )
+  }
+
+  var margin = marginalia(
+    tree, form.path, form.blanks,
+    annotationsHere,
+    (commentsHere && commentsHere.length !== 0),
+    toggleFocus
+  )
+
+  if (margin) {
+    section.appendChild(margin)
+  }
+
+  if (groups[0].type === 'series') {
+    section.appendChild(
+      dropZone(
         form.focused
           ? ((isFocused || form.withinFocused) ? 'none' : 'move')
           : 'child',
         form.path.concat(formKey, 'content', 0),
         send
       )
-      : null
-    ),
-    groups
-      .map(function (group) {
-        var groupState = {
-          mode: form.mode,
-          comments: form.comments,
-          blanks: form.blanks,
-          data: group,
-          annotations: get(form.annotations, formKey, {}),
-          focused: form.focused,
-          withinFocused: isFocused || form.withinFocused,
-          parentComment: form.parentComment,
-          offset: offset,
-          path: form.path.concat(formKey)
-        }
-        var renderer
-        if (group.type === 'series') {
-          renderer = series
-          groupState.merkle = form.merkle
-        } else {
-          renderer = paragraph
-        }
-        var result = renderer(groupState, send)
-        offset += group.content.length
-        return renderer === series
-          ? [result]
-          : [
-            result,
-            dropZone(
-              groupState.focused
-                ? (groupState.withinFocused ? 'none' : 'move')
-                : 'child',
-              groupState.path.concat(
-                'content', groupState.offset + groupState.data.length
-              ),
-              send
-            )
-          ]
-      })
-      .reduce(function (x, y) {
-        return x.concat(y)
-      }),
-    (showComments
-      ? commentsList(commentsHere, form.parentComment, digest, send)
-      : null
-    ),
-    (isFocused ? commentForm(digest, false, send) : null)
-  )
+    )
+  }
+
+  var offset = 0
+  for (var i = 0; i < groups.length; i++) {
+    var group = groups[i]
+    var groupState = {
+      mode: form.mode,
+      comments: form.comments,
+      blanks: form.blanks,
+      data: group,
+      annotations: get(form.annotations, formKey, {}),
+      focused: form.focused,
+      withinFocused: isFocused || form.withinFocused,
+      parentComment: form.parentComment,
+      parentDigest: digest,
+      offset: offset,
+      path: form.path.concat(formKey)
+    }
+    var renderer
+    if (group.type === 'series') {
+      renderer = series
+      groupState.merkle = form.merkle
+    } else {
+      renderer = paragraph
+    }
+    var result = renderer(groupState, send)
+    if (renderer === series) {
+      for (var n = 0; n < result.length; n++) {
+        section.appendChild(result[n])
+      }
+    } else {
+      section.appendChild(result)
+      section.appendChild(
+        dropZone(
+          groupState.focused
+            ? (groupState.withinFocused ? 'none' : 'move')
+            : 'child',
+          groupState.path.concat(
+            'content', offset + group.content.length
+          ),
+          send
+        )
+      )
+    }
+    offset += group.content.length
+  }
+
+  if (showComments) {
+    section.appendChild(commentsList(
+      commentsHere, form.parentComment, digest, send
+    ))
+  }
+
+  if (isFocused) {
+    section.appendChild(commentForm(digest, false, send))
+  }
+
+  return section
 
   function toggleFocus (event) {
     event.stopPropagation()
@@ -211,23 +260,36 @@ function deleteButton (path, send) {
 function marginalia (
   tree, path, blanks, annotations, hasComment, toggleFocus
 ) {
-  var hasError = annotations.some(function (a) {
-    return a.level === 'error'
-  })
-  var hasAnnotation = annotations.some(function (a) {
-    return a.level !== 'error'
-  })
-  var hasBlank = tree.content.some(function (element, index) {
-    return (
-      predicates.blank(element) &&
-      !blanks.some(function (direction) {
-        return deepEqual(
-          direction.blank,
-          path.concat('form', 'content', index)
-        )
-      })
-    )
-  })
+  var hasError = false
+  var hasAnnotation = false
+  for (var i = 0; i < annotations.length; i++) {
+    var a = annotations[i]
+    if (a.level === 'error') {
+      hasError = true
+    } else {
+      hasAnnotation = true
+    }
+    if (hasError && hasAnnotation) {
+      break
+    }
+  }
+  var hasBlank = false
+  for (var n = 0; n < tree.content.length; n++) {
+    var element = tree.content[n]
+    if (predicates.blank(element)) {
+      for (var j = 0; j < blanks.length; j++) {
+        var direction = blanks[j]
+        var blankPath = path.concat('form', 'content', n)
+        if (!deepEqual(direction.blank, blankPath)) {
+          hasBlank = true
+          break
+        }
+      }
+    }
+    if (hasBlank) {
+      break
+    }
+  }
   if (hasError || hasAnnotation || hasBlank) {
     var aside = document.createElement('aside')
     aside.className = 'marginalia'
@@ -258,25 +320,26 @@ function flag (type, character) {
   return a
 }
 
-function heading (mode, withinFocused, heading, send) {
-  if (heading || withinFocused) {
-    var input = document.createElement('input')
-    input.setAttribute('type', 'text')
-    input.className = 'heading'
-    input.setAttribute('placeholder', 'Click to add heading')
+function heading (heading, send) {
+  var input = document.createElement('input')
+  input.setAttribute('type', 'text')
+  input.className = 'heading'
+  input.setAttribute('placeholder', 'Click to add heading')
+  if (heading) {
     input.id = 'Heading:' + heading
-    input.onchange = function (event) {
-      send(event.target.value)
-    }
-    input.value = heading || ''
-    return input
-  } else {
-    return null
   }
+  input.onchange = function (event) {
+    send(event.target.value)
+  }
+  input.value = heading || ''
+  return input
 }
 
 function series (state, send) {
-  return state.data.content.map(function (child, index) {
+  var returned = []
+  var content = state.data.content
+  for (var index = 0; index < content.length; index++) {
+    var child = content[index]
     var absoluteIndex = index + state.offset
     var pathSuffix = ['content', absoluteIndex]
     var result = form(
@@ -296,8 +359,8 @@ function series (state, send) {
       },
       send
     )
-    return [
-      result,
+    returned.push(result)
+    returned.push(
       dropZone(
         state.focused
           ? (state.withinFocused ? 'none' : 'move')
@@ -305,8 +368,9 @@ function series (state, send) {
         state.path.concat('content', absoluteIndex + 1),
         send
       )
-    ]
-  })
+    )
+  }
+  return returned
 }
 
 function paragraph (state, send) {
@@ -328,28 +392,43 @@ function paragraph (state, send) {
       event.target.blur()
     }
   }
-  return h('p.text',
-    {
-      contenteditable: true,
-      onblur: onBlur,
-      onkeydown: onKeyDown
-    },
-    state.data.content.map(function (child, index) {
-      if (predicates.text(child)) {
-        return string(child)
-      } else if (predicates.use(child)) {
-        return use(child.use)
-      } else if (predicates.definition(child)) {
-        return definition(child.definition)
-      } else if (predicates.blank(child)) {
-        var childPath = state.path
-          .concat('content', offset + index)
-        return blank(state.blanks, childPath, send)
-      } else if (predicates.reference(child)) {
-        return reference(child.reference)
-      }
-    })
-  )
+  var returned = document.createElement('p')
+  returned.className = 'text'
+  returned.contentEditable = 'true'
+  returned.onblur = onBlur
+  returned.onkeydown = onKeyDown
+  var content = state.data.content
+  var hasBlank = false
+  for (var index = 0; index < content.length; index++) {
+    var element = content[index]
+    if (predicates.text(element)) {
+      returned.appendChild(string(element))
+    } else if (predicates.use(element)) {
+      returned.appendChild(use(element.use))
+    } else if (predicates.definition(element)) {
+      returned.appendChild(definition(element.definition))
+    } else if (predicates.blank(element)) {
+      hasBlank = true
+      var elementPath = state.path
+        .concat('content', offset + index)
+      returned.appendChild(blank(state.blanks, elementPath, send))
+    } else if (predicates.reference(element)) {
+      returned.appendChild(reference(element.reference))
+    }
+  }
+  returned.dataset.hasBlank = String(hasBlank)
+
+  returned.isSameNode = function (target) {
+    return (
+      target && target.nodeName && target.nodeName === 'P' &&
+      target.className === 'text' &&
+      target.parentNode.dataset.digest === state.parentDigest &&
+      hasBlank === false &&
+      target.dataset.hasBlank === 'false'
+    )
+  }
+
+  return returned
 }
 
 function string (string) {
@@ -390,13 +469,13 @@ function commentsList (comments, parent, digest, send) {
     })
   var ol = document.createElement('ol')
   ol.className = 'comments'
-  roots.forEach(function (root) {
+  for (var index = 0; index < roots.length; index++) {
     ol.appendChild(
       commentListItem(
-        root, [], comments, digest, parent, send
+        roots[index], [], comments, digest, parent, send
       )
     )
-  })
+  }
   return ol
 }
 

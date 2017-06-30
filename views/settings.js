@@ -3,7 +3,7 @@ var assert = require('assert')
 var find = require('array-find')
 var numberings = require('../numberings')
 
-module.exports = function (state, send) {
+module.exports = function settings (state, send) {
   assert(typeof state === 'object')
   assert(typeof send === 'function')
   var flags = state.annotators

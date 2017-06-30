@@ -1,7 +1,7 @@
 var assert = require('assert')
 var sidebar = require('./sidebar')
 
-module.exports = function (send) {
+module.exports = function notFound (send) {
   assert(typeof send === 'function')
   var div = document.createElement('div')
   div.className = 'container'

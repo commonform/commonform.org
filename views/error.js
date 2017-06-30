@@ -1,6 +1,6 @@
 var sidebar = require('./sidebar')
 
-module.exports = function (state, hasError, send) {
+module.exports = function error (state, hasError, send) {
   var div = document.createElement('div')
   div.className = 'container'
 

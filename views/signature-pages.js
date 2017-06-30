@@ -6,7 +6,7 @@ var emptySignaturePage = require('../data/empty-signature-page')
 var h = require('hyperscript')
 var input = require('./input')
 
-module.exports = function (pages, send) {
+module.exports = function signaturePages (pages, send) {
   assert(Array.isArray(pages))
   assert(typeof send === 'function')
   var newPageCount = pages.reduce(function (count, page) {

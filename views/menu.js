@@ -4,7 +4,7 @@ var h = require('hyperscript')
 
 var GUIDE = 'https://github.com/commonform/new-publisher-guide'
 
-module.exports = function (form, send) {
+module.exports = function menu (form, send) {
   assert(typeof form === 'object')
   assert(typeof send === 'function')
   return h('div.menu',
