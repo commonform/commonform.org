@@ -291,7 +291,6 @@ module.exports = function (initialize, _reduction, handler) {
     var annotationsList = annotate(state.annotators, action.tree)
     return {
       mode: action.mode || state.mode,
-      dynamic: action.dynamic || false,
       error: null,
       tree: action.tree,
       path: [],
