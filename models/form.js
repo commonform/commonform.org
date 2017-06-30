@@ -28,6 +28,7 @@ var rename = require('commonform-rename')
 var runParallel = require('run-parallel')
 var signaturePagesToOOXML = require('ooxml-signature-pages')
 var simplify = require('commonform-simplify-structure')
+var treeify = require('commonform-treeify-annotations')
 var xhr = require('xhr')
 
 module.exports = function (initialize, _reduction, handler) {
@@ -115,6 +116,7 @@ module.exports = function (initialize, _reduction, handler) {
       annotators: annotatorFlags,
       numbering: numberings[0].name,
       annotations: null,
+      annotationsList: [],
       comments: [],
       blanks: [],
       diff: null,
@@ -132,11 +134,17 @@ module.exports = function (initialize, _reduction, handler) {
   })
 
   reduction('mode', function (mode) {
-    return {mode: mode}
+    return {
+      mode: mode,
+      rerender: true
+    }
   })
 
   reduction('error', function (error) {
-    return {error: error}
+    return {
+      error: error,
+      rerender: true
+    }
   })
 
   handler('mode', function (mode, state, reduce, done) {
@@ -186,7 +194,8 @@ module.exports = function (initialize, _reduction, handler) {
       },
       diff: state.hasOwnProperty('tree')
         ? diff(state.tree, action.tree)
-        : null
+        : null,
+      rerender: true
     }
   })
 
@@ -277,7 +286,9 @@ module.exports = function (initialize, _reduction, handler) {
     done()
   })
 
+  // TODO: Compute `rerender` array.
   reduction('tree', function (action, state) {
+    var annotationsList = annotate(state.annotators, action.tree)
     return {
       mode: action.mode || state.mode,
       dynamic: action.dynamic || false,
@@ -286,7 +297,8 @@ module.exports = function (initialize, _reduction, handler) {
       path: [],
       projects: [],
       blanks: [],
-      annotations: annotate(state.annotators, action.tree),
+      annotations: treeify(annotationsList),
+      annotationsList: annotationsList,
       comments: action.comments || null,
       merkle: action.merkle || merkleize(action.tree),
       publications: action.publications || [],
@@ -526,15 +538,18 @@ module.exports = function (initialize, _reduction, handler) {
   })
 
   reduction('annotators', function (data, state) {
-    var annotations = state.tree
+    var oldAnnotationsList = state.annotationsList || []
+    var newAnnotationsList = state.tree
       ? annotate(state.annotators, state.tree)
       : []
+    var changed = annotationChanges(
+      newAnnotationsList, oldAnnotationsList
+    )
     return {
       annotators: data,
-      annotations: annotations,
-      rerender: annotations.map(function (annotation) {
-        return annotation.path
-      })
+      annotations: treeify(newAnnotationsList),
+      annotationsList: newAnnotationsList,
+      rerender: changed
     }
   })
 
@@ -580,6 +595,7 @@ module.exports = function (initialize, _reduction, handler) {
     }))
   })
 
+  // TODO: Compute `rerender` array.
   reduction('comments', function (comments, state) {
     return {comments: comments}
   })
@@ -597,6 +613,7 @@ module.exports = function (initialize, _reduction, handler) {
     })
   }
 
+  // TODO: Compute `rerender` array.
   reduction('reply to', function (parent, state) {
     return {parentComment: parent}
   })
@@ -926,4 +943,46 @@ function requestForm (digest, callback) {
 function fileName (title, extension) {
   var date = new Date().toISOString()
   return '' + title + ' ' + date + '.' + extension
+}
+
+// Compute the set-difference between the set of paths
+// annotated by `newAnnotations` and `oldAnnotations`.
+function annotationChanges (newAnnotations, oldAnnotations) {
+  var changed = []
+  // Use set-arrays of JSON-encoded keyarrays so we can use
+  // `list.indexOf` to test set membership.
+  var newPaths = annotationJSONPaths(newAnnotations)
+  var oldPaths = annotationJSONPaths(oldAnnotations)
+  // Iterate both path lists at once, adding any that don't
+  // appear in both lists to the returned differences array.
+  var maxLength = Math.max(newPaths.length, oldPaths.length)
+  for (var index = 0; index < maxLength; index++) {
+    var newPath = newPaths[index]
+    if (newPath) {
+      if (oldPaths.indexOf(newPath) === -1) {
+        changed.push(newPath)
+      }
+    }
+    var oldPath = oldPaths[index]
+    if (oldPath) {
+      if (newPaths.indexOf(oldPath) === -1) {
+        changed.push(oldPath)
+      }
+    }
+  }
+  return changed.map(JSON.parse)
+}
+
+// Return a set-array of all the paths covered by
+// annotations in the list, encoded as JSON strings.
+function annotationJSONPaths (annotations) {
+  var paths = []
+  for (var index = 0; index < annotations.length; index++) {
+    var annotation = annotations[index]
+    var json = JSON.stringify(annotation.path)
+    if (paths.indexOf(json) === -1) {
+      paths.push(json)
+    }
+  }
+  return paths
 }

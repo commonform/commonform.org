@@ -1,6 +1,5 @@
 var annotators = require('../annotators')
 var find = require('array-find')
-var treeify = require('commonform-treeify-annotations')
 
 module.exports = function (flags, form) {
   var annotations = []
@@ -16,5 +15,5 @@ module.exports = function (flags, form) {
         })
     }
   })
-  return treeify(annotations)
+  return annotations
 }
