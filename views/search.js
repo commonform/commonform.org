@@ -101,7 +101,7 @@ function resultList (results, send) {
   } else {
     return h('ul',
       results.map(function (r) {
-        h('li', results(r, send))
+        h('li', result(r, send))
       })
     )
   }
