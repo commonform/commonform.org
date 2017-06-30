@@ -1,39 +1,47 @@
 var assert = require('assert')
 var digestLink = require('./digest-link')
-var h = require('hyperscript')
 var improvePunctuation = require('../utilities/improve-punctuation')
 
-module.exports = function (digest, annotationsArray, send) {
+module.exports = function details (digest, annotationsArray, send) {
   assert(typeof digest === 'string')
   assert(Array.isArray(annotationsArray))
   assert(typeof send === 'function')
-  return h('p.details',
-    digestLink(digest),
-    annotations(annotationsArray)
-  )
+  var p = document.createElement('p')
+  p.className = 'details'
+  p.appendChild(digestLink(digest))
+  p.appendChild(annotations(annotationsArray))
+  return p
 }
 
 function annotations (array) {
   assert(Array.isArray(array))
   var aside = document.createElement('aside')
-  deduplicate(array).forEach(function (element) {
+  var deduped = deduplicate(array)
+  for (var i = 0; i < deduped.length; i++) {
+    var element = deduped[i]
     aside.appendChild(annotation(element))
-  })
+  }
   return aside
 }
 
 function annotation (data) {
   assert(typeof data === 'object')
   assert(typeof data.message === 'string')
-  return h('p.' + data.level,
+  var p = document.createElement('p')
+  p.className = data.level
+  p.appendChild(
     annotationText(data.url, improvePunctuation(data.message))
   )
+  return p
 }
 
 function annotationText (url, message) {
   assert(typeof message === 'string')
   if (url) {
-    return h('a', {href: url}, message)
+    var a = document.createElement('a')
+    a.href = url
+    a.appendChild(document.createTextNode(message))
+    return a
   } else {
     return document.createTextNode(message)
   }

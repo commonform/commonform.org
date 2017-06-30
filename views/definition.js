@@ -1,6 +1,6 @@
 var assert = require('assert')
 
-module.exports = function (term) {
+module.exports = function definition (term) {
   assert(typeof term === 'string')
   var dfn = document.createElement('dfn')
   dfn.setAttribute('titie', 'Definition of ' + term)

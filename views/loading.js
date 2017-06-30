@@ -1,7 +1,7 @@
 var assert = require('assert')
 var sidebar = require('./sidebar')
 
-module.exports = function (mode, onLoadEvent) {
+module.exports = function loading (mode, onLoadEvent) {
   assert(typeof mode === 'string')
   assert(typeof onLoadEvent === 'function')
   onLoadEvent()

@@ -1,6 +1,6 @@
 var assert = require('assert')
 
-module.exports = function (heading) {
+module.exports = function headingLink (heading) {
   assert(typeof heading === 'string')
   var a = document.createElement('a')
   a.className = 'heading'

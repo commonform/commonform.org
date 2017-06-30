@@ -4,7 +4,7 @@ var footer = require('./footer')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
 
-module.exports = function (publisher, state, send) {
+module.exports = function projects (publisher, state, send) {
   assert(typeof publisher === 'string')
   assert(typeof state === 'object')
   assert(typeof send === 'function')

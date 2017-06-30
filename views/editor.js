@@ -8,7 +8,7 @@ var settings = require('./settings')
 var sidebar = require('./sidebar')
 var signaturePages = require('./signature-pages')
 
-module.exports = function (state, send) {
+module.exports = function editor (state, send) {
   assert.equal(typeof state, 'object')
   assert.equal(typeof send, 'function')
   var mode = state.mode

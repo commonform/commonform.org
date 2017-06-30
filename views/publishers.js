@@ -11,7 +11,7 @@ var MAILTO = (
   '?subject=CommonForm.org%20Publisher%20Account'
 )
 
-module.exports = function browse (state, send) {
+module.exports = function publishers (state, send) {
   assert(typeof state === 'object')
   assert(typeof send === 'function')
   if (!state.publishers) {

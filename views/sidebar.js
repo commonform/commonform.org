@@ -1,8 +1,8 @@
 var assert = require('assert')
 
-module.exports = modeButtons
+module.exports = sidebar
 
-function modeButtons (mode, send) {
+function sidebar (mode, send) {
   assert(typeof mode === 'string')
   assert(typeof send === 'function')
   var showReadModes = (

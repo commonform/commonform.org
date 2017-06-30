@@ -9,7 +9,7 @@ var termLink = require('./term-link')
 
 var ACTIONS = ['definitions', 'forms', 'headings', 'terms']
 
-module.exports = function (action, value, state, send) {
+module.exports = function search (action, value, state, send) {
   assert(typeof state === 'object')
   assert(typeof send === 'function')
   if (ACTIONS.indexOf(action) === -1) {
