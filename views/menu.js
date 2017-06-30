@@ -105,9 +105,8 @@ function saveUI (form, send) {
   }
 }
 
-
 function publishUI (send) {
-  return h('form.publish', {onsubmit: publish},
+  return h('form.publish', {onsubmit: publishForm},
     h('h2', 'Publish to commonform.org'),
     h('p', publisherAndPassword()),
     h('p',
