@@ -31,6 +31,70 @@ var simplify = require('commonform-simplify-structure')
 var xhr = require('xhr')
 
 module.exports = function (initialize, _reduction, handler) {
+  // A Note on the Special `rerender` Model Property
+  //
+  // By default, the editor view rerenders the entire form
+  // tree every time. Especially for large forms, that's
+  // a pretty deep tree, with lots and lots of elements.
+  // JavaScript rendering can consume >200ms on reasonable
+  // desktop machines. Reconciliation sometimes takes twice
+  // that. Runtime GC pauses in the middle of long rendering
+  // cycles are very common, making it even worse.
+  //
+  // The code uses two mechanisms to mitigate those
+  // performance issues:
+  //
+  // 1.  The renderer sets `.isSameNode` on `<section>` and
+  //     `<p class=text>` elements.  `nanomorph` uses those
+  //     methods to short-circuit reconciliation, skipping
+  //     the branch if `isSameNode(target)` returns `true`.
+  //     The methods set check `data-digest` properties on
+  //     elements to see if the form content is the same.
+  //
+  //     This is the "official" optimization method
+  //     mentioned in `nanomorph`'s documentation.
+  //
+  // 2.  The form model sets a `rerender` property on each
+  //     reduction indicating which parts of the tree need
+  //     to be rerendered in the next pass.
+  //
+  //     When `rerender` is `true`, the entire tree needs
+  //     to be rerendered.
+  //
+  //     When `rerender` is `false`, none of the form tree
+  //     needs to be rerendered.  This is the case for
+  //     changes to signature page data, for example.
+  //
+  //     Otherwise, `rerender` is an array of keyarrays
+  //     corresponding to tree locations---forms, content
+  //     elements, &c.---that need to be rerendered, along
+  //     with all of their parents.
+  //
+  //     The form view checks this property.  If a form
+  //     doesn't need rerendering, the view returns a
+  //     placeholder element with `isSameNode` set.  When
+  //     `nanomorph` walks to the node, it skips that part
+  //     of the tree, leaving the existing elements alone.
+  //
+  // The `rerender` approach allows us to avoid rendering
+  // and reconciling code with more model code.
+  // Order-of-magnitude performance gains are common,
+  // especially for common, relatively self-contained
+  // interactions, like focusing a child form.
+  //
+  // At the same time, the approach erodes the neatness and
+  // safety of the functional-reactive rendering approach.
+  // The UI _can_ end up inconsistent with the application's
+  // state if `rerender` doesn't list each and every form
+  // that needs updating. This isn't as simple as noting
+  // which forms' _content_ has changed. If a change in one
+  // part of the tree leads to an annotation in another
+  // part, both children---and all their parents---need to
+  // be rerendered.
+
+  // Wrap the usual reduction setup function to ensure the
+  // `rerender` property is always set to `true` (rerender
+  // the whole form tree) by default.
   function reduction (event, handler) {
     _reduction(event, function (action, state) {
       var result = handler(action, state)
@@ -159,9 +223,13 @@ module.exports = function (initialize, _reduction, handler) {
   reduction('focus', function (newlyFocused, state) {
     var previouslyFocused = state.focused
     var rerender = []
+    // If there was already a focused form, rerender it
+    // without focus.
     if (previouslyFocused) {
       rerender.push(previouslyFocused)
     }
+    // If there is a newly focused form, rerender it
+    // with focus.
     if (newlyFocused) {
       rerender.push(newlyFocused)
     }

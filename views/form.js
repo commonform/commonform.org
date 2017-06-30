@@ -23,6 +23,7 @@ module.exports = form
 function form (form, send) {
   assert(typeof form.tree === 'object')
   var digest = form.merkle.digest
+  // See the view model for notes on the `rerender` optimization.
   var rerender = typeof form.rerender === 'boolean'
     ? form.rerender
     : form.rerender.some(function (rerender) {
