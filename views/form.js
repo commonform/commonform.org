@@ -25,9 +25,12 @@ function form (form, send) {
   var tree = root ? form.tree : form.tree.form
   var groups = groupSeries(tree)
   var isFocused = form.focused && deepEqual(form.focused, form.path)
-  var containsFocused = form.focused && (
+  var containsFocused = (
     isFocused ||
-    deepEqual(form.focused, form.path.slice(0, form.focused.length - 1))
+    (
+      form.focused &&
+      deepEqual(form.path, form.focused.slice(0, form.path.length))
+    )
   )
   var annotationsHere = get(
     form.annotations,
