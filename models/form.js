@@ -30,13 +30,24 @@ var signaturePagesToOOXML = require('ooxml-signature-pages')
 var simplify = require('commonform-simplify-structure')
 var xhr = require('xhr')
 
-module.exports = function (initialize, reduction, handler) {
+module.exports = function (initialize, _reduction, handler) {
+  function reduction (event, handler) {
+    _reduction(event, function (action, state) {
+      var result = handler(action, state)
+      if (!result.hasOwnProperty('rerender')) {
+        result.rerender = true
+      }
+      return result
+    })
+  }
+
   initialize(function () {
     var annotatorFlags = {}
     annotators.forEach(function (annotator) {
       annotatorFlags[annotator.name] = annotator.default
     })
     return {
+      rerender: true,
       annotators: annotatorFlags,
       numbering: numberings[0].name,
       annotations: null,
@@ -78,8 +89,11 @@ module.exports = function (initialize, reduction, handler) {
     var newBlanks = clone(state.blanks)
     if (value === null) {
       if (index > -1) {
-        newBlanks.splice(index, 1)
-        return {blanks: newBlanks}
+        var spliced = newBlanks.splice(index, 1)[0]
+        return {
+          blanks: newBlanks,
+          rerender: [spliced.blank]
+        }
       }
     } else {
       if (index < 0) {
@@ -87,7 +101,10 @@ module.exports = function (initialize, reduction, handler) {
         index = 0
       }
       newBlanks[index].value = value
-      return {blanks: newBlanks}
+      return {
+        blanks: newBlanks,
+        rerender: [blank]
+      }
     }
   })
 
@@ -139,8 +156,19 @@ module.exports = function (initialize, reduction, handler) {
     }
   })
 
-  reduction('focus', function (path) {
-    return {focused: path}
+  reduction('focus', function (newlyFocused, state) {
+    var previouslyFocused = state.focused
+    var rerender = []
+    if (previouslyFocused) {
+      rerender.push(previouslyFocused)
+    }
+    if (newlyFocused) {
+      rerender.push(newlyFocused)
+    }
+    return {
+      focused: newlyFocused,
+      rerender: rerender
+    }
   })
 
   handler('focus', function (path, state, reduce, done) {
@@ -170,7 +198,10 @@ module.exports = function (initialize, reduction, handler) {
     } else {
       keyarray[action.operation](pages, action.key, action.value)
     }
-    return {signaturePages: pages}
+    return {
+      signaturePages: pages,
+      rerender: false
+    }
   })
 
   handler('signatures', function (action, state, reduce, done) {
@@ -410,7 +441,8 @@ module.exports = function (initialize, reduction, handler) {
       return numbering.name === data.name
     }))
     return {
-      numbering: data.name
+      numbering: data.name,
+      rerender: false
     }
   })
 
@@ -426,11 +458,15 @@ module.exports = function (initialize, reduction, handler) {
   })
 
   reduction('annotators', function (data, state) {
+    var annotations = state.tree
+      ? annotate(state.annotators, state.tree)
+      : []
     return {
       annotators: data,
-      annotations: state.tree
-        ? annotate(state.annotators, state.tree)
-        : []
+      annotations: annotations,
+      rerender: annotations.map(function (annotation) {
+        return annotation.path
+      })
     }
   })
 

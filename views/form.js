@@ -22,6 +22,28 @@ module.exports = form
 
 function form (form, send) {
   assert(typeof form.tree === 'object')
+  var digest = form.merkle.digest
+  var rerender = typeof form.rerender === 'boolean'
+    ? form.rerender
+    : form.rerender.some(function (rerender) {
+      var commonLength = Math.min(rerender.length, form.path.length)
+      return sameKeyArray(
+        rerender.slice(0, commonLength),
+        form.path.slice(0, commonLength)
+      )
+    })
+  if (rerender === false) {
+    var same = document.createElement('section')
+    same.isSameNode = function (target) {
+      return (
+        target &&
+        target.nodeName &&
+        target.nodeName === 'SECTION' &&
+        target.dataset.digest === digest
+      )
+    }
+    return same
+  }
   var root = form.path.length === 0
   var formKey = root ? [] : ['form']
   var tree = root ? form.tree : form.tree.form
@@ -31,7 +53,7 @@ function form (form, send) {
     isFocused ||
     (
       form.focused &&
-      keyarrayStartsWith(form.path, form.focused)
+      keyarrayStartsWith(form.focused, form.path)
     )
   )
   var annotationsHere = get(
@@ -54,8 +76,6 @@ function form (form, send) {
     commentsHere &&
     commentsHere.length !== 0
   )
-
-  var digest = form.merkle.digest
 
   var section = document.createElement('section')
   section.className = classnames({
@@ -136,6 +156,7 @@ function form (form, send) {
   for (var i = 0; i < groups.length; i++) {
     var group = groups[i]
     var groupState = {
+      rerender: form.rerender,
       mode: form.mode,
       comments: form.comments,
       blanks: form.blanks,
@@ -339,6 +360,7 @@ function appendSeries (state, send, parent) {
     var absoluteIndex = index + state.offset
     parent.appendChild(
       form({
+        rerender: state.rerender,
         mode: state.mode,
         blanks: state.blanks,
         comments: state.comments,
@@ -409,6 +431,7 @@ function paragraph (state, send) {
   }
   returned.dataset.hasBlank = String(hasBlank)
 
+  /*
   returned.isSameNode = function (target) {
     return (
       target &&
@@ -420,6 +443,7 @@ function paragraph (state, send) {
       target.dataset.hasBlank === 'false'
     )
   }
+  */
 
   return returned
 }
