@@ -7,7 +7,7 @@ var dropZone = require('./drop-zone')
 var find = require('array-find')
 var get = require('keyarray').get
 var groupSeries = require('commonform-group-series')
-var h = require('hyperscript')
+var h = require('../h')
 var improvePunctuation = require('../utilities/improve-punctuation')
 var input = require('./input')
 var predicates = require('commonform-predicate')
@@ -55,17 +55,88 @@ function form (form, send) {
 
   var digest = form.merkle.digest
 
-  var section = document.createElement('section')
-  section.className = classnames({
-    conspicuous: 'conspicuous' in tree,
-    focused: isFocused
-  })
-  // Encode some facts about the state that produced the
-  // element in its `dataset`, so we can refer to compare
-  // them after the next render in `isSameNode`.
-  section.dataset.digest = digest
-  section.dataset.commentsHere = String(commentsHere)
-  section.dataset.containsFocused = String(containsFocused)
+  var offset = 0
+
+  var section = h('section',
+    {
+      className: classnames({
+        conspicuous: 'conspicuous' in tree,
+        focused: isFocused
+      }),
+      // Encode some facts about the state that produced
+      // the element in its `dataset`, so we can refer to
+      // compare them after the next render in `isSameNode`.
+      'data-digest': digest,
+      'data-commentsHere': String(commentsHere),
+      'data-containsFocused': String(containsFocused)
+    },
+    [
+      !root ? sectionButton(toggleFocus) : null,
+      isFocused ? editControls(form, send) : null,
+      (!root && (form.tree.heading || isFocused || form.withinFocused))
+        ? heading(form.tree.heading, function (newValue) {
+          send('form:heading', {
+            path: form.path,
+            heading: newValue
+          })
+        })
+        : null,
+      isFocused ? details(digest, annotationsHere, send) : null,
+      marginalia(
+        tree, form.path, form.blanks,
+        annotationsHere,
+        (commentsHere && commentsHere.length !== 0),
+        toggleFocus
+      ),
+      (groups[0].type === 'series')
+        ? dropZone(
+          form.focused
+            ? ((isFocused || form.withinFocused) ? 'none' : 'move')
+            : 'child',
+          form.path.concat(formKey, 'content', 0),
+          send
+        )
+        : null,
+      groups.map(function eachGroup (group) {
+        var groupState = {
+          mode: form.mode,
+          comments: form.comments,
+          blanks: form.blanks,
+          data: group,
+          annotations: get(form.annotations, formKey, {}),
+          focused: form.focused,
+          withinFocused: isFocused || form.withinFocused,
+          parentComment: form.parentComment,
+          parentDigest: digest,
+          offset: offset,
+          path: form.path.concat(formKey)
+        }
+        offset += group.content.length
+        if (group.type === 'series') {
+          groupState.merkle = form.merkle
+          return series(groupState, send)
+        } else {
+          return [
+            paragraph(groupState, send),
+            dropZone(
+              groupState.focused
+                ? (groupState.withinFocused ? 'none' : 'move')
+                : 'child',
+              groupState.path.concat(
+                'content', groupState.offset + group.content.length
+              ),
+              send
+            )
+          ]
+        }
+      }),
+      showComments
+        ? commentsList(commentsHere, form.parentComment, digest, send)
+        : null ,
+      isFocused ? commentForm(digest, false, send) : null
+    ]
+  )
+
   section.isSameNode = function (target) {
     return (
       // Section element.
@@ -82,100 +153,6 @@ function form (form, send) {
     )
   }
 
-  if (!root) {
-    section.appendChild(sectionButton(toggleFocus))
-  }
-
-  if (isFocused) {
-    section.appendChild(editControls(form, send))
-  }
-
-  if (!root && (form.tree.heading || isFocused || form.withinFocused)) {
-    section.appendChild(
-      heading(form.tree.heading, function (newValue) {
-        send('form:heading', {
-          path: form.path,
-          heading: newValue
-        })
-      })
-    )
-  }
-
-  if (isFocused) {
-    section.appendChild(
-      details(digest, annotationsHere, send)
-    )
-  }
-
-  var margin = marginalia(
-    tree, form.path, form.blanks,
-    annotationsHere,
-    (commentsHere && commentsHere.length !== 0),
-    toggleFocus
-  )
-
-  if (margin) {
-    section.appendChild(margin)
-  }
-
-  if (groups[0].type === 'series') {
-    section.appendChild(
-      dropZone(
-        form.focused
-          ? ((isFocused || form.withinFocused) ? 'none' : 'move')
-          : 'child',
-        form.path.concat(formKey, 'content', 0),
-        send
-      )
-    )
-  }
-
-  var offset = 0
-  for (var i = 0; i < groups.length; i++) {
-    var group = groups[i]
-    var groupState = {
-      mode: form.mode,
-      comments: form.comments,
-      blanks: form.blanks,
-      data: group,
-      annotations: get(form.annotations, formKey, {}),
-      focused: form.focused,
-      withinFocused: isFocused || form.withinFocused,
-      parentComment: form.parentComment,
-      parentDigest: digest,
-      offset: offset,
-      path: form.path.concat(formKey)
-    }
-    if (group.type === 'series') {
-      groupState.merkle = form.merkle
-      appendSeries(groupState, send, section)
-    } else {
-      section.appendChild(paragraph(groupState, send))
-      section.appendChild(
-        dropZone(
-          groupState.focused
-            ? (groupState.withinFocused ? 'none' : 'move')
-            : 'child',
-          groupState.path.concat(
-            'content', offset + group.content.length
-          ),
-          send
-        )
-      )
-    }
-    offset += group.content.length
-  }
-
-  if (showComments) {
-    section.appendChild(commentsList(
-      commentsHere, form.parentComment, digest, send
-    ))
-  }
-
-  if (isFocused) {
-    section.appendChild(commentForm(digest, false, send))
-  }
-
   return section
 
   function toggleFocus (event) {
@@ -185,72 +162,64 @@ function form (form, send) {
 }
 
 function sectionButton (toggleFocus) {
-  var a = document.createElement('a')
-  a.className = 'sigil'
-  a.onclick = toggleFocus
-  a.title = 'Click to focus.'
-  a.appendChild(document.createTextNode('§'))
-  return a
+  return h('a.sigil', {
+    onclick: toggleFocus,
+    title: 'Click to focus.'
+  }, '§')
 }
 
 function editControls (form, send) {
   assert(typeof send === 'function')
   var conspicuous = form.tree.form && 'conspicuous' in form.tree.form
-  var div = document.createElement('div')
-  div.className = 'editControls'
-  div.appendChild(deleteButton(form.path, send))
-  div.appendChild(conspicuousToggle(conspicuous, form.path, send))
-  div.appendChild(replace(form.path, true, send))
-  div.appendChild(replace(form.path, false, send))
-  return div
+  return h('div.editControls', {key: 'editControls'}, [
+    deleteButton(form.path, send),
+    conspicuousToggle(conspicuous, form.path, send),
+    replace(form.path, true, send),
+    replace(form.path, false, send)
+  ])
 }
 
 function conspicuousToggle (conspicuous, path, send) {
   assert(conspicuous === true || conspicuous === false)
   assert(Array.isArray(path))
   assert(typeof send === 'function')
-  var button = document.createElement('button')
-  button.onclick = function () {
-    send('form:conspicuous', {
-      path: path,
-      conspicuous: !conspicuous
-    })
-  }
-  button.appendChild(
-    document.createTextNode(
-      conspicuous ? 'Inconspicuous' : 'Conspicuous'
-    )
+  return h('button',
+    {
+      onclick: function () {
+        send('form:conspicuous', {
+          path: path,
+          conspicuous: !conspicuous
+        })
+      }
+    },
+    conspicuous ? 'Inconspicuous' : 'Conspicuous'
   )
-  return button
 }
 
 function replace (path, digest, send) {
   assert(Array.isArray(path))
   assert(digest === true || digest === false)
   assert(typeof send === 'function')
-  var button = document.createElement('button')
-  button.onclick = function () {
-    send('form:replace', {
-      path: path,
-      digest: digest
-    })
-  }
-  button.appendChild(
-    document.createTextNode(
-      'Replace w/ ' + (digest ? 'Digest' : 'Publication')
-    )
+  return h('button',
+    {
+      onclick: function () {
+        send('form:replace', {
+          path: path,
+          digest: digest
+        })
+      }
+    },
+    'Replace w/ ' + (digest ? 'Digest' : 'Publication')
   )
-  return button
 }
 
 function deleteButton (path, send) {
-  var button = document.createElement('button')
-  button.onclick = function (event) {
-    event.preventDefault()
-    send('form:splice', {path: path})
-  }
-  button.appendChild(document.createTextNode(('Delete')))
-  return button
+  return h('button', {
+    onclick: function (event) {
+      event.preventDefault()
+      send('form:splice', {path: path})
+    }
+  }, 'Delete')
 }
 
 function marginalia (
@@ -287,60 +256,44 @@ function marginalia (
     }
   }
   if (hasError || hasAnnotation || hasBlank) {
-    var aside = document.createElement('aside')
-    aside.className = 'marginalia'
-    aside.onclick = toggleFocus
-    if (hasError) {
-      aside.appendChild(flag('error', '\u26A0'))
-    }
-    if (hasAnnotation) {
-      aside.appendChild(flag('annotation', '\u2690'))
-    }
-    if (hasBlank) {
-      aside.appendChild(flag('blank', '\u270D'))
-    }
-    if (hasComment) {
-      aside.appendChild(flag('comment', '\u2696'))
-    }
-    return aside
+    return h('aside.marginalia', {onclick: toggleFocus}, [
+      hasError ? flag('error', '\u26A0') : null,
+      hasAnnotation ? flag('annotation', '\u2690') : null,
+      hasBlank ? flag('blank', '\u270D') : null,
+      hasComment ? flag('comment', '\u2696') : null
+    ])
   } else {
     return null
   }
 }
 
 function flag (type, character) {
-  var a = document.createElement('a')
-  a.className = 'flag'
-  a.title = 'Click to show ' + type + 's here.'
-  a.appendChild(document.createTextNode(character))
-  return a
+  return h('a.flag', {
+    title: 'Click to show ' + type + 's here.'
+  }, character)
 }
 
 function heading (heading, send) {
-  var input = document.createElement('input')
-  input.setAttribute('type', 'text')
-  input.className = 'heading'
-  input.setAttribute('placeholder', 'Click to add heading')
-  if (heading) {
-    input.id = 'Heading:' + heading
-  }
-  input.onchange = function (event) {
-    send(event.target.value)
-  }
-  input.value = heading || ''
-  return input
+  return h('input.heading', {
+    type: 'text',
+    placeholder: 'Click to add heading.',
+    id: 'Heading:' + heading,
+    onchange: function (event) {
+      send(event.target.value)
+    },
+    value: heading || ''
+  })
 }
 
-function appendSeries (state, send, parent) {
-  var content = state.data.content
-  for (var index = 0; index < content.length; index++) {
+function series (state, send) {
+  return state.data.content.map(function eachChild (child, index) {
     var absoluteIndex = index + state.offset
-    parent.appendChild(
+    return [
       form({
         mode: state.mode,
         blanks: state.blanks,
         comments: state.comments,
-        tree: content[index],
+        tree: child,
         annotations: get(
           state.annotations, ['content', absoluteIndex], {}
         ),
@@ -349,9 +302,7 @@ function appendSeries (state, send, parent) {
         withinFocused: state.withinFocused,
         parentComment: state.parentComment,
         path: state.path.concat(['content', absoluteIndex])
-      }, send)
-    )
-    parent.appendChild(
+      }, send),
       dropZone(
         state.focused
           ? (state.withinFocused ? 'none' : 'move')
@@ -359,8 +310,8 @@ function appendSeries (state, send, parent) {
         state.path.concat('content', absoluteIndex + 1),
         send
       )
-    )
-  }
+    ]
+  })
 }
 
 function paragraph (state, send) {
@@ -382,30 +333,31 @@ function paragraph (state, send) {
       event.target.blur()
     }
   }
-  var returned = document.createElement('p')
-  returned.className = 'text'
-  returned.contentEditable = 'true'
-  returned.onblur = onBlur
-  returned.onkeydown = onKeyDown
-  var content = state.data.content
   var hasBlank = false
-  for (var index = 0; index < content.length; index++) {
-    var element = content[index]
-    if (predicates.text(element)) {
-      returned.appendChild(string(element))
-    } else if (predicates.use(element)) {
-      returned.appendChild(use(element.use))
-    } else if (predicates.definition(element)) {
-      returned.appendChild(definition(element.definition))
-    } else if (predicates.blank(element)) {
-      hasBlank = true
-      var elementPath = state.path.concat('content', offset + index)
-      returned.appendChild(blank(state.blanks, elementPath, send))
-    } else if (predicates.reference(element)) {
-      returned.appendChild(reference(element.reference))
-    }
-  }
-  returned.dataset.hasBlank = String(hasBlank)
+  var content = state.data.content
+  var returned = h('p.text',
+    {
+      contenteditable: true,
+      onblur: onBlur,
+      onkeydown: onKeyDown,
+      'data-hasBlank': String(hasBlank)
+    },
+    content.map(function eachElement (element, index) {
+      if (predicates.text(element)) {
+        return improvePunctuation(element)
+      } else if (predicates.use(element)) {
+        return use(element.use)
+      } else if (predicates.definition(element)) {
+        return definition(element.definition)
+      } else if (predicates.blank(element)) {
+        hasBlank = true
+        var elementPath = state.path.concat('content', offset + index)
+        return blank(state.blanks, elementPath, send)
+      } else if (predicates.reference(element)) {
+        return reference(element.reference)
+      }
+    })
+  )
 
   returned.isSameNode = function (target) {
     return (
@@ -420,10 +372,6 @@ function paragraph (state, send) {
   }
 
   return returned
-}
-
-function string (string) {
-  return document.createTextNode(improvePunctuation(string))
 }
 
 function blank (blanks, path, send) {
@@ -458,16 +406,13 @@ function commentsList (comments, parent, digest, send) {
     .sort(function (a, b) {
       return parseInt(a.timestamp) - parseInt(b.timestamp)
     })
-  var ol = document.createElement('ol')
-  ol.className = 'comments'
-  for (var index = 0; index < roots.length; index++) {
-    ol.appendChild(
-      commentListItem(
+  return h('ol.comments',
+    roots.map(function (root) {
+      return commentListItem(
         roots[index], [], comments, digest, parent, send
       )
-    )
-  }
-  return ol
+    })
+  )
 }
 
 function commentListItem (
@@ -491,10 +436,10 @@ function commentListItem (
 
   return h('li', {'data-uuid': uuid},
     improvePunctuation(comment.text),
-    h('span.byline',
+    h('span.byline', [
       publisherLink(comment.publisher),
       new Date(parseInt(comment.timestamp)).toLocaleString()
-    ),
+    ]),
     h('div.buttons', reply),
     (replies.length === 0
       ? null
@@ -507,14 +452,13 @@ function commentListItem (
   )
 
   function replyButton () {
-    var button = document.createElement('button')
-    button.onclick = function (event) {
-      event.preventDefault()
-      event.stopPropagation()
-      send('form:reply to', comment)
-    }
-    button.appendChild(document.createTextNode('Reply'))
-    return button
+    return h('button', {
+      onclick: function (event) {
+        event.preventDefault()
+        event.stopPropagation()
+        send('form:reply to', comment)
+      }
+    }, 'Reply')
   }
 }
 
@@ -532,23 +476,23 @@ function commentForm (digest, parent, send) {
   assert(typeof send === 'function')
   var context
   if (!parent) {
-    context = h('p',
+    context = h('p', [
       h('label', {for: 'context'},
         'Comment on this form: '
       ),
-      h('select', {name: 'context'},
+      h('select', {name: 'context'}, [
         h('option', {value: 'root'}, 'In this context'),
         h('option', {value: digest, selected: 'selected'},
           'Anywhere it appears'
         )
-      )
-    )
+      ])
+    ])
   }
 
-  return h('form.newComment', {onsubmit: onSubmit},
+  return h('form.newComment', {onsubmit: onSubmit}, [
     context,
     h('textarea', {required: 'required', name: 'text'}),
-    h('p',
+    h('p', [
       h('input', {
         type: 'text',
         required: 'required',
@@ -562,8 +506,8 @@ function commentForm (digest, parent, send) {
         name: 'password'
       }),
       h('button', {type: 'submit'}, 'Publish Comment')
-    )
-  )
+    ])
+  ])
 
   function onSubmit (event) {
     event.preventDefault()

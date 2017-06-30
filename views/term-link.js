@@ -1,9 +1,9 @@
 var assert = require('assert')
+var h = require('../h')
 
 module.exports = function termLink (term) {
   assert.equal(typeof term, 'string')
-  var a = document.createElement('a')
-  a.className = 'term'
-  a.href = '/search/definitions/' + encodeURIComponent(term)
-  return a
+  return h('a.term', {
+    href: '/search/definitions/' + encodeURIComponent(term)
+  }, term)
 }

@@ -1,10 +1,9 @@
 var assert = require('assert')
+var h = require('../h')
 
 module.exports = function headingLink (heading) {
   assert(typeof heading === 'string')
-  var a = document.createElement('a')
-  a.className = 'heading'
-  a.href = '/search/forms/' + encodeURIComponent(heading)
-  a.appendChild(document.createTextNode(heading))
-  return a
+  return h('a.heading', {
+    href: '/search/forms/' + encodeURIComponent(heading)
+  }, heading)
 }

@@ -1,4 +1,5 @@
 var assert = require('assert')
+var h = require('../h')
 
 module.exports = sidebar
 
@@ -10,90 +11,68 @@ function sidebar (mode, send) {
     mode !== 'search' &&
     mode !== 'none'
   )
-  var div = document.createElement('div')
-  div.className = 'modes'
-
-  var search = document.createElement('a')
-  search.href = '/search'
-  search.className = 'search ' + enableIf(mode === 'search')
-  search.title = 'Click to search forms.'
-  div.appendChild(search)
-
-  var publishers = document.createElement('a')
-  publishers.href = '/publishers'
-  publishers.className = 'browse ' + enableIf(mode === 'browse')
-  publishers.title = 'Click to browse forms.'
-  div.appendChild(publishers)
-
-  if (showReadModes) {
-    div.appendChild(readButton())
-    div.appendChild(toolbox(send))
-  }
-
-  var help = document.createElement('a')
-  help.href = 'http://help.commonform.org'
-  help.className = 'help disabled'
-  help.setAttribute('rel', 'noreferrer')
-  help.setAttribute('target', '_blank')
-  help.title = 'Click for help.'
-  div.appendChild(help)
-
-  return div
+  return h('div.modes', [
+    h('a', {
+      href: '/search',
+      className: 'search ' + enableIf(mode === 'search'),
+      title: 'Click to search forms.'
+    }),
+    h('a', {
+      href: '/publishers',
+      className: 'browse ' + enableIf(mode === 'browse'),
+      title: 'Click to browse forms.'
+    }),
+    showReadModes ? readButton() : null,
+    showReadModes ? toolbox(send) : null,
+    h('a',
+      {
+        href: 'http://help.commonform.org',
+        className: 'help disabled',
+        rel: 'noreferrer',
+        target: '_blank',
+        title: 'Click for help.'
+      }
+    )
+  ])
 }
 
 function toolbox (send) {
   assert(typeof send === 'function')
   var hidden = true
 
-  var div = document.createElement('div')
-  div.className = 'tools'
-  div.onclick = onClick
-
-  var tools = document.createElement('a')
-  tools.id = 'toolsLink'
-  tools.title = 'Click to open toolbox.'
-  tools.className = 'tools disabled'
-  div.appendChild(tools)
-
-  var box = document.createElement('div')
-  box.id = 'toolbox'
-  box.className = 'toolbox closed'
-
-  var subscribe = document.createElement('a')
-  subscribe.title = 'Subscribe via e-mail.'
-  subscribe.className = 'subscribe'
-  subscribe.onclick = function (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    close()
-    send('form:mode', 'mail')
-  }
-  subscribe.appendChild(document.createTextNode('Subscribe'))
-  box.appendChild(subscribe)
-
-  var save = document.createElement('a')
-  save.title = 'Store with CommonForm.org'
-  save.className = 'save'
-  save.onclick = function (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    close()
-    send('form:mode', 'save')
-  }
-  save.appendChild(document.createTextNode('Store Online'))
-  box.appendChild(save)
-
-  box.appendChild(tool('simplify', 'Simplify Structure', close, send))
-  box.appendChild(tool('renameTerm', 'Rename Term', close, send))
-  box.appendChild(tool('renameHeading', 'Rename Heading', close, send))
-  box.appendChild(tool('identify', 'Mark Terms', close, send))
-  box.appendChild(tool('saveDOCX', 'Save DOCX', close, send))
-  box.appendChild(tool('saveProject', 'Save Project', close, send))
-  box.appendChild(tool('mail', 'E-Mail', close, send))
-
-  div.appendChild(box)
-
-  return div
+  return h('div.tools', {onclick: onClick}, [
+    h('a.tools.disabled#toolsLink', {
+      title: 'Click to open toolbox.'
+    }),
+    h('div.toolbox.closed#toolbox', [
+      h('a.subscribe', {
+        title: 'Subscribe via e-mail.',
+        onclick: function (event) {
+          event.preventDefault()
+          event.stopPropagation()
+          close()
+          send('form:mode', 'mail')
+        }
+      }, 'Subscribe'),
+      h('a.save', {
+        title: 'Store with CommonForm.org',
+        className: 'save',
+        onclick: function (event) {
+          event.preventDefault()
+          event.stopPropagation()
+          close()
+          send('form:mode', 'save')
+        }
+      }, 'Store Online'),
+      tool('simplify', 'Simplify Structure', close, send),
+      tool('renameTerm', 'Rename Term', close, send),
+      tool('renameHeading', 'Rename Heading', close, send),
+      tool('identify', 'Mark Terms', close, send),
+      tool('saveDOCX', 'Save DOCX', close, send),
+      tool('saveProject', 'Save Project', close, send),
+      tool('mail', 'E-Mail', close, send)
+    ])
+  ])
 
   function onClick (event) {
     if (hidden) {
@@ -170,24 +149,23 @@ function tool (name, label, closeToolbox, send) {
   assert(TOOLS.hasOwnProperty(name))
   assert(typeof send === 'function')
   var tool = TOOLS[name]
-  var a = document.createElement('a')
-  a.className = name
-  a.onclick = function (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    send(tool.action)
-    closeToolbox()
-  }
-  a.title = tool.title
-  a.appendChild(document.createTextNode(label))
-  return a
+  return h('a', {
+    className: name,
+    onclick: function (event) {
+      event.preventDefault()
+      event.stopPropagation()
+      send(tool.action)
+      closeToolbox()
+    },
+    title: tool.title
+  }, label)
 }
 
 function readButton () {
-  var a = document.createElement('a')
-  a.title = 'Reviewing form.'
-  a.className = 'enabled read'
-  return a
+  return h('a', {
+    title: 'Reviewing form.',
+    className: 'enabled read'
+  })
 }
 
 function enableIf (argument) {

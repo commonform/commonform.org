@@ -1,11 +1,10 @@
 var assert = require('assert')
+var h = require('../h')
 
 module.exports = function reference (heading) {
   assert(typeof heading === 'string')
-  var a = document.createElement('a')
-  a.className = 'reference'
-  a.title = 'Jump to ' + heading
-  a.href = '#Heading:' + heading
-  a.appendChild(document.createTextNode(heading))
-  return a
+  return h('a.reference', {
+    title: 'Jump to ' + heading,
+    href: '#Heading:' + heading
+  }, heading)
 }

@@ -1,6 +1,6 @@
 var assert = require('assert')
 var footer = require('./footer')
-var h = require('hyperscript')
+var h = require('../h')
 var isSHA256 = require('is-sha-256-hex-digest')
 var loading = require('./loading')
 var publisherLink = require('./publisher-link')
@@ -19,17 +19,17 @@ module.exports = function publishers (state, send) {
       send('browser:get publishers')
     })
   } else {
-    return h('div.container',
-      h('article.commonform',
+    return h('div.container', [
+      h('article.commonform', [
         sidebar('browse', send),
         h('h1', 'Common Forms'),
-        h('p',
+        h('p', [
           'commonform.org is a free, open repository of legal forms.',
           'Browse published forms by publisher name below, or create',
           'your own form online.  Click the lifesaver to the left',
           'for help.'
-        ),
-        h('p',
+        ]),
+        h('p', [
           h('button', {
             onclick: function () {
               send('form:new form')
@@ -43,8 +43,8 @@ module.exports = function publishers (state, send) {
               onchange: selectFile
             })
           )
-        ),
-        h('p',
+        ]),
+        h('p', [
           h('form.fetchDigest', {onsubmit: fetchDigest},
             h('input', {
               name: 'digest',
@@ -55,19 +55,19 @@ module.exports = function publishers (state, send) {
             }),
             h('button', {type: 'submit'}, 'Fetch from commonform.org')
           )
-        ),
+        ]),
         h('h2', 'Browse by Publisher'),
         h('ul', state.publishers.map(function (publisher) {
           return h('li', publisherLink(publisher, send))
         })),
-        h('p',
+        h('p', [
           'If you would like to publish forms, e-mail ',
           h('a', {href: MAILTO}, 'Kyle Mitchell'),
           '.'
-        ),
+        ]),
         footer()
-      )
-    )
+      ])
+    ])
   }
 
   function fetchDigest (event) {

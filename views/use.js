@@ -1,11 +1,11 @@
 var assert = require('assert')
+var h = require('../h')
 
 module.exports = function use (term) {
   assert(typeof term === 'string')
-  var a = document.createElement('a')
-  a.className = 'use'
-  a.title = 'Jump to definition of ' + term
-  a.href = '#Definition:' + term
-  a.appendChild(document.createTextNode(term))
-  return a
+  return h('a.use', {
+    className: 'use',
+    title: 'Jump to definition of ' + term,
+    href: '#Definition:' + term
+  }, term)
 }

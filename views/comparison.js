@@ -3,7 +3,7 @@ var classnames = require('classnames')
 var clone = require('../utilities/clone')
 var definition = require('./definition')
 var group = require('commonform-group-series')
-var h = require('hyperscript')
+var h = require('../h')
 var predicates = require('commonform-predicate')
 var reference = require('./reference')
 var use = require('./use')
@@ -45,7 +45,7 @@ function comparison (diff) {
 
   return h('section.' + classNames,
     wrapper(
-      h('div',
+      h('div', [
         root ? null : h('a.sigil', '\u00A7'),
         Array.isArray(diff.heading)
           ? heading(diff.heading)
@@ -58,7 +58,7 @@ function comparison (diff) {
             : paragraph
           return renderer(group)
         })
-      )
+      ])
     )
   )
 }

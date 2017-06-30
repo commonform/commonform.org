@@ -1,7 +1,7 @@
 var assert = require('assert')
 var digestLink = require('./digest-link')
 var footer = require('./footer')
-var h = require('hyperscript')
+var h = require('../h')
 var headingLink = require('./heading-link')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
@@ -21,21 +21,21 @@ module.exports = function search (action, value, state, send) {
       send('search:' + action, value)
     })
   } else {
-    return h('div.container',
-      h('article.commonform',
+    return h('div.container', [
+      h('article.commonform', [
         sidebar('search', send),
         h('h1', 'Search Common Forms'),
         action ? results(state, send) : searchBox(send),
         footer()
-      )
-    )
+      ])
+    ])
   }
 }
 
 function searchBox (send) {
   var nextAction
   var data
-  return h('div.search',
+  return h('div.search', [
     h('form',
       {
         onsubmit: function (event) {
@@ -45,39 +45,41 @@ function searchBox (send) {
           }
         }
       },
-      h('input.invalid#searchQuery', {
-        type: 'search',
-        autofocus: true,
-        placeholder: 'Enter a query and press Return.',
-        oninput: function (event) {
-          var value = normalizeQuery(event.target.value)
-          var match
-          var length = patterns.length
-          for (var index = 0; index < length; index++) {
-            var pattern = patterns[index]
-            match = pattern.expression.exec(value)
-            if (match) {
-              nextAction = pattern.action
-              data = match[pattern.group]
-              event.target.className = 'valid'
-              return
+      [
+        h('input.invalid#searchQuery', {
+          type: 'search',
+          autofocus: true,
+          placeholder: 'Enter a query and press Return.',
+          oninput: function (event) {
+            var value = normalizeQuery(event.target.value)
+            var match
+            var length = patterns.length
+            for (var index = 0; index < length; index++) {
+              var pattern = patterns[index]
+              match = pattern.expression.exec(value)
+              if (match) {
+                nextAction = pattern.action
+                data = match[pattern.group]
+                event.target.className = 'valid'
+                return
+              }
             }
+            event.target.className = 'invalid'
+            match = null
+            data = null
           }
-          event.target.className = 'invalid'
-          match = null
-          data = null
-        }
-      })
+        })
+      ]
     ),
-    h('section.hints',
+    h('section.hints', [
       h('p', 'You can enter queries like:'),
       h('ul.examples',
         patterns.forEach(function (pattern) {
           return hint(pattern)
         })
       )
-    )
-  )
+    ])
+  ])
 }
 
 function hint (pattern) {
@@ -86,10 +88,10 @@ function hint (pattern) {
 
 function results (state, send) {
   if (state.query) {
-    return h('div.results',
+    return h('div.results', [
       h('p.query', state.query),
       resultList(state.results, send)
-    )
+    ])
   } else {
     return null
   }

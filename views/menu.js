@@ -1,26 +1,26 @@
 var assert = require('assert')
 var fromElements = require('../utilities/from-elements')
-var h = require('hyperscript')
+var h = require('../h')
 
 var GUIDE = 'https://github.com/commonform/new-publisher-guide'
 
 module.exports = function menu (form, send) {
   assert(typeof form === 'object')
   assert(typeof send === 'function')
-  return h('div.menu',
-    h('section.dangerZone',
+  return h('div.menu', [
+    h('section.dangerZone', [
       safety(),
       saveUI(),
       publishUI()
-    )
-  )
+    ])
+  ])
 }
 
 function safety (send) {
-  return h('form', {onchange: checkSafety},
+  return h('form', {onchange: checkSafety}, [
     h('p', 'Before clicking any buttons down here:'),
     h('p',
-      h('label',
+      h('label', [
         h('input', {type: 'checkbox'}),
         'Read the ',
         h('a', {href: GUIDE}, 'New Publisher Guide'),
@@ -28,28 +28,28 @@ function safety (send) {
         'Saving and publishing are ',
         h('em', 'irreversible'),
         '.'
-      )
+      ])
     ),
     h('p',
-      h('label',
+      h('label', [
         h('input', {type: 'checkbox'}),
         'Take a break, then review the form again with fresh eyes.'
-      )
+      ])
     ),
     h('p',
-      h('label',
+      h('label', [
         h('input', {type: 'checkbox'}),
         'This ain’t no Twitter /',
         'This ain’t no Facebook /',
         'This ain’t no foolin’ around.'
-      )
+      ])
     ),
     h('p',
       h('label',
         h('input', {type: 'checkbox'})
       )
     )
-  )
+  ])
 
   function checkSafety (event) {
     event.preventDefault()
@@ -77,12 +77,12 @@ function safety (send) {
 }
 
 function saveUI (form, send) {
-  return h('form.save', {onsubmit: save},
+  return h('form.save', {onsubmit: save}, [
     h('h2', 'Save to commonform.org'),
-    h('p',
+    h('p', [
       publisherAndPassword(),
       h('button', {type: 'submit'}, 'Save Form')
-    ),
+    ]),
     h('p',
       h('em',
         'Make damn sure there isn’t any confidential information',
@@ -94,7 +94,7 @@ function saveUI (form, send) {
         'the more generic parts.'
       )
     )
-  )
+  ])
 
   function save (event) {
     event.preventDefault()
@@ -105,9 +105,9 @@ function saveUI (form, send) {
   }
 }
 
-
 function publishUI (send) {
-  return h('form.publish', {onsubmit: publish},
+  return h('form.publish',
+    {onsubmit: publishForm},
     h('h2', 'Publish to commonform.org'),
     h('p', publisherAndPassword()),
     h('p',

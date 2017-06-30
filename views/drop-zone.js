@@ -1,4 +1,5 @@
 var assert = require('assert')
+var h = require('../h')
 
 module.exports = dropZone
 
@@ -26,9 +27,8 @@ function dropZone (effect, path, send) {
     onClick = null
     text = ''
   }
-  var div = document.createElement('div')
-  div.className = classes
-  div.onclick = onClick
-  div.appendChild(document.createTextNode(text))
-  return div
+  return h('div', {
+    className: classes,
+    onclick: onClick
+  }, text)
 }

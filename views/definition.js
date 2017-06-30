@@ -1,10 +1,10 @@
 var assert = require('assert')
+var h = require('../h')
 
 module.exports = function definition (term) {
   assert(typeof term === 'string')
-  var dfn = document.createElement('dfn')
-  dfn.setAttribute('titie', 'Definition of ' + term)
-  dfn.id = 'Definition:' + term
-  dfn.appendChild(document.createTextNode(term))
-  return dfn
+  return h('dfn', {
+    title: 'Definition of ' + term,
+    id: 'Definition:' + term
+  }, term)
 }

@@ -1,7 +1,7 @@
 var assert = require('assert')
 var comparison = require('./comparison')
 var footer = require('./footer')
-var h = require('hyperscript')
+var h = require('../h')
 var header = require('./header')
 var loading = require('./loading')
 var sidebar = require('./sidebar')
@@ -18,7 +18,7 @@ module.exports = function compare (a, b, state, send) {
     })
   } else {
     return h('div.container',
-      h('article.commonform',
+      h('article.commonform', [
         sidebar(state.mode, send),
         header(
           state.merkle.digest,
@@ -29,7 +29,7 @@ module.exports = function compare (a, b, state, send) {
         ),
         comparison(state.diff, send),
         footer()
-      )
+      ])
     )
   }
 }
