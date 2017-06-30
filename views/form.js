@@ -1,3 +1,4 @@
+var keyarrayStartsWith = require('../utilities/array-starts-with')
 var assert = require('assert')
 var classnames = require('classnames')
 var deepEqual = require('deep-equal')
@@ -14,6 +15,7 @@ var predicates = require('commonform-predicate')
 var publisherLink = require('./publisher-link')
 var reference = require('./reference')
 var replaceUnicode = require('../utilities/replace-unicode')
+var sameKeyArray = require('../utilities/same-keyarray')
 var use = require('./use')
 
 module.exports = form
@@ -24,12 +26,12 @@ function form (form, send) {
   var formKey = root ? [] : ['form']
   var tree = root ? form.tree : form.tree.form
   var groups = groupSeries(tree)
-  var isFocused = form.focused && deepEqual(form.focused, form.path)
+  var isFocused = form.focused && sameKeyArray(form.focused, form.path)
   var containsFocused = (
     isFocused ||
     (
       form.focused &&
-      deepEqual(form.path, form.focused.slice(0, form.path.length))
+      keyarrayStartsWith(form.path, form.focused)
     )
   )
   var annotationsHere = get(
