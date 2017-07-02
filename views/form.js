@@ -295,18 +295,8 @@ function marginalia (
   }
   var hasBlank = false
   for (var n = 0; n < tree.content.length; n++) {
-    var element = tree.content[n]
-    if (predicates.blank(element)) {
-      for (var j = 0; j < blanks.length; j++) {
-        var direction = blanks[j]
-        var blankPath = path.concat('form', 'content', n)
-        if (!deepEqual(direction.blank, blankPath)) {
-          hasBlank = true
-          break
-        }
-      }
-    }
-    if (hasBlank) {
+    if (predicates.blank(tree.content[n])) {
+      hasBlank = true
       break
     }
   }
