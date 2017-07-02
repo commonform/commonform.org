@@ -187,6 +187,7 @@ module.exports = function (initialize, _reduction, handler) {
 
   reduction('comparing', function (action, state) {
     return {
+      mode: 'read',
       comparing: {
         tree: action.tree,
         merkle: merkleize(action.tree),
@@ -222,7 +223,6 @@ module.exports = function (initialize, _reduction, handler) {
           done()
         } else {
           reduce('comparing', result)
-          reduce('mode', 'read')
           done()
         }
       })
@@ -474,8 +474,7 @@ module.exports = function (initialize, _reduction, handler) {
 
   handler('new form', function (action, state, reduce, done) {
     var tree = {content: ['Click to edit.']}
-    reduce('tree', {tree: tree})
-    reduce('mode', 'edit')
+    reduce('tree', {tree: tree, mode: 'read'})
     var path = formPath(state.merkle.digest)
     window.history.pushState(tree, '', path)
     done()
@@ -510,7 +509,6 @@ module.exports = function (initialize, _reduction, handler) {
       merkle: merkle
     }
     reduce('tree', data)
-    reduce('mode', 'read')
     window.history.pushState(data, '', formPath(root))
     done()
   })
