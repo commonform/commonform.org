@@ -418,8 +418,8 @@ module.exports = function (initialize, _reduction, handler) {
       // a.reference
       } else if (tagName === 'A' && className === 'reference') {
         return {reference: element.textContent}
-      // input.blank
-      } else if (tagName === 'INPUT' && className === 'blank') {
+      // .blank
+      } else if (className === 'blank') {
         return {blank: ''}
       // Handle nodes our rendered does _not_ generate.  These come
       // from user input and copy-and-paste.
