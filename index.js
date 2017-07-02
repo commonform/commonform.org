@@ -9,6 +9,7 @@ var formModel = require('./models/form')
 var level = require('./level')
 var loading = require('./views/loading')
 var nanomorph = require('nanomorph')
+var nanoraf = require('nanoraf')
 var notFound = require('./views/not-found')
 var parseJSON = require('json-parse-errback')
 var pathOf = require('pathname-match')
@@ -83,7 +84,7 @@ function useModel (scope, model) {
         actions.listenerCount(event), 0,
         'just one listener for ' + event
       )
-      actions.on(event, function (data) {
+      actions.on(event, nanoraf(function (data) {
         handler(data, state[scope], send, callback)
         function send (event, data) {
           event = scope + ':' + event
@@ -99,7 +100,7 @@ function useModel (scope, model) {
           }
           update()
         }
-      })
+      }))
     }
   }
 }
@@ -260,8 +261,8 @@ if (module.parent) {
         }
       })
     }
-  ], function () {
+  ], nanoraf(function () {
     rendered = render()
     document.body.appendChild(rendered)
-  })
+  }))
 }
