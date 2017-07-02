@@ -295,6 +295,8 @@ module.exports = function (initialize, _reduction, handler) {
       tree: action.tree,
       path: [],
       projects: [],
+      // TODO: Preserve blanks that couldn't have been affected by
+      // changes to the three.
       blanks: [],
       annotations: treeify(annotationsList),
       annotationsList: annotationsList,
