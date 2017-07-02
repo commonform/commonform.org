@@ -161,10 +161,10 @@ module.exports = function (initialize, _reduction, handler) {
     var newBlanks = clone(state.blanks)
     if (value === null) {
       if (index > -1) {
-        newBlanks.splice(index, 1)[0]
+        var spliced = newBlanks.splice(index, 1)[0]
         return {
           blanks: newBlanks,
-          rerender: true
+          rerender: [spliced.blank.slice(0, -3)]
         }
       }
     } else {
@@ -175,7 +175,7 @@ module.exports = function (initialize, _reduction, handler) {
       newBlanks[index].value = value
       return {
         blanks: newBlanks,
-        rerender: true
+        rerender: [blank.slice(0, -3)]
       }
     }
   })
