@@ -89,21 +89,6 @@ function form (form, send) {
   section.dataset.digest = digest
   section.dataset.commentsHere = String(commentsHere)
   section.dataset.containsFocused = String(containsFocused)
-  section.isSameNode = function (target) {
-    return (
-      // Section element.
-      target &&
-      target.nodeName &&
-      target.nodeName === 'SECTION' &&
-      target.dataset.digest === digest &&
-      // No comments.
-      commentsHere === false &&
-      target.dataset.commentsHere === 'false' &&
-      // Does not contain focused form.
-      containsFocused === false &&
-      target.dataset.containsFocused === 'false'
-    )
-  }
 
   if (!root) {
     section.appendChild(sectionButton(toggleFocus))
@@ -421,20 +406,6 @@ function paragraph (state, send) {
     }
   }
   returned.dataset.hasBlank = String(hasBlank)
-
-  /*
-  returned.isSameNode = function (target) {
-    return (
-      target &&
-      target.nodeName &&
-      target.nodeName === 'P' &&
-      target.className === 'text' &&
-      target.parentNode.dataset.digest === state.parentDigest &&
-      hasBlank === false &&
-      target.dataset.hasBlank === 'false'
-    )
-  }
-  */
 
   return returned
 }
