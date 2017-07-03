@@ -10,8 +10,8 @@ module.exports = function menu (form, send) {
   return h('div.menu',
     h('section.dangerZone',
       safety(),
-      saveUI(),
-      publishUI()
+      saveUI(send),
+      publishUI(send)
     )
   )
 }
@@ -71,7 +71,7 @@ function safety (send) {
   }
 }
 
-function saveUI (form, send) {
+function saveUI (send) {
   return h('form.save', {onsubmit: save},
     h('h2', 'Save to commonform.org'),
     h('p',
