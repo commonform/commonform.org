@@ -43,11 +43,6 @@ function safety (send) {
         'This ain’t no Facebook /',
         'This ain’t no foolin’ around.'
       )
-    ),
-    h('p',
-      h('label',
-        h('input', {type: 'checkbox'})
-      )
     )
   )
 
