@@ -22,7 +22,7 @@ function safety (send) {
     h('p',
       h('label',
         h('input', {type: 'checkbox'}),
-        'Read the ',
+        ' Read the ',
         h('a', {href: GUIDE}, 'New Publisher Guide'),
         '.',
         'Saving and publishing are ',
@@ -33,13 +33,13 @@ function safety (send) {
     h('p',
       h('label',
         h('input', {type: 'checkbox'}),
-        'Take a break, then review the form again with fresh eyes.'
+        ' Take a break, then review the form again with fresh eyes.'
       )
     ),
     h('p',
       h('label',
         h('input', {type: 'checkbox'}),
-        'This ain’t no Twitter /',
+        ' This ain’t no Twitter /',
         'This ain’t no Facebook /',
         'This ain’t no foolin’ around.'
       )
