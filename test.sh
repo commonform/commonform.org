@@ -1,16 +1,11 @@
 #!/bin/bash
 set -e
 
-echo "Starting chromedriver."
-npm run chromedriver >chromedriver.log 2>&1 &
-CHROME_PID="$!"
-
 echo "Starting application and API servers."
 npm run start >servers.log 2>&1 &
 START_PID="$!"
 
 function cleanup {
-  rkill -2 "$CHROME_PID" >/dev/null
   rkill -2 "$START_PID" >/dev/null
 }
 

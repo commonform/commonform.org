@@ -1,3 +1,13 @@
+var spawn = require('child_process').spawn
+var path = require('path')
+
+var chromedriver = spawn(
+  path.join(
+    __dirname, '..', 'node_modules', '.bin', 'chromedriver'
+  ),
+  ['--url-base=/wd/hub']
+)
+
 var webdriver = module.exports = (function () {
   return require('webdriverio')
     .remote(configuration())
@@ -35,6 +45,20 @@ function configuration () {
   )
 }
 
-require('tape').onFinish(function () {
+process
+  .on('SIGTERM', cleanupAndExit)
+  .on('SIGQUIT', cleanupAndExit)
+  .on('SIGINT', cleanupAndExit)
+  .on('uncaughtException', cleanupAndExit)
+
+function cleanup () {
   webdriver.end()
-})
+  chromedriver.kill('SIGKILL')
+}
+
+function cleanupAndExit () {
+  cleanup()
+  process.exit(1)
+}
+
+require('tape').onFinish(cleanup)
