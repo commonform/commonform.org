@@ -59,6 +59,6 @@ REF=${1:-HEAD}
 	rsync $FLAGS $BUILD/index.html commonform.org:$ROOT/
 )
 
-TAGNAME="deployed-$(date --iso-8601=seconds --utc | tr -d ':')"
+TAGNAME="deployed-$(date --iso-8601=seconds --utc | tr -d ':' | sed 's/+0000//')"
 git tag "$TAGNAME"
 git push origin "$TAGNAME"
