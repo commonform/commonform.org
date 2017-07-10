@@ -1,5 +1,6 @@
 #!/bin/bash
 # Build the application from a clean slate and deploy to commonform.org.
+set -e
 
 # Directory where built files end up.
 BUILD=build
@@ -57,3 +58,7 @@ REF=${1:-HEAD}
 	# build's directory in ROOT.
 	rsync $FLAGS $BUILD/index.html commonform.org:$ROOT/
 )
+
+TAGNAME="deployed-$(date --iso-8601=seconds --utc | tr -d ':')"
+git tag "$TAGNAME"
+git push origin "$TAGNAME"
