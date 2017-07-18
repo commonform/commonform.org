@@ -28,6 +28,7 @@ module.exports = function editor (state, send) {
   } else {
     article.onclick = onClick
     article.appendChild(sidebar(state.mode, send))
+    article.appendChild(wordDownload(send))
     article.appendChild(
       header(state.merkle.digest, state.publications, false, [], send)
     )
@@ -62,4 +63,18 @@ module.exports = function editor (state, send) {
       }
     }
   }
+}
+
+function wordDownload (send) {
+  var div = document.createElement('div')
+  div.className = 'static'
+  var button = document.createElement('button')
+  button.appendChild(document.createTextNode('Save .docx'))
+  button.onclick = function (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    send('form:download docx')
+  }
+  div.appendChild(button)
+  return div
 }
