@@ -138,8 +138,6 @@ button
       margin: 0.5rem
       font-size: 80%
       float: top
-      &.saveDOCX
-        background-image: url(icons/basic_case.svg)
       &.save
         background-image: url(icons/basic_elaboration_cloud_upload.svg)
       &.saveProject
@@ -178,6 +176,8 @@ button
       background-image: url(icons/basic_folder_multiple.svg)
     &.read
       background-image: url(icons/basic_sheet_pencil.svg)
+    &.saveDOCX
+      background-image: url(icons/arrows_move_bottom.svg)
     &.tools
       background-image: url(icons/basic_settings.svg)
     &.help
@@ -186,6 +186,8 @@ button
       background-color: white
     &.disabled
       opacity: 0.2
+    &:hover
+      opacity: 1.0
 
 .settings
   fieldset

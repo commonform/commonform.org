@@ -28,6 +28,7 @@ function sidebar (mode, send) {
   if (showReadModes) {
     div.appendChild(readButton())
     div.appendChild(toolbox(send))
+    div.appendChild(saveDOCXButton(send))
   }
 
   var help = document.createElement('a')
@@ -87,7 +88,6 @@ function toolbox (send) {
   box.appendChild(tool('renameTerm', 'Rename Term', close, send))
   box.appendChild(tool('renameHeading', 'Rename Heading', close, send))
   box.appendChild(tool('identify', 'Mark Terms', close, send))
-  box.appendChild(tool('saveDOCX', 'Save DOCX', close, send))
   box.appendChild(tool('saveProject', 'Save Project', close, send))
   box.appendChild(tool('mail', 'E-Mail', close, send))
 
@@ -134,10 +134,6 @@ var TOOLS = {
   saveProject: {
     title: 'Save project file.',
     action: 'form:download project'
-  },
-  saveDOCX: {
-    title: 'Save Word file.',
-    action: 'form:download docx'
   },
   mail: {
     title: 'E-Mail a link.',
@@ -187,6 +183,18 @@ function readButton () {
   var a = document.createElement('a')
   a.title = 'Reviewing form.'
   a.className = 'enabled read'
+  return a
+}
+
+function saveDOCXButton (send) {
+  var a = document.createElement('a')
+  a.title = 'Save DOCX'
+  a.className = 'disabled saveDOCX'
+  a.onclick = function (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    send('form:download docx')
+  }
   return a
 }
 
