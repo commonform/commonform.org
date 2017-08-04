@@ -7,7 +7,7 @@
     "clipboard": "^1.5.12",
     "commonform-archaic": "^1.2.1",
     "commonform-diff": "^1.0.0",
-    "commonform-docx": "^1.0.0",
+    "commonform-docx": "^1.2.2",
     "commonform-fix-strings": "^0.2.3",
     "commonform-group-series": "^0.5.1",
     "commonform-lint": "^1.0.0",

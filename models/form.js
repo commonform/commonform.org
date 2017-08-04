@@ -128,6 +128,8 @@ module.exports = function (initialize, _reduction, handler) {
       projects: [],
       publications: [],
       parentComment: null,
+      prependHash: true,
+      markFilled: true,
       signaturePages: [],
       tree: null
     }
@@ -562,6 +564,36 @@ module.exports = function (initialize, _reduction, handler) {
     }))
   })
 
+  reduction('prependHash', function (data, state) {
+    return {
+      prependHash: data,
+      rerender: false
+    }
+  })
+
+  handler('prependHash', function (data, state, reduce, done) {
+    var json = JSON.stringify(data)
+    level.put('settings.prependHash', json, ecb(done, function () {
+      reduce('prependHash', data)
+      done()
+    }))
+  })
+
+  reduction('markFilled', function (data, state) {
+    return {
+      markFilled: data,
+      rerender: false
+    }
+  })
+
+  handler('markFilled', function (data, state, reduce, done) {
+    var json = JSON.stringify(data)
+    level.put('settings.markFilled', json, ecb(done, function () {
+      reduce('markFilled', data)
+      done()
+    }))
+  })
+
   handler('save', function (data, state, reduce, done) {
     var publisher = data.publisher
     var password = data.password
@@ -691,6 +723,12 @@ module.exports = function (initialize, _reduction, handler) {
           return numbering.name === numberingName
         })
           .numbering
+      }
+      if (state.prependHash) {
+        options.hash = true
+      }
+      if (state.markFilled) {
+        options.markFilled = true
       }
       if (state.signaturePages) {
         options.after = signaturePagesToOOXML(state.signaturePages)

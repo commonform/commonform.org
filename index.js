@@ -260,9 +260,31 @@ if (module.parent) {
           done()
         }
       })
-    }
+    },
+    readSetting('prependHash'),
+    readSetting('markFilled')
   ], nanoraf(function () {
     rendered = render()
+    console.log(state)
     document.body.appendChild(rendered)
   }))
+}
+
+function readSetting (name) {
+  return function (done) {
+    level.get('settings.' + name, function (error, data) {
+      if (!error && data) {
+        parseJSON(data, function (error, value) {
+          if (error) {
+            console.error(error)
+          } else {
+            reductions.emit('form:' + name, value)
+          }
+          done()
+        })
+      } else {
+        done()
+      }
+    })
+  }
 }

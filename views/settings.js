@@ -19,6 +19,22 @@ module.exports = function settings (state, send) {
   second.appendChild(numbering(state.numbering, send))
   section.appendChild(second)
 
+  var third = document.createElement('p')
+  third.appendChild(document.createTextNode('Document: '))
+  third.appendChild(toggle(
+    'Form Hash in Header',
+    'form:prependHash',
+    state.prependHash,
+    send
+  ))
+  third.appendChild(toggle(
+    'Mark Filled Blanks',
+    'form:markFilled',
+    state.markFilled,
+    send
+  ))
+  section.appendChild(third)
+
   return section
 }
 
@@ -84,4 +100,22 @@ function numbering (selected, send) {
   form.appendChild(select)
 
   return form
+}
+
+function toggle (labelText, action, enabled, send) {
+  var label = document.createElement('label')
+
+  var input = document.createElement('input')
+  input.setAttribute('type', 'checkbox')
+  if (enabled) {
+    input.setAttribute('checked', 'true')
+  }
+  input.onchange = function (event) {
+    send(action, event.target.checked)
+  }
+  label.appendChild(input)
+
+  label.appendChild(document.createTextNode(labelText))
+
+  return label
 }
