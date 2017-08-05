@@ -64,11 +64,11 @@ function form (form, send) {
   )
   var commentsHere = false
   if (form.comments) {
-   var commentsHere = form.comments
-     ? form.comments.filter(function (comment) {
-       return comment.form === form.merkle.digest
-     })
-     : false
+    commentsHere = form.comments
+      ? form.comments.filter(function (comment) {
+        return comment.form === form.merkle.digest
+      })
+      : false
   }
   var showComments = (
     (root || isFocused || form.withinFocused) &&
