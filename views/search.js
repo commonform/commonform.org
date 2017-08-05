@@ -72,7 +72,7 @@ function searchBox (send) {
     h('section.hints',
       h('p', 'You can enter queries like:'),
       h('ul.examples',
-        patterns.forEach(function (pattern) {
+        patterns.map(function (pattern) {
           return hint(pattern)
         })
       )
