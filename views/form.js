@@ -479,6 +479,7 @@ function commentListItem (
     improvePunctuation(comment.text),
     h('span.byline',
       publisherLink(comment.publisher),
+      ' ',
       new Date(parseInt(comment.timestamp)).toLocaleString()
     ),
     h('div.buttons', reply),
