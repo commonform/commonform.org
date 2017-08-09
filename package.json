@@ -54,7 +54,9 @@
     "envify": "^4.0.0",
     "es2020": "^1.1.7",
     "http-proxy": "^1.14.0",
+    "husky": "^0.14.3",
     "licensify": "^3.1.2",
+    "lint-staged": "^4.0.3",
     "node-sass": "^4.5.2",
     "npm-run-all": "^4.0.2",
     "run-series": "^1.1.4",
@@ -91,7 +93,11 @@
     "test": "tape test/*.test.js",
     "lint": "standard",
     "licensee": "licensee 2>&1",
+    "precommit": "lint-staged",
     "watch:css": "node-sass --watch --source-map true --output build styles/styles.sass",
     "watch:js": "watchify --ignore-transform uglifyify index.js -o build/browser.js -dv"
+  },
+  "lint-staged": {
+    "*.js": "standard"
   }
 }
