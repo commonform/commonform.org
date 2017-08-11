@@ -119,7 +119,7 @@ function publishUI (send) {
         placeholder: 'Reviewers Edition',
         name: 'edition'
       }),
-      submitButton()
+      h('button', {type: 'submit'}, 'Publish Form')
     ),
     h('p',
       h('em',
@@ -158,8 +158,4 @@ function publisherAndPassword () {
       name: 'password'
     })
   ]
-}
-
-function submitButton () {
-  return h('button', {type: 'submit'}, 'Save Form')
 }
