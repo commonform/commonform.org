@@ -10,6 +10,6 @@ module.exports = function (publication, callback) {
     '/publications/' + publication.edition
   )
   simple(uri, ecb(callback, function (body) {
-    callback(null, body.digest)
+    callback(null, body)
   }))
 }

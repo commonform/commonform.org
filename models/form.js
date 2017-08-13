@@ -305,7 +305,7 @@ module.exports = function (initialize, _reduction, handler) {
       comments: action.comments || null,
       merkle: action.merkle || merkleize(action.tree),
       publications: action.publications || [],
-      signaturePages: [],
+      signaturePages: action.signaturePages || [],
       focused: null,
       parentComment: null,
       diff: state.hasOwnProperty('comparing')
@@ -485,7 +485,7 @@ module.exports = function (initialize, _reduction, handler) {
   })
 
   handler('load publication', function (data, state, reduce, done) {
-    getPublicationForm(data, function (error, tree, digest) {
+    getPublicationForm(data, function (error, tree, digest, signaturePages) {
       if (error) {
         reduce('error', error)
         done()
@@ -495,7 +495,18 @@ module.exports = function (initialize, _reduction, handler) {
         getFormPublications(digest, function (error, publications) {
           reduce('tree', {
             tree: tree,
-            publications: error ? [] : publications
+            publications: error ? [] : publications,
+            signaturePages: signaturePages
+              ? signaturePages.map(function (page) {
+                if (page.entities === undefined) {
+                  page.entities = []
+                }
+                if (page.information === undefined) {
+                  page.information = []
+                }
+                return page
+              })
+              : []
           })
           window.history.replaceState(tree, '', formPath(digest))
           done()
