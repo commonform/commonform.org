@@ -611,9 +611,10 @@ module.exports = function (initialize, _reduction, handler) {
     var project = data.project
     var edition = data.edition
     var digest = state.merkle.digest
+    var signaturePages = state.signaturePages
     save(state, publisher, password, ecb(done, function () {
       publish(
-        digest, publisher, password, project, edition,
+        digest, signaturePages, publisher, password, project, edition,
         ecb(done, function () {
           window.alert(
             'Published ' + publisher + '\'s ' +
@@ -906,8 +907,12 @@ function save (state, publisher, password, callback) {
 }
 
 function publish (
-  digest, publisher, password, project, edition, callback
+  digest, signaturePages, publisher, password, project, edition, callback
 ) {
+  var body = {digest: digest}
+  if (signaturePages.length !== 0) {
+    body.signaturePages = signaturePages
+  }
   xhr({
     method: 'POST',
     uri: (
@@ -922,7 +927,7 @@ function publish (
       'Content-Type': 'application/json',
       'Authorization': 'Basic ' + btoa(publisher + ':' + password)
     },
-    body: JSON.stringify({digest: digest})
+    body: JSON.stringify(body)
   }, ecb(callback, function (response, body) {
     var status = response.statusCode
     if (status === 200 || status === 204) {
