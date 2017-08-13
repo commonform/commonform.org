@@ -622,7 +622,15 @@ module.exports = function (initialize, _reduction, handler) {
     var project = data.project
     var edition = data.edition
     var digest = state.merkle.digest
-    var signaturePages = state.signaturePages
+    var signaturePages = clone(state.signaturePages)
+    signaturePages.forEach(function (page) {
+      if (page.entities && page.entities.length === 0) {
+        delete page.entities
+      }
+      if (page.information && page.information.length === 0) {
+        delete page.information
+      }
+    })
     save(state, publisher, password, ecb(done, function () {
       publish(
         digest, signaturePages, publisher, password, project, edition,
