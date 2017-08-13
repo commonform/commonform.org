@@ -265,7 +265,6 @@ if (module.parent) {
     readSetting('markFilled')
   ], nanoraf(function () {
     rendered = render()
-    console.log(state)
     document.body.appendChild(rendered)
   }))
 }
