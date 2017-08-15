@@ -22,7 +22,7 @@ module.exports = function publishers (state, send) {
     return h('div.container',
       h('article.commonform',
         sidebar('browse', send),
-        h('h1', 'Common Forms'),
+        h('h1', 'Common Form'),
         h('p',
           'commonform.org is a free, open repository of legal forms.',
           'Browse published forms by publisher name below, or create',
