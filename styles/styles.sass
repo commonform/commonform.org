@@ -8,7 +8,11 @@
   user-select: none;
 
 =commentBorder
-  border-left: 1px solid black
+  border: 1px solid #777
+  border-radius: 15px
+
+=legalPadYellow
+  background-color: rgb(255, 255, 220)
 
 =horizontalBorder
   margin-top: 1rem
@@ -483,8 +487,12 @@ button
   padding: 0
   li
     +commentBorder
+    +legalPadYellow
     border-left: 1px solid #777
-    padding: 0.25rem 0 0.25rem 1rem
+    padding: 1rem
+    margin-top: 1rem
+    &:first-child
+      margin-top: 0
   .byline
     text-align: right
     display: block
@@ -493,7 +501,9 @@ button
 
 .newComment
   +commentBorder
-  padding: 0 0 0 1rem
+  +legalPadYellow
+  padding: 1rem
+  margin-top: 1rem
   textarea
     width: 100%
     padding: 0
