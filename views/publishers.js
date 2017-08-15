@@ -24,9 +24,9 @@ module.exports = function publishers (state, send) {
         sidebar('browse', send),
         h('h1', 'Common Form'),
         h('p',
-          'commonform.org is a free, open repository of legal forms.',
-          'Browse published forms by publisher name below, or create',
-          'your own form online.  Click the lifesaver to the left',
+          'commonform.org is a free, open repository of legal forms. ',
+          'Browse published forms by publisher name below, or create ',
+          'your own form online.  Click the lifesaver to the left ',
           'for help.'
         ),
         h('p',
