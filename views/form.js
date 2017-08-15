@@ -283,7 +283,7 @@ function marginalia (
       break
     }
   }
-  if (hasError || hasAnnotation || hasBlank) {
+  if (hasError || hasAnnotation || hasBlank || hasComment) {
     var aside = document.createElement('aside')
     aside.className = 'marginalia'
     aside.onclick = toggleFocus
