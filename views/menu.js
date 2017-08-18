@@ -24,7 +24,7 @@ function safety (send) {
         h('input', {type: 'checkbox'}),
         ' Read the ',
         h('a', {href: GUIDE}, 'New Publisher Guide'),
-        '.',
+        '. ',
         'Saving and publishing are ',
         h('em', 'irreversible'),
         '.'
