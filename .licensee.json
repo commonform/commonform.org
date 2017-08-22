@@ -1,4 +1,18 @@
 {
   "license": "(MIT OR BSD-2-Clause OR BSD-3-Clause OR ISC OR Apache-2.0 OR WTFPL OR Unlicense OR CC0-1.0)",
-  "whitelist": {}
+  "whitelist": {
+    "xtend": "2.1.2 || 3.0.0",
+    "class-list": "0.1.1",
+    "dom-walk": "0.1.1",
+    "escape-regexp": "0.0.1",
+    "filesaver.js": "0.2.0",
+    "for-each": "0.3.2",
+    "hyperx": "2.3.0",
+    "indexof": "0.0.1",
+    "min-document": "2.19.0",
+    "pako": "1.0.5",
+    "process": "0.5.2",
+    "trim": "0.0.1",
+    "xml-escape": "1.1.0"
+  }
 }
