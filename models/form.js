@@ -134,24 +134,25 @@ module.exports = function (initialize, _reduction, handler) {
     }
   })
 
-  reduction('mode', function (mode) {
-    return {
-      mode: mode,
-      rerender: true
-    }
-  })
+  function simpleReduction (key) {
+    reduction(key, function (value) {
+      var returned = {}
+      returned[key] = value
+      return returned
+    })
+  }
 
-  reduction('error', function (error) {
-    return {
-      error: error,
-      rerender: true
-    }
-  })
+  simpleReduction('mode')
+  simpleReduction('error')
 
-  handler('mode', function (mode, state, reduce, done) {
-    reduce('mode', mode)
-    done()
-  })
+  function simpleHandler (key) {
+    handler(key, function (data, state, reduce, done) {
+      reduce(key, data)
+      done()
+    })
+  }
+
+  simpleHandler('mode')
 
   reduction('blank', function (action, state) {
     var blank = action.path
@@ -181,10 +182,7 @@ module.exports = function (initialize, _reduction, handler) {
     }
   })
 
-  handler('blank', function (action, state, reduce, done) {
-    reduce('blank', action)
-    done()
-  })
+  simpleHandler('blank')
 
   reduction('comparing', function (action, state) {
     return {
@@ -249,10 +247,7 @@ module.exports = function (initialize, _reduction, handler) {
     }
   })
 
-  handler('focus', function (path, state, reduce, done) {
-    reduce('focus', path)
-    done()
-  })
+  simpleHandler('focus')
 
   reduction('signatures', function (action, state) {
     var pages = clone(state.signaturePages)
@@ -282,10 +277,7 @@ module.exports = function (initialize, _reduction, handler) {
     }
   })
 
-  handler('signatures', function (action, state, reduce, done) {
-    reduce('signatures', action)
-    done()
-  })
+  simpleHandler('signatures')
 
   // TODO: Compute `rerender` array.
   reduction('tree', function (action, state) {
@@ -668,10 +660,7 @@ module.exports = function (initialize, _reduction, handler) {
     return {parentComment: parent}
   })
 
-  handler('reply to', function (uuid, state, reduce, done) {
-    reduce('reply to', uuid)
-    done()
-  })
+  simpleHandler('reply to')
 
   handler('comment', function (data, state, reduce, done) {
     var publisher = data.publisher
@@ -791,11 +780,6 @@ module.exports = function (initialize, _reduction, handler) {
       reduce('mode', 'renaming' + type)
       done()
     })
-  })
-
-  handler('cancel renaming', function (data, state, reduce, done) {
-    reduce('renaming', false)
-    done()
   })
 
   handler('replace term', function (data, state, reduce, done) {
