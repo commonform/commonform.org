@@ -4,6 +4,7 @@ var form = require('./form')
 var header = require('./header')
 var mailMenu = require('./mail-menu')
 var menu = require('./menu')
+var saveScreen = require('./save-screen')
 var settings = require('./settings')
 var sidebar = require('./sidebar')
 var signaturePages = require('./signature-pages')
@@ -28,12 +29,16 @@ module.exports = function editor (state, send) {
   } else {
     article.onclick = onClick
     article.appendChild(sidebar(state.mode, send))
-    article.appendChild(
-      header(state.merkle.digest, state.publications, false, [], send)
-    )
-    article.appendChild(form(state, send))
-    article.appendChild(signaturePages(state.signaturePages, send))
-    article.appendChild(settings(state, send))
+    if (state.saving) {
+      article.appendChild(saveScreen(state, send))
+    } else {
+      article.appendChild(
+        header(state.merkle.digest, state.publications, false, [], send)
+      )
+      article.appendChild(form(state, send))
+      article.appendChild(signaturePages(state.signaturePages, send))
+      article.appendChild(settings(state, send))
+    }
     article.appendChild(footer())
   }
   return div

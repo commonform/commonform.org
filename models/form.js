@@ -114,7 +114,6 @@ module.exports = function (initialize, _reduction, handler) {
     return {
       rerender: true,
       annotators: annotatorFlags,
-      numbering: numberings[0].name,
       annotations: null,
       annotationsList: [],
       comments: [],
@@ -128,8 +127,7 @@ module.exports = function (initialize, _reduction, handler) {
       projects: [],
       publications: [],
       parentComment: null,
-      prependHash: true,
-      markFilled: true,
+      saving: false,
       signaturePages: [],
       tree: null
     }
@@ -733,50 +731,57 @@ module.exports = function (initialize, _reduction, handler) {
     })
   })
 
+  reduction('saving', function (state) {
+    return {saving: state}
+  })
+
+  ;['project', 'docx'].forEach(function (type) {
+    handler('prepare ' + type, function (data, state, reduce, done) {
+      reduce('saving', type)
+      done()
+    })
+  })
+
   handler('download docx', function (data, state, reduce, done) {
-    var title = window.prompt('Enter a document title', 'Untitled Form')
-    if (title !== null) {
-      var numberingName = state.numbering
-      var options = {
-        title: title,
-        numbering: find(numberings, function (numbering) {
-          return numbering.name === numberingName
-        })
-          .numbering
-      }
-      if (state.prependHash) {
-        options.hash = true
-      }
-      if (state.markFilled) {
-        options.markFilled = true
-      }
-      if (state.signaturePages) {
-        options.after = signaturePagesToOOXML(state.signaturePages)
-      }
-      filesaver(
-        docx(clone(state.tree), state.blanks, options)
-          .generate({type: 'blob'}),
-        fileName(title, 'docx'),
-        true
-      )
+    var title = data.title
+    var numberingName = data.numbering
+    var options = {
+      title: title,
+      numbering: find(numberings, function (numbering) {
+        return numbering.name === numberingName
+      })
+        .numbering
     }
+    options.hash = data.hash
+    options.markFilled = data.markFilled
+    if (state.signaturePages) {
+      options.after = signaturePagesToOOXML(state.signaturePages)
+    }
+    filesaver(
+      docx(clone(state.tree), state.blanks, options)
+        .generate({type: 'blob'}),
+      fileName(title, 'docx'),
+      true
+    )
+    reduce('saving', false)
+    done()
   })
 
   handler('download project', function (data, state, reduce, done) {
-    var title = window.prompt('Enter a file name', 'Untitled Form')
-    if (title !== null) {
-      var blob = new window.Blob(
-        [
-          JSON.stringify({
-            blanks: state.blanks,
-            signaturePages: state.signaturePages,
-            tree: state.tree
-          })
-        ],
-        {type: 'application/json;charset=utf-8'}
-      )
-      filesaver(blob, fileName(title, 'cform'), true)
-    }
+    var title = data.title
+    var blob = new window.Blob(
+      [
+        JSON.stringify({
+          blanks: state.blanks,
+          signaturePages: state.signaturePages,
+          tree: state.tree
+        })
+      ],
+      {type: 'application/json;charset=utf-8'}
+    )
+    filesaver(blob, fileName(title, 'cform'), true)
+    reduce('saving', false)
+    done()
   })
 
   handler('rename term', function (data, state, reduce, done) {

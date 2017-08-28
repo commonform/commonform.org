@@ -133,7 +133,7 @@ function toolbox (send) {
 var TOOLS = {
   saveProject: {
     title: 'Save project file.',
-    action: 'form:download project'
+    action: 'form:prepare project'
   },
   mail: {
     title: 'E-Mail a link.',
@@ -193,7 +193,7 @@ function saveDOCXButton (send) {
   a.onclick = function (event) {
     event.preventDefault()
     event.stopPropagation()
-    send('form:download docx')
+    send('form:prepare docx')
   }
   return a
 }
