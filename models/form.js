@@ -843,6 +843,7 @@ module.exports = function (initialize, _reduction, handler) {
     var prompt = data.digest
       ? 'Enter a form digest:'
       : 'Enter a publication like "goldplate\'s enforcement 1e":'
+    // TODO: reimplement form replacement w/o window.prompt
     var replacement = window.prompt(prompt)
     if (!replacement) {
       return
