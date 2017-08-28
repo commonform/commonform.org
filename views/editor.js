@@ -30,10 +30,9 @@ module.exports = function editor (state, send) {
   } else {
     article.onclick = onClick
     article.appendChild(sidebar(state.mode, send))
-    console.log(state)
-    if (state.saving) {
+    if (state.mode.indexOf('preparing') === 0) {
       article.appendChild(saveScreen(state, send))
-    } else if (state.renaming) {
+    } else if (state.mode.indexOf('renaming') === 0) {
       article.appendChild(renameScreen(state, send))
     } else {
       article.appendChild(

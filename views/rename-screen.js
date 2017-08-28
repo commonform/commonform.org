@@ -6,7 +6,7 @@ var TYPES = ['term', 'heading']
 module.exports = function replaceScreen (state, send) {
   assert(typeof state === 'object')
   assert(typeof send === 'function')
-  var type = state.renaming
+  var type = state.mode.split(' ')[1]
   assert(TYPES.indexOf(state.renaming) !== -1)
   return h('div.menu',
     h('form.rename',
@@ -36,7 +36,7 @@ module.exports = function replaceScreen (state, send) {
         onclick: function (event) {
           event.preventDefault()
           event.stopPropagation()
-          send('form:cancel renaming')
+          send('form:read')
         }
       }, 'Cancel'),
       h('button', {

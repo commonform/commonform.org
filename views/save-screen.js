@@ -10,7 +10,8 @@ var types = {
 module.exports = function saveScreen (state, send) {
   assert(typeof state === 'object')
   assert(typeof send === 'function')
-  return types[state.saving](state, send)
+  var type = state.mode.split(' ')[1]
+  return types[type](state, send)
 }
 
 function docxScreen (state, send) {
@@ -74,7 +75,7 @@ function docxScreen (state, send) {
         onclick: function (event) {
           event.preventDefault()
           event.stopPropagation()
-          send('form:cancel saving')
+          send('form:read')
         }
       }, 'Cancel'),
       h('button', {
@@ -114,7 +115,7 @@ function projectScreen (state, send) {
         onclick: function (event) {
           event.preventDefault()
           event.stopPropagation()
-          send('form:cancel saving')
+          send('form:read')
         }
       }, 'Cancel'),
       h('button', {

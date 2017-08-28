@@ -732,22 +732,15 @@ module.exports = function (initialize, _reduction, handler) {
     })
   })
 
-  reduction('saving', function (state) {
-    return {
-      saving: state,
-      renaming: false
-    }
-  })
-
   ;['project', 'docx'].forEach(function (type) {
     handler('prepare ' + type, function (data, state, reduce, done) {
-      reduce('saving', type)
+      reduce('mode', 'preparing ' + type)
       done()
     })
   })
 
-  handler('cancel saving', function (data, state, reduce, done) {
-    reduce('saving', false)
+  handler('read', function (data, state, reduce, done) {
+    reduce('mode', 'read')
     done()
   })
 
@@ -772,7 +765,7 @@ module.exports = function (initialize, _reduction, handler) {
       fileName(title, 'docx'),
       true
     )
-    reduce('saving', false)
+    reduce('mode', 'read')
     done()
   })
 
@@ -789,20 +782,13 @@ module.exports = function (initialize, _reduction, handler) {
       {type: 'application/json;charset=utf-8'}
     )
     filesaver(blob, fileName(title, 'cform'), true)
-    reduce('saving', false)
+    reduce('mode', 'read')
     done()
-  })
-
-  reduction('renaming', function (state) {
-    return {
-      renaming: state,
-      saving: false
-    }
   })
 
   ;['term', 'heading'].forEach(function (type) {
     handler('rename ' + type, function (data, state, reduce, done) {
-      reduce('renaming', type)
+      reduce('mode', 'renaming' + type)
       done()
     })
   })
