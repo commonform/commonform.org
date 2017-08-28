@@ -78,27 +78,6 @@ button
   padding: 0 1ex
   margin-right: 1ex
 
-.menu button:last-child
-  margin-right: 0
-
-.menu button:hover,
-.fileInputTrick:hover button
-  border: 1px solid black
-  color: black
-
-.menu
-  section
-    padding-bottom: 0.5rem
-    padding-top: 0.5rem
-  input[type=checkbox]
-    margin-right: 0.5rem
-  select
-    margin-left: 0.5rem
-  input[type=text]
-    width: 100%
-    display: block
-    padding: 0.25rem
-
 .container
   width: 37rem
   margin: 1rem auto
@@ -246,17 +225,45 @@ button
     margin: 0 0 1rem 0
 
   .menu
-    padding: 0
+    padding: 0 0 2rem 0
     margin: 0
+
+    section
+      padding-bottom: 0.5rem
+      padding-top: 0.5rem
+
     h1
       padding-top: 0
       margin-top: 0
     .dangerZone
       padding: 1rem
       background: repeating-linear-gradient(45deg, black, black 10px, yellow 10px, yellow 20px)
-      form
-        padding: 1rem
-        background: white
+
+    form
+      padding: 1rem
+      background: white
+      input[type=checkbox]
+        margin-right: 0.5rem
+      select
+        margin-left: 0.5rem
+      input[type=text], input[type=password]
+        padding: 0.25rem
+      input[type=text] + input[type=text], input[type=text] + input[type=password]
+        margin-left: 1rem
+      input.title
+        width: 100%
+        display: block
+        padding: 0.25rem
+      button[type=submit]
+        float: right
+
+    button:last-child
+      margin-right: 0
+
+    button:hover,
+    .fileInputTrick:hover button
+      border: 1px solid black
+      color: black
 
   footer, section.settings
     +horizontalBorder

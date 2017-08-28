@@ -31,11 +31,11 @@ function docxScreen (state, send) {
           })
         }
       },
-      h('h2', 'Download a .docx file for Microsoft Word'),
+      h('h1', 'Download a .docx file for Microsoft Word'),
       h('section',
         h('label',
           'Document Title',
-          h('input#docxTitle', {
+          h('input#docxTitle.title', {
             type: 'text',
             placeholder: 'Untitled Document'
           })
@@ -93,11 +93,11 @@ function projectScreen (state, send) {
           })
         }
       },
-      h('h2', 'Download a Common Form Project File'),
+      h('h1', 'Download a Common Form Project File'),
       h('section',
         h('label',
           'Document Title',
-          h('input#projectTitle', {
+          h('input#projectTitle.title', {
             type: 'text',
             placeholder: 'Untitled Project'
           })
