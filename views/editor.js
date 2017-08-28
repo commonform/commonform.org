@@ -4,6 +4,7 @@ var form = require('./form')
 var header = require('./header')
 var mailMenu = require('./mail-menu')
 var menu = require('./menu')
+var renameScreen = require('./rename-screen')
 var saveScreen = require('./save-screen')
 var settings = require('./settings')
 var sidebar = require('./sidebar')
@@ -29,8 +30,11 @@ module.exports = function editor (state, send) {
   } else {
     article.onclick = onClick
     article.appendChild(sidebar(state.mode, send))
+    console.log(state)
     if (state.saving) {
       article.appendChild(saveScreen(state, send))
+    } else if (state.renaming) {
+      article.appendChild(renameScreen(state, send))
     } else {
       article.appendChild(
         header(state.merkle.digest, state.publications, false, [], send)

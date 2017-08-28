@@ -127,6 +127,7 @@ module.exports = function (initialize, _reduction, handler) {
       projects: [],
       publications: [],
       parentComment: null,
+      renaming: false,
       saving: false,
       signaturePages: [],
       tree: null
@@ -732,7 +733,10 @@ module.exports = function (initialize, _reduction, handler) {
   })
 
   reduction('saving', function (state) {
-    return {saving: state}
+    return {
+      saving: state,
+      renaming: false
+    }
   })
 
   ;['project', 'docx'].forEach(function (type) {
@@ -740,6 +744,11 @@ module.exports = function (initialize, _reduction, handler) {
       reduce('saving', type)
       done()
     })
+  })
+
+  handler('cancel saving', function (data, state, reduce, done) {
+    reduce('saving', false)
+    done()
   })
 
   handler('download docx', function (data, state, reduce, done) {
@@ -784,13 +793,32 @@ module.exports = function (initialize, _reduction, handler) {
     done()
   })
 
-  handler('rename term', function (data, state, reduce, done) {
+  reduction('renaming', function (state) {
+    return {
+      renaming: state,
+      saving: false
+    }
+  })
+
+  ;['term', 'heading'].forEach(function (type) {
+    handler('rename ' + type, function (data, state, reduce, done) {
+      reduce('renaming', type)
+      done()
+    })
+  })
+
+  handler('cancel renaming', function (data, state, reduce, done) {
+    reduce('renaming', false)
+    done()
+  })
+
+  handler('replace term', function (data, state, reduce, done) {
     var newTree = clone(state.tree)
-    var target = window.prompt('Heading to replace:')
+    var target = data.target
     if (target === null || target === '') {
       return
     }
-    var replacement = window.prompt('Replacement heading:')
+    var replacement = data.replacement
     if (replacement === null || replacement === '') {
       return
     }
@@ -798,13 +826,13 @@ module.exports = function (initialize, _reduction, handler) {
     pushEditedTree({tree: newTree}, reduce, done)
   })
 
-  handler('rename heading', function (data, state, reduce, done) {
+  handler('replace heading', function (data, state, reduce, done) {
     var newTree = clone(state.tree)
-    var target = window.prompt('Term to replace:')
+    var target = data.target
     if (target === null || target === '') {
       return
     }
-    var replacement = window.prompt('Replacement term:')
+    var replacement = data.replacement
     if (replacement === null || replacement === '') {
       return
     }

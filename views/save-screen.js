@@ -70,6 +70,13 @@ function docxScreen (state, send) {
           'Mark Filled Blanks'
         )
       ),
+      h('button.cancel', {
+        onclick: function (event) {
+          event.preventDefault()
+          event.stopPropagation()
+          send('form:cancel saving')
+        }
+      }, 'Cancel'),
       h('button', {
         type: 'submit',
         value: 'Download'
@@ -103,6 +110,13 @@ function projectScreen (state, send) {
           })
         )
       ),
+      h('button.cancel', {
+        onclick: function (event) {
+          event.preventDefault()
+          event.stopPropagation()
+          send('form:cancel saving')
+        }
+      }, 'Cancel'),
       h('button', {
         type: 'submit',
         value: 'Download'
