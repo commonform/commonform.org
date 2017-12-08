@@ -57,7 +57,7 @@
     "husky": "^0.14.3",
     "licensify": "^3.1.2",
     "lint-staged": "^6.0.0",
-    "node-sass": "^4.5.2",
+    "node-sass": "^4.7.2",
     "npm-run-all": "^4.0.2",
     "run-series": "^1.1.4",
     "standard": "^10.0.1",
