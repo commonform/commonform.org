@@ -31,7 +31,7 @@
     "level-js": "^2.2.4",
     "level-lru-cache": "^1.0.0",
     "levelup": "^1.3.2",
-    "nanomorph": "^5.1.2",
+    "nanomorph": "^5.1.3",
     "nanoraf": "^3.0.1",
     "object-assign": "^4.1.0",
     "ooxml-signature-pages": "^1.0.1",
