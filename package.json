@@ -65,7 +65,7 @@
     "tape": "^4.8.0",
     "tcp-log-server": "^9.0.3",
     "uglify-js": "^3.2.1",
-    "uglifyify": "^4.0.2",
+    "uglifyify": "^4.0.5",
     "unassertify": "^2.0.3",
     "watchify": "^3.7.0",
     "webdriverio": "^4.2.3"
