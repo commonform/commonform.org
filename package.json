@@ -62,7 +62,7 @@
     "run-series": "^1.1.4",
     "standard": "^10.0.3",
     "stream-replace": "^1.0.0",
-    "tape": "^4.7.0",
+    "tape": "^4.8.0",
     "tcp-log-server": "^9.0.3",
     "uglify-js": "^3.0.21",
     "uglifyify": "^4.0.2",
