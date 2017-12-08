@@ -56,7 +56,7 @@
     "http-proxy": "^1.14.0",
     "husky": "^0.14.3",
     "licensify": "^3.1.2",
-    "lint-staged": "^4.0.3",
+    "lint-staged": "^6.0.0",
     "node-sass": "^4.5.2",
     "npm-run-all": "^4.0.2",
     "run-series": "^1.1.4",
