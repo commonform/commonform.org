@@ -64,7 +64,7 @@
     "stream-replace": "^1.0.0",
     "tape": "^4.8.0",
     "tcp-log-server": "^9.0.3",
-    "uglify-js": "^3.0.21",
+    "uglify-js": "^3.2.1",
     "uglifyify": "^4.0.2",
     "unassertify": "^2.0.3",
     "watchify": "^3.7.0",
