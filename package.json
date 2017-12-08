@@ -51,7 +51,7 @@
     "cors-anywhere": "^0.4.0",
     "corsify": "^2.1.0",
     "ecstatic": "^2.2.1",
-    "envify": "^4.0.0",
+    "envify": "^4.1.0",
     "es2020": "^1.1.7",
     "http-proxy": "^1.14.0",
     "husky": "^0.14.3",
