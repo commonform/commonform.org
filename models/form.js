@@ -229,21 +229,8 @@ module.exports = function (initialize, _reduction, handler) {
   })
 
   reduction('focus', function (newlyFocused, state) {
-    var previouslyFocused = state.focused
-    var rerender = []
-    // If there was already a focused form, rerender it
-    // without focus.
-    if (previouslyFocused) {
-      rerender.push(previouslyFocused)
-    }
-    // If there is a newly focused form, rerender it
-    // with focus.
-    if (newlyFocused) {
-      rerender.push(newlyFocused)
-    }
     return {
-      focused: newlyFocused,
-      rerender: rerender
+      focused: newlyFocused
     }
   })
 
