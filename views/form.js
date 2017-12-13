@@ -381,6 +381,7 @@ function paragraph (state, send) {
     }
   }
   var returned = document.createElement('p')
+  returned.spellcheck = true
   returned.className = 'text'
   returned.contentEditable = 'true'
   returned.onblur = onBlur
