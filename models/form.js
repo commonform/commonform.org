@@ -31,88 +31,13 @@ var simplify = require('commonform-simplify-structure')
 var treeify = require('commonform-treeify-annotations')
 var xhr = require('xhr')
 
-module.exports = function (initialize, _reduction, handler) {
-  // A Note on the Special `rerender` Model Property
-  //
-  // By default, the editor view rerenders the entire form
-  // tree every time. Especially for large forms, that's
-  // a pretty deep tree, with lots and lots of elements.
-  // JavaScript rendering can consume >200ms on reasonable
-  // desktop machines. Reconciliation sometimes takes twice
-  // that. Runtime GC pauses in the middle of long rendering
-  // cycles are very common, making it even worse.
-  //
-  // The code uses two mechanisms to mitigate those
-  // performance issues:
-  //
-  // 1.  The renderer sets `.isSameNode` on `<section>` and
-  //     `<p class=text>` elements.  `nanomorph` uses those
-  //     methods to short-circuit reconciliation, skipping
-  //     the branch if `isSameNode(target)` returns `true`.
-  //     The methods set check `data-digest` properties on
-  //     elements to see if the form content is the same.
-  //
-  //     This is the "official" optimization method
-  //     mentioned in `nanomorph`'s documentation.
-  //
-  // 2.  The form model sets a `rerender` property on each
-  //     reduction indicating which parts of the tree need
-  //     to be rerendered in the next pass.
-  //
-  //     When `rerender` is `true`, the entire tree needs
-  //     to be rerendered.
-  //
-  //     When `rerender` is `false`, none of the form tree
-  //     needs to be rerendered.  This is the case for
-  //     changes to signature page data, for example.
-  //
-  //     Otherwise, `rerender` is an array of keyarrays
-  //     corresponding to tree locations---forms, content
-  //     elements, &c.---that need to be rerendered, along
-  //     with all of their parents.
-  //
-  //     The form view checks this property.  If a form
-  //     doesn't need rerendering, the view returns a
-  //     placeholder element with `isSameNode` set.  When
-  //     `nanomorph` walks to the node, it skips that part
-  //     of the tree, leaving the existing elements alone.
-  //
-  // The `rerender` approach allows us to avoid rendering
-  // and reconciling code with more model code.
-  // Order-of-magnitude performance gains are common,
-  // especially for common, relatively self-contained
-  // interactions, like focusing a child form.
-  //
-  // At the same time, the approach erodes the neatness and
-  // safety of the functional-reactive rendering approach.
-  // The UI _can_ end up inconsistent with the application's
-  // state if `rerender` doesn't list each and every form
-  // that needs updating. This isn't as simple as noting
-  // which forms' _content_ has changed. If a change in one
-  // part of the tree leads to an annotation in another
-  // part, both children---and all their parents---need to
-  // be rerendered.
-
-  // Wrap the usual reduction setup function to ensure the
-  // `rerender` property is always set to `true` (rerender
-  // the whole form tree) by default.
-  function reduction (event, handler) {
-    _reduction(event, function (action, state) {
-      var result = handler(action, state)
-      if (!result.hasOwnProperty('rerender')) {
-        result.rerender = true
-      }
-      return result
-    })
-  }
-
+module.exports = function (initialize, reduction, handler) {
   initialize(function () {
     var annotatorFlags = {}
     annotators.forEach(function (annotator) {
       annotatorFlags[annotator.name] = annotator.default
     })
     return {
-      rerender: true,
       annotators: annotatorFlags,
       annotations: null,
       annotationsList: [],
@@ -163,11 +88,8 @@ module.exports = function (initialize, _reduction, handler) {
     var newBlanks = clone(state.blanks)
     if (value === null) {
       if (index > -1) {
-        var spliced = newBlanks.splice(index, 1)[0]
-        return {
-          blanks: newBlanks,
-          rerender: [spliced.blank.slice(0, -3)]
-        }
+        newBlanks.splice(index, 1)
+        return {blanks: newBlanks}
       }
     } else {
       if (index < 0) {
@@ -175,10 +97,7 @@ module.exports = function (initialize, _reduction, handler) {
         index = 0
       }
       newBlanks[index].value = value
-      return {
-        blanks: newBlanks,
-        rerender: [blank.slice(0, -3)]
-      }
+      return {blanks: newBlanks}
     }
   })
 
@@ -194,8 +113,7 @@ module.exports = function (initialize, _reduction, handler) {
       },
       diff: state.hasOwnProperty('tree')
         ? diff(state.tree, action.tree)
-        : null,
-      rerender: true
+        : null
     }
   })
 
@@ -258,15 +176,11 @@ module.exports = function (initialize, _reduction, handler) {
     } else {
       keyarray[action.operation](pages, action.key, action.value)
     }
-    return {
-      signaturePages: pages,
-      rerender: false
-    }
+    return {signaturePages: pages}
   })
 
   simpleHandler('signatures')
 
-  // TODO: Compute `rerender` array.
   reduction('tree', function (action, state) {
     var annotationsList = annotate(state.annotators, action.tree)
     return {
@@ -510,10 +424,7 @@ module.exports = function (initialize, _reduction, handler) {
     assert(numberings.some(function (numbering) {
       return numbering.name === data.name
     }))
-    return {
-      numbering: data.name,
-      rerender: false
-    }
+    return {numbering: data.name}
   })
 
   handler('numbering', function (name, state, reduce, done) {
@@ -528,18 +439,13 @@ module.exports = function (initialize, _reduction, handler) {
   })
 
   reduction('annotators', function (data, state) {
-    var oldAnnotationsList = state.annotationsList || []
     var newAnnotationsList = state.tree
       ? annotate(state.annotators, state.tree)
       : []
-    var changed = annotationChanges(
-      newAnnotationsList, oldAnnotationsList
-    )
     return {
       annotators: data,
       annotations: treeify(newAnnotationsList),
-      annotationsList: newAnnotationsList,
-      rerender: changed
+      annotationsList: newAnnotationsList
     }
   })
 
@@ -554,10 +460,7 @@ module.exports = function (initialize, _reduction, handler) {
   })
 
   reduction('prependHash', function (data, state) {
-    return {
-      prependHash: data,
-      rerender: false
-    }
+    return {prependHash: data}
   })
 
   handler('prependHash', function (data, state, reduce, done) {
@@ -569,10 +472,7 @@ module.exports = function (initialize, _reduction, handler) {
   })
 
   reduction('markFilled', function (data, state) {
-    return {
-      markFilled: data,
-      rerender: false
-    }
+    return {markFilled: data}
   })
 
   handler('markFilled', function (data, state, reduce, done) {
@@ -624,7 +524,6 @@ module.exports = function (initialize, _reduction, handler) {
     }))
   })
 
-  // TODO: Compute `rerender` array.
   reduction('comments', function (comments, state) {
     return {comments: comments}
   })
@@ -642,7 +541,6 @@ module.exports = function (initialize, _reduction, handler) {
     })
   }
 
-  // TODO: Compute `rerender` array.
   reduction('reply to', function (parent, state) {
     return {parentComment: parent}
   })
@@ -996,46 +894,4 @@ function requestForm (digest, callback) {
 function fileName (title, extension) {
   var date = new Date().toISOString()
   return '' + title + ' ' + date + '.' + extension
-}
-
-// Compute the set-difference between the set of paths
-// annotated by `newAnnotations` and `oldAnnotations`.
-function annotationChanges (newAnnotations, oldAnnotations) {
-  var changed = []
-  // Use set-arrays of JSON-encoded keyarrays so we can use
-  // `list.indexOf` to test set membership.
-  var newPaths = annotationJSONPaths(newAnnotations)
-  var oldPaths = annotationJSONPaths(oldAnnotations)
-  // Iterate both path lists at once, adding any that don't
-  // appear in both lists to the returned differences array.
-  var maxLength = Math.max(newPaths.length, oldPaths.length)
-  for (var index = 0; index < maxLength; index++) {
-    var newPath = newPaths[index]
-    if (newPath) {
-      if (oldPaths.indexOf(newPath) === -1) {
-        changed.push(newPath)
-      }
-    }
-    var oldPath = oldPaths[index]
-    if (oldPath) {
-      if (newPaths.indexOf(oldPath) === -1) {
-        changed.push(oldPath)
-      }
-    }
-  }
-  return changed.map(JSON.parse)
-}
-
-// Return a set-array of all the paths covered by
-// annotations in the list, encoded as JSON strings.
-function annotationJSONPaths (annotations) {
-  var paths = []
-  for (var index = 0; index < annotations.length; index++) {
-    var annotation = annotations[index]
-    var json = JSON.stringify(annotation.path)
-    if (paths.indexOf(json) === -1) {
-      paths.push(json)
-    }
-  }
-  return paths
 }
