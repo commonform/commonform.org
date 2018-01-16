@@ -46,7 +46,7 @@
     "browserify": "^15.2.0",
     "browserify-header": "^0.9.2",
     "browserify-licenses": "^1.4.5",
-    "chromedriver": "^2.33.2",
+    "chromedriver": "^2.34.1",
     "commonform-server": "^4.2.0",
     "cors-anywhere": "^0.4.1",
     "corsify": "^2.1.0",
