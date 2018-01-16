@@ -732,6 +732,7 @@ module.exports = function (initialize, _reduction, handler) {
     }
     options.hash = data.hash
     options.markFilled = data.markFilled
+    options.indentMargins = data.indentMargins
     if (state.signaturePages) {
       options.after = signaturePagesToOOXML(state.signaturePages)
     }

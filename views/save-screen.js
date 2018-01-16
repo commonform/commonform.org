@@ -28,7 +28,8 @@ function docxScreen (state, send) {
             ),
             numbering: document.getElementById('numbering').value,
             hash: document.getElementById('prependHash').checked,
-            markFilled: document.getElementById('markFilled').checked
+            markFilled: document.getElementById('markFilled').checked,
+            indentMargins: document.getElementById('indentMargins').checked
           })
         }
       },
@@ -69,6 +70,15 @@ function docxScreen (state, send) {
             checked: true
           }),
           'Mark Filled Blanks'
+        )
+      ),
+      h('section',
+        h('label',
+          h('input#indentMargins', {
+            type: 'checkbox',
+            checked: true
+          }),
+          'Indent Margins'
         )
       ),
       h('button.cancel', {
