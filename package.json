@@ -40,7 +40,7 @@
     "reviewers-edition-spell": "^1.0.2",
     "run-parallel": "^1.1.6",
     "unicode-ascii-equivalents": "^0.1.1",
-    "xhr": "^2.2.2"
+    "xhr": "^2.4.1"
   },
   "devDependencies": {
     "browserify": "^14.5.0",
