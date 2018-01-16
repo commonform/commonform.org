@@ -76,7 +76,7 @@ function docxScreen (state, send) {
         h('label',
           h('input#indentMargins', {
             type: 'checkbox',
-            checked: true
+            checked: false
           }),
           'Indent Margins'
         )
