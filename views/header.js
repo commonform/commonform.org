@@ -2,11 +2,14 @@ var assert = require('assert')
 var digestLink = require('./digest-link')
 var spell = require('reviewers-edition-spell')
 
+var NOT_DEFINED = /^The term "([^"]+)" is used, but not defined\.$/
+
 module.exports = function header (
-  digest, publications, toDigest, toPublications, send
+  digest, publications, annotationsList, toDigest, toPublications, send
 ) {
   assert(typeof digest === 'string')
   assert(Array.isArray(publications))
+  assert(Array.isArray(annotationsList))
   assert(send !== undefined)
   var header = document.createElement('header')
   header.appendChild(paragraph(digest, publications, send))
@@ -16,7 +19,36 @@ module.exports = function header (
     header.appendChild(p)
     header.appendChild(paragraph(toDigest, toPublications, send))
   }
+  console.log(annotationsList)
+  var notDefined = annotationsList.filter(function (annotation) {
+    return NOT_DEFINED.test(annotation.message)
+  })
+  if (notDefined.length !== 0) {
+    header.appendChild(freeTerms(notDefined.map(function (annotation) {
+      return NOT_DEFINED.exec(annotation.message)[1]
+    })))
+  }
   return header
+}
+
+function freeTerms (terms) {
+  assert(Array.isArray(terms))
+  assert(terms.every(function (element) {
+    return typeof element === 'string'
+  }))
+  var p = document.createElement('p')
+  p.classNames = 'freeTerms'
+  p.appendChild(document.createTextNode('Not Defined: '))
+  terms.forEach(function (term, index) {
+    var a = document.createElement('a')
+    a.classNames = 'use'
+    a.appendChild(document.createTextNode(term))
+    p.appendChild(a)
+    if (index !== terms.length - 1) {
+      p.appendChild(document.createTextNode(', '))
+    }
+  })
+  return p
 }
 
 function paragraph (digest, publications, send) {

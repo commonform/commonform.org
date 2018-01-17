@@ -23,6 +23,7 @@ module.exports = function compare (a, b, state, send) {
         header(
           state.merkle.digest,
           state.publications,
+          [],
           state.comparing.merkle.digest,
           state.comparing.publications,
           send

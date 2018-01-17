@@ -36,7 +36,12 @@ module.exports = function editor (state, send) {
       article.appendChild(renameScreen(state, send))
     } else {
       article.appendChild(
-        header(state.merkle.digest, state.publications, false, [], send)
+        header(
+          state.merkle.digest,
+          state.publications,
+          state.annotationsList || [],
+          false, [], send
+        )
       )
       article.appendChild(form(state, send))
       article.appendChild(signaturePages(state.signaturePages, send))
