@@ -3,6 +3,7 @@ var digestLink = require('./digest-link')
 var spell = require('reviewers-edition-spell')
 
 var NOT_DEFINED = /^The term "([^"]+)" is used, but not defined\.$/
+var NOT_USED = /^The heading "([^"]+)" is referenced, but not used\.$/
 
 module.exports = function header (
   digest, publications, annotationsList, toDigest, toPublications, send
@@ -19,32 +20,42 @@ module.exports = function header (
     header.appendChild(p)
     header.appendChild(paragraph(toDigest, toPublications, send))
   }
-  console.log(annotationsList)
-  var notDefined = annotationsList.filter(function (annotation) {
-    return NOT_DEFINED.test(annotation.message)
+  var notDefined = []
+  var notUsed = []
+  annotationsList.forEach(function (annotation) {
+    var message = annotation.message
+    var match
+    match = NOT_DEFINED.exec(message)
+    if (match) {
+      notDefined.push(match[1])
+      return
+    }
+    match = NOT_USED.exec(message)
+    if (match) {
+      notUsed.push(match[1])
+    }
   })
   if (notDefined.length !== 0) {
-    header.appendChild(freeTerms(notDefined.map(function (annotation) {
-      return NOT_DEFINED.exec(annotation.message)[1]
-    })))
+    header.appendChild(freeList(notDefined.sort(), 'Needs Terms'))
+  }
+  if (notUsed.length !== 0) {
+    header.appendChild(freeList(notUsed.sort(), 'Needs Headings'))
   }
   return header
 }
 
-function freeTerms (terms) {
-  assert(Array.isArray(terms))
-  assert(terms.every(function (element) {
+function freeList (list, message) {
+  assert(Array.isArray(list))
+  assert(list.every(function (element) {
     return typeof element === 'string'
   }))
   var p = document.createElement('p')
-  p.classNames = 'freeTerms'
-  p.appendChild(document.createTextNode('Not Defined: '))
-  terms.forEach(function (term, index) {
-    var a = document.createElement('a')
-    a.classNames = 'use'
-    a.appendChild(document.createTextNode(term))
-    p.appendChild(a)
-    if (index !== terms.length - 1) {
+  p.appendChild(document.createTextNode(message + ': '))
+  list.forEach(function (element, index) {
+    var span = document.createElement('span')
+    span.appendChild(document.createTextNode(element))
+    p.appendChild(span)
+    if (index !== list.length - 1) {
       p.appendChild(document.createTextNode(', '))
     }
   })
