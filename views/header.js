@@ -26,12 +26,12 @@ module.exports = function header (
     var message = annotation.message
     var match
     match = NOT_DEFINED.exec(message)
-    if (match) {
+    if (match && notDefined.indexOf(match[1]) === -1) {
       notDefined.push(match[1])
       return
     }
     match = NOT_USED.exec(message)
-    if (match) {
+    if (match && notUsed.indexOf(match[1]) === -1) {
       notUsed.push(match[1])
     }
   })
