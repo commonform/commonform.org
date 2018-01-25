@@ -129,7 +129,14 @@ function publishUI (send) {
         'again and make sure you’re willing to associate yourself',
         'with it indefinitely.'
       )
-    )
+    ),
+    h('button.cancel', {
+      onclick: function (event) {
+        event.preventDefault()
+        event.stopPropagation()
+        send('form:read')
+      }
+    }, 'Cancel')
   )
 
   function publishForm (event) {
