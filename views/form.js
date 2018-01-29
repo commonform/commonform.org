@@ -18,7 +18,81 @@ var replaceUnicode = require('../utilities/replace-unicode')
 var sameKeyArray = require('../utilities/same-keyarray')
 var use = require('./use')
 
-module.exports = form
+module.exports = formOrComponent
+
+function formOrComponent (argument, send) {
+  if (argument.merkle) {
+    return form(argument, send)
+  } else {
+    return component(argument, send)
+  }
+}
+
+function component (state, send) {
+  var root = state.path.length === 0
+  var isFocused = state.focused && sameKeyArray(state.focused, state.path)
+  var section = document.createElement('section')
+  section.className = classnames({focused: isFocused})
+
+  if (!root) {
+    section.appendChild(sectionButton(toggleFocus, '⚙'))
+  }
+
+  if (isFocused) {
+    section.appendChild(componentEditControls(state, send))
+  }
+
+  if (!root && (state.tree.heading || isFocused || state.withinFocused)) {
+    section.appendChild(
+      heading(state.tree.heading, function (newValue) {
+        send('form:heading', {
+          path: state.path,
+          heading: newValue
+        })
+      })
+    )
+  }
+
+  section.appendChild(publicationID(state.tree))
+
+  return section
+
+  function toggleFocus (event) {
+    event.stopPropagation()
+    send('form:focus', isFocused ? null : state.path)
+  }
+}
+
+function componentEditControls (state, send) {
+  assert(typeof send === 'function')
+  var div = document.createElement('div')
+  div.className = 'editControls'
+  div.appendChild(deleteButton(state.path, send))
+  return div
+}
+
+function publicationID (state) {
+  var edition = state.edition
+  var project = state.project
+  var publisher = state.publisher
+  var link = `/publications/${publisher}/${project}/${edition}`
+
+  var p = document.createElement('p')
+  p.className = 'publication'
+  p.appendChild(document.createTextNode('Component: '))
+
+  var a = document.createElement('a')
+  a.href = link
+  a.appendChild(document.createTextNode(
+    state.publisher + '’s ' +
+    state.project + ' ' +
+    state.edition +
+    (state.upgrade === 'yes' ? '( with upgrades)' : '')
+  ))
+  p.appendChild(a)
+
+  return p
+}
 
 function form (form, send) {
   assert(typeof form.tree === 'object')
@@ -168,12 +242,12 @@ function form (form, send) {
   }
 }
 
-function sectionButton (toggleFocus) {
+function sectionButton (toggleFocus, character) {
   var a = document.createElement('a')
   a.className = 'sigil'
   a.onclick = toggleFocus
   a.title = 'Click to focus.'
-  a.appendChild(document.createTextNode('§'))
+  a.appendChild(document.createTextNode(character || '§'))
   return a
 }
 
@@ -310,7 +384,7 @@ function appendSeries (state, send, parent) {
   for (var index = 0; index < content.length; index++) {
     var absoluteIndex = index + state.offset
     parent.appendChild(
-      form({
+      formOrComponent({
         mode: state.mode,
         blanks: state.blanks,
         comments: state.comments,
