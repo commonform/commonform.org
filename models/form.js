@@ -19,6 +19,7 @@ var getPublicationForm = require('../queries/publication-form')
 var isSHA256 = require('is-sha-256-hex-digest')
 var keyarray = require('keyarray')
 var level = require('../level')
+var loadComponents = require('commonform-load-components')
 var markContentElements = require('../utilities/mark-content-elements')
 var merkleize = require('commonform-merkleize')
 var numberings = require('../numberings')
@@ -621,27 +622,30 @@ module.exports = function (initialize, reduction, handler) {
   handler('download docx', function (data, state, reduce, done) {
     var title = data.title
     var numberingName = data.numbering
-    var options = {
-      title: title,
-      numbering: find(numberings, function (numbering) {
-        return numbering.name === numberingName
-      })
-        .numbering
-    }
-    options.hash = data.hash
-    options.markFilled = data.markFilled
-    options.indentMargins = data.indentMargins
-    if (state.signaturePages) {
-      options.after = signaturePagesToOOXML(state.signaturePages)
-    }
-    filesaver(
-      docx(clone(state.tree), state.blanks, options)
-        .generate({type: 'blob'}),
-      fileName(title, 'docx'),
-      true
-    )
-    reduce('mode', 'read')
-    done()
+    loadComponents(state.tree, {}, function (error, loaded) {
+      if (error) return done(error)
+      var options = {
+        title: title,
+        numbering: find(numberings, function (numbering) {
+          return numbering.name === numberingName
+        })
+          .numbering
+      }
+      options.hash = data.hash
+      options.markFilled = data.markFilled
+      options.indentMargins = data.indentMargins
+      if (state.signaturePages) {
+        options.after = signaturePagesToOOXML(state.signaturePages)
+      }
+      filesaver(
+        docx(loaded, state.blanks, options)
+          .generate({type: 'blob'}),
+        fileName(title, 'docx'),
+        true
+      )
+      reduce('mode', 'read')
+      done()
+    })
   })
 
   handler('download project', function (data, state, reduce, done) {
