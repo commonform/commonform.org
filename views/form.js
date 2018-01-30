@@ -121,7 +121,6 @@ function publicationID (state) {
 
   var p = document.createElement('p')
   p.className = 'publication'
-  p.appendChild(document.createTextNode('Component: '))
 
   var a = document.createElement('a')
   a.href = link
