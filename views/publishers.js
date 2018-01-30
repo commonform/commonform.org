@@ -49,7 +49,7 @@ module.exports = function publishers (state, send) {
             h('input', {
               name: 'digest',
               required: true,
-              placeholder: 'Past a form ID here.',
+              placeholder: 'Paste a form ID here.',
               pattern: '[a-z0-9]{64}',
               type: 'text'
             }),
