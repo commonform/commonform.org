@@ -54,6 +54,7 @@ function component (state, send) {
   }
 
   section.appendChild(publicationID(state.tree))
+  section.appendChild(substitutions(state.tree.substitutions))
 
   return section
 
@@ -61,6 +62,47 @@ function component (state, send) {
     event.stopPropagation()
     send('form:focus', isFocused ? null : state.path)
   }
+}
+
+function substitutions (state) {
+  var div = document.createElement('div')
+  div.className = 'substitutions'
+
+  var terms = Object.keys(state.terms)
+  if (terms.length !== 0) {
+    var termsList = document.createElement('ul')
+    termsList.className = 'terms'
+    Object.keys(state.terms).forEach(function (term) {
+      var li = document.createElement('li')
+      li.appendChild(use(state.terms[term]))
+      li.appendChild(document.createTextNode(' → '))
+      var span = document.createElement('span')
+      span.className = 'use'
+      span.appendChild(document.createTextNode(term))
+      li.appendChild(span)
+      termsList.appendChild(li)
+    })
+    div.appendChild(termsList)
+  }
+
+  var headings = Object.keys(state.headings)
+  if (headings.length !== 0) {
+    var headingsList = document.createElement('ul')
+    headingsList.className = 'headings'
+    Object.keys(state.headings).forEach(function (heading) {
+      var li = document.createElement('li')
+      li.appendChild(reference(state.headings[heading]))
+      li.appendChild(document.createTextNode(' → '))
+      var span = document.createElement('span')
+      span.className = 'reference'
+      span.appendChild(document.createTextNode(heading))
+      li.appendChild(span)
+      headingsList.appendChild(li)
+    })
+    div.appendChild(headingsList)
+  }
+
+  return div
 }
 
 function componentEditControls (state, send) {
