@@ -10,7 +10,7 @@
     "commonform-docx": "^1.2.2",
     "commonform-fix-strings": "^1.0.0",
     "commonform-group-series": "^1.0.0",
-    "commonform-lint": "^1.0.1",
+    "commonform-lint": "^2.0.0",
     "commonform-load-components": "^1.1.0",
     "commonform-merkleize": "^0.3.2",
     "commonform-mscd": "^0.1.2",
