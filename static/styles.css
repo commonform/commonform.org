@@ -1,0 +1,42 @@
+html {
+  font-family: sans-serif;
+  line-height: 1.4;
+}
+
+.commonform {
+  margin-left: 1rem;
+}
+
+.commonform section {
+  margin-left: 2rem;
+  position: relative;
+}
+
+.commonform section:before {
+  content: '§';
+  left: -1rem;
+  position: absolute;
+}
+
+.commonform h1,
+.commonform h2,
+.commonform h3,
+.commonform h4,
+.commonform h5,
+.commonform h6 {
+  font-size: 100%;
+}
+
+.commonform dfn {
+  font-weight: bold;
+}
+
+.commonform .term {
+  font-style: italic;
+}
+
+.commonform .blank {
+  display: inline-block;
+  min-width: 5rem;
+  border-bottom: 1px solid black;
+}

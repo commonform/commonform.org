@@ -1,0 +1,51 @@
+{
+  "private": true,
+  "devDependencies": {
+    "chromedriver": "^2.38.2",
+    "husky": "^0.14.3",
+    "istanbul": "^0.4.5",
+    "licensee": "^4.5.0",
+    "lint-staged": "^7.0.5",
+    "simple-concat": "^1.0.0",
+    "standard": "^11.0.1",
+    "tape": "^4.9.0",
+    "webdriverio": "^4.12.0"
+  },
+  "scripts": {
+    "lint": "standard",
+    "coverage": "NODE_ENV=test istanbul cover -- tape test/*.test.js",
+    "postcoverage": "istanbul check-coverage coverage/coverage.json --statements 100 --functions 100 --branches 100 --lines 100",
+    "test": "NODE_ENV=test tape test/**.test.js",
+    "license": "licensee --errors-only",
+    "precommit": "lint-staged",
+    "outdated": "npm outdated | tee outdated.log"
+  },
+  "dependencies": {
+    "busboy": "^0.2.14",
+    "commonform-html": "^2.0.0",
+    "concat-stream": "^1.6.2",
+    "docx-content-type": "^1.0.0",
+    "ecb": "^1.0.0",
+    "escape-string-regexp": "^1.0.5",
+    "form-data": "^2.3.2",
+    "html-entities": "^1.2.1",
+    "http-hash": "^2.0.0",
+    "json-parse-errback": "^2.0.1",
+    "mkdirp": "^0.5.1",
+    "pino": "^4.16.1",
+    "pump": "^3.0.0",
+    "rimraf": "^2.6.2",
+    "run-auto": "^2.0.3",
+    "run-parallel": "^1.1.9",
+    "run-parallel-limit": "^1.0.5",
+    "run-series": "^1.1.8",
+    "run-waterfall": "^1.1.6",
+    "send": "^0.16.2",
+    "simple-get": "^3.0.2",
+    "uuid": "^3.2.1"
+  },
+  "lint-staged": {
+    "*.js": "standard",
+    "*.md": "standard-markdown"
+  }
+}
