@@ -77,14 +77,18 @@ ${footer()}
   function projectLI (project) {
     return html`<li>
       ${escape(project.project)}:
-      ${project.publications.map(function (publication) {
-        var url = (
-          '/' + encodeURIComponent(publisher) +
-          '/' + encodeURIComponent(project.project) +
-          '/' + encodeURIComponent(publication)
-        )
-        return html`<a href="${url}">${escape(publication)}</a>`
-      }).join(', ')}
+      ${publicationsList(project)}
     </li>`
+  }
+
+  function publicationsList (project) {
+    return project.publications.map(function (publication) {
+      var url = (
+        '/' + encodeURIComponent(publisher) +
+        '/' + encodeURIComponent(project.project) +
+        '/' + encodeURIComponent(publication)
+      )
+      return html`<a href="${url}">${escape(publication)}</a>`
+    }).join(', ')
   }
 }
