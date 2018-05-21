@@ -31,12 +31,10 @@ html {
   font-weight: bold;
 }
 
-.commonform .term {
+.commonform .use {
   font-style: italic;
 }
 
 .commonform .blank {
-  display: inline-block;
-  min-width: 5rem;
   border-bottom: 1px solid black;
 }
