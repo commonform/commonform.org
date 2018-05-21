@@ -23,6 +23,7 @@
   "dependencies": {
     "busboy": "^0.2.14",
     "commonform-group-series": "^1.0.0",
+    "commonform-merkleize": "^0.3.2",
     "concat-stream": "^1.6.2",
     "docx-content-type": "^1.0.0",
     "ecb": "^1.0.0",

@@ -38,3 +38,7 @@ html {
 .commonform .blank {
   border-bottom: 1px solid black;
 }
+
+.commonform .child-link {
+  font-size: 75%;
+}

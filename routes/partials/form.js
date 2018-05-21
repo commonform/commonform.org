@@ -1,36 +1,41 @@
 var escape = require('../../util/escape')
 var group = require('commonform-group-series')
+var merkleize = require('commonform-merkleize')
 var predicate = require('commonform-predicate')
 
 module.exports = function (form, mappings) {
-  return renderForm(0, [], form, mappings)
+  return renderForm(0, [], form, mappings, merkleize(form))
 }
 
-function renderForm (depth, path, form, mappings) {
+function renderForm (depth, path, form, mappings, tree) {
   var offset = 0
   return group(form)
     .map(function (group) {
       var returned = group.type === 'series'
-        ? renderSeries(depth + 1, offset, path, group, mappings)
-        : renderParagraph(offset, path, group, mappings)
+        ? renderSeries(depth + 1, offset, path, group, mappings, tree)
+        : renderParagraph(offset, path, group, mappings, tree)
       offset += group.content.length
       return returned
     })
     .join('')
 }
 
-function renderSeries (depth, offset, path, series, mappings) {
+function renderSeries (depth, offset, path, series, mappings, tree) {
   return series.content
     .map(function (child, index) {
       var form = child.form
+      var childTree = tree.content[offset + index]
+      var digest = childTree.digest
       return (
         (form.conspicuous ? '<section class=conspicuous>' : '<section>') +
         ('heading' in child ? renderHeading(depth, child.heading) : '') +
+        (`<a class=child-link href=/forms/${digest}>${digest}</a>`) +
         renderForm(
           depth,
           path.concat('content', offset + index, 'form'),
           form,
-          mappings
+          mappings,
+          childTree
         ) +
         '</section>'
       )
@@ -42,7 +47,7 @@ function renderHeading (depth, heading) {
   return '<h1>' + escape(heading) + '</h1>'
 }
 
-function renderParagraph (offset, path, paragraph, mappings) {
+function renderParagraph (offset, path, paragraph, mappings, tree) {
   return (
     '<p>' +
     paragraph.content
