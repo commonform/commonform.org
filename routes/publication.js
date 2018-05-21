@@ -2,6 +2,9 @@ var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
+var reviewersEditionCompare = require('reviewers-edition-compare')
+var reviewersEditionSpell = require('reviewers-edition-spell')
+var reviewersEditionUpgrade = require('reviewers-edition-upgrade')
 var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
 
@@ -33,6 +36,19 @@ module.exports = function (configuration, request, response) {
         done(error, data)
       })
     },
+    project: function (done) {
+      get.concat({
+        url: (
+          configuration.api +
+          '/publishers/' + encodeURIComponent(publisher) +
+          '/projects/' + encodeURIComponent(project) +
+          '/publications'
+        ),
+        json: true
+      }, function (error, response, data) {
+        done(error, data.sort(reviewersEditionCompare))
+      })
+    },
     form: ['publication', function (data, done) {
       get.concat({
         url: configuration.api + '/forms/' + data.publication.digest,
@@ -52,15 +68,39 @@ module.exports = function (configuration, request, response) {
   <h1>
     ${publisherLink(publisher)}’s
     ${projectLink(data.publication)}
-    ${escape(edition)}
   </h1>
+  <p class=edition>
+    ${escape(reviewersEditionSpell(edition))}
+  </p>
+  ${editionWarnings(edition, data.project)}
   <p>
     Common Form ID:
-    <a href=/forms/${data.publication.digest}>${data.publication.digest}</a>
+    <a class=digest href=/forms/${data.publication.digest}>${data.publication.digest}</a>
   </p>
 </header>
 <main>${form(data.form)}</main>
 ${footer()}
     `)
+
+    function editionWarnings (displaying, available) {
+      var upgrades = available.filter(function (available) {
+        return reviewersEditionUpgrade(displaying, available)
+      })
+      if (upgrades.length !== 0) {
+        var upgrade = upgrades[upgrades.length - 1]
+        var href = (
+          '/' + encodeURIComponent(publisher) +
+          '/' + encodeURIComponent(project) +
+          '/' + encodeURIComponent(upgrade)
+        )
+        return `<p class=warn>
+          An
+          <a href="${href}">upgraded edition</a>
+          of ${publisherLink(publisher)}’s
+          ${projectLink(data.publication)}
+          is available.
+        </p>`
+      }
+    }
   })
 }

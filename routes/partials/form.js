@@ -18,10 +18,10 @@ module.exports = function (form, options) {
 }
 
 function renderTableOfContents (form) {
-  return html`<section class=toc>
+  return html`<header class=toc>
     <h2>Table of Contents</h2>
     ${renderContents(form)}
-  </section>`
+  </header>`
 }
 
 function renderContents (form) {
@@ -154,7 +154,7 @@ function renderParagraph (offset, path, paragraph, tree, options) {
 }
 
 function renderReference (heading) {
-  return `<a href="#heading:${encodeURIComponent(heading)}">${escape(heading)}</a>`
+  return `<a class=reference href="#heading:${encodeURIComponent(heading)}">${escape(heading)}</a>`
 }
 
 function matchingValue (path, mappings) {

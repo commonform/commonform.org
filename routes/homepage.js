@@ -30,9 +30,13 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <main>
-  <h1>Common Form</h1>
-  <p>commonform.org is a free, open repository of legal forms.</p>
-  ${publishersList(data.publishers)}
+  <header>
+    <h1>Common Form</h1>
+    <p>a free, open repository of legal forms.</p>
+  </header>
+  <article>
+    <section>${publishersList(data.publishers)}</section>
+  </article>
 </main>
 ${footer()}
     `)

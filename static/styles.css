@@ -1,6 +1,56 @@
+@charset "UTF-8";
+
 html {
-  font-family: sans-serif;
+  font-family: Equity, Georgia, serif;
+  text-rendering: optimizeLegibility;
   line-height: 1.4;
+}
+
+@media all {
+  html {
+    font-size: 23px; } }
+@media all and (max-width: 1000px) {
+  html {
+    font-size: 23px; } }
+@media all and (max-width: 960px) {
+  html {
+    font-size: 22px; } }
+@media all and (max-width: 920px) {
+  html {
+    font-size: 21px; } }
+@media all and (max-width: 880px) {
+  html {
+    font-size: 20px; } }
+@media all and (max-width: 840px) {
+  html {
+    font-size: 19px; } }
+@media all and (max-width: 800px) {
+  html {
+    font-size: 18px; } }
+@media all and (max-width: 760px) {
+  html {
+    font-size: 17px; } }
+@media all and (max-width: 720px) {
+  html {
+    font-size: 16px; } }
+@media all and (max-width: 680px) {
+  html {
+    font-size: 15px; } }
+@media all and (max-width: 640px) {
+  html {
+    font-size: 14px; } }
+@media all and (max-width: 600px) {
+  html {
+    font-size: 13px; } }
+@media all and (max-width: 560px) {
+  html {
+    font-size: 12px; } }
+@media all and (max-width: 520px) {
+  html {
+    font-size: 11px; } }
+
+.digest {
+  font-family: Triplicate, "Andale Mono", monospace;
 }
 
 a {
@@ -39,12 +89,26 @@ a:hover {
   font-weight: bold;
 }
 
-.commonform .use {
+.commonform .use, .commonform .reference {
+  color: black;
   font-style: italic;
 }
 
+.reference {
+  color: black;
+  font-style: italic;
+}
+
+.reference:before {
+  content: '☞ ';
+}
+
 .commonform .blank {
-  border-bottom: 1px solid black;
+  display: inline-block;
+  border: none;
+  border-bottom: 1px dashed black;
+  background: inherit;
+  width: 10rem;
 }
 
 .commonform .child-link {
@@ -75,7 +139,7 @@ body {
   background: #eee;
 }
 
-body > main, body > footer, body > header {
+header, footer, article {
   background: white;
   margin: 1rem;
   padding: 1rem;

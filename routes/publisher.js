@@ -57,10 +57,12 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <main>
-<h1>${escape(publisher)}’s Common Form Projects</h1>
-${avatar(data.publisher)}
-${about(data.publisher)}
-${projectsList(data.projects)}
+  <header><h1>${escape(publisher)}’s Common Form Projects</h1></header>
+  <header>
+  ${avatar(data.publisher)}
+  ${about(data.publisher)}
+  </header>
+  <article>${projectsList(data.projects)}</article>
 </main>
 ${footer()}
     `)
