@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "busboy": "^0.2.14",
-    "commonform-html": "^2.0.0",
+    "commonform-group-series": "^1.0.0",
     "concat-stream": "^1.6.2",
     "docx-content-type": "^1.0.0",
     "ecb": "^1.0.0",

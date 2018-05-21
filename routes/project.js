@@ -23,7 +23,8 @@ module.exports = function (configuration, request, response) {
           '/publishers/' + encodeURIComponent(publisher) +
           '/projects/' + encodeURIComponent(project) +
           '/publications'
-        )
+        ),
+        json: true
       }, function (error, response, publications) {
         done(error, publications)
       })

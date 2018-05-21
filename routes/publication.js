@@ -1,4 +1,3 @@
-var commonformHTML = require('commonform-html')
 var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
@@ -7,6 +6,7 @@ var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
 
 var footer = require('./partials/footer')
+var form = require('./partials/form')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
@@ -55,7 +55,7 @@ module.exports = function (configuration, request, response) {
 <p>
   <a href=/forms/${data.publication.digest}>${data.publication.digest}</a>
 </p>
-<article class=commonform>${commonformHTML(data.form, [], {html5: true, list: false})}</article>
+<article class=commonform>${form(data.form, [])}</article>
 </main>
 ${footer()}
     `)

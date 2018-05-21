@@ -51,5 +51,5 @@ function publisherLI (publisher) {
 }
 
 function publisherLink (publisher) {
-  return html`<a href="/publishers/${escape(publisher)}">${escape(publisher)}</a>`
+  return html`<a href="/${escape(publisher)}">${escape(publisher)}</a>`
 }
