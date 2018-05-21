@@ -139,7 +139,7 @@ body {
   background: #eee;
 }
 
-header, footer, article {
+header, footer, article, form {
   background: white;
   margin: 1rem;
   padding: 1rem;
@@ -148,4 +148,11 @@ header, footer, article {
 body > footer {
   font-size: 75%;
   text-align: right;
+}
+
+.editor {
+  box-sizing: border-box;
+  height: 10rem;
+  padding: 1rem;
+  width: 100%;
 }

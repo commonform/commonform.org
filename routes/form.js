@@ -40,11 +40,12 @@ module.exports = function (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
-${menu(digest)}
 <main>
-${publicationsSection(data.publications)}
-${publishedWithinSection(data.publications)}
-${form(data.form)}
+  <header>
+    ${publicationsSection(data.publications)}
+    ${publishedWithinSection(data.publications)}
+  </header>
+  ${form(data.form)}
 </main>
 ${footer()}
     `)
