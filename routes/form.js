@@ -52,7 +52,7 @@ ${footer()}
 }
 
 function menu (digest) {
-  return `<a href=/analyses/${digest}?analyze=1>Show Analysis</a>`
+  return `<div class=menu><a href=/analyses/${digest}?analyze=1>Show Analysis</a></div>`
 }
 
 function publicationsSection (publications) {
