@@ -6,6 +6,7 @@ var runParallel = require('run-parallel')
 var sanitize = require('../util/sanitize')
 
 var footer = require('./partials/footer')
+var gravatar = require('./partials/gravatar')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
@@ -57,12 +58,18 @@ module.exports = function (configuration, request, response) {
     ${preamble()}
 <main>
 <h1>${escape(publisher)}’s Common Form Projects</h1>
+${avatar(data.publisher)}
 ${about(data.publisher)}
 ${projectsList(data.projects)}
 </main>
 ${footer()}
     `)
   })
+
+  function avatar (publisher) {
+    if (!publisher.email) return ''
+    return gravatar(publisher.email)
+  }
 
   function about (publisher) {
     if (!publisher.about) return ''
