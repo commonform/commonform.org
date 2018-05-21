@@ -1,3 +1,4 @@
+var annotate = require('../util/annotate')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
@@ -43,7 +44,7 @@ module.exports = function (configuration, request, response) {
 <main>
 ${publicationsSection(data.publications)}
 ${publishedWithinSection(data.publications)}
-<article class=commonform>${form(data.form, [])}</article>
+<article class=commonform>${form(data.form, {annotations: annotate(data.form), childLinks: true})}</article>
 </main>
 ${footer()}
     `)

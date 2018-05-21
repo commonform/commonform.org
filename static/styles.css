@@ -50,3 +50,19 @@ a:hover {
 .commonform .child-link {
   font-size: 75%;
 }
+
+.commonform .annotation {
+  font-size: 75%;
+}
+
+.info {
+  color: darkgreen;
+}
+
+.warn {
+  color: darkorange;
+}
+
+.error {
+  color: darkred;
+}

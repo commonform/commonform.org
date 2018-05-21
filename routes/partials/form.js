@@ -1,26 +1,47 @@
 var escape = require('../../util/escape')
 var group = require('commonform-group-series')
+var html = require('../html')
 var merkleize = require('commonform-merkleize')
 var predicate = require('commonform-predicate')
+var samePath = require('commonform-same-path')
 
-module.exports = function (form, mappings) {
-  return renderForm(0, [], form, mappings, merkleize(form))
+module.exports = function (form, options) {
+  options = options || {}
+  if (!options.mappings) options.mappings = []
+  if (!options.annotations) options.annotations = []
+  return renderForm(0, [], form, merkleize(form), options)
 }
 
-function renderForm (depth, path, form, mappings, tree) {
+function renderForm (depth, path, form, tree, options) {
   var offset = 0
-  return group(form)
+  var annotationsHere = options.annotations.filter(function (annotation) {
+    return samePath(annotation.path, path)
+  })
+  var groups = group(form)
     .map(function (group) {
       var returned = group.type === 'series'
-        ? renderSeries(depth + 1, offset, path, group, mappings, tree)
-        : renderParagraph(offset, path, group, mappings, tree)
+        ? renderSeries(depth + 1, offset, path, group, tree, options)
+        : renderParagraph(offset, path, group, tree, options)
       offset += group.content.length
       return returned
     })
     .join('')
+  return html`${renderMarginalia(annotationsHere)}${groups}`
 }
 
-function renderSeries (depth, offset, path, series, mappings, tree) {
+function renderMarginalia (annotations) {
+  if (annotations.length === 0) return ''
+  return annotations.map(function (annotation) {
+    var classes = 'annotation ' + annotation.level
+    return html`
+      <aside class="${classes}">
+        <p>${escape(annotation.message)}</p>
+      </aside>
+    `
+  })
+}
+
+function renderSeries (depth, offset, path, series, tree, options) {
   return series.content
     .map(function (child, index) {
       var form = child.form
@@ -29,13 +50,17 @@ function renderSeries (depth, offset, path, series, mappings, tree) {
       return (
         (form.conspicuous ? '<section class=conspicuous>' : '<section>') +
         ('heading' in child ? renderHeading(depth, child.heading) : '') +
-        (`<a class=child-link href=/forms/${digest}>${digest}</a>`) +
+        (
+          options.childLinks
+            ? `<a class=child-link href=/forms/${digest}>${digest}</a>`
+            : ''
+        ) +
         renderForm(
           depth,
           path.concat('content', offset + index, 'form'),
           form,
-          mappings,
-          childTree
+          childTree,
+          options
         ) +
         '</section>'
       )
@@ -47,7 +72,7 @@ function renderHeading (depth, heading) {
   return `<h1 id="heading:${encodeURIComponent(heading)}">${escape(heading)}</h1>`
 }
 
-function renderParagraph (offset, path, paragraph, mappings, tree) {
+function renderParagraph (offset, path, paragraph, tree, options) {
   return (
     '<p>' +
     paragraph.content
@@ -64,7 +89,7 @@ function renderParagraph (offset, path, paragraph, mappings, tree) {
           return `<dfn id="${id}">${escape(term)}</dfn>`
         } else if (predicate.blank(element)) {
           let blankPath = JSON.stringify(path.concat('content', offset + index))
-          let value = matchingValue(blankPath, mappings)
+          let value = matchingValue(blankPath, options.mappings)
           if (value) {
             return `<input type=text class=blank data-path='${blankPath}' value="${escape(value)}">`
           } else {
@@ -86,15 +111,4 @@ function matchingValue (path, mappings) {
     var mapping = mappings[index]
     if (samePath(mapping.blank, path)) return mapping.value
   }
-}
-
-function samePath (a, b) {
-  return (
-    Array.isArray(a) &&
-    Array.isArray(b) &&
-    a.length === b.length &&
-    a.every(function (_, index) {
-      return a[index] === b[index]
-    })
-  )
 }

@@ -55,7 +55,7 @@ module.exports = function (configuration, request, response) {
 <p>
   <a href=/forms/${data.publication.digest}>${data.publication.digest}</a>
 </p>
-<article class=commonform>${form(data.form, [])}</article>
+<article class=commonform>${form(data.form)}</article>
 </main>
 ${footer()}
     `)
