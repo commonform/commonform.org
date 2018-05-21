@@ -59,7 +59,7 @@ function renderParagraph (offset, path, paragraph, mappings) {
           if (value) {
             return `<input type=text class=blank data-path='${blankPath}' value="${escape(value)}">`
           } else {
-            return `<span type=text class=blank data-path='${blankPath}'>`
+            return `<input type=text class=blank data-path='${blankPath}'>`
           }
         } else if (predicate.reference(element)) {
           var heading = element.reference
