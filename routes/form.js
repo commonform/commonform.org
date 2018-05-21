@@ -40,20 +40,17 @@ module.exports = function (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
-<main>
 ${menu(digest)}
+<main>
 ${publicationsSection(data.publications)}
 ${publishedWithinSection(data.publications)}
-<article class=commonform>${form(data.form)}</article>
+${form(data.form)}
 </main>
 ${footer()}
     `)
   })
 }
 
-function menu (digest) {
-  return `<div class=menu><a href=/analyses/${digest}?analyze=1>Show Analysis</a></div>`
-}
 
 function publicationsSection (publications) {
   var roots = publications.filter(function (publication) {

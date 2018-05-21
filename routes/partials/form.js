@@ -11,9 +11,54 @@ module.exports = function (form, options) {
   if (!options.annotations) options.annotations = []
   var tree = options.tree = merkleize(form)
   return html`
-    ${renderForm(0, [], form, tree, options)}
+    ${renderTableOfContents(form)}
+    <article class=commonform>${renderForm(0, [], form, tree, options)}</article>
     ${scriptTag(form, options)}
   `
+}
+
+function renderTableOfContents (form) {
+  return html`<section class=toc>
+    <h2>Table of Contents</h2>
+    ${renderContents(form)}
+  </section>`
+}
+
+function renderContents (form) {
+  if (!containsHeading(form)) return ''
+  return html`
+    <ol class=toc id=toc>
+      ${form.content.reduce(function (items, element) {
+        if (!element.hasOwnProperty('form')) return items
+        var hasHeading = (
+          element.hasOwnProperty('heading') ||
+          containsHeading(element.form)
+        )
+        if (!hasHeading) return items
+        var li = '<li>'
+        if (element.hasOwnProperty('heading')) {
+          li += renderReference(element.heading)
+        } else {
+          li += '(No Heading)'
+        }
+        li += renderContents(element.form)
+        li += '</li>'
+        return items.concat(li)
+      }, [])}
+    </ol>
+  `
+}
+
+function containsHeading (form) {
+  return form.content.some(function (element) {
+    return (
+      element.hasOwnProperty('form') &&
+      (
+        element.hasOwnProperty('heading') ||
+        containsHeading(element.form)
+      )
+    )
+  })
 }
 
 function renderForm (depth, path, form, tree, options) {
@@ -100,13 +145,16 @@ function renderParagraph (offset, path, paragraph, tree, options) {
             return `<input type=text class=blank data-path='${blankPath}'>`
           }
         } else if (predicate.reference(element)) {
-          var heading = element.reference
-          return `<a href="#heading:${encodeURIComponent(heading)}">${escape(heading)}</a>`
+          return renderReference(element.reference)
         }
       })
       .join('') +
     '</p>'
   )
+}
+
+function renderReference (heading) {
+  return `<a href="#heading:${encodeURIComponent(heading)}">${escape(heading)}</a>`
 }
 
 function matchingValue (path, mappings) {

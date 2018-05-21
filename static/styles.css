@@ -67,19 +67,21 @@ a:hover {
   color: darkred;
 }
 
-.menu {
-  background: white;
-  border-bottom: 1px solid black;
-  box-sizing: border-box;
-  height: 3rem;
-  left: 0;
-  padding: 1rem;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 100;
+.toc ol {
+  list-style-type: none;
 }
 
-.menu + section {
-  margin-top: 4rem;
+body {
+  background: #eee;
+}
+
+body > main, body > footer, body > header {
+  background: white;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+body > footer {
+  font-size: 75%;
+  text-align: right;
 }

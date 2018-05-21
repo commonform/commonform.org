@@ -48,17 +48,18 @@ module.exports = function (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
-<main>
-<h1>
-  ${publisherLink(publisher)}’s
-  ${projectLink(data.publication)}
-  ${escape(edition)}
-</h1>
-<p>
-  <a href=/forms/${data.publication.digest}>${data.publication.digest}</a>
-</p>
-<article class=commonform>${form(data.form)}</article>
-</main>
+<header>
+  <h1>
+    ${publisherLink(publisher)}’s
+    ${projectLink(data.publication)}
+    ${escape(edition)}
+  </h1>
+  <p>
+    Common Form ID:
+    <a href=/forms/${data.publication.digest}>${data.publication.digest}</a>
+  </p>
+</header>
+<main>${form(data.form)}</main>
 ${footer()}
     `)
   })

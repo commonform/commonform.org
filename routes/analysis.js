@@ -48,7 +48,7 @@ module.exports = function (configuration, request, response) {
 <main>
 ${publicationsSection(data.publications)}
 ${publishedWithinSection(data.publications)}
-<article class=commonform>${form(data.form, renderingOptions)}</article>
+${form(data.form, renderingOptions)}
 </main>
 ${footer()}
     `)
