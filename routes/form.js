@@ -8,6 +8,8 @@ var footer = require('./partials/footer')
 var form = require('./partials/form')
 var html = require('./html')
 var preamble = require('./partials/preamble')
+var publicationLink = require('./partials/publication-link')
+var publisherLink = require('./partials/publisher-link')
 
 module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
@@ -22,6 +24,14 @@ module.exports = function (configuration, request, response) {
       }, function (error, response, form) {
         done(error, form)
       })
+    },
+    publications: function (done) {
+      get.concat({
+        url: configuration.api + '/forms/' + digest + '/publications',
+        json: true
+      }, function (error, response, data) {
+        done(error, data)
+      })
     }
   }, function (error, data) {
     if (error) {
@@ -31,9 +41,46 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <main>
+${publicationsSection(data.publications)}
+${publishedWithinSection(data.publications)}
 <article class=commonform>${form(data.form, [])}</article>
 </main>
 ${footer()}
     `)
   })
+}
+
+function publicationsSection (publications) {
+  var roots = publications.filter(function (publication) {
+    return publication.root
+  })
+  if (roots.length === 0) return ''
+  return html`
+    <section class=publications>
+    <p>This form has been published as:</p>
+    <ul>${roots.map(publicationLI)}</ul>
+    </section>
+  `
+}
+
+function publishedWithinSection (publications) {
+  var notRoots = publications.filter(function (publication) {
+    return !publication.root
+  })
+  if (notRoots.length === 0) return ''
+  return html`
+    <section class=publications>
+    <p>This form has been published as part of:</p>
+    <ul>${notRoots.map(publicationLI)}</ul>
+    </section>
+  `
+}
+
+function publicationLI (publication) {
+  return html`
+    <li>
+    ${publisherLink(publication.publisher)}’s
+    ${publicationLink(publication)}
+    </li>
+  `
 }
