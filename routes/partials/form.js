@@ -9,7 +9,11 @@ module.exports = function (form, options) {
   options = options || {}
   if (!options.mappings) options.mappings = []
   if (!options.annotations) options.annotations = []
-  return renderForm(0, [], form, merkleize(form), options)
+  var tree = options.tree = merkleize(form)
+  return html`
+    ${renderForm(0, [], form, tree, options)}
+    ${scriptTag(form, options)}
+  `
 }
 
 function renderForm (depth, path, form, tree, options) {
@@ -111,4 +115,13 @@ function matchingValue (path, mappings) {
     var mapping = mappings[index]
     if (samePath(mapping.blank, path)) return mapping.value
   }
+}
+
+function scriptTag (form, options) {
+  return `
+    <script>window.form = ${JSON.stringify(form)}</script>
+    <script>window.mappings = ${JSON.stringify(options.mappings)}</script>
+    <script>window.annotations = ${JSON.stringify(options.annotations)}</script>
+    <script>window.tree = ${JSON.stringify(options.tree)}</script>
+  `
 }
