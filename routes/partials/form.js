@@ -44,7 +44,7 @@ function renderSeries (depth, offset, path, series, mappings, tree) {
 }
 
 function renderHeading (depth, heading) {
-  return '<h1>' + escape(heading) + '</h1>'
+  return `<h1 id="heading:${encodeURIComponent(heading)}">${escape(heading)}</h1>`
 }
 
 function renderParagraph (offset, path, paragraph, mappings, tree) {
@@ -55,12 +55,16 @@ function renderParagraph (offset, path, paragraph, mappings, tree) {
         if (predicate.text(element)) {
           return escape(element)
         } else if (predicate.use(element)) {
-          return `<span class=use>${escape(element.use)}</span>`
+          let term = element.use
+          let href = `#definition:${encodeURIComponent(term)}`
+          return `<a class=use href="${href}">${escape(term)}</a>`
         } else if (predicate.definition(element)) {
-          return `<dfn>${escape(element.definition)}</dfn>`
+          let term = element.definition
+          let id = `definition:${encodeURIComponent(term)}`
+          return `<dfn id="${id}">${escape(term)}</dfn>`
         } else if (predicate.blank(element)) {
-          var blankPath = JSON.stringify(path.concat('content', offset + index))
-          var value = matchingValue(blankPath, mappings)
+          let blankPath = JSON.stringify(path.concat('content', offset + index))
+          let value = matchingValue(blankPath, mappings)
           if (value) {
             return `<input type=text class=blank data-path='${blankPath}' value="${escape(value)}">`
           } else {
