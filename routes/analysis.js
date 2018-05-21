@@ -1,3 +1,4 @@
+var annotate = require('../util/annotate')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
@@ -37,22 +38,21 @@ module.exports = function (configuration, request, response) {
     if (error) {
       return internalError(configuration, request, response, error)
     }
+    var renderingOptions = {
+      annotations: annotate(data.form),
+      childLinks: true
+    }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
 <main>
-${menu(digest)}
 ${publicationsSection(data.publications)}
 ${publishedWithinSection(data.publications)}
-<article class=commonform>${form(data.form)}</article>
+<article class=commonform>${form(data.form, renderingOptions)}</article>
 </main>
 ${footer()}
     `)
   })
-}
-
-function menu (digest) {
-  return `<a href=/analyses/${digest}?analyze=1>Show Analysis</a>`
 }
 
 function publicationsSection (publications) {
