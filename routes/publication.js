@@ -9,6 +9,8 @@ var footer = require('./partials/footer')
 var form = require('./partials/form')
 var html = require('./html')
 var preamble = require('./partials/preamble')
+var projectLink = require('./partials/project-link')
+var publisherLink = require('./partials/publisher-link')
 
 module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
@@ -48,8 +50,8 @@ module.exports = function (configuration, request, response) {
     ${preamble()}
 <main>
 <h1>
-  ${escape(publisher)}’s
-  ${escape(project)}
+  ${publisherLink(publisher)}’s
+  ${projectLink(data.publication)}
   ${escape(edition)}
 </h1>
 <p>
