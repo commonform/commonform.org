@@ -181,3 +181,7 @@ body > footer {
 .annotationCounts span {
   margin: 0 1ex;
 }
+
+button + button {
+  margin-left: 1ex;
+}
