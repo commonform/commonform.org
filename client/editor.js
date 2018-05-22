@@ -167,7 +167,7 @@ function renderParagraph (offset, path, paragraph, tree, options) {
     if (event.which === 13 || event.keyCode === 13) this.blur()
   }
   p.onblur = function () {
-    var newMarkup = p.textContent
+    var newMarkup = p.textContent.replace(/[^\x20-\x7E]|\t/g, '')
     if (newMarkup.trim().length === 0) {
       p.textContent = originalMarkup
       return
