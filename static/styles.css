@@ -73,6 +73,11 @@ a:hover {
   position: relative;
 }
 
+.commonform .conspicuous > p {
+  font-style: italic;
+  font-weight: bold;
+}
+
 .commonform section:before {
   content: '§';
   left: -1rem;

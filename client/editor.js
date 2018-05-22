@@ -160,6 +160,11 @@ function update (message) {
     var index = state.annotators.indexOf(annotator)
     if (index === -1) state.annotators.push(annotator)
     else state.annotators.splice(index, 1)
+  } else if (action === 'toggle conspicuous') {
+    let path = message.path
+    let child = keyarrayGet(state.form, path)
+    if (child.conspicuous) delete child.conspicuous
+    else child.conspicuous = 'yes'
   }
   if (!message.doNotComputeState) computeState()
   morph(rendered, render())
@@ -282,6 +287,16 @@ function renderSeries (depth, offset, path, series, tree) {
       }
       section.appendChild(headingButton)
     }
+    var conspicuousButton = document.createElement('button')
+    conspicuousButton.appendChild(document.createTextNode('Toggle Conspicuous'))
+    conspicuousButton.onclick = function () {
+      update({
+        action: 'toggle conspicuous',
+        path: childPath,
+        doNotComputeState: true
+      })
+    }
+    section.appendChild(conspicuousButton)
     if (!selected) {
       var selectButton = document.createElement('button')
       selectButton.className = 'select'
