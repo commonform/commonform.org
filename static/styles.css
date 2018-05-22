@@ -66,7 +66,9 @@ a:hover {
 }
 
 .commonform section {
+  margin-bottom: 1rem;
   margin-left: 2rem;
+  margin-top: 1rem;
   position: relative;
 }
 
@@ -76,13 +78,12 @@ a:hover {
   position: absolute;
 }
 
-.commonform h1,
-.commonform h2,
-.commonform h3,
-.commonform h4,
-.commonform h5,
-.commonform h6 {
+.commonform .heading {
+  box-sizing: border-box;
+  display: block;
   font-size: 100%;
+  font-weight: bold;
+  width: 100%;
 }
 
 .commonform dfn {
@@ -155,4 +156,28 @@ body > footer {
   height: 10rem;
   padding: 1rem;
   width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.selected {
+  background: rgb(255, 255, 213)
+}
+
+.commonform input[type=text] {
+  padding: 1ex;
+}
+
+.annotationCounts {
+  background: white;
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  z-index: 100;
+}
+
+.annotationCounts span {
+  margin: 0 1ex;
 }

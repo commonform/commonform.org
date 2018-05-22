@@ -9,6 +9,8 @@ var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
+var DEFAULT_FORM = {content: ['...']}
+
 module.exports = function (configuration, request, response) {
   if (request.method === 'GET') {
     return getResponse.apply(this, arguments)
@@ -33,18 +35,12 @@ function getResponse (configuration, request, response) {
     if (error) {
       return internalError(configuration, request, response, error)
     }
-    console.log(data.form)
-    var markup = data.form ? commonformMarkupStringify(data.form) : ''
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
-  <main>
-    <form method=post action=/new>
-      <textarea class=editor name=markup>${escape(markup)}</textarea>
-      <button type=submit>Save</button>
-    </form>
-  </main>
-  ${footer()}
+  <main id=editor></main>
+  <script>window.form = ${JSON.stringify(data.form || DEFAULT_FORM)}</script>
+  ${footer('/editor.bundle.js')}
     `)
   })
 }

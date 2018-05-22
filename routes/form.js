@@ -1,5 +1,6 @@
 var get = require('simple-get')
 var internalError = require('./internal-error')
+var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
 var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
@@ -25,6 +26,9 @@ module.exports = function (configuration, request, response) {
         done(error, form)
       })
     },
+    loaded: ['form', function (data, done) {
+      loadComponents(data.form, {}, done)
+    }],
     publications: function (done) {
       get.concat({
         url: configuration.api + '/forms/' + digest + '/publications',
@@ -45,9 +49,9 @@ module.exports = function (configuration, request, response) {
     ${publicationsSection(data.publications)}
     ${publishedWithinSection(data.publications)}
   </header>
-  ${form(data.form)}
+  ${form(data.form, data.loaded)}
 </main>
-${footer()}
+${footer('/download.bundle.js')}
     `)
   })
 }

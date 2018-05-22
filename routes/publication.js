@@ -1,12 +1,17 @@
+var DOCX_CONTENT_TYPE = require('docx-content-type')
+var docx = require('commonform-docx')
 var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
+var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
+var outlineNumbering = require('outline-numbering')
 var reviewersEditionCompare = require('reviewers-edition-compare')
 var reviewersEditionSpell = require('reviewers-edition-spell')
 var reviewersEditionUpgrade = require('reviewers-edition-upgrade')
 var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
+var signaturePagesToOOXML = require('ooxml-signature-pages')
 
 var footer = require('./partials/footer')
 var form = require('./partials/form')
@@ -56,12 +61,42 @@ module.exports = function (configuration, request, response) {
       }, function (error, response, form) {
         done(error, form)
       })
+    }],
+    loaded: ['form', function (data, done) {
+      loadComponents(data.form, {}, done)
     }]
   }, function (error, data) {
     if (error) {
       return internalError(configuration, request, response, error)
     }
+    if (request.query.format === 'docx') {
+      var publication = data.publication
+      var options = {
+        title: publication.project,
+        edition: publication.edition,
+        markFilled: true,
+        numbering: outlineNumbering
+      }
+      if (publication.signaturePages) {
+        options.after = signaturePagesToOOXML(publication.signaturePages)
+      }
+      response.setHeader('Content-Type', DOCX_CONTENT_TYPE)
+      response.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${publication.project} ${publication.edition}.docx"`
+      )
+      response.end(
+        docx(data.loaded, [], options).generate({type: 'nodebuffer'})
+      )
+      return
+    }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
+    var docxHREF = (
+      '/' + encodeURIComponent(publisher) +
+      '/' + encodeURIComponent(project) +
+      '/' + encodeURIComponent(edition) +
+      '?format=docx'
+    )
     response.end(html`
     ${preamble()}
 <header>
@@ -77,9 +112,11 @@ module.exports = function (configuration, request, response) {
     Common Form ID:
     <a class=digest href=/forms/${data.publication.digest}>${data.publication.digest}</a>
   </p>
+  <a href="${docxHREF}">Download .docx</a>
 </header>
-<main>${form(data.form)}</main>
-${footer()}
+<main>${form(data.form, data.loaded)}</main>
+<script>window.publication = ${JSON.stringify(data.publication)}</script>
+${footer('/download.bundle.js')}
     `)
 
     function editionWarnings (displaying, available) {

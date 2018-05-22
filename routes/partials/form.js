@@ -5,7 +5,7 @@ var merkleize = require('commonform-merkleize')
 var predicate = require('commonform-predicate')
 var samePath = require('commonform-same-path')
 
-module.exports = function (form, options) {
+module.exports = function (form, loaded, options) {
   options = options || {}
   if (!options.mappings) options.mappings = []
   if (!options.annotations) options.annotations = []
@@ -13,7 +13,7 @@ module.exports = function (form, options) {
   return html`
     ${renderTableOfContents(form)}
     <article class=commonform>${renderForm(0, [], form, tree, options)}</article>
-    ${scriptTag(form, options)}
+    ${scriptTag(form, loaded, options)}
   `
 }
 
@@ -165,9 +165,10 @@ function matchingValue (path, mappings) {
   }
 }
 
-function scriptTag (form, options) {
+function scriptTag (form, loaded, options) {
   return `
     <script>window.form = ${JSON.stringify(form)}</script>
+    <script>window.loaded = ${JSON.stringify(loaded)}</script>
     <script>window.mappings = ${JSON.stringify(options.mappings)}</script>
     <script>window.annotations = ${JSON.stringify(options.annotations)}</script>
     <script>window.tree = ${JSON.stringify(options.tree)}</script>

@@ -10,7 +10,6 @@ module.exports = function (form) {
   var annotations = []
   annotators.forEach(function (annotator) {
     annotator(form).forEach(function (annotation) {
-      annotation.path = annotation.path.slice(0, -2)
       annotations.push(annotation)
     })
   })

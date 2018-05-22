@@ -1,6 +1,7 @@
 var annotate = require('../util/annotate')
 var get = require('simple-get')
 var internalError = require('./internal-error')
+var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
 var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
@@ -26,6 +27,9 @@ module.exports = function (configuration, request, response) {
         done(error, form)
       })
     },
+    loaded: ['form', function (data, done) {
+      loadComponents(data.form, {}, done)
+    }],
     publications: function (done) {
       get.concat({
         url: configuration.api + '/forms/' + digest + '/publications',
@@ -46,11 +50,13 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <main>
-${publicationsSection(data.publications)}
-${publishedWithinSection(data.publications)}
-${form(data.form, renderingOptions)}
+  <header>
+    ${publicationsSection(data.publications)}
+    ${publishedWithinSection(data.publications)}
+  </header>
+  <article>${form(data.form, data.loaded, renderingOptions)}</article>
 </main>
-${footer()}
+${footer('/download.bundle.js')}
     `)
   })
 }

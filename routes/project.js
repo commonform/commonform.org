@@ -39,6 +39,7 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <main>
+<pre>${JSON.stringify(request.query)}</pre>
 <header><h1>${publisherLink(publisher)}’s ${escape(project)}</h1></header>
 <article>
 <ul>
