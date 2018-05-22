@@ -5,8 +5,9 @@ var keyarrayGet = require('keyarray-get')
 var lint = require('commonform-lint')
 var merkleize = require('commonform-merkleize')
 var morph = require('nanomorph')
-var raf = require('nanoraf')
+var parse = require('commonform-markup-parse')
 var predicate = require('commonform-predicate')
+var raf = require('nanoraf')
 var samePath = require('commonform-same-path')
 var validate = require('commonform-validate')
 
@@ -103,6 +104,18 @@ function update (message) {
     let heading = message.heading
     if (heading) child.heading = heading
     else delete child.heading
+  } else if (action === 'content') {
+    let path = message.path
+    let markup = message.markup
+    let offset = message.offset
+    let length = message.length
+    let clone = JSON.parse(JSON.stringify(state.form))
+    let contentArray = keyarrayGet(clone, path).content
+    let parsed = parse(markup).form.content
+    var spliceArguments = [offset, length].concat(parsed)
+    contentArray.splice.apply(contentArray, spliceArguments)
+    if (!validate.form(clone, {allowComponents: true})) return
+    state.form = clone
   }
   if (!message.doNotComputeState) computeState()
   morph(rendered, render())
@@ -139,35 +152,41 @@ function renderContents (depth, path, form, tree) {
 
 function renderParagraph (offset, path, paragraph, tree, options) {
   var p = document.createElement('p')
-  paragraph.content.forEach(function (element) {
-    p.appendChild(renderParagraphElement(element))
-  })
+  p.className = 'paragraph'
+  p.contentEditable = true
+  var originalMarkup = paragraph.content
+    .map(renderParagraphElement)
+    .join('')
+  p.appendChild(document.createTextNode(originalMarkup))
+  p.onkeydown = function (event) {
+    if (event.which === 13 || event.keyCode === 13) this.blur()
+  }
+  p.onblur = function () {
+    var newMarkup = p.textContent
+    if (newMarkup !== originalMarkup) {
+      update({
+        action: 'content',
+        path: path,
+        offset: offset,
+        length: paragraph.content.length,
+        markup: newMarkup
+      })
+    }
+  }
   return p
 }
 
 function renderParagraphElement (element) {
   if (predicate.text(element)) {
-    return document.createTextNode(element)
+    return element
   } else if (predicate.use(element)) {
-    var use = document.createElement('span')
-    use.className = 'use'
-    use.appendChild(document.createTextNode(element.use))
-    use.href = `#definition:${encodeURIComponent(element.use)}`
-    return use
+    return '<' + element.use + '>'
   } else if (predicate.definition(element)) {
-    var definition = document.createElement('dfn')
-    definition.appendChild(document.createTextNode(element.definition))
-    definition.id = `definition:${encodeURIComponent(element.definition)}`
-    return definition
+    return '""' + element.definition + '""'
   } else if (predicate.blank(element)) {
-    var blank = document.createElement('span')
-    blank.className = 'blank'
-    return blank
+    return '[]'
   } else if (predicate.reference(element)) {
-    var reference = document.createElement('span')
-    reference.className = 'reference'
-    reference.appendChild(document.createTextNode(element.reference))
-    return reference
+    return '{' + element.reference + '}'
   }
 }
 
@@ -187,18 +206,31 @@ function renderSeries (depth, offset, path, series, tree) {
       conspicuous: child.conspicuous,
       selected: selected
     })
-    var heading = document.createElement('input')
-    heading.type = 'text'
-    heading.placeholder = 'Add heading here.'
-    heading.className = 'heading'
-    heading.value = child.heading || ''
-    section.appendChild(heading)
-    heading.onchange = function (event) {
-      update({
-        action: 'heading',
-        path: childPath,
-        heading: event.target.value
-      })
+    if (child.heading) {
+      var heading = document.createElement('input')
+      heading.type = 'text'
+      heading.placeholder = 'Add heading here.'
+      heading.className = 'heading'
+      heading.value = child.heading || ''
+      heading.onchange = function (event) {
+        update({
+          action: 'heading',
+          path: childPath,
+          heading: event.target.value
+        })
+      }
+      section.appendChild(heading)
+    } else {
+      var headingButton = document.createElement('button')
+      headingButton.appendChild(document.createTextNode('Add Heading'))
+      headingButton.onclick = function () {
+        update({
+          action: 'heading',
+          path: childPath,
+          heading: 'New Heading'
+        })
+      }
+      section.appendChild(headingButton)
     }
     if (!selected) {
       var selectButton = document.createElement('button')
