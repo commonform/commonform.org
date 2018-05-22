@@ -176,7 +176,6 @@ body > footer {
 }
 
 .annotationCounts {
-  background: white;
   position: fixed;
   right: 1rem;
   top: 1rem;
@@ -189,4 +188,8 @@ body > footer {
 
 button + button {
   margin-left: 1ex;
+}
+
+label input[type=checkbox] {
+  margin: 0 1ex 0 1ex;
 }

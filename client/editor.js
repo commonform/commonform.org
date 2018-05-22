@@ -2,7 +2,6 @@ var classnames = require('classnames')
 var fixStrings = require('commonform-fix-strings')
 var group = require('commonform-group-series')
 var keyarrayGet = require('keyarray-get')
-var lint = require('commonform-lint')
 var merkleize = require('commonform-merkleize')
 var morph = require('nanomorph')
 var parse = require('commonform-markup-parse')
@@ -11,16 +10,27 @@ var raf = require('nanoraf')
 var samePath = require('commonform-same-path')
 var validate = require('commonform-validate')
 
+var annotators = [
+  {name: 'structural errors', annotator: require('commonform-lint')},
+  {name: 'archaisms', annotator: require('commonform-archaic')},
+  {name: 'wordiness', annotator: require('commonform-wordy')},
+  {name: 'MSCD', annotator: require('commonform-mscd')}
+]
+
 var state = {
   form: window.form,
-  selected: false
+  selected: false,
+  annotators: [annotators[0].annotator]
 }
 
 function computeState () {
   var form = state.form
   fixStrings(form)
   state.tree = merkleize(form)
-  state.annotations = lint(form)
+  state.annotations = state.annotators
+    .reduce(function (annotations, annotator) {
+      return annotations.concat(annotator(form))
+    }, [])
 }
 
 computeState()
@@ -28,10 +38,34 @@ computeState()
 function render () {
   var article = document.createElement('article')
   article.className = 'commonform'
+  article.appendChild(renderOptions())
   article.appendChild(renderInterface())
   article.appendChild(renderAnnotationCounts())
   article.appendChild(renderContents(0, [], state.form, state.tree))
   return article
+}
+
+function renderOptions () {
+  var div = document.createElement('div')
+  var p = document.createElement('p')
+  p.appendChild(document.createTextNode('Check For:'))
+  div.appendChild(p)
+  annotators.forEach(function (element, index) {
+    var label = document.createElement('label')
+    label.id = 'toggle-annotator-' + index
+    var input = document.createElement('input')
+    input.type = 'checkbox'
+    input.onchange = function () {
+      update({action: 'toggle annotator', annotator: element})
+    }
+    if (state.annotators.indexOf(element.annotator) !== -1) {
+      input.checked = true
+    }
+    label.appendChild(input)
+    label.appendChild(document.createTextNode(element.name))
+    p.appendChild(label)
+  })
+  return div
 }
 
 function renderAnnotationCounts () {
@@ -121,6 +155,11 @@ function update (message) {
     contentArray.splice.apply(contentArray, spliceArguments)
     if (!validate.form(clone, {allowComponents: true})) return
     state.form = clone
+  } else if (action === 'toggle annotator') {
+    var annotator = message.annotator.annotator
+    var index = state.annotators.indexOf(annotator)
+    if (index === -1) state.annotators.push(annotator)
+    else state.annotators.splice(index, 1)
   }
   if (!message.doNotComputeState) computeState()
   morph(rendered, render())
@@ -216,16 +255,18 @@ function renderSeries (depth, offset, path, series, tree) {
       selected: selected
     })
     if (child.heading) {
-      var heading = document.createElement('input')
-      heading.type = 'text'
-      heading.placeholder = 'Add heading here.'
+      var heading = document.createElement('h1')
       heading.className = 'heading'
-      heading.value = child.heading || ''
-      heading.onchange = function (event) {
+      heading.contentEditable = true
+      heading.appendChild(document.createTextNode(child.heading || ''))
+      heading.onkeydown = function (event) {
+        if (event.which === 13 || event.keyCode === 13) this.blur()
+      }
+      heading.onblur = function (event) {
         update({
           action: 'heading',
           path: childPath,
-          heading: event.target.value
+          heading: event.target.textContent
         })
       }
       section.appendChild(heading)
@@ -272,7 +313,9 @@ function renderSeries (depth, offset, path, series, tree) {
           return annotation.message === otherAnnotation.message
         }) ? annotations : annotations.concat(annotation)
       }, [])
-    var level = highestLevel(annotations)
+      .sort(function (a, b) {
+        return levelValue(b.level) - levelValue(a.level)
+      })
     section.dataset.annotations = annotations.length
     if (annotations.length !== 0) {
       var aside = document.createElement('aside')
