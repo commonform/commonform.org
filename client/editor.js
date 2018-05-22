@@ -111,7 +111,12 @@ function update (message) {
     let length = message.length
     let clone = JSON.parse(JSON.stringify(state.form))
     let contentArray = keyarrayGet(clone, path).content
-    let parsed = parse(markup).form.content
+    try {
+      var parsed = parse(markup).form.content
+    } catch (error) {
+      morph(rendered, render())
+      return
+    }
     var spliceArguments = [offset, length].concat(parsed)
     contentArray.splice.apply(contentArray, spliceArguments)
     if (!validate.form(clone, {allowComponents: true})) return
@@ -163,6 +168,10 @@ function renderParagraph (offset, path, paragraph, tree, options) {
   }
   p.onblur = function () {
     var newMarkup = p.textContent
+    if (newMarkup.trim().length === 0) {
+      p.textContent = originalMarkup
+      return
+    }
     if (newMarkup !== originalMarkup) {
       update({
         action: 'content',
