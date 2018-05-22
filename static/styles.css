@@ -69,6 +69,7 @@ a:hover {
   margin-bottom: 1rem;
   margin-left: 2rem;
   margin-top: 1rem;
+  padding: 0 0.5rem 0.5rem 0.5rem;
   position: relative;
 }
 
@@ -118,18 +119,22 @@ a:hover {
 
 .commonform .annotation {
   font-size: 75%;
+  font-style: italic;
 }
 
 .info {
-  color: darkgreen;
+  background-color: #d5ffd3;
+  padding: 0.5rem;
 }
 
-.warn {
-  color: darkorange;
+.warn  {
+  background-color: #ffe7bc;
+  padding: 0.5rem;
 }
 
 .error {
-  color: darkred;
+  background-color: #ffbdbc;
+  padding: 0.5rem;
 }
 
 .toc ol {

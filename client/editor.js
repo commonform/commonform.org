@@ -272,6 +272,7 @@ function renderSeries (depth, offset, path, series, tree) {
           return annotation.message === otherAnnotation.message
         }) ? annotations : annotations.concat(annotation)
       }, [])
+    var level = highestLevel(annotations)
     section.dataset.annotations = annotations.length
     if (annotations.length !== 0) {
       var aside = document.createElement('aside')
@@ -297,6 +298,21 @@ function renderSeries (depth, offset, path, series, tree) {
     ))
   })
   return fragment
+}
+
+function highestLevel (annotations) {
+  if (annotations.length === 0) return null
+  return annotations.reduce(function (highest, annotation) {
+    if (levelValue(annotation.level) > levelValue(highest)) return annotation.level
+    else return highest
+  }, annotations[0].level)
+}
+
+function levelValue (level) {
+  if (level === 'info') return 1
+  if (level === 'warn') return 2
+  if (level === 'error') return 3
+  return 0
 }
 
 function renderDropZone (effect, path) {

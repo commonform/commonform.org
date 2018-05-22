@@ -56,7 +56,7 @@ module.exports = function (configuration, request, response) {
   </header>
   <article>${form(data.form, data.loaded, renderingOptions)}</article>
 </main>
-${footer('/download.bundle.js')}
+${footer()}
     `)
   })
 }

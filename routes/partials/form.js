@@ -118,7 +118,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
 }
 
 function renderHeading (depth, heading) {
-  return `<h1 id="heading:${encodeURIComponent(heading)}">${escape(heading)}</h1>`
+  return `<h1 class=heading id="heading:${encodeURIComponent(heading)}">${escape(heading)}</h1>`
 }
 
 function renderParagraph (offset, path, paragraph, tree, options) {

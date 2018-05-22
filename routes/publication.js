@@ -113,10 +113,11 @@ module.exports = function (configuration, request, response) {
     <a class=digest href=/forms/${data.publication.digest}>${data.publication.digest}</a>
   </p>
   <a href="${docxHREF}">Download .docx</a>
+  <a href=/edit?from=${data.publication.digest}>Edit</a>
 </header>
 <main>${form(data.form, data.loaded)}</main>
 <script>window.publication = ${JSON.stringify(data.publication)}</script>
-${footer('/download.bundle.js')}
+${footer()}
     `)
 
     function editionWarnings (displaying, available) {
