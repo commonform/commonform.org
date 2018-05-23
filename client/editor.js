@@ -529,30 +529,6 @@ function renderSeries (depth, offset, path, series, tree) {
       }
       section.appendChild(headingButton)
     }
-    if (!isComponent) {
-      var conspicuousButton = document.createElement('button')
-      conspicuousButton.appendChild(document.createTextNode('⚠'))
-      conspicuousButton.title = 'Toggle conspicuous formatting.'
-      conspicuousButton.onclick = function () {
-        update({
-          action: 'conspicuous',
-          path: childPath,
-          doNotComputeState: true
-        })
-      }
-      section.appendChild(conspicuousButton)
-
-      var componentButton = document.createElement('button')
-      componentButton.appendChild(document.createTextNode('⚙'))
-      componentButton.title = 'Replace with component.'
-      componentButton.onclick = function () {
-        update({
-          action: 'replace with component',
-          path: childPath
-        })
-      }
-      section.appendChild(componentButton)
-    }
     if (!selected) {
       var selectButton = document.createElement('button')
       selectButton.className = 'select'
@@ -578,6 +554,30 @@ function renderSeries (depth, offset, path, series, tree) {
         })
       }
       section.appendChild(deselectButton)
+    }
+    if (!isComponent) {
+      var conspicuousButton = document.createElement('button')
+      conspicuousButton.appendChild(document.createTextNode('⚠'))
+      conspicuousButton.title = 'Toggle conspicuous formatting.'
+      conspicuousButton.onclick = function () {
+        update({
+          action: 'toggle conspicuous',
+          path: childPath,
+          doNotComputeState: true
+        })
+      }
+      section.appendChild(conspicuousButton)
+
+      var componentButton = document.createElement('button')
+      componentButton.appendChild(document.createTextNode('⚙'))
+      componentButton.title = 'Replace with component.'
+      componentButton.onclick = function () {
+        update({
+          action: 'replace with component',
+          path: childPath
+        })
+      }
+      section.appendChild(componentButton)
     }
     var deleteButton = document.createElement('button')
     deleteButton.appendChild(document.createTextNode('❌'))
