@@ -73,6 +73,12 @@ a:hover {
   position: relative;
 }
 
+.editor .commonform section {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+
 .commonform .conspicuous > p {
   font-style: italic;
   font-weight: bold;
@@ -209,4 +215,18 @@ label input[type=checkbox] {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.child-button, .move-button {
+  background: white;
+  border: 1px dashed #eee;
+  color: white;
+  cursor: pointer;
+  display: block;
+  text-align: left;
+  width: 100%;
+}
+
+.child-button:hover, .move-button:hover {
+  color: #777;
 }

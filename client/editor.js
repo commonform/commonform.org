@@ -641,7 +641,7 @@ function renderDropZone (effect, path) {
       update({action: 'child', path: path})
     }
     button.className = 'child-button'
-    button.appendChild(document.createTextNode('Add child here.'))
+    button.appendChild(document.createTextNode('Add § here.'))
   } else if (effect === 'move') {
     button.onclick = function (event) {
       update({action: 'move', path: path})

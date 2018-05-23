@@ -1,5 +1,3 @@
-var commonformMarkupStringify = require('commonform-markup-stringify')
-var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
@@ -38,7 +36,7 @@ function getResponse (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
-  <main id=editor></main>
+  <main id=editor class=editor></main>
   <script>window.form = ${JSON.stringify(data.form || DEFAULT_FORM)}</script>
   ${footer('/editor.bundle.js')}
     `)
