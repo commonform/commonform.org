@@ -250,3 +250,33 @@ label input[type=checkbox] {
 .editor .commonform section:before {
   content: '';
 }
+
+.summary {
+  padding: 0;
+  margin: 0;
+}
+
+.undefined, .brokenReferences {
+  list-style-type: none;
+  padding: 0;
+}
+
+.undefined:before {
+  content: 'Undefined Terms: ';
+}
+
+.brokenReferences:before {
+  content: 'Broken References: ';
+}
+
+.undefined li, .brokenReferences li {
+  display: inline;
+}
+
+.summary li:after {
+  content: ', ';
+}
+
+.summary li:last-child:after {
+  content: '';
+}

@@ -84,7 +84,8 @@ function render () {
   var article = document.createElement('article')
   article.className = 'commonform'
   article.appendChild(renderOptions())
-  article.appendChild(renderInterface())
+  var summary = renderSummary()
+  if (summary) article.appendChild(summary)
   article.appendChild(renderAnnotationCounts())
   article.appendChild(renderContents(0, [], state.form, state.tree))
   return article
@@ -135,24 +136,42 @@ function renderAnnotationCounts () {
   return div
 }
 
-function renderInterface () {
-  var re = /^The term "([^"]+)" is used, but not defined.$/
+function renderSummary () {
+  var termRE = /^The term "([^"]+)" is used, but not defined.$/
+  var headingRE = /^The heading "([^"]+)" is referenced, but not used.$/
   var terms = []
+  var headings = []
   state.annotations.forEach(function (annotation) {
-    var match = re.exec(annotation.message)
-    if (match && terms.indexOf(match[1]) === -1) terms.push(match[1])
+    var match
+    match = termRE.exec(annotation.message)
+    if (match && !terms.includes(match[1])) terms.push(match[1])
+    match = headingRE.exec(annotation.message)
+    if (match && !headings.includes(match[1])) headings.push(match[1])
   })
+  if (terms.length === 0 && headings.length === 0) return false
+
   var header = document.createElement('header')
-  var p = document.createElement('p')
-  p.appendChild(document.createTextNode('This form uses, but does not define:'))
-  header.appendChild(p)
-  var ul = document.createElement('ul')
-  terms.forEach(function (term) {
-    var li = document.createElement('li')
-    li.appendChild(document.createTextNode(term))
-    ul.appendChild(li)
-  })
-  header.appendChild(ul)
+  header.className = 'summary'
+  if (terms.length !== 0) {
+    var termsList = document.createElement('ul')
+    termsList.className = 'undefined'
+    terms.forEach(function (term) {
+      var li = document.createElement('li')
+      li.appendChild(document.createTextNode(term))
+      termsList.appendChild(li)
+    })
+    header.appendChild(termsList)
+  }
+  if (headings.length !== 0) {
+    var headingsList = document.createElement('ul')
+    headingsList.className = 'brokenReferences'
+    headings.forEach(function (heading) {
+      var li = document.createElement('li')
+      li.appendChild(document.createTextNode(heading))
+      headingsList.appendChild(li)
+    })
+    header.appendChild(headingsList)
+  }
   return header
 }
 
