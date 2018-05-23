@@ -171,13 +171,6 @@ body > footer {
   text-align: right;
 }
 
-.editor {
-  box-sizing: border-box;
-  height: 10rem;
-  padding: 1rem;
-  width: 100%;
-}
-
 .hidden {
   display: none;
 }
