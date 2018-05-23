@@ -239,12 +239,12 @@ label input[type=checkbox] {
   cursor: pointer;
 }
 
-.selector:before {
-  content: '☐';
+.child.selector:before {
+  content: '§';
 }
 
-.selected .selector:before {
-  content: '☒';
+.component.selector:before {
+  content: '⚙';
 }
 
 .editor .commonform section:before {
