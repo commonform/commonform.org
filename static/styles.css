@@ -191,8 +191,10 @@ body > footer {
   z-index: 100;
 }
 
-.annotationCounts span {
+.annotationCounts .count {
   margin: 0 1ex;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 button + button {

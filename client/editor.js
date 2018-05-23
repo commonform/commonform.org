@@ -121,10 +121,16 @@ function renderAnnotationCounts () {
   var div = document.createElement('div')
   div.className = 'annotationCounts'
   Object.keys(counts).forEach(function (level) {
-    var span = document.createElement('span')
-    span.className = level
-    span.appendChild(document.createTextNode(counts[level]))
-    div.appendChild(span)
+    var a = document.createElement('a')
+    a.className = level + ' count'
+    a.appendChild(document.createTextNode(counts[level]))
+    div.appendChild(a)
+    if (counts[level] !== 0) {
+      a.title = 'Jump to first ' + level + ' annotation.'
+      a.onclick = function () {
+        document.getElementsByClassName(level)[1].scrollIntoView()
+      }
+    }
   })
   return div
 }
