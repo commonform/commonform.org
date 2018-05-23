@@ -84,6 +84,10 @@ a:hover {
   position: absolute;
 }
 
+.commonform .component:before {
+  content: '⚙';
+}
+
 .commonform .heading {
   box-sizing: border-box;
   display: block;
@@ -197,4 +201,10 @@ button + button {
 
 label input[type=checkbox] {
   margin: 0 1ex 0 1ex;
+}
+
+.component .substitutions {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }

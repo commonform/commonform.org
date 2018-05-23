@@ -1,12 +1,15 @@
+/* eslint-env browser */
+var analyze = require('commonform-analyze')
 var classnames = require('classnames')
 var fixStrings = require('commonform-fix-strings')
 var group = require('commonform-group-series')
 var keyarrayGet = require('keyarray-get')
+var loadComponents = require('commonform-load-components')
 var merkleize = require('commonform-merkleize')
 var morph = require('nanomorph')
 var parse = require('commonform-markup-parse')
 var predicate = require('commonform-predicate')
-var raf = require('nanoraf')
+var runParallel = require('run-parallel')
 var samePath = require('commonform-same-path')
 var validate = require('commonform-validate')
 
@@ -23,7 +26,7 @@ var state = {
   annotators: [annotators[0].annotator]
 }
 
-function computeState () {
+function computeState (done) {
   var form = state.form
   fixStrings(form)
   state.tree = merkleize(form)
@@ -31,9 +34,46 @@ function computeState () {
     .reduce(function (annotations, annotator) {
       return annotations.concat(annotator(form))
     }, [])
+  state.analysis = analyze(form)
+  runParallel(
+    state.analysis.components.map(function (entry) {
+      var component = entry[0]
+      return function (done) {
+        // TODO: Fetch latest upgrade.
+        fetch(
+          'https://' + component.repository +
+          '/publishers/' + encodeURIComponent(component.publisher) +
+          '/projects/' + encodeURIComponent(component.project) +
+          '/publications/' + encodeURIComponent(component.edition)
+        )
+          .then(function (response) {
+            return response.json()
+          })
+          .then(function (publication) {
+            return fetch(
+              'https://' + component.repository +
+              '/forms/' + publication.digest
+            )
+          })
+          .then(function (response) {
+            return response.json()
+          })
+          .then(function (form) {
+            loadComponents(form, {}, function (error, loaded) {
+              if (error) return done(error)
+              done(null, {component, loaded})
+            })
+          })
+          .catch(done)
+      }
+    }),
+    function (error, components) {
+      if (error) state.components = false
+      else state.components = components
+      done()
+    }
+  )
 }
-
-computeState()
 
 function render () {
   var article = document.createElement('article')
@@ -89,7 +129,7 @@ function renderInterface () {
   var terms = []
   state.annotations.forEach(function (annotation) {
     var match = re.exec(annotation.message)
-    if (match && terms.indexOf(match[1]) === -1)  terms.push(match[1])
+    if (match && terms.indexOf(match[1]) === -1) terms.push(match[1])
   })
   var header = document.createElement('header')
   var p = document.createElement('p')
@@ -113,6 +153,7 @@ function update (message) {
     let path = message.path
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1)
+    state.selected = null
   } else if (action === 'child') {
     let path = message.path
     let clone = JSON.parse(JSON.stringify(state.form))
@@ -121,6 +162,7 @@ function update (message) {
     parent.content.splice(path[path.length - 1], 0, child)
     if (!validate.form(clone, {allowComponents: true})) return
     state.form = clone
+    state.selected = path
   } else if (action === 'move') {
     let clone = JSON.parse(JSON.stringify(state.form))
     let oldPath = state.selected
@@ -148,7 +190,7 @@ function update (message) {
     try {
       var parsed = parse(markup).form.content
     } catch (error) {
-      morph(rendered, render())
+      renderAndMorph()
       return
     }
     var spliceArguments = [offset, length].concat(parsed)
@@ -165,9 +207,158 @@ function update (message) {
     let child = keyarrayGet(state.form, path)
     if (child.conspicuous) delete child.conspicuous
     else child.conspicuous = 'yes'
+  } else if (action === 'toggle update') {
+    let path = message.path
+    let component = keyarrayGet(state.form, path)
+    if (component.upgrade) delete component.upgrade
+    else component.upgrade = 'yes'
+  } else if (action === 'substitute term') {
+    let path = message.path
+    let component = keyarrayGet(state.form, path)
+    let original = message.original
+    let substituted = message.substituted
+    if (substituted.length === 0) {
+      delete component.substitutions.terms[original]
+    } else {
+      component.substitutions.terms[original] = substituted
+    }
+  } else if (action === 'replace with component') {
+    let path = message.path
+    let child = keyarrayGet(state.form, path)
+    let component = {
+      repository: 'api.commonform.org',
+      publisher: 'kemitchell',
+      project: 'placeholder-component',
+      edition: '1e',
+      substitutions: {terms: {}, headings: {}}
+    }
+    if (child.heading) component.heading = child.heading
+    let parent = parentOfPath(path)
+    parent.content.splice(path[path.length - 1], 1, component)
   }
-  if (!message.doNotComputeState) computeState()
-  morph(rendered, render())
+  if (!message.doNotComputeState) computeState(renderAndMorph)
+  else setImmediate(renderAndMorph)
+  function renderAndMorph () {
+    morph(rendered, render())
+  }
+}
+
+function renderComponent (component, path) {
+  var loaded = state.components.find(function (pair) {
+    var other = pair.component
+    return (
+      other.repository === component.repository &&
+      other.publisher === component.publisher &&
+      other.project === component.project &&
+      other.edition === component.edition &&
+      other.upgrade === component.upgrade
+    )
+  }).loaded
+  var analysis = analyze(loaded)
+
+  var defined = Object.keys(analysis.definitions)
+  var used = Object.keys(analysis.uses)
+  var termsToDefine = used.filter(function (used) {
+    return defined.indexOf(used) === -1
+  })
+
+  var referenced = Object.keys(analysis.references)
+  var utilized = Object.keys(analysis.headings)
+  var headingsToResolve = referenced.filter(function (referenced) {
+    return utilized.indexOf(referenced) === -1
+  })
+
+  var fragment = document.createDocumentFragment()
+  var p = document.createElement('p')
+
+  var publisher = document.createElement('a')
+  publisher.href = '/' + encodeURIComponent(component.publisher)
+  publisher.target = '_blank'
+  publisher.appendChild(document.createTextNode(component.publisher))
+  p.appendChild(publisher)
+  p.appendChild(document.createTextNode('’s '))
+
+  var project = document.createElement('a')
+  project.href = '/' + encodeURIComponent(component.publisher) + '/' + encodeURIComponent(component.project)
+  project.target = '_blank'
+  project.appendChild(document.createTextNode(component.project))
+  p.appendChild(project)
+
+  p.appendChild(document.createTextNode(' '))
+
+  var edition = document.createElement('a')
+  edition.href = '/' + encodeURIComponent(component.publisher) + '/' + encodeURIComponent(component.project) + '/' + encodeURIComponent(component.edition)
+  edition.target = '_blank'
+  edition.appendChild(document.createTextNode(component.edition))
+  p.appendChild(edition)
+
+  fragment.appendChild(p)
+
+  var upgradeParagraph = document.createElement('p')
+  var upgradeLabel = document.createElement('label')
+  var upgradeInput = document.createElement('input')
+  upgradeInput.type = 'checkbox'
+  upgradeInput.onchange = function () {
+    update({
+      action: 'toggle update',
+      path: path
+    })
+  }
+  upgradeLabel.appendChild(upgradeInput)
+  upgradeLabel.appendChild(document.createTextNode('Upgrade Automatically'))
+  if (component.upgrade) upgradeInput.checked = true
+  upgradeParagraph.appendChild(upgradeLabel)
+  fragment.appendChild(upgradeParagraph)
+
+  if (termsToDefine.length !== 0) {
+    var terms = document.createElement('ul')
+    terms.className = 'substitutions terms'
+    termsToDefine
+      .sort()
+      .forEach(function (original) {
+        var substituted = component.substitutions.terms[original]
+        var li = document.createElement('li')
+        li.appendChild(document.createTextNode(original + ': '))
+        var select = document.createElement('select')
+        select.onchange = function () {
+          update({
+            action: 'substitute term',
+            path: path,
+            original: original,
+            substituted: this.value
+          })
+        }
+        Object.keys(state.analysis.definitions).forEach(function (term) {
+          var option = document.createElement('option')
+          option.value = term
+          option.appendChild(document.createTextNode(term))
+          if (term === substituted) option.selected = true
+          select.appendChild(option)
+        })
+        var nullOption = document.createElement('option')
+        nullOption.value = ''
+        nullOption.appendChild(document.createTextNode('(Leave undefined.)'))
+        if (substituted === undefined) nullOption.selected = true
+        select.appendChild(nullOption)
+        li.appendChild(select)
+        terms.appendChild(li)
+      })
+    fragment.appendChild(terms)
+  }
+
+  if (headingsToResolve.length !== 0) {
+    var headings = document.createElement('ul')
+    headings.className = 'substitutions headings'
+    headingsToResolve.forEach(function (original) {
+      var substituted = component.substitutions.headings[original]
+      var li = document.createElement('li')
+      li.appendChild(original + '→' + substituted)
+      headings.appendChild(li)
+    })
+    fragment.appendChild(headings)
+  }
+
+  return fragment
 }
 
 function renderContents (depth, path, form, tree) {
@@ -199,7 +390,7 @@ function renderContents (depth, path, form, tree) {
   return fragment
 }
 
-function renderParagraph (offset, path, paragraph, tree, options) {
+function renderParagraph (offset, path, paragraph, tree) {
   var p = document.createElement('p')
   p.className = 'paragraph'
   p.contentEditable = true
@@ -251,11 +442,15 @@ function renderSeries (depth, offset, path, series, tree) {
     var childTree = tree.content[offset + index]
     var childPath = path.concat('content', offset + index)
     var section = document.createElement('section')
-    var digest = childTree.digest
-    section.id = digest
-    section.dataset.digest = digest
+    if (childTree) {
+      var digest = childTree.digest
+      section.id = digest
+      section.dataset.digest = digest
+    }
     var selected = state.selected && samePath(childPath, state.selected)
+    var isComponent = child.hasOwnProperty('repository')
     section.className = classnames({
+      component: isComponent,
       conspicuous: child.conspicuous,
       selected: selected
     })
@@ -287,16 +482,28 @@ function renderSeries (depth, offset, path, series, tree) {
       }
       section.appendChild(headingButton)
     }
-    var conspicuousButton = document.createElement('button')
-    conspicuousButton.appendChild(document.createTextNode('Toggle Conspicuous'))
-    conspicuousButton.onclick = function () {
-      update({
-        action: 'toggle conspicuous',
-        path: childPath,
-        doNotComputeState: true
-      })
+    if (!isComponent) {
+      var conspicuousButton = document.createElement('button')
+      conspicuousButton.appendChild(document.createTextNode('Toggle Conspicuous'))
+      conspicuousButton.onclick = function () {
+        update({
+          action: 'conspicuous',
+          path: childPath,
+          doNotComputeState: true
+        })
+      }
+      section.appendChild(conspicuousButton)
+
+      var componentButton = document.createElement('button')
+      componentButton.appendChild(document.createTextNode('Replace with Component'))
+      componentButton.onclick = function () {
+        update({
+          action: 'replace with component',
+          path: childPath
+        })
+      }
+      section.appendChild(componentButton)
     }
-    section.appendChild(conspicuousButton)
     if (!selected) {
       var selectButton = document.createElement('button')
       selectButton.className = 'select'
@@ -343,12 +550,16 @@ function renderSeries (depth, offset, path, series, tree) {
       })
       section.appendChild(aside)
     }
-    section.appendChild(renderContents(
-      depth,
-      childPath.concat('form'),
-      form,
-      childTree
-    ))
+    if (isComponent) {
+      section.appendChild(renderComponent(child, childPath))
+    } else {
+      section.appendChild(renderContents(
+        depth,
+        childPath.concat('form'),
+        form,
+        childTree
+      ))
+    }
     fragment.appendChild(section)
     fragment.appendChild(renderDropZone(
       state.selected ? 'move' : 'child',
@@ -356,14 +567,6 @@ function renderSeries (depth, offset, path, series, tree) {
     ))
   })
   return fragment
-}
-
-function highestLevel (annotations) {
-  if (annotations.length === 0) return null
-  return annotations.reduce(function (highest, annotation) {
-    if (levelValue(annotation.level) > levelValue(highest)) return annotation.level
-    else return highest
-  }, annotations[0].level)
 }
 
 function levelValue (level) {
@@ -375,7 +578,6 @@ function levelValue (level) {
 
 function renderDropZone (effect, path) {
   var button = document.createElement('button')
-  var onClick, text
   if (effect === 'child') {
     button.onclick = function () {
       update({action: 'child', path: path})
@@ -396,5 +598,9 @@ function parentOfPath (path) {
   return keyarrayGet(state.form, path.slice(0, -2))
 }
 
-var rendered = render()
-document.getElementById('editor').appendChild(rendered)
+var rendered
+
+computeState(function () {
+  rendered = render()
+  document.getElementById('editor').appendChild(rendered)
+})
