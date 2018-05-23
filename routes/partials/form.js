@@ -141,9 +141,9 @@ function renderParagraph (offset, path, paragraph, tree, options) {
           let blankPath = JSON.stringify(path.concat('content', offset + index))
           let value = matchingValue(blankPath, options.mappings)
           if (value) {
-            return `<input type=text class=blank data-path='${blankPath}' value="${escape(value)}">`
+            return `<input type=text class=blank data-path='${blankPath}' value="${escape(value)}" disabled>`
           } else {
-            return `<input type=text class=blank data-path='${blankPath}'>`
+            return `<input type=text class=blank data-path='${blankPath}' disabled>`
           }
         } else if (predicate.reference(element)) {
           return renderReference(element.reference)
