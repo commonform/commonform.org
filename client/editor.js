@@ -35,6 +35,11 @@ function computeState (done) {
       return annotations.concat(annotator(form))
     }, [])
   state.analysis = analyze(form)
+  // Load each component in the form.
+  // Note that we do _not_ run `loadComponents` on the form as a whole.
+  // That would replace terms and references according to substitutions
+  // specified in the components objects.  We need to know what terms
+  // and headings need to be replaced to present UI.
   runParallel(
     state.analysis.components.map(function (entry) {
       var component = entry[0]
