@@ -412,9 +412,10 @@ function renderContents (depth, path, form, tree) {
   var fragment = document.createDocumentFragment()
   var offset = 0
   var groups = group(form)
+  var inSelected = isInSelected(path)
   if (groups[0].type === 'series') {
     fragment.appendChild(renderDropZone(
-      state.selected ? 'move' : 'child',
+      (state.selected && !inSelected) ? 'move' : 'child',
       path.concat('content', 0)
     ))
   }
@@ -428,7 +429,7 @@ function renderContents (depth, path, form, tree) {
         renderParagraph(offset, path, group, tree)
       )
       fragment.appendChild(renderDropZone(
-        state.selected ? 'move' : 'child',
+        (state.selected && !inSelected) ? 'move' : 'child',
         path.concat('content', offset + group.content.length)
       ))
     }
@@ -481,6 +482,15 @@ function renderParagraphElement (element) {
   }
 }
 
+function isInSelected (path) {
+  var selected = state.selected
+  return (
+    selected &&
+    selected.length < path.length &&
+    samePath(path.slice(0, selected.length), selected)
+  )
+}
+
 function renderSeries (depth, offset, path, series, tree) {
   var fragment = document.createDocumentFragment()
   series.content.forEach(function (child, index) {
@@ -495,6 +505,8 @@ function renderSeries (depth, offset, path, series, tree) {
       section.dataset.digest = digest
     }
     var selected = state.selected && samePath(childPath, state.selected)
+    var inSelected = isInSelected(childPath)
+    console.log('%s is %j', 'inSelected', inSelected)
     var isComponent = child.hasOwnProperty('repository')
     section.className = classnames({
       component: isComponent,
@@ -619,7 +631,7 @@ function renderSeries (depth, offset, path, series, tree) {
     }
     fragment.appendChild(section)
     fragment.appendChild(renderDropZone(
-      state.selected ? 'move' : 'child',
+      (state.selected && !inSelected) ? 'move' : 'child',
       path.concat('content', absoluteIndex + 1)
     ))
   })
