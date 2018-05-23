@@ -531,7 +531,8 @@ function renderSeries (depth, offset, path, series, tree) {
     }
     if (!isComponent) {
       var conspicuousButton = document.createElement('button')
-      conspicuousButton.appendChild(document.createTextNode('Toggle Conspicuous'))
+      conspicuousButton.appendChild(document.createTextNode('⚠'))
+      conspicuousButton.title = 'Toggle conspicuous formatting.'
       conspicuousButton.onclick = function () {
         update({
           action: 'conspicuous',
@@ -542,7 +543,8 @@ function renderSeries (depth, offset, path, series, tree) {
       section.appendChild(conspicuousButton)
 
       var componentButton = document.createElement('button')
-      componentButton.appendChild(document.createTextNode('Replace with Component'))
+      componentButton.appendChild(document.createTextNode('⚙'))
+      componentButton.title = 'Replace with component.'
       componentButton.onclick = function () {
         update({
           action: 'replace with component',
@@ -554,7 +556,8 @@ function renderSeries (depth, offset, path, series, tree) {
     if (!selected) {
       var selectButton = document.createElement('button')
       selectButton.className = 'select'
-      selectButton.appendChild(document.createTextNode('Select'))
+      selectButton.appendChild(document.createTextNode('☐'))
+      selectButton.title = 'Select.'
       selectButton.onclick = function () {
         update({
           action: 'select',
@@ -566,7 +569,8 @@ function renderSeries (depth, offset, path, series, tree) {
     } else {
       var deselectButton = document.createElement('button')
       deselectButton.className = 'deselect'
-      deselectButton.appendChild(document.createTextNode('Deselect'))
+      deselectButton.appendChild(document.createTextNode('☒'))
+      deselectButton.title = 'Deselect.'
       deselectButton.onclick = function () {
         update({
           action: 'deselect',
@@ -576,7 +580,8 @@ function renderSeries (depth, offset, path, series, tree) {
       section.appendChild(deselectButton)
     }
     var deleteButton = document.createElement('button')
-    deleteButton.appendChild(document.createTextNode('Delete'))
+    deleteButton.appendChild(document.createTextNode('❌'))
+    deleteButton.title = 'Delete.'
     deleteButton.onclick = function () {
       update({
         action: 'delete',
