@@ -241,11 +241,45 @@ function update (message) {
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1, component)
   }
-  if (!message.doNotComputeState) computeState(renderAndMorph)
-  else setImmediate(renderAndMorph)
+  if (!message.doNotComputeState) {
+    fixSubstitutions()
+    computeState(renderAndMorph)
+  } else {
+    setImmediate(renderAndMorph)
+  }
   function renderAndMorph () {
     morph(rendered, render())
   }
+}
+
+function fixSubstitutions () {
+  var analysis = analyze(state.form)
+  var definitions = Object.keys(analysis.definitions)
+  var headings = Object.keys(analysis.headings)
+  function recurse (form) {
+    form.content.forEach(function (element) {
+      if (element.hasOwnProperty('repository')) {
+        var component = element
+        var substitutions = component.substitutions
+        var terms = substitutions.terms
+        Object.keys(terms).forEach(function (original) {
+          var substituted = terms[original]
+          if (!definitions.includes(substituted)) {
+            delete terms[original]
+          }
+        })
+        var references = substitutions.headings
+        Object.keys(references).forEach(function (referenced) {
+          if (!headings.includes(references[referenced])) {
+            delete headings[referenced]
+          }
+        })
+      } else if (element.hasOwnProperty('form')) {
+        recurse(element.form)
+      }
+    })
+  }
+  recurse(state.form)
 }
 
 function renderComponent (component, path) {
@@ -444,7 +478,7 @@ function renderSeries (depth, offset, path, series, tree) {
   series.content.forEach(function (child, index) {
     var absoluteIndex = index + offset
     var form = child.form
-    var childTree = tree.content[offset + index]
+    var childTree = tree.content && tree.content[offset + index]
     var childPath = path.concat('content', offset + index)
     var section = document.createElement('section')
     if (childTree) {
