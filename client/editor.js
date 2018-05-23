@@ -154,11 +154,13 @@ function update (message) {
   var action = message.action
   if (action === 'select') {
     state.selected = message.path
+  } else if (action === 'deselect') {
+    state.selected = false
   } else if (action === 'delete') {
     let path = message.path
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1)
-    state.selected = null
+    state.selected = false
   } else if (action === 'child') {
     let path = message.path
     let clone = JSON.parse(JSON.stringify(state.form))
@@ -547,23 +549,34 @@ function renderSeries (depth, offset, path, series, tree) {
       var selectButton = document.createElement('button')
       selectButton.className = 'select'
       selectButton.appendChild(document.createTextNode('Select'))
-      selectButton.addEventListener('click', function () {
+      selectButton.onclick = function () {
         update({
           action: 'select',
           path: childPath,
           doNotComputeState: true
         })
-      })
+      }
       section.appendChild(selectButton)
+    } else {
+      var deselectButton = document.createElement('button')
+      deselectButton.className = 'deselect'
+      deselectButton.appendChild(document.createTextNode('Deselect'))
+      deselectButton.onclick = function () {
+        update({
+          action: 'deselect',
+          doNotComputeState: true
+        })
+      }
+      section.appendChild(deselectButton)
     }
     var deleteButton = document.createElement('button')
     deleteButton.appendChild(document.createTextNode('Delete'))
-    deleteButton.addEventListener('click', function () {
+    deleteButton.onclick = function () {
       update({
         action: 'delete',
         path: childPath
       })
-    })
+    }
     section.appendChild(deleteButton)
     var annotations = state.annotations
       .filter(function (annotation) {
