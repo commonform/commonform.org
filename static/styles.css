@@ -76,7 +76,6 @@ a:hover {
 .editor .commonform section {
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
-  padding: 0;
 }
 
 .commonform .conspicuous > p {
@@ -211,15 +210,43 @@ label input[type=checkbox] {
 }
 
 .child-button, .move-button {
-  background: white;
+  background: inherit;
   border: 1px dashed #eee;
-  color: white;
+  color: transparent;
   cursor: pointer;
   display: block;
   text-align: left;
   width: 100%;
 }
 
+.child-button:before {
+  content: 'Add § here.';
+}
+
+.move-button:before {
+  content: 'Move here.';
+}
+
 .child-button:hover, .move-button:hover {
   color: #777;
+}
+
+.editor .selector {
+  position: absolute;
+  left: -2rem;
+  top: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.selector:before {
+  content: '☐';
+}
+
+.selected .selector:before {
+  content: '☒';
+}
+
+.editor .commonform section:before {
+  content: '';
 }

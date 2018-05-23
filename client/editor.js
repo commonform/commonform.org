@@ -501,6 +501,24 @@ function renderSeries (depth, offset, path, series, tree) {
       conspicuous: child.conspicuous,
       selected: selected
     })
+    var selector = document.createElement('a')
+    selector.className = classnames({
+      selector: true,
+      component: isComponent,
+      child: !isComponent
+    })
+    selector.onclick = function () {
+      if (selected) {
+        update({action: 'deselect'})
+      } else {
+        update({
+          action: 'select',
+          path: childPath,
+          doNotComputeState: true
+        })
+      }
+    }
+    section.appendChild(selector)
     if (child.heading) {
       var heading = document.createElement('h1')
       heading.className = 'heading'
@@ -517,7 +535,7 @@ function renderSeries (depth, offset, path, series, tree) {
         })
       }
       section.appendChild(heading)
-    } else {
+    } else if (selected) {
       var headingButton = document.createElement('button')
       headingButton.appendChild(document.createTextNode('Add Heading'))
       headingButton.onclick = function () {
@@ -529,33 +547,7 @@ function renderSeries (depth, offset, path, series, tree) {
       }
       section.appendChild(headingButton)
     }
-    if (!selected) {
-      var selectButton = document.createElement('button')
-      selectButton.className = 'select'
-      selectButton.appendChild(document.createTextNode('☐'))
-      selectButton.title = 'Select.'
-      selectButton.onclick = function () {
-        update({
-          action: 'select',
-          path: childPath,
-          doNotComputeState: true
-        })
-      }
-      section.appendChild(selectButton)
-    } else {
-      var deselectButton = document.createElement('button')
-      deselectButton.className = 'deselect'
-      deselectButton.appendChild(document.createTextNode('☒'))
-      deselectButton.title = 'Deselect.'
-      deselectButton.onclick = function () {
-        update({
-          action: 'deselect',
-          doNotComputeState: true
-        })
-      }
-      section.appendChild(deselectButton)
-    }
-    if (!isComponent) {
+    if (!isComponent && selected) {
       var conspicuousButton = document.createElement('button')
       conspicuousButton.appendChild(document.createTextNode('⚠'))
       conspicuousButton.title = 'Toggle conspicuous formatting.'
@@ -579,16 +571,18 @@ function renderSeries (depth, offset, path, series, tree) {
       }
       section.appendChild(componentButton)
     }
-    var deleteButton = document.createElement('button')
-    deleteButton.appendChild(document.createTextNode('❌'))
-    deleteButton.title = 'Delete.'
-    deleteButton.onclick = function () {
-      update({
-        action: 'delete',
-        path: childPath
-      })
+    if (selected) {
+      var deleteButton = document.createElement('button')
+      deleteButton.appendChild(document.createTextNode('❌'))
+      deleteButton.title = 'Delete.'
+      deleteButton.onclick = function () {
+        update({
+          action: 'delete',
+          path: childPath
+        })
+      }
+      section.appendChild(deleteButton)
     }
-    section.appendChild(deleteButton)
     var annotations = state.annotations
       .filter(function (annotation) {
         return samePath(annotation.path.slice(0, -3), childPath)
@@ -646,13 +640,11 @@ function renderDropZone (effect, path) {
       update({action: 'child', path: path})
     }
     button.className = 'child-button'
-    button.appendChild(document.createTextNode('Add § here.'))
   } else if (effect === 'move') {
     button.onclick = function (event) {
       update({action: 'move', path: path})
     }
     button.className = 'move-button'
-    button.appendChild(document.createTextNode('Move here.'))
   }
   return button
 }
