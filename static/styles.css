@@ -74,13 +74,17 @@ a:hover {
 }
 
 .editor .commonform section {
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 .commonform .conspicuous > p {
   font-style: italic;
   font-weight: bold;
+}
+
+.commonform p {
+  margin: 0;
 }
 
 .commonform section:before {
@@ -175,7 +179,11 @@ body > footer {
 }
 
 .selected {
-  background: rgb(255, 255, 213)
+  background: rgb(255, 255, 213);
+}
+
+.expanded {
+  color: #777;
 }
 
 .commonform input[type=text] {

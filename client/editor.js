@@ -11,6 +11,7 @@ var parse = require('commonform-markup-parse')
 var predicate = require('commonform-predicate')
 var runParallel = require('run-parallel')
 var samePath = require('commonform-same-path')
+var substitute = require('commonform-substitute')
 var validate = require('commonform-validate')
 
 var annotators = [
@@ -23,7 +24,8 @@ var annotators = [
 var state = {
   form: window.form,
   selected: false,
-  annotators: [annotators[0].annotator]
+  annotators: [annotators[0].annotator],
+  expanded: [] // paths of components to expand
 }
 
 function computeState (done) {
@@ -267,6 +269,18 @@ function update (message) {
     if (child.heading) component.heading = child.heading
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1, component)
+  } else if (action === 'expand component') {
+    let path = message.path
+    var already = state.expanded.some(function (element) {
+      return samePath(element, path)
+    })
+    if (!already) state.expanded.push(path)
+  } else if (action === 'collapse component') {
+    let path = message.path
+    let index = state.expanded.find(function (element) {
+      return samePath(element, path)
+    })
+    if (index) state.expanded.splice(index, 1)
   }
   if (!message.doNotComputeState) {
     fixSubstitutions()
@@ -309,8 +323,8 @@ function fixSubstitutions () {
   recurse(state.form)
 }
 
-function renderComponent (component, path) {
-  var loaded = state.components.find(function (pair) {
+function matchingLoadedComponent (component) {
+  return state.components.find(function (pair) {
     var other = pair.component
     return (
       other.repository === component.repository &&
@@ -320,6 +334,10 @@ function renderComponent (component, path) {
       other.upgrade === component.upgrade
     )
   }).loaded
+}
+
+function renderComponent (component, path) {
+  var loaded = matchingLoadedComponent(component)
   var analysis = analyze(loaded)
 
   var defined = Object.keys(analysis.definitions)
@@ -427,12 +445,13 @@ function renderComponent (component, path) {
   return fragment
 }
 
-function renderContents (depth, path, form, tree) {
+function renderContents (depth, path, form, tree, options) {
+  var fixed = options && options.fixed
   var fragment = document.createDocumentFragment()
   var offset = 0
   var groups = group(form)
   var inSelected = isInSelected(path)
-  if (groups[0].type === 'series') {
+  if (groups[0].type === 'series' && !fixed) {
     fragment.appendChild(renderDropZone(
       (state.selected && !inSelected) ? 'move' : 'child',
       path.concat('content', 0)
@@ -441,47 +460,52 @@ function renderContents (depth, path, form, tree) {
   groups.forEach(function (group) {
     if (group.type === 'series') {
       fragment.appendChild(
-        renderSeries(depth + 1, offset, path, group, tree)
+        renderSeries(depth + 1, offset, path, group, tree, options)
       )
     } else {
       fragment.appendChild(
-        renderParagraph(offset, path, group, tree)
+        renderParagraph(offset, path, group, tree, options)
       )
-      fragment.appendChild(renderDropZone(
-        (state.selected && !inSelected) ? 'move' : 'child',
-        path.concat('content', offset + group.content.length)
-      ))
+      if (!fixed) {
+        fragment.appendChild(renderDropZone(
+          (state.selected && !inSelected) ? 'move' : 'child',
+          path.concat('content', offset + group.content.length)
+        ))
+      }
     }
     offset += group.content.length
   })
   return fragment
 }
 
-function renderParagraph (offset, path, paragraph, tree) {
+function renderParagraph (offset, path, paragraph, tree, options) {
+  var fixed = options && options.fixed
   var p = document.createElement('p')
   p.className = 'paragraph'
-  p.contentEditable = true
   var originalMarkup = paragraph.content
     .map(renderParagraphElement)
     .join('')
   p.appendChild(document.createTextNode(originalMarkup))
-  p.onkeydown = function (event) {
-    if (event.which === 13 || event.keyCode === 13) this.blur()
-  }
-  p.onblur = function () {
-    var newMarkup = p.textContent.replace(/[^\x20-\x7E]|\t/g, '')
-    if (newMarkup.trim().length === 0) {
-      p.textContent = originalMarkup
-      return
+  if (!fixed) {
+    p.contentEditable = true
+    p.onkeydown = function (event) {
+      if (event.which === 13 || event.keyCode === 13) this.blur()
     }
-    if (newMarkup !== originalMarkup) {
-      update({
-        action: 'content',
-        path: path,
-        offset: offset,
-        length: paragraph.content.length,
-        markup: newMarkup
-      })
+    p.onblur = function () {
+      var newMarkup = p.textContent.replace(/[^\x20-\x7E]|\t/g, '')
+      if (newMarkup.trim().length === 0) {
+        p.textContent = originalMarkup
+        return
+      }
+      if (newMarkup !== originalMarkup) {
+        update({
+          action: 'content',
+          path: path,
+          offset: offset,
+          length: paragraph.content.length,
+          markup: newMarkup
+        })
+      }
     }
   }
   return p
@@ -510,7 +534,8 @@ function isInSelected (path) {
   )
 }
 
-function renderSeries (depth, offset, path, series, tree) {
+function renderSeries (depth, offset, path, series, tree, options) {
+  var fixed = options && options.fixed
   var fragment = document.createDocumentFragment()
   series.content.forEach(function (child, index) {
     var absoluteIndex = index + offset
@@ -525,12 +550,15 @@ function renderSeries (depth, offset, path, series, tree) {
     }
     var selected = state.selected && samePath(childPath, state.selected)
     var inSelected = isInSelected(childPath)
-    console.log('%s is %j', 'inSelected', inSelected)
     var isComponent = child.hasOwnProperty('repository')
+    var isExpanded = state.expanded.some(function (element) {
+      return samePath(element, childPath)
+    })
     section.className = classnames({
       component: isComponent,
       conspicuous: child.conspicuous,
-      selected: selected
+      selected: selected,
+      expanded: isExpanded
     })
     var selector = document.createElement('a')
     selector.className = classnames({
@@ -538,35 +566,39 @@ function renderSeries (depth, offset, path, series, tree) {
       component: isComponent,
       child: !isComponent
     })
-    selector.onclick = function () {
-      if (selected) {
-        update({action: 'deselect'})
-      } else {
-        update({
-          action: 'select',
-          path: childPath,
-          doNotComputeState: true
-        })
+    if (!fixed) {
+      selector.onclick = function () {
+        if (selected) {
+          update({action: 'deselect'})
+        } else {
+          update({
+            action: 'select',
+            path: childPath,
+            doNotComputeState: true
+          })
+        }
       }
     }
     section.appendChild(selector)
     if (child.heading) {
       var heading = document.createElement('h1')
       heading.className = 'heading'
-      heading.contentEditable = true
       heading.appendChild(document.createTextNode(child.heading || ''))
-      heading.onkeydown = function (event) {
-        if (event.which === 13 || event.keyCode === 13) this.blur()
-      }
-      heading.onblur = function (event) {
-        update({
-          action: 'heading',
-          path: childPath,
-          heading: event.target.textContent
-        })
+      if (!fixed) {
+        heading.contentEditable = true
+        heading.onkeydown = function (event) {
+          if (event.which === 13 || event.keyCode === 13) this.blur()
+        }
+        heading.onblur = function (event) {
+          update({
+            action: 'heading',
+            path: childPath,
+            heading: event.target.textContent
+          })
+        }
       }
       section.appendChild(heading)
-    } else if (selected) {
+    } else if (selected && !fixed) {
       var headingButton = document.createElement('button')
       headingButton.appendChild(document.createTextNode('Add Heading'))
       headingButton.onclick = function () {
@@ -578,7 +610,7 @@ function renderSeries (depth, offset, path, series, tree) {
       }
       section.appendChild(headingButton)
     }
-    if (!isComponent && selected) {
+    if (!isComponent && selected && !fixed) {
       var conspicuousButton = document.createElement('button')
       conspicuousButton.appendChild(document.createTextNode('⚠'))
       conspicuousButton.title = 'Toggle conspicuous formatting.'
@@ -602,7 +634,7 @@ function renderSeries (depth, offset, path, series, tree) {
       }
       section.appendChild(componentButton)
     }
-    if (selected) {
+    if (selected && !fixed) {
       var deleteButton = document.createElement('button')
       deleteButton.appendChild(document.createTextNode('❌'))
       deleteButton.title = 'Delete.'
@@ -613,6 +645,33 @@ function renderSeries (depth, offset, path, series, tree) {
         })
       }
       section.appendChild(deleteButton)
+      if (isComponent) {
+        if (isExpanded) {
+          var collapseButton = document.createElement('button')
+          collapseButton.appendChild(document.createTextNode('⊖'))
+          collapseButton.title = 'Collapse component.'
+          collapseButton.onclick = function () {
+            update({
+              action: 'collapse component',
+              path: childPath,
+              doNotComputeState: true
+            })
+          }
+          section.appendChild(collapseButton)
+        } else {
+          var expandButton = document.createElement('button')
+          expandButton.appendChild(document.createTextNode('⊕'))
+          expandButton.title = 'Expand component.'
+          expandButton.onclick = function () {
+            update({
+              action: 'expand component',
+              path: childPath,
+              doNotComputeState: true
+            })
+          }
+          section.appendChild(expandButton)
+        }
+      }
     }
     var annotations = state.annotations
       .filter(function (annotation) {
@@ -639,20 +698,35 @@ function renderSeries (depth, offset, path, series, tree) {
       section.appendChild(aside)
     }
     if (isComponent) {
-      section.appendChild(renderComponent(child, childPath))
+      if (isExpanded) {
+        var loaded = matchingLoadedComponent(child)
+        var expanded = substitute(loaded, child.substitutions)
+        section.appendChild(renderContents(
+          depth,
+          childPath.concat('form'),
+          expanded,
+          merkleize(expanded),
+          {fixed: true}
+        ))
+      } else {
+        section.appendChild(renderComponent(child, childPath))
+      }
     } else {
       section.appendChild(renderContents(
         depth,
         childPath.concat('form'),
         form,
-        childTree
+        childTree,
+        options
       ))
     }
     fragment.appendChild(section)
-    fragment.appendChild(renderDropZone(
-      (state.selected && !inSelected) ? 'move' : 'child',
-      path.concat('content', absoluteIndex + 1)
-    ))
+    if (!fixed) {
+      fragment.appendChild(renderDropZone(
+        (state.selected && !inSelected) ? 'move' : 'child',
+        path.concat('content', absoluteIndex + 1)
+      ))
+    }
   })
   return fragment
 }
