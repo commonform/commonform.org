@@ -14,6 +14,8 @@ var samePath = require('commonform-same-path')
 var substitute = require('commonform-substitute')
 var validate = require('commonform-validate')
 
+// TODO: Load publisher, project, edition lists before rendering.
+
 var annotators = [
   {name: 'structural errors', annotator: require('commonform-lint')},
   {name: 'archaisms', annotator: require('commonform-archaic')},
@@ -357,83 +359,49 @@ function renderComponent (component, path) {
   var p = document.createElement('p')
 
   var publisherMenu = document.createElement('select')
-  state.publishers.forEach(function (publisher) {
-    var option = document.createElement('option')
-    option.value = publisher
-    option.appendChild(document.createTextNode(publisher))
-    if (publisher === component.publisher) option.selected = true
-    publisherMenu.appendChild(option)
-  })
+  appendOptions(publisherMenu, state.publishers, component.publisher)
   publisherMenu.onchange = function () {
     var newPublisher = this.value
     if (newPublisher !== component.publisher) {
-      fetch(
-        'https://' + component.repository +
-        '/publishers/' + encodeURIComponent(newPublisher) +
-        '/projects'
-      )
-        .then(function (response) { return response.json() })
-        .then(function (projects) {
+      fetchProjects(
+        component.repository, newPublisher,
+        function (error, projects) {
+          if (error) return
           projectMenu.innerHTML = ''
           projectMenu.appendChild(document.createElement('option'))
-          projects.forEach(function (project) {
-            var option = document.createElement('option')
-            option.value = project
-            option.appendChild(document.createTextNode(project))
-            projectMenu.appendChild(option)
-          })
+          appendOptions(projectMenu, projects)
           projectMenu.disabled = projects.length === 0
           editionMenu.innerHTML = ''
           editionMenu.disabled = true
-        })
+        }
+      )
     }
   }
   p.appendChild(publisherMenu)
   setImmediate(function () {
-    fetch(
-      'https://' + component.repository +
-      '/publishers/' + encodeURIComponent(component.publisher) +
-      '/projects'
+    fetchProjects(
+      component.repository, component.publisher,
+      function (error, projects) {
+        if (error) return
+        appendOptions(projectMenu, projects, component.project)
+      }
     )
-      .then(function (response) { return response.json() })
-      .then(function (projects) {
-        projects.forEach(function (project) {
-          if (project === component.project) return
-          var option = document.createElement('option')
-          option.value = project
-          option.appendChild(document.createTextNode(project))
-          projectMenu.appendChild(option)
-        })
-      })
   })
 
   var projectMenu = document.createElement('select')
-  var projectOption = document.createElement('option')
-  projectOption.value = component.project
-  projectOption.appendChild(document.createTextNode(component.project))
-  projectOption.selected = true
-  projectMenu.appendChild(projectOption)
+  appendOptions(projectMenu, [component.project], component.project)
   projectMenu.onchange = function () {
     var newProject = this.value
     if (newProject !== component.project) {
-      fetch(
-        'https://' + component.repository +
-        '/publishers/' + encodeURIComponent(publisherMenu.value) +
-        '/projects/' + encodeURIComponent(newProject) +
-        '/publications'
-      )
-        .then(function (response) { return response.json() })
-        .then(function (editions) {
+      fetchEditions(
+        component.repository, publisherMenu.value, newProject,
+        function (error, editions) {
+          if (error) return
           editionMenu.innerHTML = ''
           editionMenu.disabled = false
-          editionMenu.appendChild(document.createElement('option'))
-          editions.forEach(function (edition) {
-            var option = document.createElement('option')
-            option.value = edition
-            option.appendChild(document.createTextNode(edition))
-            editionMenu.appendChild(option)
-          })
-        })
+          appendOptions(editionMenu, [''].concat(editions))
+        }
+      )
     }
   }
   p.appendChild(projectMenu)
@@ -441,11 +409,7 @@ function renderComponent (component, path) {
   p.appendChild(document.createTextNode(' '))
 
   var editionMenu = document.createElement('select')
-  var editionOption = document.createElement('option')
-  editionOption.value = component.edition
-  editionOption.appendChild(document.createTextNode(component.edition))
-  editionOption.selected = true
-  editionMenu.appendChild(editionOption)
+  appendOptions(editionMenu, [component.edition], component.edition)
   editionMenu.onchange = function () {
     var newPublisher = publisherMenu.value
     var newProject = projectMenu.value
@@ -469,6 +433,16 @@ function renderComponent (component, path) {
     }
   }
   p.appendChild(editionMenu)
+  setImmediate(function () {
+    fetchEditions(
+      component.repository, component.publisher, component.project,
+      function (error, editions) {
+        if (error) return
+        editionMenu.innerHTML = ''
+        appendOptions(editionMenu, editions, component.edition)
+      }
+    )
+  })
 
   fragment.appendChild(p)
 
@@ -858,3 +832,36 @@ computeState(function () {
   rendered = render()
   document.getElementById('editor').appendChild(rendered)
 })
+
+function fetchProjects (repository, publisher, callback) {
+  fetch(
+    'https://' + repository +
+    '/publishers/' + encodeURIComponent(publisher) +
+    '/projects'
+  )
+    .then(function (response) { return response.json() })
+    .then(function (projects) { callback(null, projects) })
+    .catch(callback)
+}
+
+function fetchEditions (repository, publisher, project, callback) {
+  fetch(
+    'https://' + repository +
+    '/publishers/' + encodeURIComponent(publisher) +
+    '/projects/' + encodeURIComponent(project) +
+    '/publications'
+  )
+    .then(function (response) { return response.json() })
+    .then(function (editions) { callback(null, editions) })
+    .catch(callback)
+}
+
+function appendOptions (select, array, selected) {
+  array.forEach(function (element) {
+    var option = document.createElement('option')
+    option.value = element
+    if (selected !== undefined && selected === element) option.selected = true
+    option.appendChild(document.createTextNode(element))
+    select.appendChild(option)
+  })
+}
