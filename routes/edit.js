@@ -28,6 +28,14 @@ function getResponse (configuration, request, response) {
       }, function (error, response, data) {
         done(error, data)
       })
+    },
+    publishers: function (done) {
+      get.concat({
+        url: configuration.api + '/publishers',
+        json: true
+      }, function (error, response, data) {
+        done(error, data)
+      })
     }
   }, function (error, data) {
     if (error) {
@@ -38,6 +46,7 @@ function getResponse (configuration, request, response) {
     ${preamble()}
   <main id=editor class=editor></main>
   <script>window.form = ${JSON.stringify(data.form || DEFAULT_FORM)}</script>
+  <script>window.publishers = ${JSON.stringify(data.publishers)}</script>
   ${footer('/editor.bundle.js')}
     `)
   })

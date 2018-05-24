@@ -23,6 +23,7 @@ var annotators = [
 
 var state = {
   form: window.form,
+  publishers: window.publishers,
   selected: false,
   annotators: [annotators[0].annotator],
   expanded: [] // paths of components to expand
@@ -259,7 +260,7 @@ function update (message) {
   } else if (action === 'replace with component') {
     let path = message.path
     let child = keyarrayGet(state.form, path)
-    let component = {
+    let component = message.component || {
       repository: 'api.commonform.org',
       publisher: 'kemitchell',
       project: 'placeholder-component',
@@ -355,26 +356,119 @@ function renderComponent (component, path) {
   var fragment = document.createDocumentFragment()
   var p = document.createElement('p')
 
-  var publisher = document.createElement('a')
-  publisher.href = '/' + encodeURIComponent(component.publisher)
-  publisher.target = '_blank'
-  publisher.appendChild(document.createTextNode(component.publisher))
-  p.appendChild(publisher)
-  p.appendChild(document.createTextNode('’s '))
+  var publisherMenu = document.createElement('select')
+  state.publishers.forEach(function (publisher) {
+    var option = document.createElement('option')
+    option.value = publisher
+    option.appendChild(document.createTextNode(publisher))
+    if (publisher === component.publisher) option.selected = true
+    publisherMenu.appendChild(option)
+  })
+  publisherMenu.onchange = function () {
+    var newPublisher = this.value
+    if (newPublisher !== component.publisher) {
+      fetch(
+        'https://' + component.repository +
+        '/publishers/' + encodeURIComponent(newPublisher) +
+        '/projects'
+      )
+        .then(function (response) { return response.json() })
+        .then(function (projects) {
+          projectMenu.innerHTML = ''
+          projectMenu.appendChild(document.createElement('option'))
+          projects.forEach(function (project) {
+            var option = document.createElement('option')
+            option.value = project
+            option.appendChild(document.createTextNode(project))
+            projectMenu.appendChild(option)
+          })
+          projectMenu.disabled = projects.length === 0
+          editionMenu.innerHTML = ''
+          editionMenu.disabled = true
+        })
+    }
+  }
+  p.appendChild(publisherMenu)
+  setImmediate(function () {
+    fetch(
+      'https://' + component.repository +
+      '/publishers/' + encodeURIComponent(component.publisher) +
+      '/projects'
+    )
+      .then(function (response) { return response.json() })
+      .then(function (projects) {
+        projects.forEach(function (project) {
+          if (project === component.project) return
+          var option = document.createElement('option')
+          option.value = project
+          option.appendChild(document.createTextNode(project))
+          projectMenu.appendChild(option)
+        })
+      })
+  })
 
-  var project = document.createElement('a')
-  project.href = '/' + encodeURIComponent(component.publisher) + '/' + encodeURIComponent(component.project)
-  project.target = '_blank'
-  project.appendChild(document.createTextNode(component.project))
-  p.appendChild(project)
+  var projectMenu = document.createElement('select')
+  var projectOption = document.createElement('option')
+  projectOption.value = component.project
+  projectOption.appendChild(document.createTextNode(component.project))
+  projectOption.selected = true
+  projectMenu.appendChild(projectOption)
+  projectMenu.onchange = function () {
+    var newProject = this.value
+    if (newProject !== component.project) {
+      fetch(
+        'https://' + component.repository +
+        '/publishers/' + encodeURIComponent(publisherMenu.value) +
+        '/projects/' + encodeURIComponent(newProject) +
+        '/publications'
+      )
+        .then(function (response) { return response.json() })
+        .then(function (editions) {
+          editionMenu.innerHTML = ''
+          editionMenu.disabled = false
+          editionMenu.appendChild(document.createElement('option'))
+          editions.forEach(function (edition) {
+            var option = document.createElement('option')
+            option.value = edition
+            option.appendChild(document.createTextNode(edition))
+            editionMenu.appendChild(option)
+          })
+        })
+    }
+  }
+  p.appendChild(projectMenu)
 
   p.appendChild(document.createTextNode(' '))
 
-  var edition = document.createElement('a')
-  edition.href = '/' + encodeURIComponent(component.publisher) + '/' + encodeURIComponent(component.project) + '/' + encodeURIComponent(component.edition)
-  edition.target = '_blank'
-  edition.appendChild(document.createTextNode(component.edition))
-  p.appendChild(edition)
+  var editionMenu = document.createElement('select')
+  var editionOption = document.createElement('option')
+  editionOption.value = component.edition
+  editionOption.appendChild(document.createTextNode(component.edition))
+  editionOption.selected = true
+  editionMenu.appendChild(editionOption)
+  editionMenu.onchange = function () {
+    var newPublisher = publisherMenu.value
+    var newProject = projectMenu.value
+    var newEdition = this.value
+    if (
+      newPublisher !== component.publisher ||
+      newProject !== component.project ||
+      newEdition !== component.edition
+    ) {
+      update({
+        action: 'replace with component',
+        path: path,
+        component: {
+          repository: component.repository,
+          publisher: newPublisher,
+          project: newProject,
+          edition: newEdition,
+          substitutions: {terms: {}, headings: {}}
+        }
+      })
+    }
+  }
+  p.appendChild(editionMenu)
 
   fragment.appendChild(p)
 
@@ -600,7 +694,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
       section.appendChild(heading)
     } else if (selected && !fixed) {
       var headingButton = document.createElement('button')
-      headingButton.appendChild(document.createTextNode('Add Heading'))
+      headingButton.appendChild(document.createTextNode('⚐'))
       headingButton.onclick = function () {
         update({
           action: 'heading',
