@@ -69,8 +69,8 @@ ${footer()}
   })
 
   function avatar (publisher) {
-    if (!publisher.email) return ''
-    return gravatar(publisher.email)
+    if (!publisher.gravatar) return ''
+    return gravatar(publisher)
   }
 
   function about (publisher) {
