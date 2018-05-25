@@ -186,7 +186,8 @@ body > footer {
   color: #777;
 }
 
-.commonform input[type=text] {
+.commonform input[type=text],
+.commonform input[type=password] {
   padding: 1ex;
 }
 

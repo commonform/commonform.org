@@ -23,7 +23,7 @@ var annotators = [
   {name: 'MSCD', annotator: require('commonform-mscd')}
 ]
 
-var state = {
+var state = window.state = {
   form: window.form,
   publishers: window.publishers,
   selected: false,
@@ -89,6 +89,7 @@ function render () {
   var article = document.createElement('article')
   article.className = 'commonform'
   article.appendChild(renderOptions())
+  article.appendChild(renderSaveForm())
   var summary = renderSummary()
   if (summary) article.appendChild(summary)
   article.appendChild(renderAnnotationCounts())
@@ -117,6 +118,115 @@ function renderOptions () {
     p.appendChild(label)
   })
   return div
+}
+
+function renderSaveForm () {
+  var form = document.createElement('form')
+
+  var publisher = document.createElement('input')
+  publisher.id = 'publisher'
+  publisher.type = 'text'
+  publisher.required = true
+  form.appendChild(withLabel('Publisher', publisher))
+
+  var password = document.createElement('input')
+  password.id = 'password'
+  password.type = 'password'
+  password.required = true
+  form.appendChild(withLabel('Password', password))
+
+  var project = document.createElement('input')
+  project.id = 'project'
+  project.type = 'text'
+  form.appendChild(withLabel('Project', project))
+
+  var edition = document.createElement('input')
+  edition.id = 'edition'
+  edition.type = 'text'
+  form.appendChild(withLabel('Edition', edition))
+
+  var button = document.createElement('button')
+  button.type = 'submit'
+  button.appendChild(document.createTextNode('Save'))
+  form.appendChild(button)
+
+  form.onsubmit = function (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    var publisher = getValue('publisher')
+    var password = getValue('password')
+    var project = getValue('project')
+    var edition = getValue('edition')
+    if (publisher && password && project && edition) {
+      saveForm(function () {
+        var url = (
+          'https://api.commonform.org' +
+          '/publishers/' + encodeURIComponent(publisher) +
+          '/projects/' + encodeURIComponent(project) +
+          '/publications/' + encodeURIComponent(edition)
+        )
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authorization()
+          },
+          body: JSON.stringify({digest: state.tree.digest})
+        })
+          .then(function (response) {
+            var status = response.status
+            if (status === 204 || status === 201) {
+              window.location = (
+                '/' + encodeURIComponent(publisher) +
+                '/' + encodeURIComponent(project) +
+                '/' + encodeURIComponent(edition)
+              )
+            }
+          })
+      })
+    } else if (publisher && password) {
+      saveForm(function () {
+        window.location = '/forms/' + state.tree.digest
+      })
+    }
+
+    function saveForm (callback) {
+      fetch('https://api.commonform.org/forms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': authorization()
+        },
+        body: JSON.stringify(state.form)
+      })
+        .then(function (response) {
+          var status = response.status
+          if (status === 204 || status === 201) {
+            callback()
+          }
+        })
+    }
+
+    function authorization () {
+      return 'Basic ' + btoa(
+        document.getElementById('publisher').value + ':' +
+        document.getElementById('password').value
+      )
+    }
+
+    function getValue (id) {
+      return document.getElementById(id).value
+    }
+  }
+
+  return form
+}
+
+function withLabel (prompt, input) {
+  var label = document.createElement('label')
+  label.appendChild(document.createTextNode(prompt))
+  label.appendChild(input)
+  return label
 }
 
 function renderAnnotationCounts () {
