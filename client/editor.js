@@ -297,11 +297,13 @@ function update (message) {
   } else if (action === 'deselect') {
     state.selected = false
   } else if (action === 'delete') {
+    state.changed = true
     let path = message.path
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1)
     state.selected = false
   } else if (action === 'child') {
+    state.changed = true
     let path = message.path
     let clone = JSON.parse(JSON.stringify(state.form))
     let parent = keyarrayGet(clone, path.slice(0, -2))
@@ -311,6 +313,7 @@ function update (message) {
     state.form = clone
     state.selected = path
   } else if (action === 'move') {
+    state.changed = true
     let clone = JSON.parse(JSON.stringify(state.form))
     let oldPath = state.selected
     let newPath = message.path
@@ -323,11 +326,13 @@ function update (message) {
     state.form = clone
     state.selected = newPath
   } else if (action === 'heading') {
+    state.changed = true
     let child = keyarrayGet(state.form, message.path)
     let heading = message.heading
     if (heading) child.heading = heading
     else delete child.heading
   } else if (action === 'content') {
+    state.changed = true
     let path = message.path
     let markup = message.markup
     let offset = message.offset
@@ -350,16 +355,19 @@ function update (message) {
     if (index === -1) state.annotators.push(annotator)
     else state.annotators.splice(index, 1)
   } else if (action === 'toggle conspicuous') {
+    state.changed = true
     let path = message.path
     let child = keyarrayGet(state.form, path)
     if (child.conspicuous) delete child.conspicuous
     else child.conspicuous = 'yes'
   } else if (action === 'toggle update') {
+    state.changed = true
     let path = message.path
     let component = keyarrayGet(state.form, path)
     if (component.upgrade) delete component.upgrade
     else component.upgrade = 'yes'
   } else if (action === 'substitute term') {
+    state.changed = true
     let path = message.path
     let component = keyarrayGet(state.form, path)
     let original = message.original
@@ -370,6 +378,7 @@ function update (message) {
       component.substitutions.terms[original] = substituted
     }
   } else if (action === 'replace with component') {
+    state.changed = true
     let path = message.path
     let child = keyarrayGet(state.form, path)
     let component = message.component || {
@@ -975,3 +984,7 @@ function appendOptions (select, array, selected) {
     select.appendChild(option)
   })
 }
+
+window.addEventListener('beforeunload', function (event) {
+  if (state.changed) event.returnValue = 'If you leave this page without saving, your work will be lost.'
+})
