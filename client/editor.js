@@ -693,13 +693,13 @@ function renderParagraph (offset, path, paragraph, tree, options) {
   p.appendChild(document.createTextNode(originalMarkup))
   if (!fixed) {
     p.contentEditable = true
-    p.onkeydown = function (event) {
+    p.onkeypress = function (event) {
       if (event.which === 13 || event.keyCode === 13) this.blur()
     }
     p.onblur = function () {
-      var newMarkup = p.textContent.replace(/[^\x20-\x7E]|\t/g, '')
+      var newMarkup = this.textContent.replace(/[^\x20-\x7E]|\t/g, '')
       if (newMarkup.trim().length === 0) {
-        p.textContent = originalMarkup
+        this.textContent = originalMarkup
         return
       }
       if (newMarkup !== originalMarkup) {
