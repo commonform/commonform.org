@@ -240,13 +240,24 @@ label input[type=checkbox] {
   color: #777;
 }
 
+.editor section {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 2.50rem;
+  margin-left: 0;
+}
+
+.editor section h1 {
+  margin-top: 0;
+}
+
 .editor .selector {
   cursor: pointer;
-  left: -2rem;
+  left: 0;
   position: absolute;
   text-align: center;
   text-decoration: none;
-  top: 0;
+  top: 0.5rem;
   width: 1.75rem;
 }
 
