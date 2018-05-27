@@ -14,7 +14,7 @@ var samePath = require('commonform-same-path')
 var substitute = require('commonform-substitute')
 var validate = require('commonform-validate')
 
-// TODO: Load publisher, project, edition lists before rendering.
+// TODO: Render in an animation frame.
 
 var annotators = [
   {name: 'structural errors', annotator: require('commonform-lint')},
@@ -477,91 +477,93 @@ function renderComponent (component, path) {
   var fragment = document.createDocumentFragment()
   var p = document.createElement('p')
 
-  var publisherMenu = document.createElement('select')
-  appendOptions(publisherMenu, state.publishers, component.publisher)
-  publisherMenu.onchange = function () {
-    var newPublisher = this.value
-    if (newPublisher !== component.publisher) {
-      fetchProjects(
-        component.repository, newPublisher,
-        function (error, projects) {
-          if (error) return
-          projectMenu.innerHTML = ''
-          projectMenu.appendChild(document.createElement('option'))
-          appendOptions(projectMenu, projects)
-          projectMenu.disabled = projects.length === 0
-          editionMenu.innerHTML = ''
-          editionMenu.disabled = true
-        }
-      )
-    }
+  var publisherSelect = document.createElement('select')
+  publisherSelect.className = 'publisherSelect'
+  setOptions(publisherSelect, state.publishers, component.publisher)
+  publisherSelect.onchange = function () {
+    populateProjectSelect(this)
+    disableEditionSelect(this)
   }
-  p.appendChild(publisherMenu)
-  setImmediate(function () {
+  p.appendChild(publisherSelect)
+
+  function populateProjectSelect (context, initial) {
+    var publisherSelect = onlySiblingWithClass(context, 'publisherSelect')
+    var projectSelect = onlySiblingWithClass(context, 'projectSelect')
     fetchProjects(
-      component.repository, component.publisher,
+      component.repository, publisherSelect.value,
       function (error, projects) {
         if (error) return
-        appendOptions(projectMenu, projects, component.project)
+        setOptions(projectSelect, [''].concat(projects), initial)
       }
     )
-  })
-
-  var projectMenu = document.createElement('select')
-  appendOptions(projectMenu, [component.project], component.project)
-  projectMenu.onchange = function () {
-    var newProject = this.value
-    if (newProject !== component.project) {
-      fetchEditions(
-        component.repository, publisherMenu.value, newProject,
-        function (error, editions) {
-          if (error) return
-          editionMenu.innerHTML = ''
-          editionMenu.disabled = false
-          appendOptions(editionMenu, [''].concat(editions))
-        }
-      )
-    }
   }
-  p.appendChild(projectMenu)
 
-  p.appendChild(document.createTextNode(' '))
+  function onlySiblingWithClass (sibling, className) {
+    return sibling.parentNode.getElementsByClassName(className)[0]
+  }
 
-  var editionMenu = document.createElement('select')
-  appendOptions(editionMenu, [component.edition], component.edition)
-  editionMenu.onchange = function () {
-    var newPublisher = publisherMenu.value
-    var newProject = projectMenu.value
-    var newEdition = this.value
+  function disableEditionSelect (context) {
+    var editionSelect = onlySiblingWithClass(context, 'editionSelect')
+    editionSelect.disabled = true
+    editionSelect.innerHTML = ''
+  }
+
+  var projectSelect = document.createElement('select')
+  projectSelect.className = 'projectSelect'
+  setOptions(projectSelect, [component.project], component.project)
+  projectSelect.onchange = function () {
+    populateEditionSelect(this)
+  }
+  whenInserted(projectSelect, function () {
+    populateProjectSelect(this, component.project)
+  })
+  p.appendChild(projectSelect)
+
+  function populateEditionSelect (context, initial) {
+    var publisherSelect = onlySiblingWithClass(context, 'publisherSelect')
+    var projectSelect = onlySiblingWithClass(context, 'projectSelect')
+    fetchEditions(
+      component.repository, publisherSelect.value, projectSelect.value,
+      function (error, editions) {
+        if (error) return
+        setOptions(editionSelect, [''].concat(editions), initial)
+      }
+    )
+  }
+
+  function whenInserted (node, handler) {
+    node.addEventListener('DOMNodeInsertedIntoDocument', handler, {once: true})
+  }
+
+  var editionSelect = document.createElement('select')
+  editionSelect.className = 'editionSelect'
+  whenInserted(editionSelect, function () {
+    populateEditionSelect(this, component.edition)
+  })
+  setOptions(editionSelect, [component.edition], component.edition)
+  editionSelect.onchange = function () {
+    var publisher = publisherSelect.value
+    var project = projectSelect.value
+    var edition = this.value
     if (
-      newPublisher !== component.publisher ||
-      newProject !== component.project ||
-      newEdition !== component.edition
+      component.publisher !== publisher ||
+      component.project !== project ||
+      component.edition !== edition
     ) {
       update({
         action: 'replace with component',
         path: path,
         component: {
           repository: component.repository,
-          publisher: newPublisher,
-          project: newProject,
-          edition: newEdition,
+          publisher: publisher,
+          project: project,
+          edition: edition,
           substitutions: {terms: {}, headings: {}}
         }
       })
     }
   }
-  p.appendChild(editionMenu)
-  setImmediate(function () {
-    fetchEditions(
-      component.repository, component.publisher, component.project,
-      function (error, editions) {
-        if (error) return
-        editionMenu.innerHTML = ''
-        appendOptions(editionMenu, editions, component.edition)
-      }
-    )
-  })
+  p.appendChild(editionSelect)
 
   fragment.appendChild(p)
 
@@ -630,6 +632,20 @@ function renderComponent (component, path) {
   }
 
   return fragment
+}
+
+function setOptions (select, values, selected) {
+  var fragment = document.createDocumentFragment()
+  values.forEach(function (value) {
+    var option = document.createElement('option')
+    option.value = value
+    option.appendChild(document.createTextNode(value))
+    if (value === selected) option.selected = true
+    fragment.appendChild(option)
+  })
+  select.innerHTML = ''
+  select.disabled = false
+  select.appendChild(fragment)
 }
 
 function renderContents (depth, path, form, tree, options) {
@@ -973,16 +989,6 @@ function fetchEditions (repository, publisher, project, callback) {
     .then(function (response) { return response.json() })
     .then(function (editions) { callback(null, editions) })
     .catch(callback)
-}
-
-function appendOptions (select, array, selected) {
-  array.forEach(function (element) {
-    var option = document.createElement('option')
-    option.value = element
-    if (selected !== undefined && selected === element) option.selected = true
-    option.appendChild(document.createTextNode(element))
-    select.appendChild(option)
-  })
 }
 
 window.addEventListener('beforeunload', function (event) {
