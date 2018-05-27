@@ -63,7 +63,8 @@ module.exports = function (configuration, request, response) {
       })
     }],
     loaded: ['form', function (data, done) {
-      loadComponents(data.form, {}, done)
+      var clone = JSON.parse(JSON.stringify(data.form))
+      loadComponents(clone, {}, done)
     }]
   }, function (error, data) {
     if (error) {

@@ -1,8 +1,12 @@
+var classnames = require('classnames')
+var editionLink = require('./edition-link')
 var escape = require('../../util/escape')
 var group = require('commonform-group-series')
 var html = require('../html')
 var merkleize = require('commonform-merkleize')
 var predicate = require('commonform-predicate')
+var projectLink = require('./project-link')
+var publisherLink = require('./publisher-link')
 var samePath = require('commonform-same-path')
 
 module.exports = function (form, loaded, options) {
@@ -94,28 +98,51 @@ function renderMarginalia (annotations) {
 function renderSeries (depth, offset, path, series, tree, options) {
   return series.content
     .map(function (child, index) {
-      var form = child.form
-      var childTree = tree.content[offset + index]
-      var digest = childTree.digest
-      return (
-        (form.conspicuous ? '<section class=conspicuous>' : '<section>') +
-        ('heading' in child ? renderHeading(depth, child.heading) : '') +
-        (
-          options.childLinks
-            ? `<a class=child-link href=/forms/${digest}>${digest}</a>`
-            : ''
-        ) +
-        renderForm(
-          depth,
-          path.concat('content', offset + index, 'form'),
-          form,
-          childTree,
-          options
-        ) +
-        '</section>'
-      )
+      if (child.hasOwnProperty('repository')) {
+        var component = child
+        var className = classnames({
+          conspicuous: child.conspicuous,
+          component: true
+        })
+        return (
+          `<section class="${className}">` +
+          ('heading' in child ? renderHeading(depth, child.heading) : '') +
+          componentLink(component)
+        )
+      } else {
+        var form = child.form
+        var childTree = tree.content[offset + index]
+        var digest = childTree.digest
+        return (
+          (form.conspicuous ? '<section class=conspicuous>' : '<section>') +
+          ('heading' in child ? renderHeading(depth, child.heading) : '') +
+          (
+            options.childLinks
+              ? `<a class=child-link href=/forms/${digest}>${digest}</a>`
+              : ''
+          ) +
+          renderForm(
+            depth,
+            path.concat('content', offset + index, 'form'),
+            form,
+            childTree,
+            options
+          ) +
+          '</section>'
+        )
+      }
     })
     .join('')
+}
+
+// TODO: Recursive render components with identification and content.
+
+function componentLink (component) {
+  return `
+    ${publisherLink(component.publisher)}’s
+    ${projectLink(component)}
+    (${editionLink(component)})
+  `
 }
 
 function renderHeading (depth, heading) {
