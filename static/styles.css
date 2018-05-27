@@ -258,15 +258,10 @@ label input[type=checkbox] {
   text-align: center;
   text-decoration: none;
   top: 0.5rem;
-  width: 1.75rem;
 }
 
-.child.selector:before {
-  content: '§';
-}
-
-.component.selector:before {
-  content: '⚙';
+.selector:before {
+  content: '§' !important;
 }
 
 .editor .commonform section:before {

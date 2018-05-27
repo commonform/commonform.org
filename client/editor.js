@@ -14,6 +14,8 @@ var samePath = require('commonform-same-path')
 var substitute = require('commonform-substitute')
 var validate = require('commonform-validate')
 
+var COMPONENT_CHARACTER = '⚙'
+
 // TODO: Show upgraded component resolutions.
 
 var annotators = [
@@ -479,97 +481,37 @@ function renderComponent (component, path) {
   var fragment = document.createDocumentFragment()
   var p = document.createElement('p')
 
-  var publisherSelect = document.createElement('select')
-  publisherSelect.className = 'publisherSelect'
-  setOptions(publisherSelect, state.publishers, component.publisher)
-  publisherSelect.onchange = function () {
-    populateProjectSelect(this)
-    disableEditionSelect(this)
-  }
-  p.appendChild(publisherSelect)
+  var publisherLink = document.createElement('a')
+  publisherLink.href = (
+    '/' + encodeURIComponent(component.publisher)
+  )
+  publisherLink.target = '_blank'
+  publisherLink.appendChild(document.createTextNode(component.publisher))
+  p.appendChild(publisherLink)
 
-  function populateProjectSelect (context, initial) {
-    var publisherSelect = onlySiblingWithClass(context, 'publisherSelect')
-    var projectSelect = onlySiblingWithClass(context, 'projectSelect')
-    fetchProjects(
-      component.repository, publisherSelect.value,
-      function (error, projects) {
-        if (error) return
-        setOptions(projectSelect, [''].concat(projects), initial)
-      }
-    )
-  }
+  p.appendChild(document.createTextNode('’s '))
 
-  function onlySiblingWithClass (sibling, className) {
-    return sibling.parentNode.getElementsByClassName(className)[0]
-  }
+  var projectLink = document.createElement('a')
+  projectLink.href = (
+    '/' + encodeURIComponent(component.publisher) +
+    '/' + encodeURIComponent(component.project)
+  )
+  projectLink.target = '_blank'
+  projectLink.appendChild(document.createTextNode(component.project))
+  p.appendChild(projectLink)
 
-  function disableEditionSelect (context) {
-    var editionSelect = onlySiblingWithClass(context, 'editionSelect')
-    editionSelect.disabled = true
-    editionSelect.innerHTML = ''
-  }
+  p.appendChild(document.createTextNode(' '))
 
-  var projectSelect = document.createElement('select')
-  projectSelect.className = 'projectSelect'
-  setOptions(projectSelect, [component.project], component.project)
-  projectSelect.onchange = function () {
-    populateEditionSelect(this)
-  }
-  whenInserted(projectSelect, function () {
-    populateProjectSelect(this, component.project)
-  })
-  p.appendChild(projectSelect)
+  var editionLink = document.createElement('a')
+  editionLink.href = (
+    '/' + encodeURIComponent(component.publisher) +
+    '/' + encodeURIComponent(component.project) +
+    '/' + encodeURIComponent(component.edition)
+  )
+  editionLink.target = '_blank'
+  editionLink.appendChild(document.createTextNode(component.edition))
+  p.appendChild(editionLink)
 
-  function populateEditionSelect (context, initial) {
-    var publisherSelect = onlySiblingWithClass(context, 'publisherSelect')
-    var projectSelect = onlySiblingWithClass(context, 'projectSelect')
-    fetchEditions(
-      component.repository, publisherSelect.value, projectSelect.value,
-      function (error, editions) {
-        if (error) return
-        setOptions(editionSelect, [''].concat(editions), initial)
-      }
-    )
-  }
-
-  function whenInserted (node, handler) {
-    node.addEventListener('DOMNodeInsertedIntoDocument', handler, {once: true})
-  }
-
-  var editionSelect = document.createElement('select')
-  editionSelect.className = 'editionSelect'
-  whenInserted(editionSelect, function () {
-    populateEditionSelect(this, component.edition)
-  })
-  setOptions(editionSelect, [component.edition], component.edition)
-  editionSelect.onchange = function () {
-    var publisher = publisherSelect.value
-    var project = projectSelect.value
-    var edition = this.value
-    if (
-      component.publisher !== publisher ||
-      component.project !== project ||
-      component.edition !== edition
-    ) {
-      update({
-        action: 'replace with component',
-        path: path,
-        component: {
-          repository: component.repository,
-          publisher: publisher,
-          project: project,
-          edition: edition,
-          substitutions: {terms: {}, headings: {}}
-        }
-      })
-    }
-  }
-  p.appendChild(editionSelect)
-
-  fragment.appendChild(p)
-
-  var upgradeParagraph = document.createElement('p')
   var upgradeLabel = document.createElement('label')
   var upgradeInput = document.createElement('input')
   upgradeInput.type = 'checkbox'
@@ -580,10 +522,11 @@ function renderComponent (component, path) {
     })
   }
   upgradeLabel.appendChild(upgradeInput)
-  upgradeLabel.appendChild(document.createTextNode('Upgrade Automatically'))
+  upgradeLabel.appendChild(document.createTextNode('Upgrade'))
   if (component.upgrade) upgradeInput.checked = true
-  upgradeParagraph.appendChild(upgradeLabel)
-  fragment.appendChild(upgradeParagraph)
+  p.appendChild(upgradeLabel)
+
+  fragment.appendChild(p)
 
   if (termsToDefine.length !== 0) {
     var terms = document.createElement('ul')
@@ -634,20 +577,6 @@ function renderComponent (component, path) {
   }
 
   return fragment
-}
-
-function setOptions (select, values, selected) {
-  var fragment = document.createDocumentFragment()
-  values.forEach(function (value) {
-    var option = document.createElement('option')
-    option.value = value
-    option.appendChild(document.createTextNode(value))
-    if (value === selected) option.selected = true
-    fragment.appendChild(option)
-  })
-  select.innerHTML = ''
-  select.disabled = false
-  select.appendChild(fragment)
 }
 
 function renderContents (depth, path, form, tree, options) {
@@ -827,15 +756,42 @@ function renderSeries (depth, offset, path, series, tree, options) {
         })
       }
       section.appendChild(conspicuousButton)
+    }
 
+    if (selected && !fixed) {
       var componentButton = document.createElement('button')
-      componentButton.appendChild(document.createTextNode('⚙'))
+      componentButton.appendChild(document.createTextNode(COMPONENT_CHARACTER))
       componentButton.title = 'Replace with component.'
       componentButton.onclick = function () {
-        update({
-          action: 'replace with component',
-          path: childPath
-        })
+        var input = window.prompt(
+          'Enter a new publication ID.',
+          isComponent
+            ? (child.publisher + '/' + child.project + '@' + child.edition)
+            : 'kemitchell/placeholder-component@1e'
+        )
+        if (input === null) return
+        var match = /^([^/]+)\/([^@]+)@(.+)$/.exec(input)
+        if (!match) return alert('Invalid publication ID.')
+        var publisher = match[1]
+        var project = match[2]
+        var edition = match[3]
+        fetchPublication(
+          'api.commonform.org', publisher, project, edition,
+          function (error) {
+            if (error) return alert('Could not find that publication.')
+            update({
+              action: 'replace with component',
+              path: childPath,
+              component: {
+                repository: 'api.commonform.org',
+                publisher,
+                project,
+                edition,
+                substitutions: {terms: {}, headings: {}}
+              }
+            })
+          }
+        )
       }
       section.appendChild(componentButton)
     }
@@ -970,23 +926,12 @@ computeState(function () {
   document.getElementById('editor').appendChild(rendered)
 })
 
-function fetchProjects (repository, publisher, callback) {
-  fetch(
-    'https://' + repository +
-    '/publishers/' + encodeURIComponent(publisher) +
-    '/projects'
-  )
-    .then(function (response) { return response.json() })
-    .then(function (projects) { callback(null, projects) })
-    .catch(callback)
-}
-
-function fetchEditions (repository, publisher, project, callback) {
+function fetchPublication (repository, publisher, project, edition, callback) {
   fetch(
     'https://' + repository +
     '/publishers/' + encodeURIComponent(publisher) +
     '/projects/' + encodeURIComponent(project) +
-    '/publications'
+    '/publications/' + encodeURIComponent(edition)
   )
     .then(function (response) { return response.json() })
     .then(function (editions) { callback(null, editions) })
