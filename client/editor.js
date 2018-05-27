@@ -765,7 +765,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
       selected: selected,
       expanded: isExpanded
     })
-    var selector = document.createElement('a')
+    var selector = document.createElement('button')
     selector.className = classnames({
       selector: true,
       component: isComponent,

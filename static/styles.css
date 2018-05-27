@@ -241,11 +241,13 @@ label input[type=checkbox] {
 }
 
 .editor .selector {
-  position: absolute;
-  left: -2rem;
-  top: 0;
-  text-decoration: none;
   cursor: pointer;
+  left: -2rem;
+  position: absolute;
+  text-align: center;
+  text-decoration: none;
+  top: 0;
+  width: 1.75rem;
 }
 
 .child.selector:before {
