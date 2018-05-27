@@ -16,8 +16,6 @@ var validate = require('commonform-validate')
 
 // TODO: Show upgraded component resolutions.
 
-// TODO: Render in an animation frame.
-
 var annotators = [
   {name: 'structural errors', annotator: require('commonform-lint')},
   {name: 'archaisms', annotator: require('commonform-archaic')},
@@ -413,7 +411,9 @@ function update (message) {
     setImmediate(renderAndMorph)
   }
   function renderAndMorph () {
-    morph(rendered, render())
+    window.requestAnimationFrame(function () {
+      morph(rendered, render())
+    })
   }
 }
 
