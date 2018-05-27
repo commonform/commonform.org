@@ -14,6 +14,8 @@ var samePath = require('commonform-same-path')
 var substitute = require('commonform-substitute')
 var validate = require('commonform-validate')
 
+// TODO: Show upgraded component resolutions.
+
 // TODO: Render in an animation frame.
 
 var annotators = [
