@@ -112,10 +112,9 @@ function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, reso
       var childTree = tree.content[offset + index]
       var digest = childTree.digest
       var childPath = path.concat('content', offset + index)
-      var resolution = resolutions.find(function (element) {
-        return samePath(element.path, childPath)
+      var resolution = resolutions.find(function (resolution) {
+        return samePath(resolution.path, childPath)
       })
-      var component = resolution && formSeries && formSeries.content[index]
       var classes = classnames({
         conspicuous: loadedForm.conspicuous,
         component: resolution
@@ -123,7 +122,7 @@ function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, reso
       return (
         `<section class="${classes}">` +
         ('heading' in loadedChild ? renderHeading(depth, loadedChild.heading) : '') +
-        (resolution ? renderComponentInfo(component, resolution) : '') +
+        (resolution ? resolutionLink(resolution) : '') +
         (
           options.childLinks
             ? `<a class=child-link href=/forms/${digest}>${digest}</a>`
@@ -144,16 +143,20 @@ function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, reso
     .join('')
 }
 
-function renderComponentInfo (component, resolution) {
-  return componentLink(component)
-}
-
-function componentLink (component) {
-  return `
-    ${publisherLink(component.publisher)}’s
-    ${projectLink(component)}
-    (${editionLink(component)})
+function resolutionLink (resolution) {
+  var returned = `
+    ${publisherLink(resolution.publisher)}’s
+    ${projectLink(resolution)}
+    (${editionLink(resolution)})
   `
+  if (resolution.upgrade && resolution.specified !== resolution.edition) {
+    returned += `(upgraded from ${editionLink({
+      publisher: resolution.publisher,
+      project: resolution.project,
+      edition: resolution.specified
+    })})`
+  }
+  return returned
 }
 
 function renderHeading (depth, heading) {
