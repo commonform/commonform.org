@@ -8,7 +8,7 @@ module.exports = function notFound (
   configuration, request, response, message
 ) {
   response.statusCode = 404
-  response.setHeader('Content-Type', 'text/html; charset=ASCII')
+  response.setHeader('Content-Type', 'text/html')
   response.end(html`
 ${preamble('Not Found')}
 <main>

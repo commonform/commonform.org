@@ -9,7 +9,7 @@ module.exports = function internalError (
 ) {
   request.log.error(error)
   response.statusCode = 500
-  response.setHeader('Content-Type', 'text/html; charset=ASCII')
+  response.setHeader('Content-Type', 'text/html')
   response.end(html`
 ${preamble('Software Error')}
 <main>
