@@ -8,7 +8,6 @@ var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
 var outlineNumbering = require('outline-numbering')
 var reviewersEditionCompare = require('reviewers-edition-compare')
-var reviewersEditionSpell = require('reviewers-edition-spell')
 var reviewersEditionUpgrade = require('reviewers-edition-upgrade')
 var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
@@ -111,13 +110,10 @@ module.exports = function (configuration, request, response) {
   <h1>
     ${publisherLink(publisher)}’s
     ${projectLink(data.publication)}
+    ${escape(edition)}
   </h1>
-  <p class=edition>
-    ${escape(reviewersEditionSpell(edition))}
-  </p>
   ${editionWarnings(edition, data.project)}
   <p>
-    Common Form ID:
     <a class=digest href=/forms/${data.publication.digest}>${data.publication.digest}</a>
   </p>
   <a href="${docxHREF}">Download .docx</a>
