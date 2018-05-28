@@ -56,13 +56,18 @@ module.exports = function (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
+<header>
+  <a href=/>${escape(configuration.domain)}</a> /
+  ${escape(publisher)}
+</header>
 <main>
-  <header><h1>${escape(publisher)}’s Common Form Projects</h1></header>
-  <header>
-  ${avatar(data.publisher)}
-  ${about(data.publisher)}
-  </header>
-  <article>${projectsList(data.projects)}</article>
+  <article>
+    <section>
+      ${avatar(data.publisher)}
+      ${about(data.publisher)}
+    </section>
+    <section>${projectsList(data.projects)}</section>
+  </article>
 </main>
 ${footer()}
     `)

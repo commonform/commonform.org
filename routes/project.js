@@ -77,8 +77,12 @@ module.exports = function (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
+<header>
+  <a href=/>${escape(configuration.domain)}</a> /
+  ${publisherLink(publisher)} /
+  ${escape(project)}
+</header>
 <main>
-<header><h1>${publisherLink(publisher)}’s ${escape(project)}</h1></header>
 <article>
   <section>
   <h2>Editions</h2>

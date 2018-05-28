@@ -47,6 +47,10 @@ module.exports = function (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
+<header>
+  <a href=/>${escape(configuration.domain)}</a> /
+  <span class=digest>${digest}</span>
+</header>
 <main>
   <header>
     ${publicationsSection(data.publications)}

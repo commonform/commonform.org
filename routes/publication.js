@@ -107,19 +107,22 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <header>
-  <h1>
-    ${publisherLink(publisher)}’s
-    ${projectLink(data.publication)}
-    ${escape(edition)}
-  </h1>
-  ${editionWarnings(edition, data.project)}
-  <p>
-    <a class=digest href=/forms/${data.publication.digest}>${data.publication.digest}</a>
-  </p>
-  <a href="${docxHREF}">Download .docx</a>
-  <a href=/edit?from=${data.publication.digest}>Edit</a>
+  <a href=/>${escape(configuration.domain)}</a> /
+  ${publisherLink(publisher)} /
+  ${projectLink(data.publication)} /
+  ${escape(edition)}
 </header>
-<main>${form(data.form, data.loaded)}</main>
+<main>
+  <article>
+    ${editionWarnings(edition, data.project)}
+    <p>
+      <a class=digest href=/forms/${data.publication.digest}>${data.publication.digest}</a>
+    </p>
+    <a href="${docxHREF}">Download .docx</a>
+    <a href=/edit?from=${data.publication.digest}>Edit</a>
+    ${form(data.form, data.loaded)}
+  </article>
+</main>
 <script>window.publication = ${JSON.stringify(data.publication)}</script>
 ${footer()}
     `)
