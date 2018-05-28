@@ -3,6 +3,7 @@ var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
 var reviewersEditionCompare = require('reviewers-edition-compare')
+var reviewersEditionSpell = require('reviewers-edition-spell')
 var runAuto = require('run-auto')
 var runParallel = require('run-parallel')
 var sanitize = require('../util/sanitize')
@@ -88,7 +89,12 @@ module.exports = function (configuration, request, response) {
         '/' + encodeURIComponent(project) +
         '/' + encodeURIComponent(publication)
       )
-      return html`<li><a href="${href}">${escape(publication)}</a></li>`
+      return html`<li>
+        <a href="${href}">
+          ${escape(reviewersEditionSpell(publication))}
+          (${escape(publication)})
+        </a>
+      </li>`
     })}
   </ul>
 </section>
