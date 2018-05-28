@@ -9,6 +9,7 @@ var footer = require('./partials/footer')
 var gravatar = require('./partials/gravatar')
 var html = require('./html')
 var preamble = require('./partials/preamble')
+var projectLink = require('./partials/project-link')
 
 module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
@@ -32,6 +33,7 @@ module.exports = function (configuration, request, response) {
         url: publisherURL + '/projects',
         json: true
       }, function (error, response, projects) {
+        return done(error, projects)
         if (error) return done(error)
         var queries = projects.sort().map(function (project) {
           var projectURL = (
@@ -89,20 +91,6 @@ ${footer()}
   }
 
   function projectLI (project) {
-    return html`<li>
-      ${escape(project.project)}:
-      ${publicationsList(project)}
-    </li>`
-  }
-
-  function publicationsList (project) {
-    return project.publications.map(function (publication) {
-      var url = (
-        '/' + encodeURIComponent(publisher) +
-        '/' + encodeURIComponent(project.project) +
-        '/' + encodeURIComponent(publication)
-      )
-      return html`<a href="${url}">${escape(publication)}</a>`
-    }).join(', ')
+    return html`<li>${projectLink({publisher, project})}</li>`
   }
 }
