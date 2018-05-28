@@ -147,10 +147,10 @@ function resolutionLink (resolution) {
   var returned = `
     ${publisherLink(resolution.publisher)}’s
     ${projectLink(resolution)}
-    (${editionLink(resolution)})
+    ${editionLink(resolution)}
   `
   if (resolution.upgrade && resolution.specified !== resolution.edition) {
-    returned += `(upgraded from ${editionLink({
+    returned += ` (upgraded from ${editionLink({
       publisher: resolution.publisher,
       project: resolution.project,
       edition: resolution.specified
