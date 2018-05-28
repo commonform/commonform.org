@@ -3,12 +3,15 @@ var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
 var reviewersEditionCompare = require('reviewers-edition-compare')
+var runAuto = require('run-auto')
 var runParallel = require('run-parallel')
 var sanitize = require('../util/sanitize')
 
+var editionLink = require('./partials/edition-link')
 var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
+var projectLink = require('./partials/project-link')
 var publisherLink = require('./partials/publisher-link')
 
 module.exports = function (configuration, request, response) {
@@ -17,7 +20,7 @@ module.exports = function (configuration, request, response) {
   }
   var publisher = sanitize(request.params.publisher)
   var project = sanitize(request.params.project)
-  runParallel({
+  runAuto({
     publications: function (done) {
       get.concat({
         url: (
@@ -30,6 +33,41 @@ module.exports = function (configuration, request, response) {
       }, function (error, response, publications) {
         done(error, publications.sort(reviewersEditionCompare))
       })
+    },
+    dependents: function (done) {
+      get.concat({
+        url: (
+          configuration.api +
+          '/publishers/' + encodeURIComponent(publisher) +
+          '/projects/' + encodeURIComponent(project) +
+          '/dependents'
+        ),
+        json: true
+      }, function (error, response, dependents) {
+        if (error) return done(error)
+        runParallel(dependents.map(function (dependent) {
+          var digest = dependent.parent
+          return function (done) {
+            get.concat({
+              url: (
+                configuration.api +
+                '/forms/' + digest +
+                '/publications'
+              ),
+              json: true
+            }, function (error, response, data) {
+              done(error, data)
+            })
+          }
+        }), function (error, data) {
+          if (error) return done(error)
+          var flattened = data
+            .reduce(function (flattened, element) {
+              return flattened.concat(element)
+            }, [])
+          done(null, flattened)
+        })
+      })
     }
   }, function (error, data) {
     if (error) {
@@ -41,19 +79,39 @@ module.exports = function (configuration, request, response) {
 <main>
 <header><h1>${publisherLink(publisher)}’s ${escape(project)}</h1></header>
 <article>
-<ul>
-  ${data.publications.map(function (publication) {
-    var href = (
-      '/' + encodeURIComponent(publisher) +
-      '/' + encodeURIComponent(project) +
-      '/' + encodeURIComponent(publication)
-    )
-    return html`<li><a href="${href}">${escape(publication)}</a></li>`
-  })}
-</ul>
+  <section>
+  <h2>Editions</h2>
+  <ul>
+    ${data.publications.map(function (publication) {
+      var href = (
+        '/' + encodeURIComponent(publisher) +
+        '/' + encodeURIComponent(project) +
+        '/' + encodeURIComponent(publication)
+      )
+      return html`<li><a href="${href}">${escape(publication)}</a></li>`
+    })}
+  </ul>
+</section>
+${renderDependents(data.dependents)}
 </article>
 </main>
 ${footer()}
     `)
   })
+}
+
+function renderDependents (dependents) {
+  if (dependents.length === 0) return ''
+  return html`
+    <section>
+      <h2>Dependent Projects</h2>
+        <ul>${dependents.map(function (dependent) {
+        return `
+          ${publisherLink(dependent.publisher)}’s
+          ${projectLink(dependent)}
+          ${editionLink(dependent)}
+        `
+      })}</ul>
+    </section>
+  `
 }
