@@ -1,6 +1,5 @@
 var handler = require('./')
 var http = require('http')
-var path = require('path')
 var pino = require('pino')
 var uuid = require('uuid')
 
