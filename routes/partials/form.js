@@ -33,27 +33,24 @@ function renderTableOfContents (form) {
 
 function renderContents (form) {
   if (!containsHeading(form)) return ''
-  return html`
-    <ol class=toc id=toc>
-      ${form.content.reduce(function (items, element) {
-        if (!element.hasOwnProperty('form')) return items
-        var hasHeading = (
-          element.hasOwnProperty('heading') ||
-          containsHeading(element.form)
-        )
-        if (!hasHeading) return items
-        var li = '<li>'
-        if (element.hasOwnProperty('heading')) {
-          li += renderReference(element.heading)
-        } else {
-          li += '(No Heading)'
-        }
-        li += renderContents(element.form)
-        li += '</li>'
-        return items.concat(li)
-      }, [])}
-    </ol>
-  `
+  return html`<ol class=toc id=toc>${
+    form.content.reduce(function (items, element) {
+      if (!element.hasOwnProperty('form')) return items
+      var hasHeading = (
+        element.hasOwnProperty('heading') ||
+        containsHeading(element.form)
+      )
+      if (!hasHeading) return items
+      var li = '<li>'
+      if (element.hasOwnProperty('heading')) {
+        li += renderReference(element.heading)
+      } else {
+        li += '(No Heading)'
+      }
+      li += renderContents(element.form)
+      li += '</li>'
+      return items.concat(li)
+    }, [])}</ol>`
 }
 
 function containsHeading (form) {
@@ -146,7 +143,6 @@ function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, reso
     })
     .join('')
 }
-
 
 function renderComponentInfo (component, resolution) {
   return componentLink(component)
