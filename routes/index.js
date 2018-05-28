@@ -11,7 +11,6 @@ routes.set('/favicon.ico', function (configuration, request, response) {
 })
 routes.set('/edit', require('./edit'))
 routes.set('/forms/:digest', require('./form'))
-routes.set('/analyses/:digest', require('./analysis'))
 routes.set('/:publisher', require('./publisher'))
 routes.set('/:publisher/:project', require('./project'))
 routes.set('/:publisher/:project/:edition', require('./publication'))
