@@ -567,12 +567,36 @@ function renderComponent (component, path) {
   if (headingsToResolve.length !== 0) {
     var headings = document.createElement('ul')
     headings.className = 'substitutions headings'
-    headingsToResolve.forEach(function (original) {
-      var substituted = component.substitutions.headings[original]
-      var li = document.createElement('li')
-      li.appendChild(original + '→' + substituted)
-      headings.appendChild(li)
-    })
+    headingsToResolve
+      .sort()
+      .forEach(function (original) {
+        var substituted = component.substitutions.headings[original]
+        var li = document.createElement('li')
+        li.appendChild(document.createTextNode(original + ': '))
+        var select = document.createElement('select')
+        select.onchange = function () {
+          update({
+            action: 'substitute heading',
+            path: path,
+            original: original,
+            substituted: this.value
+          })
+        }
+        Object.keys(state.analysis.headings).forEach(function (heading) {
+          var option = document.createElement('option')
+          option.value = heading
+          option.appendChild(document.createTextNode(heading))
+          if (heading === substituted) option.selected = true
+          select.appendChild(option)
+        })
+        var nullOption = document.createElement('option')
+        nullOption.value = ''
+        nullOption.appendChild(document.createTextNode('(Leave undefined.)'))
+        if (substituted === undefined) nullOption.selected = true
+        select.appendChild(nullOption)
+        li.appendChild(select)
+        headings.appendChild(li)
+      })
     fragment.appendChild(headings)
   }
 
