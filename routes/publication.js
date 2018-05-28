@@ -3,6 +3,7 @@ var docx = require('commonform-docx')
 var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
+var notFound = require('./not-found')
 var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
 var outlineNumbering = require('outline-numbering')
@@ -24,9 +25,12 @@ module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
     return methodNotAllowed.apply(null, arguments)
   }
+  var edition = sanitize(request.params.edition)
+  if (edition === 'current' || edition === 'latest') {
+    return redirect.apply(this, arguments)
+  }
   var publisher = sanitize(request.params.publisher)
   var project = sanitize(request.params.project)
-  var edition = sanitize(request.params.edition)
   runAuto({
     publication: function (done) {
       get.concat({
@@ -141,5 +145,36 @@ ${footer()}
         </p>`
       }
     }
+  })
+}
+
+function redirect (configuration, request, response) {
+  var params = request.params
+  var publisher = sanitize(params.publisher)
+  var project = sanitize(params.project)
+  var edition = sanitize(params.edition)
+  get.concat({
+    url: (
+      configuration.api +
+      '/publishers/' + encodeURIComponent(publisher) +
+      '/projects/' + encodeURIComponent(project) +
+      '/publications/' + edition
+    ),
+    json: true
+  }, function (error, response, data) {
+    if (error) {
+      return internalError(configuration, request, response, error)
+    }
+    if (response.statusCode !== 200) {
+      return notFound(configuration, request, response)
+    }
+    response.statusCode = 303
+    var uri = (
+      '/' + encodeURIComponent(publisher) +
+      '/' + encodeURIComponent(project) +
+      '/' + encodeURIComponent(data.edition)
+    )
+    response.setHeader('Location', uri)
+    response.end()
   })
 }
