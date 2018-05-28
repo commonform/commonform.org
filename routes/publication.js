@@ -68,7 +68,10 @@ module.exports = function (configuration, request, response) {
     }],
     loaded: ['form', function (data, done) {
       var clone = JSON.parse(JSON.stringify(data.form))
-      loadComponents(clone, {}, done)
+      loadComponents(clone, {}, function (error, form, resolutions) {
+        if (error) return done(error)
+        done(null, {form, resolutions})
+      })
     }]
   }, function (error, data) {
     if (error) {
@@ -91,7 +94,7 @@ module.exports = function (configuration, request, response) {
         `attachment; filename="${publication.project} ${publication.edition}.docx"`
       )
       response.end(
-        docx(data.loaded, [], options).generate({type: 'nodebuffer'})
+        docx(data.loaded.form, [], options).generate({type: 'nodebuffer'})
       )
       return
     }

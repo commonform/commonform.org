@@ -27,7 +27,10 @@ module.exports = function (configuration, request, response) {
       })
     },
     loaded: ['form', function (data, done) {
-      loadComponents(data.form, {}, done)
+      loadComponents(data.form, {}, function (error, form, resolutions) {
+        if (error) return done(error)
+        done(null, {form, resolutions})
+      })
     }],
     publications: function (done) {
       get.concat({
@@ -55,7 +58,6 @@ ${footer()}
     `)
   })
 }
-
 
 function publicationsSection (publications) {
   var roots = publications.filter(function (publication) {

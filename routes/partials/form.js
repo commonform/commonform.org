@@ -13,10 +13,12 @@ module.exports = function (form, loaded, options) {
   options = options || {}
   if (!options.mappings) options.mappings = []
   if (!options.annotations) options.annotations = []
-  var tree = options.tree = merkleize(form)
+  var tree = options.tree = merkleize(loaded.form)
   return html`
     ${renderTableOfContents(form)}
-    <article class=commonform>${renderForm(0, [], form, tree, options)}</article>
+    <article class=commonform>
+      ${renderForm(0, [], form, loaded.form, tree, loaded.resolutions, options)}
+    </article>
     ${scriptTag(form, loaded, options)}
   `
 }
@@ -66,21 +68,32 @@ function containsHeading (form) {
   })
 }
 
-function renderForm (depth, path, form, tree, options) {
+function renderForm (depth, path, form, loaded, tree, resolutions, options) {
   var offset = 0
   var annotationsHere = options.annotations.filter(function (annotation) {
     return samePath(annotation.path, path)
   })
-  var groups = group(form)
-    .map(function (group) {
-      var returned = group.type === 'series'
-        ? renderSeries(depth + 1, offset, path, group, tree, options)
-        : renderParagraph(offset, path, group, tree, options)
-      offset += group.content.length
+  var formGroups = form && group(form)
+  var loadedGroups = group(loaded)
+    .map(function (loadedGroup, index) {
+      var formGroup = formGroups && formGroups[index]
+      var returned = loadedGroup.type === 'series'
+        ? renderSeries(
+          depth + 1,
+          offset,
+          path,
+          formGroup,
+          loadedGroup,
+          tree,
+          resolutions,
+          options
+        )
+        : renderParagraph(offset, path, loadedGroup, tree, options)
+      offset += loadedGroup.content.length
       return returned
     })
     .join('')
-  return html`${renderMarginalia(annotationsHere)}${groups}`
+  return html`${renderMarginalia(annotationsHere)}${loadedGroups}`
 }
 
 function renderMarginalia (annotations) {
@@ -95,47 +108,49 @@ function renderMarginalia (annotations) {
   })
 }
 
-function renderSeries (depth, offset, path, series, tree, options) {
-  return series.content
-    .map(function (child, index) {
-      if (child.hasOwnProperty('repository')) {
-        var component = child
-        var className = classnames({
-          conspicuous: child.conspicuous,
-          component: true
-        })
-        return (
-          `<section class="${className}">` +
-          ('heading' in child ? renderHeading(depth, child.heading) : '') +
-          componentLink(component)
-        )
-      } else {
-        var form = child.form
-        var childTree = tree.content[offset + index]
-        var digest = childTree.digest
-        return (
-          (form.conspicuous ? '<section class=conspicuous>' : '<section>') +
-          ('heading' in child ? renderHeading(depth, child.heading) : '') +
-          (
-            options.childLinks
-              ? `<a class=child-link href=/forms/${digest}>${digest}</a>`
-              : ''
-          ) +
-          renderForm(
-            depth,
-            path.concat('content', offset + index, 'form'),
-            form,
-            childTree,
-            options
-          ) +
-          '</section>'
-        )
-      }
+function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, resolutions, options) {
+  return loadedSeries.content
+    .map(function (loadedChild, index) {
+      var loadedForm = loadedChild.form
+      var childTree = tree.content[offset + index]
+      var digest = childTree.digest
+      var childPath = path.concat('content', offset + index)
+      var resolution = resolutions.find(function (element) {
+        return samePath(element.path, childPath)
+      })
+      var component = resolution && formSeries && formSeries.content[index]
+      var classes = classnames({
+        conspicuous: loadedForm.conspicuous,
+        component: resolution
+      })
+      return (
+        `<section class="${classes}">` +
+        ('heading' in loadedChild ? renderHeading(depth, loadedChild.heading) : '') +
+        (resolution ? renderComponentInfo(component, resolution) : '') +
+        (
+          options.childLinks
+            ? `<a class=child-link href=/forms/${digest}>${digest}</a>`
+            : ''
+        ) +
+        renderForm(
+          depth,
+          childPath.concat('form'),
+          formSeries ? formSeries.content[index].form : null,
+          loadedForm,
+          childTree,
+          resolutions,
+          options
+        ) +
+        '</section>'
+      )
     })
     .join('')
 }
 
-// TODO: Recursive render components with identification and content.
+
+function renderComponentInfo (component, resolution) {
+  return componentLink(component)
+}
 
 function componentLink (component) {
   return `
