@@ -3,11 +3,12 @@ var editionLink = require('./edition-link')
 var escape = require('../../util/escape')
 var group = require('commonform-group-series')
 var html = require('../html')
+var longDate = require('../../util/long-date')
 var merkleize = require('commonform-merkleize')
 var predicate = require('commonform-predicate')
+var publicationLink = require('./publication-link')
 var publisherLink = require('./publisher-link')
 var samePath = require('commonform-same-path')
-var publicationLink = require('./publication-link')
 
 module.exports = function (form, loaded, options) {
   options = options || {}
@@ -134,7 +135,7 @@ function renderComment (comment, parents, comments) {
       <p>${escape(comment.text)}</p>
       <p class=byline>
         —${publisherLink(comment.publisher)},
-        ${escape(new Date(parseInt(comment.timestamp)).toDateString())}
+        ${escape(longDate(new Date(parseInt(comment.timestamp))))}
       </p>
       ${replies.map(function (reply) {
         return renderComment(reply, withParent, comments)
