@@ -6,6 +6,14 @@ html {
   line-height: 1.4;
 }
 
+body > main,
+body > header,
+body > footer {
+  max-width: 50rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @media all {
   html {
     font-size: 23px; } }
