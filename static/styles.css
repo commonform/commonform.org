@@ -166,7 +166,7 @@ body {
   background: #eee;
 }
 
-header, footer, article, form {
+header, footer, form, main {
   background: white;
   margin: 1rem;
   padding: 1rem;
