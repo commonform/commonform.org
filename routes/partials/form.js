@@ -5,9 +5,9 @@ var group = require('commonform-group-series')
 var html = require('../html')
 var merkleize = require('commonform-merkleize')
 var predicate = require('commonform-predicate')
-var projectLink = require('./project-link')
 var publisherLink = require('./publisher-link')
 var samePath = require('commonform-same-path')
+var publicationLink = require('./publication-link')
 
 module.exports = function (form, loaded, options) {
   options = options || {}
@@ -144,11 +144,7 @@ function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, reso
 }
 
 function resolutionLink (resolution) {
-  var returned = `
-    ${publisherLink(resolution.publisher)}’s
-    ${projectLink(resolution)}
-    ${editionLink(resolution)}
-  `
+  var returned = publicationLink(resolution)
   if (resolution.upgrade && resolution.specified !== resolution.edition) {
     returned += ` (upgraded from ${editionLink({
       publisher: resolution.publisher,

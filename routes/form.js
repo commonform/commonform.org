@@ -10,7 +10,6 @@ var form = require('./partials/form')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 var publicationLink = require('./partials/publication-link')
-var publisherLink = require('./partials/publisher-link')
 
 module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
@@ -90,10 +89,5 @@ function publishedWithinSection (publications) {
 }
 
 function publicationLI (publication) {
-  return html`
-    <li>
-    ${publisherLink(publication.publisher)}’s
-    ${publicationLink(publication)}
-    </li>
-  `
+  return `<li>${publicationLink(publication)}</li>`
 }

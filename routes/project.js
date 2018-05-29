@@ -8,12 +8,11 @@ var runAuto = require('run-auto')
 var runParallel = require('run-parallel')
 var sanitize = require('../util/sanitize')
 
-var editionLink = require('./partials/edition-link')
 var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
-var projectLink = require('./partials/project-link')
 var publisherLink = require('./partials/publisher-link')
+var publicationLink = require('./partials/publication-link')
 
 module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
@@ -116,11 +115,7 @@ function renderDependents (dependents) {
     <section>
       <h2>Dependent Projects</h2>
         <ul>${dependents.map(function (dependent) {
-        return `
-          ${publisherLink(dependent.publisher)}’s
-          ${projectLink(dependent)}
-          ${editionLink(dependent)}
-        `
+        return publicationLink(dependent)
       })}</ul>
     </section>
   `

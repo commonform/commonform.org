@@ -1,10 +1,12 @@
 var escape = require('../../util/escape')
+var projectLink = require('./project-link')
+var editionLink = require('./edition-link')
+var publisherLink = require('./publisher-link')
 
 module.exports = function (publication) {
-  var href = (
-    '/' + encodeURIComponent(publication.publisher) +
-    '/' + encodeURIComponent(publication.project) +
-    '/' + encodeURIComponent(publication.edition)
-  )
-  return `<a href="${href}">${escape(publication.project)} ${escape(publication.edition)}</a>`
+  return `
+    ${publisherLink(publication.publisher)} /
+    ${projectLink(publication)} /
+    ${editionLink(publication)}
+  `
 }

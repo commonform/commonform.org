@@ -141,7 +141,8 @@ ${footer()}
         return `<p class=warn>
           An
           <a href="${href}">upgraded edition</a>
-          of ${publisherLink(publisher)}’s
+          of
+          ${publisherLink(publisher)} /
           ${projectLink(data.publication)}
           is available.
         </p>`
