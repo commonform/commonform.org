@@ -377,6 +377,17 @@ function update (message) {
     } else {
       component.substitutions.terms[original] = substituted
     }
+  } else if (action === 'substitute heading') {
+    state.changed = true
+    let path = message.path
+    let component = keyarrayGet(state.form, path)
+    let original = message.original
+    let substituted = message.substituted
+    if (substituted.length === 0) {
+      delete component.substitutions.headings[original]
+    } else {
+      component.substitutions.headings[original] = substituted
+    }
   } else if (action === 'replace with component') {
     state.changed = true
     let path = message.path
