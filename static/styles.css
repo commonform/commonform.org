@@ -110,7 +110,7 @@ a:hover {
 }
 
 .commonform .use, .commonform .reference {
-  color: black;
+  color: inherit;
   font-style: italic;
 }
 
@@ -332,9 +332,9 @@ ins, del {
 }
 
 ins {
-  color: rgb(0, 100, 0);
+  color: rgb(0, 200, 0);
 }
 
 del {
-  color: rgb(100, 0, 0);
+  color: rgb(200, 0, 0);
 }
