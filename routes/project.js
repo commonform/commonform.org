@@ -47,7 +47,7 @@ module.exports = function (configuration, request, response) {
                   ),
                   json: true
                 }, function (error, response, publication) {
-                 done(error, publication)
+                  done(error, publication)
                 })
               }
             }),
@@ -95,6 +95,33 @@ module.exports = function (configuration, request, response) {
       return internalError(configuration, request, response, error)
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
+    var editionsList = data.publications.map(function (publication, index) {
+      var href = (
+        '/' + encodeURIComponent(publisher) +
+        '/' + encodeURIComponent(project) +
+        '/' + encodeURIComponent(publication.edition)
+      )
+      return html`<li>
+        <a href="${href}">
+          ${escape(reviewersEditionSpell(publication.edition))}
+          (${escape(publication.edition)})
+        </a>
+        ${publication.timestamp && timestamp()}
+        ${index !== 0 && comparisonLink()}
+      </li>`
+      function timestamp () {
+        return ' — ' + longDate(new Date(publication.timestamp))
+      }
+      function comparisonLink () {
+        var prior = data.publications[index - 1]
+        return `
+          —
+          <a href="/compare/${prior.digest}/${publication.digest}">
+            redline
+          </a>
+        `
+      }
+    })
     response.end(html`
     ${preamble()}
 <header>
@@ -106,35 +133,7 @@ module.exports = function (configuration, request, response) {
 <article>
   <section>
     <h2>Editions</h2>
-    <ul class=editionsList>
-      ${data.publications.map(function (publication, index) {
-        var href = (
-          '/' + encodeURIComponent(publisher) +
-          '/' + encodeURIComponent(project) +
-          '/' + encodeURIComponent(publication.edition)
-        )
-        return html`<li>
-          <a href="${href}">
-            ${escape(reviewersEditionSpell(publication.edition))}
-            (${escape(publication.edition)})
-          </a>
-          ${publication.timestamp && timestamp()}
-          ${index !== 0 && comparisonLink()}
-        </li>`
-        function timestamp () {
-          return ' — ' + longDate(new Date(publication.timestamp))
-        }
-        function comparisonLink () {
-          var prior = data.publications[index - 1]
-          return `
-            —
-            <a href="/compare/${prior.digest}/${publication.digest}">
-              redline
-            </a>
-          `
-        }
-      })}
-    </ul>
+    <ul class=editionsList>${editionsList}</ul>
   </section>
   <section class=hint>
     <h2>About Editions</h2>
@@ -158,12 +157,13 @@ ${footer()}
 
 function renderDependents (dependents) {
   if (dependents.length === 0) return ''
+  var items = dependents.map(function (dependent) {
+    return `<li>${publicationLink(dependent)}</li>`
+  })
   return html`
     <section>
       <h2>Dependent Projects</h2>
-        <ul>${dependents.map(function (dependent) {
-        return publicationLink(dependent)
-      })}</ul>
+      <ul>${items}</ul>
     </section>
   `
 }

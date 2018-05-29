@@ -34,21 +34,6 @@ module.exports = function (configuration, request, response) {
         json: true
       }, function (error, response, projects) {
         return done(error, projects)
-        if (error) return done(error)
-        var queries = projects.sort().map(function (project) {
-          var projectURL = (
-            publisherURL + '/projects/' + encodeURIComponent(project)
-          )
-          return function (done) {
-            get.concat({
-              url: projectURL + '/publications',
-              json: true
-            }, function (error, response, publications) {
-              done(error, {project, publications})
-            })
-          }
-        })
-        runParallel(queries, done)
       })
     }
   }, function (error, data) {

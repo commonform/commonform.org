@@ -130,6 +130,9 @@ function renderComment (comment, parents, comments) {
       })
     )
   })
+  var children = replies.map(function (reply) {
+    return renderComment(reply, withParent, comments)
+  })
   return html`
     <aside class=comment data-uuid=${uuid}>
       <p>${escape(comment.text)}</p>
@@ -137,9 +140,7 @@ function renderComment (comment, parents, comments) {
         —${publisherLink(comment.publisher)},
         ${escape(longDate(new Date(parseInt(comment.timestamp))))}
       </p>
-      ${replies.map(function (reply) {
-        return renderComment(reply, withParent, comments)
-      })}
+      ${children}
     </aside>
   `
 }
@@ -147,14 +148,14 @@ function renderComment (comment, parents, comments) {
 function renderAnnotations (annotations) {
   return annotations
     .map(function (annotation) {
-        var classes = 'annotation ' + annotation.level
-        return html`
-          <aside class="${classes}">
-            <p>${escape(annotation.message)}</p>
-          </aside>
-        `
-      })
-      .join('')
+      var classes = 'annotation ' + annotation.level
+      return html`
+        <aside class="${classes}">
+          <p>${escape(annotation.message)}</p>
+        </aside>
+      `
+    })
+    .join('')
 }
 
 function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, resolutions, options) {
