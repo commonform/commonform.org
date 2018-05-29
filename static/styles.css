@@ -314,3 +314,18 @@ label input[type=checkbox] {
   text-align: right;
   display: block;
 }
+
+ins, del {
+  width: auto;
+  height: auto;
+  margin: none;
+  padding: none;
+}
+
+ins {
+  color: rgb(0, 100, 0);
+}
+
+del {
+  color: rgb(100, 0, 0);
+}

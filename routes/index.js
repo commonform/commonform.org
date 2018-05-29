@@ -10,6 +10,7 @@ routes.set('/favicon.ico', function (configuration, request, response) {
   response.end()
 })
 routes.set('/edit', require('./edit'))
+routes.set('/compare/:from/:to', require('./compare'))
 routes.set('/forms/:digest', require('./form'))
 routes.set('/:publisher', require('./publisher'))
 routes.set('/:publisher/:project', require('./project'))
