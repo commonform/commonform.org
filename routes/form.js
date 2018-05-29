@@ -1,8 +1,11 @@
+var DOCX_CONTENT_TYPE = require('docx-content-type')
 var annotate = require('../util/annotate')
+var docx = require('commonform-docx')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
+var outlineNumbering = require('outline-numbering')
 var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
 
@@ -57,11 +60,31 @@ module.exports = function (configuration, request, response) {
     if (error) {
       return internalError(configuration, request, response, error)
     }
+    if (request.query.format === 'docx') {
+      let options = {
+        digest: digest,
+        markFilled: true,
+        numbering: outlineNumbering
+      }
+      response.setHeader('Content-Type', DOCX_CONTENT_TYPE)
+      response.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${digest}.docx"`
+      )
+      response.end(
+        docx(data.loaded.form, [], options).generate({type: 'nodebuffer'})
+      )
+      return
+    }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     var options = {
       comments: data.comments,
       annotations: annotate(data.loaded.form)
     }
+    var docxHREF = (
+      '/forms/' + encodeURIComponent(digest) +
+      '?format=docx'
+    )
     response.end(html`
     ${preamble()}
 <header>
@@ -70,6 +93,7 @@ module.exports = function (configuration, request, response) {
 </header>
 <main>
   <header>
+    <a href="${docxHREF}">Download .docx</a>
     <a href=/edit?from=${digest}>Edit</a>
   </header>
   <header>
