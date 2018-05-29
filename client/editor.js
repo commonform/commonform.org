@@ -872,15 +872,12 @@ function renderSeries (depth, offset, path, series, tree, options) {
       })
     section.dataset.annotations = annotations.length
     if (annotations.length !== 0) {
-      var aside = document.createElement('aside')
-      aside.className = 'annotations'
       annotations.forEach(function (annotation) {
-        var p = document.createElement('p')
-        p.className = 'annotation ' + annotation.level
-        p.appendChild(document.createTextNode(annotation.message))
-        aside.appendChild(p)
+        var aside = document.createElement('aside')
+        aside.className = 'annotation ' + annotation.level
+        aside.appendChild(document.createTextNode(annotation.message))
+        section.appendChild(aside)
       })
-      section.appendChild(aside)
     }
     if (isComponent) {
       if (isExpanded) {
