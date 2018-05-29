@@ -7,7 +7,7 @@ var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
-var DEFAULT_FORM = {content: ['...']}
+var DEFAULT_FORM = {content: ['Click to change text.']}
 
 module.exports = function (configuration, request, response) {
   if (request.method === 'GET') {

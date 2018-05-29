@@ -96,21 +96,24 @@ function computeState (done) {
 
 function render () {
   var article = document.createElement('article')
-  article.className = 'commonform'
   article.appendChild(renderOptions())
   article.appendChild(renderSaveForm())
   var summary = renderSummary()
   if (summary) article.appendChild(summary)
   article.appendChild(renderAnnotationCounts())
-  article.appendChild(renderContents(0, [], state.form, state.tree))
+  var section = document.createElement('section')
+  section.className = 'commonform'
+  section.appendChild(renderContents(0, [], state.form, state.tree))
+  article.appendChild(section)
   return article
 }
 
 function renderOptions () {
-  var div = document.createElement('div')
+  var form = document.createElement('form')
+  form.className = 'annotationOptions'
   var p = document.createElement('p')
   p.appendChild(document.createTextNode('Check For:'))
-  div.appendChild(p)
+  form.appendChild(p)
   annotators.forEach(function (element, index) {
     var label = document.createElement('label')
     label.id = 'toggle-annotator-' + index
@@ -126,11 +129,12 @@ function renderOptions () {
     label.appendChild(document.createTextNode(element.name))
     p.appendChild(label)
   })
-  return div
+  return form
 }
 
 function renderSaveForm () {
   var form = document.createElement('form')
+  form.className = 'saveForm'
 
   var credentials = document.createElement('p')
   form.appendChild(credentials)

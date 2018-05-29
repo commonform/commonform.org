@@ -372,3 +372,23 @@ del {
   padding: 0;
   width: 25%;
 }
+
+.saveForm, .annotationOptions {
+  border: 1px solid black;
+  border-radius: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+.saveForm p {
+  margin: 0.5rem 0;
+}
+
+.saveForm input + input {
+  margin-left: 1rem;
+}
+
+.editor .commonform {
+  margin-left: 0;
+  padding-left: 0;
+}
