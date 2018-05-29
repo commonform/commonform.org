@@ -12,6 +12,10 @@ body > footer {
   max-width: 50rem;
   margin-left: auto;
   margin-right: auto;
+  background: white;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 @media all {
@@ -164,12 +168,6 @@ a:hover {
 
 body {
   background: #eee;
-}
-
-header, footer, form, main {
-  background: white;
-  margin: 1rem;
-  padding: 1rem;
 }
 
 body > footer {

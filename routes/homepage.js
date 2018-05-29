@@ -29,11 +29,11 @@ module.exports = function (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
+<header>
+  <h1>Common Form</h1>
+  <p>a free, open repository of legal forms.</p>
+</header>
 <main>
-  <header>
-    <h1>Common Form</h1>
-    <p>a free, open repository of legal forms.</p>
-  </header>
   <article>
     <section>${publishersList(data.publishers)}</section>
   </article>
