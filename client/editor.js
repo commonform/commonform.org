@@ -514,7 +514,7 @@ function renderComponent (component, path) {
   publisherLink.appendChild(document.createTextNode(component.publisher))
   p.appendChild(publisherLink)
 
-  p.appendChild(document.createTextNode(' / '))
+  p.appendChild(document.createTextNode('/'))
 
   var projectLink = document.createElement('a')
   projectLink.href = (
@@ -525,7 +525,7 @@ function renderComponent (component, path) {
   projectLink.appendChild(document.createTextNode(component.project))
   p.appendChild(projectLink)
 
-  p.appendChild(document.createTextNode(' / '))
+  p.appendChild(document.createTextNode('/'))
 
   var editionLink = document.createElement('a')
   editionLink.href = (
