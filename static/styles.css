@@ -13,8 +13,14 @@ body > footer {
   margin-left: auto;
   margin-right: auto;
   padding: 1rem 2rem;
+}
+
+body > header {
   margin-top: 1rem;
-  margin-bottom: 1rem;
+}
+
+main > article > section {
+  margin-bottom: 2rem;
 }
 
 @media all {
@@ -313,15 +319,15 @@ label input[type=checkbox] {
   content: '';
 }
 
-.comment, .annotation {
+.comment, .annotation, .hint {
   border: 1px solid #777;
-  border-radius: 15px;
+  border-radius: 1rem;
   border-left: 1px solid #777;
   padding: 1rem;
   margin-bottom: 1rem;
 }
 
-.comment {
+.comment, .hint {
   background-color: rgb(230, 230, 255);
 }
 

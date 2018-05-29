@@ -104,34 +104,46 @@ module.exports = function (configuration, request, response) {
 <main>
 <article>
   <section>
-  <h2>Editions</h2>
-  <ul>
-    ${data.publications.map(function (publication, index) {
-      var href = (
-        '/' + encodeURIComponent(publisher) +
-        '/' + encodeURIComponent(project) +
-        '/' + encodeURIComponent(publication.edition)
-      )
-      return html`<li>
-        <a href="${href}">
-          ${escape(reviewersEditionSpell(publication.edition))}
-          (${escape(publication.edition)})
-        </a>
-        ${index !== 0 ? comparisonLink() : ''}
-      </li>`
-      function comparisonLink () {
-        var prior = data.publications[index - 1]
-        return `
-          —
-          <a href="/compare/${prior.digest}/${publication.digest}">
-            redline
+    <h2>Editions</h2>
+    <ul>
+      ${data.publications.map(function (publication, index) {
+        var href = (
+          '/' + encodeURIComponent(publisher) +
+          '/' + encodeURIComponent(project) +
+          '/' + encodeURIComponent(publication.edition)
+        )
+        return html`<li>
+          <a href="${href}">
+            ${escape(reviewersEditionSpell(publication.edition))}
+            (${escape(publication.edition)})
           </a>
-        `
-      }
-    })}
-  </ul>
-</section>
-${renderDependents(data.dependents)}
+          ${index !== 0 ? comparisonLink() : ''}
+        </li>`
+        function comparisonLink () {
+          var prior = data.publications[index - 1]
+          return `
+            —
+            <a href="/compare/${prior.digest}/${publication.digest}">
+              redline
+            </a>
+          `
+        }
+      })}
+    </ul>
+  </section>
+  <section class=hint>
+    <h2>About Editions</h2>
+    <p>
+      Common Form publishers use the
+      <a href=https://reviewersedition.org>Reviewers Edition</a>
+      system to number succeeding versions of their projects.
+      Reviewers Edition numbers give document authors a simple,
+      clear, and concise way to tell document users how much has
+      changed, and what they should review, as documents evolve
+      over time.
+    </p>
+  </section>
+  ${renderDependents(data.dependents)}
 </article>
 </main>
 ${footer()}
