@@ -1,6 +1,7 @@
 var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
+var longDate = require('../util/long-date')
 var methodNotAllowed = require('./method-not-allowed')
 var reviewersEditionCompare = require('reviewers-edition-compare')
 var reviewersEditionSpell = require('reviewers-edition-spell')
@@ -117,8 +118,12 @@ module.exports = function (configuration, request, response) {
             ${escape(reviewersEditionSpell(publication.edition))}
             (${escape(publication.edition)})
           </a>
-          ${index !== 0 ? comparisonLink() : ''}
+          ${publication.timestamp && timestamp()}
+          ${index !== 0 && comparisonLink()}
         </li>`
+        function timestamp () {
+          return ' — ' + longDate(new Date(publication.timestamp))
+        }
         function comparisonLink () {
           var prior = data.publications[index - 1]
           return `
