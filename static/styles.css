@@ -12,8 +12,7 @@ body > footer {
   max-width: 50rem;
   margin-left: auto;
   margin-right: auto;
-  background: white;
-  padding: 2rem;
+  padding: 1rem 2rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -166,13 +165,14 @@ a:hover {
   list-style-type: none;
 }
 
-body {
-  background: #eee;
-}
-
 body > footer {
   font-size: 75%;
   text-align: right;
+}
+
+body > header > h1 {
+  padding-top: 0;
+  margin-top: 0;
 }
 
 .hidden {

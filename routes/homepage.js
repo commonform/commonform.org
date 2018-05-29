@@ -35,7 +35,7 @@ module.exports = function (configuration, request, response) {
 </header>
 <main>
   <article>
-    <section>${publishersList(data.publishers)}</section>
+    ${publishersList(data.publishers)}
   </article>
 </main>
 ${footer()}
