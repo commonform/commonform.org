@@ -2,17 +2,17 @@
 
 html {
   font-family: Equity, Georgia, serif;
-  text-rendering: optimizeLegibility;
   line-height: 1.4;
+  text-rendering: optimizeLegibility;
 }
 
 body > main,
 body > nav,
 body > header,
 body > footer {
-  max-width: 50rem;
   margin-left: auto;
   margin-right: auto;
+  max-width: 50rem;
   padding: 1rem 2rem;
 }
 
@@ -142,10 +142,10 @@ a:hover {
 }
 
 .commonform .blank {
-  display: inline-block;
-  border: none;
-  border-bottom: 1px dashed black;
   background: inherit;
+  border-bottom: 1px dashed black;
+  border: none;
+  display: inline-block;
   width: 10rem;
 }
 
@@ -178,8 +178,8 @@ body > footer {
 }
 
 body > header > h1 {
-  padding-top: 0;
   margin-top: 0;
+  padding-top: 0;
 }
 
 .hidden {
@@ -207,8 +207,8 @@ body > header > h1 {
 }
 
 .annotationCounts .count {
-  margin: 0 1ex;
   cursor: pointer;
+  margin: 0 1ex;
   text-decoration: none;
 }
 
@@ -263,10 +263,10 @@ label input[type=checkbox] {
 }
 
 .editor section {
-  padding-top: 0.5rem;
+  margin-left: 0;
   padding-bottom: 0.5rem;
   padding-left: 2.50rem;
-  margin-left: 0;
+  padding-top: 0.5rem;
 }
 
 .editor section h1 {
@@ -291,8 +291,8 @@ label input[type=checkbox] {
 }
 
 .summary {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .undefined, .brokenReferences {
@@ -321,11 +321,11 @@ label input[type=checkbox] {
 }
 
 .comment, .annotation, .hint {
-  border: 1px solid #777;
-  border-radius: 1rem;
   border-left: 1px solid #777;
-  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #777;
   margin-bottom: 1rem;
+  padding: 1rem;
 }
 
 .comment, .hint {
@@ -333,15 +333,15 @@ label input[type=checkbox] {
 }
 
 .byline {
-  text-align: right;
   display: block;
+  text-align: right;
 }
 
 ins, del {
-  width: auto;
   height: auto;
-  margin: none;
-  padding: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
 }
 
 ins {
@@ -366,9 +366,9 @@ del {
 }
 
 .publishers li {
-  list-style-type: none;
   display: inline-block;
-  padding: 0;
+  list-style-type: none;
   margin: 0;
+  padding: 0;
   width: 25%;
 }
