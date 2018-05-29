@@ -76,8 +76,8 @@ module.exports = function (configuration, request, response) {
     if (error) {
       return internalError(configuration, request, response, error)
     }
+    var publication = data.publication
     if (request.query.format === 'docx') {
-      var publication = data.publication
       var options = {
         title: publication.project,
         edition: publication.edition,
@@ -96,6 +96,19 @@ module.exports = function (configuration, request, response) {
         docx(data.loaded.form, [], options).generate({type: 'nodebuffer'})
       )
       return
+    } else if (request.query.format === 'json') {
+      response.setHeader('Content-Type', 'application/json')
+      response.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${publication.project} ${publication.edition}.json"`
+      )
+      var combined = Object.assign(
+        {},
+        data.publication,
+        {form: data.form, loaded: data.loaded}
+      )
+      response.end(JSON.stringify(combined))
+      return
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     var docxHREF = (
@@ -103,6 +116,12 @@ module.exports = function (configuration, request, response) {
       '/' + encodeURIComponent(project) +
       '/' + encodeURIComponent(edition) +
       '?format=docx'
+    )
+    var jsonHREF = (
+      '/' + encodeURIComponent(publisher) +
+      '/' + encodeURIComponent(project) +
+      '/' + encodeURIComponent(edition) +
+      '?format=json'
     )
     response.end(html`
     ${preamble()}
@@ -119,6 +138,7 @@ module.exports = function (configuration, request, response) {
       <a class=digest href=/forms/${data.publication.digest}>${data.publication.digest}</a>
     </p>
     <a href="${docxHREF}">Download .docx</a>
+    <a href="${jsonHREF}">Download .json</a>
     <a href=/edit?from=${data.publication.digest}>Edit</a>
     ${form(data.form, data.loaded)}
   </article>
