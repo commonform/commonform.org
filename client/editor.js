@@ -31,6 +31,10 @@ var state = window.state = {
   expanded: [] // paths of components to expand
 }
 
+function clearSelected () {
+  state.selected = false
+}
+
 function computeState (done) {
   var form = state.form
   fixStrings(form)
@@ -123,27 +127,34 @@ function renderOptions () {
 function renderSaveForm () {
   var form = document.createElement('form')
 
+  var credentials = document.createElement('p')
+  form.appendChild(credentials)
+
   var publisher = document.createElement('input')
   publisher.id = 'publisher'
   publisher.type = 'text'
   publisher.required = true
-  form.appendChild(withLabel('Publisher', publisher))
+  credentials.appendChild(withLabel('Publisher', publisher))
 
   var password = document.createElement('input')
   password.id = 'password'
   password.type = 'password'
   password.required = true
-  form.appendChild(withLabel('Password', password))
+  credentials.appendChild(withLabel('Password', password))
+
+
+  var publication = document.createElement('p')
+  form.appendChild(publication)
 
   var project = document.createElement('input')
   project.id = 'project'
   project.type = 'text'
-  form.appendChild(withLabel('Project', project))
+  publication.appendChild(withLabel('Project', project))
 
   var edition = document.createElement('input')
   edition.id = 'edition'
   edition.type = 'text'
-  form.appendChild(withLabel('Edition', edition))
+  publication.appendChild(withLabel('Edition', edition))
 
   var button = document.createElement('button')
   button.type = 'submit'
@@ -295,13 +306,13 @@ function update (message) {
   if (action === 'select') {
     state.selected = message.path
   } else if (action === 'deselect') {
-    state.selected = false
+    clearSelected()
   } else if (action === 'delete') {
     state.changed = true
     let path = message.path
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1)
-    state.selected = false
+    clearSelected()
   } else if (action === 'child') {
     state.changed = true
     let path = message.path
@@ -311,7 +322,7 @@ function update (message) {
     parent.content.splice(path[path.length - 1], 0, child)
     if (!validate.form(clone, {allowComponents: true})) return
     state.form = clone
-    state.selected = path
+    clearSelected()
   } else if (action === 'move') {
     state.changed = true
     let clone = JSON.parse(JSON.stringify(state.form))
@@ -934,11 +945,13 @@ function renderDropZone (effect, path) {
   if (effect === 'child') {
     button.onclick = function () {
       update({action: 'child', path: path})
+      this.blur()
     }
     button.className = 'child-button'
   } else if (effect === 'move') {
     button.onclick = function (event) {
       update({action: 'move', path: path})
+      this.blur()
     }
     button.className = 'move-button'
   }
