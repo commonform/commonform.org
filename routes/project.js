@@ -31,7 +31,27 @@ module.exports = function (configuration, request, response) {
         ),
         json: true
       }, function (error, response, publications) {
-        done(error, publications.sort(reviewersEditionCompare))
+        if (error) return done(error)
+        runParallel(
+          publications
+            .sort(reviewersEditionCompare)
+            .map(function (edition) {
+              return function (done) {
+                get.concat({
+                  url: (
+                    configuration.api +
+                    '/publishers/' + encodeURIComponent(publisher) +
+                    '/projects/' + encodeURIComponent(project) +
+                    '/publications/' + encodeURIComponent(edition)
+                  ),
+                  json: true
+                }, function (error, response, publication) {
+                 done(error, publication)
+                })
+              }
+            }),
+          done
+        )
       })
     },
     dependents: function (done) {
@@ -86,7 +106,7 @@ module.exports = function (configuration, request, response) {
   <section>
   <h2>Editions</h2>
   <ul>
-    ${data.publications.map(function (publication) {
+    ${data.publications.map(function (publication, index) {
       var href = (
         '/' + encodeURIComponent(publisher) +
         '/' + encodeURIComponent(project) +
@@ -94,10 +114,20 @@ module.exports = function (configuration, request, response) {
       )
       return html`<li>
         <a href="${href}">
-          ${escape(reviewersEditionSpell(publication))}
-          (${escape(publication)})
+          ${escape(reviewersEditionSpell(publication.edition))}
+          (${escape(publication.edition)})
         </a>
+        ${index !== 0 ? comparisonLink() : ''}
       </li>`
+      function comparisonLink () {
+        var prior = data.publications[index - 1]
+        return `
+          —
+          <a href="/compare/${prior.digest}/${publication.digest}">
+            redline
+          </a>
+        `
+      }
     })}
   </ul>
 </section>
