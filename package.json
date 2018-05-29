@@ -21,6 +21,7 @@
     "test": "NODE_ENV=test tape test/**.test.js",
     "license": "licensee --errors-only",
     "precommit": "lint-staged",
+    "prestart": "npm run build",
     "outdated": "npm outdated | tee outdated.log"
   },
   "dependencies": {
