@@ -197,6 +197,7 @@ function renderSaveForm () {
           .then(function (response) {
             var status = response.status
             if (status === 204 || status === 201) {
+              state.changed = false
               window.location = (
                 '/' + encodeURIComponent(publisher) +
                 '/' + encodeURIComponent(project) +
@@ -207,6 +208,7 @@ function renderSaveForm () {
       })
     } else if (publisher && password) {
       saveForm(function () {
+        state.changed = false
         window.location = '/forms/' + state.tree.digest
       })
     }
