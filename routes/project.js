@@ -110,7 +110,7 @@ module.exports = function (configuration, request, response) {
       var href = (
         '/' + encodeURIComponent(publisher) +
         '/' + encodeURIComponent(project) +
-        '/' + encodeURIComponent(publication)
+        '/' + encodeURIComponent(publication.edition)
       )
       return html`<li>
         <a href="${href}">
