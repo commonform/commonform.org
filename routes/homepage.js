@@ -33,6 +33,9 @@ module.exports = function (configuration, request, response) {
   <h1>Common Form</h1>
   <p>a free, open repository of legal forms.</p>
 </header>
+<nav role=navigation>
+  <a href=/edit>Write a New Form</a>
+</nav>
 <main>
   <article>
     ${publishersList(data.publishers)}
