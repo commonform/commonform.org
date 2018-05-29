@@ -373,8 +373,8 @@ function update (message) {
     state.changed = true
     let path = message.path
     let child = keyarrayGet(state.form, path)
-    if (child.conspicuous) delete child.conspicuous
-    else child.conspicuous = 'yes'
+    if (child.form.conspicuous) delete child.form.conspicuous
+    else child.form.conspicuous = 'yes'
   } else if (action === 'toggle update') {
     state.changed = true
     let path = message.path
@@ -740,7 +740,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
     })
     section.className = classnames({
       component: isComponent,
-      conspicuous: child.conspicuous,
+      conspicuous: child.form.conspicuous,
       selected: selected,
       expanded: isExpanded
     })
