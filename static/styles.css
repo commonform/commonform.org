@@ -168,6 +168,10 @@ a:hover {
   padding: 0.5rem;
 }
 
+header.toc {
+  margin-bottom: 3rem;
+}
+
 .toc ol {
   list-style-type: none;
 }
