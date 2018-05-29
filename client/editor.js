@@ -16,8 +16,6 @@ var validate = require('commonform-validate')
 
 var COMPONENT_CHARACTER = '⚙'
 
-// TODO: Show upgraded component resolutions.
-
 var annotators = [
   {name: 'structural errors', annotator: require('commonform-lint')},
   {name: 'archaisms', annotator: require('commonform-archaic')},
