@@ -14,7 +14,12 @@ var samePath = require('commonform-same-path')
 var substitute = require('commonform-substitute')
 var validate = require('commonform-validate')
 
+var WHITE_FLAG_CHARACTER = '⚐'
 var COMPONENT_CHARACTER = '⚙'
+var WARNING_CHARACTER = '⚠'
+var CROSS_CHARACTER = '❌'
+var CIRCLE_MINUS = '⊖'
+var CIRCLE_PLUS = '⊕'
 
 var annotators = [
   {name: 'structural errors', annotator: require('commonform-lint')},
@@ -141,7 +146,6 @@ function renderSaveForm () {
   password.type = 'password'
   password.required = true
   credentials.appendChild(withLabel('Password', password))
-
 
   var publication = document.createElement('p')
   form.appendChild(publication)
@@ -778,7 +782,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
       section.appendChild(heading)
     } else if (selected && !fixed) {
       var headingButton = document.createElement('button')
-      headingButton.appendChild(document.createTextNode('⚐'))
+      headingButton.appendChild(document.createTextNode(WHITE_FLAG_CHARACTER))
       headingButton.onclick = function () {
         update({
           action: 'heading',
@@ -790,7 +794,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
     }
     if (!isComponent && selected && !fixed) {
       var conspicuousButton = document.createElement('button')
-      conspicuousButton.appendChild(document.createTextNode('⚠'))
+      conspicuousButton.appendChild(document.createTextNode(WARNING_CHARACTER))
       conspicuousButton.title = 'Toggle conspicuous formatting.'
       conspicuousButton.onclick = function () {
         update({
@@ -810,11 +814,11 @@ function renderSeries (depth, offset, path, series, tree, options) {
         var input = window.prompt(
           'Enter a new publication ID.',
           isComponent
-            ? (child.publisher + '/' + child.project + '@' + child.edition)
-            : 'kemitchell/placeholder-component@1e'
+            ? (child.publisher + '/' + child.project + '/' + child.edition)
+            : 'kemitchell/placeholder-component/1e'
         )
         if (input === null) return
-        var match = /^([^/]+)\/([^@]+)@(.+)$/.exec(input)
+        var match = /^([^/]+)\/([^/]+)\/(.+)$/.exec(input)
         if (!match) return alert('Invalid publication ID.')
         var publisher = match[1]
         var project = match[2]
@@ -841,7 +845,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
     }
     if (selected && !fixed) {
       var deleteButton = document.createElement('button')
-      deleteButton.appendChild(document.createTextNode('❌'))
+      deleteButton.appendChild(document.createTextNode(CROSS_CHARACTER))
       deleteButton.title = 'Delete.'
       deleteButton.onclick = function () {
         update({
@@ -853,7 +857,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
       if (isComponent) {
         if (isExpanded) {
           var collapseButton = document.createElement('button')
-          collapseButton.appendChild(document.createTextNode('⊖'))
+          collapseButton.appendChild(document.createTextNode(CIRCLE_MINUS))
           collapseButton.title = 'Collapse component.'
           collapseButton.onclick = function () {
             update({
@@ -865,7 +869,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
           section.appendChild(collapseButton)
         } else {
           var expandButton = document.createElement('button')
-          expandButton.appendChild(document.createTextNode('⊕'))
+          expandButton.appendChild(document.createTextNode(CIRCLE_PLUS))
           expandButton.title = 'Expand component.'
           expandButton.onclick = function () {
             update({
