@@ -28,7 +28,7 @@ module.exports = function (form, loaded, options) {
 function renderTableOfContents (form) {
   if (!containsHeading(form)) return ''
   return html`<header class=toc>
-    <h2>Table of Contents</h2>
+    <h2>Contents</h2>
     ${renderContents(form)}
   </header>`
 }
