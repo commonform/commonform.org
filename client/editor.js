@@ -671,6 +671,7 @@ function renderParagraph (offset, path, paragraph, tree, options) {
   p.appendChild(document.createTextNode(originalMarkup))
   if (!fixed) {
     p.contentEditable = true
+    p.spellcheck = true
     p.onkeypress = function (event) {
       if (event.which === 13 || event.keyCode === 13) this.blur()
     }
@@ -769,6 +770,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
       heading.appendChild(document.createTextNode(child.heading || ''))
       if (!fixed) {
         heading.contentEditable = true
+        heading.spellcheck = true
         heading.onkeydown = function (event) {
           if (event.which === 13 || event.keyCode === 13) this.blur()
         }
