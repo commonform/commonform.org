@@ -218,6 +218,16 @@ label input[type=checkbox] {
   padding: 0;
 }
 
+.terms:before {
+  content: 'Term Substitutions';
+  font-weight: bold;
+}
+
+.headings:before {
+  content: 'Heading Substitutions';
+  font-weight: bold;
+}
+
 .component .identification {
   padding: 1rem 0;
 }
