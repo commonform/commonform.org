@@ -69,7 +69,7 @@ function containsHeading (form) {
 function renderForm (depth, path, form, loaded, tree, resolutions, options) {
   var offset = 0
   var annotationsHere = options.annotations.filter(function (annotation) {
-    return samePath(annotation.path, path)
+    return samePath(annotation.path.slice(0, -2), path)
   })
   var digest = tree.digest
   var commentsHere = options.comments.filter(function (comment) {

@@ -1,3 +1,4 @@
+var annotate = require('../util/annotate')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
@@ -55,6 +56,10 @@ module.exports = function (configuration, request, response) {
       return internalError(configuration, request, response, error)
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
+    var options = {
+      comments: data.comments,
+      annotations: annotate(data.loaded.form)
+    }
     response.end(html`
     ${preamble()}
 <header>
@@ -66,7 +71,7 @@ module.exports = function (configuration, request, response) {
     ${publicationsSection(data.publications)}
     ${publishedWithinSection(data.publications)}
   </header>
-  ${form(data.form, data.loaded, {comments: data.comments})}
+  ${form(data.form, data.loaded, options)}
 </main>
 ${footer()}
     `)
