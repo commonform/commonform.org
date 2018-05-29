@@ -68,6 +68,9 @@ module.exports = function (configuration, request, response) {
 </header>
 <main>
   <header>
+    <a href=/edit?from=${digest}>Edit</a>
+  </header>
+  <header>
     ${publicationsSection(data.publications)}
     ${publishedWithinSection(data.publications)}
   </header>
