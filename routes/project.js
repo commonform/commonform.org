@@ -106,7 +106,7 @@ module.exports = function (configuration, request, response) {
 <article>
   <section>
     <h2>Editions</h2>
-    <ul>
+    <ul class=editionsList>
       ${data.publications.map(function (publication, index) {
         var href = (
           '/' + encodeURIComponent(publisher) +

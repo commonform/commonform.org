@@ -360,17 +360,21 @@ del {
   padding-right: 0.5rem;
 }
 
-.publishers {
+.columnList {
+  column-count: 3;
+  column-gap: 1rem;
+  list-style-type: none;
+  padding: 0;
+}
+
+.columnList li {
   margin: 0;
   padding: 0;
 }
 
-.publishers li {
-  display: inline-block;
+.editionsList {
   list-style-type: none;
-  margin: 0;
   padding: 0;
-  width: 25%;
 }
 
 .saveForm, .annotationOptions {
