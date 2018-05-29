@@ -31,7 +31,7 @@ module.exports = function (configuration, request, response) {
     ${preamble()}
 <header>
   <h1>Common Form</h1>
-  <p>a free, open repository of legal forms.</p>
+  <p>a free, open repository of legal forms</p>
 </header>
 <main>
   <article>
