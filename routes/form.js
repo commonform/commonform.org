@@ -38,6 +38,17 @@ module.exports = function (configuration, request, response) {
       }, function (error, response, data) {
         done(error, data)
       })
+    },
+    comments: function (done) {
+      get.concat({
+        url: (
+          configuration.api +
+          '/annotations?context=' + digest
+        ),
+        json: true
+      }, function (error, response, data) {
+        done(error, data)
+      })
     }
   }, function (error, data) {
     if (error) {
@@ -55,7 +66,7 @@ module.exports = function (configuration, request, response) {
     ${publicationsSection(data.publications)}
     ${publishedWithinSection(data.publications)}
   </header>
-  ${form(data.form, data.loaded)}
+  ${form(data.form, data.loaded, {comments: data.comments})}
 </main>
 ${footer()}
     `)

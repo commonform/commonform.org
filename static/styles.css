@@ -297,3 +297,17 @@ label input[type=checkbox] {
 .summary li:last-child:after {
   content: '';
 }
+
+.comment {
+  border: 1px solid #777;
+  border-radius: 15px;
+  background-color: rgb(230, 230, 255);
+  border-left: 1px solid #777;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.byline {
+  text-align: right;
+  display: block;
+}

@@ -13,6 +13,7 @@ module.exports = function (form, loaded, options) {
   options = options || {}
   if (!options.mappings) options.mappings = []
   if (!options.annotations) options.annotations = []
+  if (!options.comments) options.comments = []
   var tree = options.tree = merkleize(loaded.form)
   return html`
     ${renderTableOfContents(form)}
@@ -70,6 +71,10 @@ function renderForm (depth, path, form, loaded, tree, resolutions, options) {
   var annotationsHere = options.annotations.filter(function (annotation) {
     return samePath(annotation.path, path)
   })
+  var digest = tree.digest
+  var commentsHere = options.comments.filter(function (comment) {
+    return comment.form === digest
+  })
   var formGroups = form && group(form)
   var loadedGroups = group(loaded)
     .map(function (loadedGroup, index) {
@@ -90,19 +95,65 @@ function renderForm (depth, path, form, loaded, tree, resolutions, options) {
       return returned
     })
     .join('')
-  return html`${renderMarginalia(annotationsHere)}${loadedGroups}`
+  return html`
+    ${renderAnnotations(annotationsHere)}
+    ${loadedGroups}
+    ${renderComments(commentsHere)}
+  `
 }
 
-function renderMarginalia (annotations) {
-  if (annotations.length === 0) return ''
-  return annotations.map(function (annotation) {
-    var classes = 'annotation ' + annotation.level
-    return html`
-      <aside class="${classes}">
-        <p>${escape(annotation.message)}</p>
-      </aside>
-    `
+function renderComments (comments) {
+  var roots = comments
+    .filter(function (comment) {
+      return comment.replyTo.length === 0
+    })
+    .sort(function (a, b) {
+      return parseInt(a.timestamp) - parseInt(b.timestamp)
+    })
+  return roots
+    .map(function (comment) {
+      return renderComment(comment, [], comments)
+    })
+    .join('')
+}
+
+function renderComment (comment, parents, comments) {
+  var uuid = comment.uuid
+  var withParent = [uuid].concat(parents)
+  var replies = comments.filter(function (comment) {
+    var slice = comment.replyTo.slice(0, withParent.length)
+    return (
+      withParent.length === slice.length &&
+      slice.every(function (element, index) {
+        return element === withParent[index]
+      })
+    )
   })
+  return html`
+    <aside class=comment data-uuid=${uuid}>
+      <p>${escape(comment.text)}</p>
+      <p class=byline>
+        —${publisherLink(comment.publisher)},
+        ${escape(new Date(parseInt(comment.timestamp)).toDateString())}
+      </p>
+      ${replies.map(function (reply) {
+        return renderComment(reply, withParent, comments)
+      })}
+    </aside>
+  `
+}
+
+function renderAnnotations (annotations) {
+  return annotations
+    .map(function (annotation) {
+        var classes = 'annotation ' + annotation.level
+        return html`
+          <aside class="${classes}">
+            <p>${escape(annotation.message)}</p>
+          </aside>
+        `
+      })
+      .join('')
 }
 
 function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, resolutions, options) {
