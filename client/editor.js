@@ -139,13 +139,17 @@ function renderSaveForm () {
   publisher.id = 'publisher'
   publisher.type = 'text'
   publisher.required = true
-  credentials.appendChild(withLabel('Publisher', publisher))
+  publisher.autocomplete = 'username'
+  publisher.placeholder = 'Publisher Name'
+  credentials.appendChild(publisher)
 
   var password = document.createElement('input')
   password.id = 'password'
   password.type = 'password'
   password.required = true
-  credentials.appendChild(withLabel('Password', password))
+  password.autocomplete = 'current-password'
+  password.placeholder = 'Password'
+  credentials.appendChild(password)
 
   var publication = document.createElement('p')
   form.appendChild(publication)
@@ -153,12 +157,14 @@ function renderSaveForm () {
   var project = document.createElement('input')
   project.id = 'project'
   project.type = 'text'
-  publication.appendChild(withLabel('Project', project))
+  project.placeholder = 'Project Name'
+  publication.appendChild(project)
 
   var edition = document.createElement('input')
   edition.id = 'edition'
   edition.type = 'text'
-  publication.appendChild(withLabel('Edition', edition))
+  edition.placeholder = 'Edition'
+  publication.appendChild(edition)
 
   var button = document.createElement('button')
   button.type = 'submit'
@@ -235,13 +241,6 @@ function renderSaveForm () {
   }
 
   return form
-}
-
-function withLabel (prompt, input) {
-  var label = document.createElement('label')
-  label.appendChild(document.createTextNode(prompt))
-  label.appendChild(input)
-  return label
 }
 
 function renderAnnotationCounts () {
