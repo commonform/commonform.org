@@ -38,7 +38,8 @@ module.exports = function (configuration, request, response) {
     ${publishersList(data.publishers)}
     <section>
       <h2>For Publishers</h2>
-      <a href=/edit>Write a New Form</a>
+      <p><a href=/edit>Write a New Form</a></p>
+      <p><a href="mailto:kyle@kemitchell.com?subject=Common%20Form%20Publisher%20Account">Request a Publisher Account</a></p>
     </section>
   </article>
 </main>
@@ -51,7 +52,7 @@ function publishersList (publishers) {
   return html`
 <section>
   <h2>Browse by Publisher</h2>
-  <ul class=publishers>${publishers.map(publisherLI)}</ul>
+  <ul class=columnList>${publishers.map(publisherLI)}</ul>
 </section>`
 }
 
