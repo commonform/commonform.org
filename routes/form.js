@@ -75,6 +75,14 @@ module.exports = function (configuration, request, response) {
         docx(data.loaded.form, [], options).generate({type: 'nodebuffer'})
       )
       return
+    } else if (request.query.format === 'json') {
+      response.setHeader('Content-Type', 'application/json')
+      response.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${digest}.json"`
+      )
+      response.end(JSON.stringify(data.form))
+      return
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     var options = {
@@ -85,6 +93,10 @@ module.exports = function (configuration, request, response) {
       '/forms/' + encodeURIComponent(digest) +
       '?format=docx'
     )
+    var jsonHREF = (
+      '/forms/' + encodeURIComponent(digest) +
+      '?format=json'
+    )
     response.end(html`
     ${preamble()}
 <header>
@@ -94,6 +106,7 @@ module.exports = function (configuration, request, response) {
 <main>
   <header>
     <a href="${docxHREF}">Download .docx</a>
+    <a href="${jsonHREF}">Download .json</a>
     <a href=/edit?from=${digest}>Edit</a>
   </header>
   <header>
