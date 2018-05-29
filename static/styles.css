@@ -13,7 +13,7 @@ body > footer {
   margin-left: auto;
   margin-right: auto;
   background: white;
-  padding: 1rem;
+  padding: 2rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -351,4 +351,17 @@ del {
 
 .diff .text {
   padding-right: 0.5rem;
+}
+
+.publishers {
+  margin: 0;
+  padding: 0;
+}
+
+.publishers li {
+  list-style-type: none;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  width: 25%;
 }

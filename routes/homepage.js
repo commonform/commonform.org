@@ -47,7 +47,7 @@ function publishersList (publishers) {
   return html`
 <section>
   <h2>Browse by Publisher</h2>
-  <ul>${publishers.map(publisherLI)}</ul>
+  <ul class=publishers>${publishers.map(publisherLI)}</ul>
 </section>`
 }
 
