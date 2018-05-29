@@ -504,6 +504,7 @@ function renderComponent (component, path) {
 
   var fragment = document.createDocumentFragment()
   var p = document.createElement('p')
+  p.className = 'identification'
 
   var publisherLink = document.createElement('a')
   publisherLink.href = (

@@ -218,6 +218,10 @@ label input[type=checkbox] {
   padding: 0;
 }
 
+.component .identification {
+  padding: 1rem 0;
+}
+
 .child-button, .move-button {
   background: inherit;
   border: 1px dashed #eee;
