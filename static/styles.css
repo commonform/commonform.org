@@ -69,7 +69,7 @@ a:hover {
   margin-bottom: 1rem;
   margin-left: 2rem;
   margin-top: 1rem;
-  padding: 0 0.5rem 0.5rem 0.5rem;
+  padding: 0 0 0.5rem 0.5rem;
   position: relative;
 }
 
@@ -337,4 +337,12 @@ ins {
 
 del {
   color: rgb(200, 0, 0);
+}
+
+.diff .changed {
+  border-right: 2px solid orange;
+}
+
+.diff .text {
+  padding-right: 0.5rem;
 }

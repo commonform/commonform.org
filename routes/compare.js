@@ -61,7 +61,7 @@ function getResponse (configuration, request, response) {
         versus
         <a class=digest href=/forms/${to}>${to}</a>
       </header>
-      <article class=commonform>${render(comparison)}</article>
+      <article class="commonform diff">${render(comparison)}</article>
     </main>
     ${footer()}
     `)
@@ -89,11 +89,11 @@ function render (diff) {
     conspicuous.length === 1 &&
     conspicuous[0].hasOwnProperty('deleted')
   )
-
   var classNames = classnames({
     conspicuous: conspicuous.some(function (element) {
       return !element.hasOwnProperty('deleted')
-    })
+    }),
+    changed: isChanged(diff)
   })
 
   var content = wrapper(
@@ -111,7 +111,11 @@ function render (diff) {
 }
 
 function heading (heading) {
-  return `<p class=heading>${heading.map(word).join('')}</p>`
+  var classNames = classnames({
+    heading: true,
+    changed: heading.some(isChanged)
+  })
+  return `<p class="${classNames}">${heading.map(word).join('')}</p>`
 }
 
 function word (word) {
@@ -129,6 +133,11 @@ function series (data) {
 }
 
 function paragraph (data) {
+  var changed = isChanged(data) || data.content.some(isChanged)
+  var classNames = classnames({
+    text: true,
+    changed
+  })
   var content = data.content
     .reduce(function (output, child) {
       var wrapper
@@ -148,7 +157,11 @@ function paragraph (data) {
       }
     }, [])
     .join('')
-  return `<p class=text>${content}</p>`
+  return `<p class="${classNames}">${content}</p>`
+}
+
+function isChanged (argument) {
+  return argument.hasOwnProperty('inserted') || argument.hasOwnProperty('deleted')
 }
 
 function doNotWrap (argument) {
