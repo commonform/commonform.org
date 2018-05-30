@@ -182,20 +182,24 @@ function redirect (configuration, request, response) {
       '/publishers/' + encodeURIComponent(publisher) +
       '/projects/' + encodeURIComponent(project) +
       '/publications/' + edition
-    ),
-    json: true
-  }, function (error, response, data) {
+    )
+  }, function (error, publicationResponse, data) {
     if (error) {
       return internalError(configuration, request, response, error)
     }
-    if (response.statusCode !== 200) {
-      return notFound(configuration, request, response)
+    var statusCode = publicationResponse.statusCode
+    if (statusCode !== 200) {
+      return notFound(configuration, request, response, [
+        'No current publication found.',
+        'The publisher may have published only drafts so far.'
+      ])
     }
+    var body = JSON.parse(data)
     response.statusCode = 303
     var uri = (
       '/' + encodeURIComponent(publisher) +
       '/' + encodeURIComponent(project) +
-      '/' + encodeURIComponent(data.edition)
+      '/' + encodeURIComponent(body.edition)
     )
     response.setHeader('Location', uri)
     response.end()
