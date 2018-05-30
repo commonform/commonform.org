@@ -5,11 +5,11 @@ var methodNotAllowed = require('./method-not-allowed')
 var runParallel = require('run-parallel')
 var sanitize = require('../util/sanitize')
 
+var editionLink = require('./partials/edition-link')
 var footer = require('./partials/footer')
 var gravatar = require('./partials/gravatar')
 var html = require('./html')
 var preamble = require('./partials/preamble')
-var projectLink = require('./partials/project-link')
 
 module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
@@ -76,6 +76,17 @@ ${footer()}
   }
 
   function projectLI (project) {
-    return html`<li>${projectLink({publisher, project})}</li>`
+    var url = (
+      '/' + encodeURIComponent(publisher) +
+      '/' + encodeURIComponent(project)
+    )
+    return html`
+      <li>
+        ${escape(project)}:
+        <a href="${url}">editions</a>,
+        ${editionLink({publisher, project, edition: 'current'})},
+        ${editionLink({publisher, project, edition: 'latest'})},
+      </li>
+    `
   }
 }
