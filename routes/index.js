@@ -5,10 +5,6 @@ var send = require('send')
 var routes = module.exports = require('http-hash')()
 
 routes.set('/', require('./homepage'))
-routes.set('/favicon.ico', function (configuration, request, response) {
-  response.statusCode = 404
-  response.end()
-})
 routes.set('/edit', require('./edit'))
 routes.set('/comment', require('./comment'))
 routes.set('/compare/:from/:to', require('./compare'))
@@ -17,6 +13,7 @@ routes.set('/:publisher', require('./publisher'))
 routes.set('/:publisher/:project', require('./project'))
 routes.set('/:publisher/:project/:edition', require('./publication'))
 
+staticFile('favicon.ico')
 staticFile('normalize.css')
 staticFile('styles.css')
 staticFile('editor.bundle.js')
