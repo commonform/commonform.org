@@ -98,6 +98,7 @@ function computeState (done) {
 
 function render () {
   var article = document.createElement('article')
+  article.appendChild(renderOpenMenu())
   article.appendChild(renderOptions())
   article.appendChild(renderSaveForm())
   var summary = renderSummary()
@@ -108,6 +109,49 @@ function render () {
   section.appendChild(renderContents(0, [], state.form, state.tree))
   article.appendChild(section)
   return article
+}
+
+function renderOpenMenu () {
+  var form = document.createElement('form')
+  form.className = 'openFileForm'
+  form.onsubmit = function (event) {
+    event.preventDefault()
+    var file = document.getElementById('file').files[0]
+    var reader = new window.FileReader()
+    reader.onload = function (event) {
+      var result = event.target.result
+      var json
+      try {
+        json = JSON.parse(result)
+      } catch (error) {
+        window.alert(error.message)
+      }
+      if (json.hasOwnProperty('content')) {
+        update({action: 'load form', form: json})
+      } else if (json.hasOwnProperty('tree')) {
+        update({action: 'load form', form: json.tree})
+      } else {
+        window.alert('Not a Common Form project file.')
+      }
+    }
+    reader.readAsText(file, 'UTF-8')
+    document.getElementById('file').value = null
+  }
+
+  var fileInput = document.createElement('input')
+  fileInput.type = 'file'
+  fileInput.name = 'file'
+  fileInput.id = 'file'
+  fileInput.required = true
+  fileInput.accept = '.cform,.commonform,.json'
+  form.appendChild(fileInput)
+
+  var button = document.createElement('button')
+  button.appendChild(document.createTextNode('Load File'))
+  button.type = 'submit'
+  form.appendChild(button)
+
+  return form
 }
 
 function renderOptions () {
@@ -492,6 +536,10 @@ function update (message) {
       return samePath(element, path)
     })
     if (index) state.expanded.splice(index, 1)
+  } else if (action === 'load form') {
+    state.form = message.form
+    state.expanded = []
+    clearSelected()
   }
   if (!message.doNotComputeState) {
     fixSubstitutions()
