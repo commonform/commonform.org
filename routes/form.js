@@ -15,8 +15,6 @@ var html = require('./html')
 var preamble = require('./partials/preamble')
 var publicationLink = require('./partials/publication-link')
 
-// TODO: Comment UI
-
 module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
     return methodNotAllowed.apply(null, arguments)
