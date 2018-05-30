@@ -257,7 +257,7 @@ function renderSaveForm () {
           '/publications/' + encodeURIComponent(edition)
         )
         var body = {digest: state.tree.digest}
-        if (notes.value) body.notes = notes.value
+        if (notes) body.notes = notes.split(/(\r?\n){2}/)
         fetch(url, {
           method: 'POST',
           headers: {
