@@ -170,6 +170,16 @@ function renderSaveForm () {
   edition.placeholder = 'Edition'
   publication.appendChild(edition)
 
+  var subscribeLabel = document.createElement('label')
+  form.appendChild(subscribeLabel)
+
+  var subscribe = document.createElement('input')
+  subscribe.id = 'subscribe'
+  subscribe.value = 'yes'
+  subscribe.type = 'checkbox'
+  subscribeLabel.appendChild(subscribe)
+  subscribeLabel.appendChild(document.createTextNode('E-Mail Notifications'))
+
   var button = document.createElement('button')
   button.type = 'submit'
   button.appendChild(document.createTextNode('Save'))
@@ -182,8 +192,9 @@ function renderSaveForm () {
     var password = getValue('password')
     var project = getValue('project')
     var edition = getValue('edition')
+    var subscribe = getValue('subscribe') === 'yes'
     if (publisher && password && project && edition) {
-      saveForm(function () {
+      saveForm(subscribe, function () {
         var url = (
           'https://api.commonform.org' +
           '/publishers/' + encodeURIComponent(publisher) +
@@ -211,13 +222,13 @@ function renderSaveForm () {
           })
       })
     } else if (publisher && password) {
-      saveForm(function () {
+      saveForm(subscribe, function () {
         state.changed = false
         window.location = '/forms/' + state.tree.digest
       })
     }
 
-    function saveForm (callback) {
+    function saveForm (subscribe, callback) {
       fetch('https://api.commonform.org/forms', {
         method: 'POST',
         headers: {
@@ -229,14 +240,47 @@ function renderSaveForm () {
         .then(function (response) {
           var status = response.status
           if (status === 204 || status === 201) {
-            callback()
+            if (!subscribe) callback()
+            else {
+              var digest = response.headers.get('Location')
+                .replace('/forms/', '')
+              var url = (
+                'https://api.commonform.org' +
+                '/forms/' + digest +
+                '/subscribers/' + publisher
+              )
+              fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Authorization': authorization()
+                }
+              })
+                .then(function (response) {
+                  var status = response.status
+                  if (status === 204 || status === 201) {
+                    callback()
+                  } else {
+                    var error = new Error()
+                    error.statusCode = status
+                    callback(error)
+                  }
+                })
+            }
+          } else {
+            var error = new Error()
+            error.statusCode = status
+            callback(error)
           }
         })
     }
 
+    function getPublisher () {
+      return document.getElementById('publisher').value
+    }
+
     function authorization () {
       return 'Basic ' + btoa(
-        document.getElementById('publisher').value + ':' +
+        getPublisher() + ':' +
         document.getElementById('password').value
       )
     }

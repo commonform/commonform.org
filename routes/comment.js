@@ -8,7 +8,8 @@ module.exports = function (configuration, request, response) {
     return methodNotAllowed.apply(null, arguments)
   }
   var fields = [
-    'context', 'form', 'password', 'publisher', 'replyTo[]', 'text'
+    'context', 'form', 'password', 'publisher', 'replyTo[]', 'text',
+    'subscribe'
   ]
   var data = {replyTo: []}
   pump(
@@ -34,26 +35,45 @@ module.exports = function (configuration, request, response) {
         }
         configuration.log.info(body, 'body')
         configuration.log.info(data, 'data')
+        var host = configuration.api.replace(/^https:\/\//, '')
+        var auth = data.publisher + ':' + data.password
+        var uuid
         https.request({
           method: 'POST',
-          host: configuration.api.replace(/^https:\/\//, ''),
+          host,
           path: '/annotations',
           headers: {'Content-Type': 'application/json'},
-          auth: data.publisher + ':' + data.password
+          auth
         })
           .once('response', function (response) {
             var statusCode = response.statusCode
             if (statusCode === 204 || statusCode === 201) {
-              var uuid = response.headers.location.replace('/annotations/', '')
-              response.statusCode = 303
-              response.setHeader('Location', '/forms/' + data.form + '#' + uuid)
-              response.end()
+              uuid = response.headers.location.replace('/annotations/', '')
+              if (!data.subscribe) return redirect()
+              var path = `/annotations/${uuid}/subscribers/${data.publisher}`
+              https.request({
+                method: 'POST', host, path, auth
+              })
+                .once('response', function (response) {
+                  var statusCode = response.statusCode
+                  if (statusCode !== 204 && statusCode === 201) {
+                    configuration.log.error(
+                      {statusCode, path}
+                    )
+                  }
+                  redirect()
+                })
+                .end()
             } else {
-              configuration.log.error(response.statusCode, 'status code')
+              configuration.log.error({statusCode, path: '/annotations'})
             }
           })
           .end(JSON.stringify(body))
+        function redirect () {
+          response.statusCode = 303
+          response.setHeader('Location', '/forms/' + data.form + '#' + uuid)
+          response.end()
+        }
       })
   )
-  response.end()
 }

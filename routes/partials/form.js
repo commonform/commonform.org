@@ -141,6 +141,10 @@ function renderCommentForm (options) {
       <textarea name=text required></textarea>
       <input type=text name=publisher placeholder="Publisher Name" autocomplete=username required>
       <input type=password name=password placeholder="Password" autocomplete=password required>
+      <label>
+        <input type=checkbox name=subscribe>
+        E-Mail Notifications
+      </label>
       <button type=submit>Publish Comment</button>
     </form>
   `
