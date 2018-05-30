@@ -144,7 +144,9 @@ a:hover {
 .commonform .blank {
   background: inherit;
   border-bottom: 1px dashed black;
-  border: none;
+  border-top: none;
+  border-right: none;
+  border-left: none;
   display: inline-block;
   width: 10rem;
 }
