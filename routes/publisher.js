@@ -71,7 +71,7 @@ ${footer()}
   }
 
   function projectsList (projects) {
-    return html`<ul class=columnList>${projects.map(projectLI)}</ul>
+    return html`<ul class=twoColumnList>${projects.map(projectLI)}</ul>
     `
   }
 
