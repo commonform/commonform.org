@@ -260,16 +260,17 @@ function renderSaveForm () {
                   if (status === 204 || status === 201) {
                     callback()
                   } else {
-                    var error = new Error()
-                    error.statusCode = status
-                    callback(error)
+                    alert('Could not subscribe to notifications.')
+                    callback()
                   }
                 })
             }
           } else {
-            var error = new Error()
-            error.statusCode = status
-            callback(error)
+            if (status === 409) {
+              alert('Already published with that project name and edition.')
+            } else {
+              alert('Server Error')
+            }
           }
         })
     }
