@@ -170,6 +170,11 @@ function renderSaveForm () {
   edition.placeholder = 'Edition'
   publication.appendChild(edition)
 
+  var notes = document.createElement('textarea')
+  notes.placeholder = 'Release Notes'
+  notes.id = 'notes'
+  form.appendChild(notes)
+
   var subscribeLabel = document.createElement('label')
   form.appendChild(subscribeLabel)
 
@@ -180,10 +185,13 @@ function renderSaveForm () {
   subscribeLabel.appendChild(subscribe)
   subscribeLabel.appendChild(document.createTextNode('E-Mail Notifications'))
 
+  var buttonParagraph = document.createElement('p')
+  form.appendChild(buttonParagraph)
+
   var button = document.createElement('button')
   button.type = 'submit'
   button.appendChild(document.createTextNode('Save'))
-  form.appendChild(button)
+  buttonParagraph.appendChild(button)
 
   form.onsubmit = function (event) {
     event.preventDefault()
@@ -193,6 +201,7 @@ function renderSaveForm () {
     var project = getValue('project')
     var edition = getValue('edition')
     var subscribe = getValue('subscribe') === 'yes'
+    var notes = getValue('notes')
     if (publisher && password && project && edition) {
       saveForm(subscribe, function () {
         var url = (
@@ -201,13 +210,15 @@ function renderSaveForm () {
           '/projects/' + encodeURIComponent(project) +
           '/publications/' + encodeURIComponent(edition)
         )
+        var body = {digest: state.tree.digest}
+        if (notes.value) body.notes = notes.value
         fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': authorization()
           },
-          body: JSON.stringify({digest: state.tree.digest})
+          body: JSON.stringify(body)
         })
           .then(function (response) {
             var status = response.status
