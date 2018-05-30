@@ -329,7 +329,7 @@ label input[type=checkbox] {
   border-radius: 1rem;
   border: 1px solid #777;
   margin-bottom: 1rem;
-  padding: 0 1rem 1rem 1rem;
+  padding: 1rem;
 }
 
 .comment, .hint {
@@ -399,4 +399,14 @@ del {
 .editor .commonform {
   margin-left: 0;
   padding-left: 0;
+}
+
+.commentForm textarea {
+  display: block;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.commentForm button {
+  margin-top: 1rem;
 }

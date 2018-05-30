@@ -10,6 +10,7 @@ routes.set('/favicon.ico', function (configuration, request, response) {
   response.end()
 })
 routes.set('/edit', require('./edit'))
+routes.set('/comment', require('./comment'))
 routes.set('/compare/:from/:to', require('./compare'))
 routes.set('/forms/:digest', require('./form'))
 routes.set('/:publisher', require('./publisher'))
@@ -19,6 +20,7 @@ routes.set('/:publisher/:project/:edition', require('./publication'))
 staticFile('normalize.css')
 staticFile('styles.css')
 staticFile('editor.bundle.js')
+staticFile('comments.js')
 
 function staticFile (file) {
   var filePath = path.join(__dirname, '..', 'static', file)

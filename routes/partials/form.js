@@ -99,11 +99,54 @@ function renderForm (depth, path, form, loaded, tree, resolutions, options) {
   return html`
     ${renderAnnotations(annotationsHere)}
     ${loadedGroups}
-    ${renderComments(commentsHere)}
+    ${renderComments(commentsHere, options)}
   `
 }
 
-function renderComments (comments) {
+function renderCommentForm (options) {
+  var context = ''
+  if (options.context) {
+    context = html`
+      <input type=hidden name=context value=${options.context}>
+    `
+  } else {
+    context = html`
+      <p>
+        <label>
+          Comment on this form:
+          <select name=context>
+            <option value=${options.root}>in this context</option>
+            <option value=${options.form} selected>anywhere it appears</option>
+          </select>
+        </label>
+      </p>
+    `
+  }
+
+  var replyTos = ''
+  if (options.replyTo) {
+    replyTos = options.replyTo.map(function (uuid) {
+      return `<input type=hidden name="replyTo[]" value="${uuid}">`
+    })
+  }
+
+  return html`
+    <button class="commentButton yesscript">
+      ${options.replyTo ? 'Add a Reply' : 'Add a Comment'}
+    </button>
+    <form class="comment commentForm hidden" action=/comment method=post>
+      ${context}
+      ${replyTos}
+      <input type=hidden name=form value=${options.form}>
+      <textarea name=text required></textarea>
+      <input type=text name=publisher placeholder="Publisher Name" autocomplete=username required>
+      <input type=password name=password placeholder="Password" autocomplete=password required>
+      <button type=submit>Publish Comment</button>
+    </form>
+  `
+}
+
+function renderComments (comments, options) {
   var roots = comments
     .filter(function (comment) {
       return comment.replyTo.length === 0
@@ -113,12 +156,12 @@ function renderComments (comments) {
     })
   return roots
     .map(function (comment) {
-      return renderComment(comment, [], comments)
+      return renderComment(comment, [], comments, options)
     })
     .join('')
 }
 
-function renderComment (comment, parents, comments) {
+function renderComment (comment, parents, comments, options) {
   var uuid = comment.uuid
   var withParent = [uuid].concat(parents)
   var replies = comments.filter(function (comment) {
@@ -131,16 +174,25 @@ function renderComment (comment, parents, comments) {
     )
   })
   var children = replies.map(function (reply) {
-    return renderComment(reply, withParent, comments)
+    return renderComment(reply, withParent, comments, options)
   })
+  if (options.commentUI) {
+    var replyForm = renderCommentForm({
+      form: comment.form,
+      root: options.tree.digest,
+      context: comment.context,
+      replyTo: withParent
+    })
+  }
   return html`
-    <aside class=comment data-uuid=${uuid}>
+    <aside class=comment id=${uuid}>
       <p>${escape(comment.text)}</p>
       <p class=byline>
-        —${publisherLink(comment.publisher)},
+        &mdash;&nbsp;${publisherLink(comment.publisher)},
         ${escape(longDate(new Date(parseInt(comment.timestamp))))}
       </p>
       ${children}
+      ${options.commentUI && replyForm}
     </aside>
   `
 }
@@ -189,6 +241,14 @@ function renderSeries (depth, offset, path, formSeries, loadedSeries, tree, reso
           childTree,
           resolutions,
           options
+        ) +
+        (
+          options.commentUI
+            ? renderCommentForm({
+              root: options.tree.digest,
+              form: digest
+            })
+            : ''
         ) +
         '</section>'
       )

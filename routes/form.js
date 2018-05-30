@@ -87,6 +87,7 @@ module.exports = function (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     var options = {
       comments: data.comments,
+      commentUI: true,
       annotations: annotate(data.loaded.form)
     }
     var docxHREF = (
@@ -115,7 +116,7 @@ module.exports = function (configuration, request, response) {
   </header>
   ${form(data.form, data.loaded, options)}
 </main>
-${footer()}
+${footer('/comments.js')}
     `)
   })
 }
