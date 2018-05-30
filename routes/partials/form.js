@@ -3,6 +3,7 @@ var editionLink = require('./edition-link')
 var escape = require('../../util/escape')
 var group = require('commonform-group-series')
 var html = require('../html')
+var linkifyURLs = require('linkify-urls')
 var longDate = require('../../util/long-date')
 var merkleize = require('commonform-merkleize')
 var predicate = require('commonform-predicate')
@@ -192,7 +193,7 @@ function renderComment (comment, parents, comments, options) {
   }
   return html`
     <aside class=comment id=${uuid}>
-      <p>${escape(comment.text)}</p>
+      <p>${linkifyURLs(comment.text, {attributes: {target: '_blank'}})}</p>
       <p class=byline>
         &mdash;&nbsp;${publisherLink(comment.publisher)},
         ${escape(longDate(new Date(parseInt(comment.timestamp))))}
