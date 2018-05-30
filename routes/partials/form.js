@@ -16,10 +16,12 @@ module.exports = function (form, loaded, options) {
   if (!options.annotations) options.annotations = []
   if (!options.comments) options.comments = []
   var tree = options.tree = merkleize(loaded.form)
+  var digest = options.tree.digest
   return html`
     ${renderTableOfContents(form)}
     <article class=commonform>
       ${renderForm(0, [], form, loaded.form, tree, loaded.resolutions, options)}
+      ${options.commentUI && renderCommentForm({form: digest, root: digest})}
     </article>
     ${scriptTag(form, loaded, options)}
   `
