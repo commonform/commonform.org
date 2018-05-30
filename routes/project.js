@@ -102,13 +102,21 @@ module.exports = function (configuration, request, response) {
         '/' + encodeURIComponent(publication.edition)
       )
       return html`<li>
-        <a href="${href}">
-          ${escape(reviewersEditionSpell(publication.edition))}
-          (${escape(publication.edition)})
-        </a>
-        ${publication.timestamp && timestamp()}
-        ${index !== 0 && comparisonLink()}
+        <p>
+          <a href="${href}">
+            ${escape(reviewersEditionSpell(publication.edition))}
+            (${escape(publication.edition)})
+          </a>
+          ${publication.timestamp && timestamp()}
+          ${index !== 0 && comparisonLink()}
+        </p>
+        ${publication.notes && releaseNotes(publication.notes)}
       </li>`
+      function releaseNotes (notes) {
+        return notes.map(function (line) {
+          return html`<p class=releaseNotes>${escape(line)}</p>`
+        })
+      }
       function timestamp () {
         return ' — ' + longDate(new Date(publication.timestamp))
       }

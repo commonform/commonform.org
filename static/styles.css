@@ -412,3 +412,7 @@ textarea {
 .commentForm button {
   margin-top: 1rem;
 }
+
+.releaseNotes {
+  margin-left: 2rem;
+}
