@@ -161,17 +161,17 @@ function renderSaveForm () {
   var project = document.createElement('input')
   project.id = 'project'
   project.type = 'text'
-  project.placeholder = 'Project Name'
+  project.placeholder = 'Project Name (optional)'
   publication.appendChild(project)
 
   var edition = document.createElement('input')
   edition.id = 'edition'
   edition.type = 'text'
-  edition.placeholder = 'Edition'
+  edition.placeholder = 'Edition (optional)'
   publication.appendChild(edition)
 
   var notes = document.createElement('textarea')
-  notes.placeholder = 'Release Notes'
+  notes.placeholder = 'Release Notes (optional)'
   notes.id = 'notes'
   form.appendChild(notes)
 
