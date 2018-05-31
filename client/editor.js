@@ -300,8 +300,9 @@ function renderSaveForm () {
             else {
               var digest = response.headers.get('Location')
                 .replace('/forms/', '')
-              var url = formSubscriberAPIPath(
-                'api.commonform.org', digest, publisher
+              var url = (
+                'https://api.commonform.org' +
+                formSubscriberAPIPath(digest, publisher)
               )
               fetch(url, {
                 method: 'POST',
