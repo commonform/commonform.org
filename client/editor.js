@@ -58,7 +58,6 @@ function computeState (done) {
     state.analysis.components.map(function (entry) {
       var component = entry[0]
       return function (done) {
-        // TODO: Fetch latest upgrade.
         fetch(
           'https://' + component.repository +
           '/publishers/' + encodeURIComponent(component.publisher) +
