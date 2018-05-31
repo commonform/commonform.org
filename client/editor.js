@@ -186,6 +186,7 @@ function renderOptions () {
 function renderSaveForm () {
   var form = document.createElement('form')
   form.className = 'saveForm'
+  form.id = 'saveForm'
 
   var credentials = document.createElement('p')
   form.appendChild(credentials)
