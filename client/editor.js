@@ -2,6 +2,8 @@
 var analyze = require('commonform-analyze')
 var classnames = require('classnames')
 var fixStrings = require('commonform-fix-strings')
+var formAPIPath = require('../paths/api/form')
+var formSubscriberAPIPath = require('../paths/api/form-subscriber')
 var group = require('commonform-group-series')
 var keyarrayGet = require('keyarray-get')
 var loadComponents = require('commonform-load-components')
@@ -9,6 +11,7 @@ var merkleize = require('commonform-merkleize')
 var morph = require('nanomorph')
 var parse = require('commonform-markup-parse')
 var predicate = require('commonform-predicate')
+var publicationAPIPath = require('../paths/api/publication')
 var runParallel = require('run-parallel')
 var samePath = require('commonform-same-path')
 var substitute = require('commonform-substitute')
@@ -59,18 +62,19 @@ function computeState (done) {
       var component = entry[0]
       return function (done) {
         fetch(
-          'https://' + component.repository +
-          '/publishers/' + encodeURIComponent(component.publisher) +
-          '/projects/' + encodeURIComponent(component.project) +
-          '/publications/' + encodeURIComponent(component.edition)
+          publicationAPIPath(
+            component.repository,
+            component.publisher,
+            component.project,
+            component.edition
+          )
         )
           .then(function (response) {
             return response.json()
           })
           .then(function (publication) {
             return fetch(
-              'https://' + component.repository +
-              '/forms/' + publication.digest
+              formAPIPath(component.repository, publication.digest)
             )
           })
           .then(function (response) {
@@ -247,11 +251,8 @@ function renderSaveForm () {
     var notes = getValue('notes')
     if (publisher && password && project && edition) {
       saveForm(subscribe, function () {
-        var url = (
-          'https://api.commonform.org' +
-          '/publishers/' + encodeURIComponent(publisher) +
-          '/projects/' + encodeURIComponent(project) +
-          '/publications/' + encodeURIComponent(edition)
+        var url = publicationAPIPath(
+          'api.commonform.org', publisher, project, edition
         )
         var body = {digest: state.tree.digest}
         if (notes) body.notes = notes.split(/(\r?\n){2}/)
@@ -298,10 +299,8 @@ function renderSaveForm () {
             else {
               var digest = response.headers.get('Location')
                 .replace('/forms/', '')
-              var url = (
-                'https://api.commonform.org' +
-                '/forms/' + digest +
-                '/subscribers/' + publisher
+              var url = formSubscriberAPIPath(
+                'api.commonform.org', digest, publisher
               )
               fetch(url, {
                 method: 'POST',
@@ -1086,10 +1085,7 @@ computeState(function () {
 
 function fetchPublication (repository, publisher, project, edition, callback) {
   fetch(
-    'https://' + repository +
-    '/publishers/' + encodeURIComponent(publisher) +
-    '/projects/' + encodeURIComponent(project) +
-    '/publications/' + encodeURIComponent(edition)
+    publicationAPIPath(repository, publisher, project, edition)
   )
     .then(function (response) { return response.json() })
     .then(function (editions) { callback(null, editions) })
