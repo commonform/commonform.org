@@ -65,8 +65,8 @@ function computeState (done) {
       var component = entry[0]
       return function (done) {
         fetch(
+          'https://api.commonform.org' +
           publicationAPIPath(
-            component.repository,
             component.publisher,
             component.project,
             component.edition
@@ -77,7 +77,8 @@ function computeState (done) {
           })
           .then(function (publication) {
             return fetch(
-              formAPIPath(component.repository, publication.digest)
+              'https://api.commonform.org' +
+              formAPIPath(publication.digest)
             )
           })
           .then(function (response) {
@@ -254,8 +255,9 @@ function renderSaveForm () {
     var notes = getValue('notes')
     if (publisher && password && project && edition) {
       saveForm(subscribe, function () {
-        var url = publicationAPIPath(
-          'api.commonform.org', publisher, project, edition
+        var url = (
+          'https://api.commonform.org' +
+          publicationAPIPath(publisher, project, edition)
         )
         var body = {digest: state.tree.digest}
         if (notes) body.notes = notes.split(/(\r?\n){2}/)
@@ -1078,7 +1080,8 @@ computeState(function () {
 
 function fetchPublication (repository, publisher, project, edition, callback) {
   fetch(
-    publicationAPIPath(repository, publisher, project, edition)
+    'https://api.commonform.org' +
+    publicationAPIPath(publisher, project, edition)
   )
     .then(function (response) { return response.json() })
     .then(function (editions) { callback(null, editions) })
