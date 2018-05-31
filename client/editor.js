@@ -467,7 +467,18 @@ function update (message) {
       renderAndMorph()
       return
     }
-    var spliceArguments = [offset, length].concat(parsed)
+    let spliceArguments = [offset, length].concat(parsed)
+    contentArray.splice.apply(contentArray, spliceArguments)
+    if (!validate.form(clone, {allowComponents: true})) return
+    state.form = clone
+  } else if (action === 'delete content') {
+    state.changed = true
+    let path = message.path
+    let offset = message.offset
+    let length = message.length
+    let clone = JSON.parse(JSON.stringify(state.form))
+    let contentArray = keyarrayGet(clone, path).content
+    let spliceArguments = [offset, length]
     contentArray.splice.apply(contentArray, spliceArguments)
     if (!validate.form(clone, {allowComponents: true})) return
     state.form = clone
@@ -780,10 +791,13 @@ function renderParagraph (offset, path, paragraph, tree, options) {
     p.onblur = function () {
       var newMarkup = this.textContent.replace(/[^\x20-\x7E]|\t/g, '')
       if (newMarkup.trim().length === 0) {
-        this.textContent = originalMarkup
-        return
-      }
-      if (newMarkup !== originalMarkup) {
+        update({
+          action: 'delete content',
+          path: path,
+          offset: offset,
+          length: paragraph.content.length
+        })
+      } else if (newMarkup !== originalMarkup) {
         update({
           action: 'content',
           path: path,
