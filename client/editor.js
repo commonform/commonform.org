@@ -254,7 +254,8 @@ function renderSaveForm () {
     var subscribe = getValue('subscribe') === 'yes'
     var notes = getValue('notes')
     if (publisher && password && project && edition) {
-      saveForm(subscribe, function () {
+      saveForm(function (error, digest) {
+        if (error) return window.alert(error.message)
         var url = (
           'https://api.commonform.org' +
           publicationAPIPath(publisher, project, edition)
@@ -273,6 +274,13 @@ function renderSaveForm () {
             var status = response.status
             if (status === 204 || status === 201) {
               state.changed = false
+              if (!subscribe) return redirect()
+              subscribeToForm(digest, function (error) {
+                if (error) window.alert(error.message)
+                redirect()
+              })
+            }
+            function redirect () {
               window.location = publicationFrontEndPath(
                 publisher, project, edition
               )
@@ -280,13 +288,21 @@ function renderSaveForm () {
           })
       })
     } else if (publisher && password) {
-      saveForm(subscribe, function () {
+      saveForm(function (error, digest) {
+        if (error) return window.alert(error.message)
         state.changed = false
-        window.location = '/forms/' + state.tree.digest
+        if (!subscribe) return redirect()
+        subscribeToForm(digest, function (error) {
+          if (error) window.alert(error.message)
+          redirect()
+        })
+        function redirect () {
+          window.location = '/forms/' + state.tree.digest
+        }
       })
     }
 
-    function saveForm (subscribe, callback) {
+    function saveForm (callback) {
       fetch('https://api.commonform.org/forms', {
         method: 'POST',
         headers: {
@@ -298,36 +314,40 @@ function renderSaveForm () {
         .then(function (response) {
           var status = response.status
           if (status === 204 || status === 201) {
-            if (!subscribe) callback()
+            if (!subscribe) callback(new Error('Error saving form.'))
             else {
               var digest = response.headers.get('Location')
                 .replace('/forms/', '')
-              var url = (
-                'https://api.commonform.org' +
-                formSubscriberAPIPath(digest, publisher)
-              )
-              fetch(url, {
-                method: 'POST',
-                headers: {
-                  'Authorization': authorization()
-                }
-              })
-                .then(function (response) {
-                  var status = response.status
-                  if (status === 204 || status === 201) {
-                    callback()
-                  } else {
-                    alert('Could not subscribe to notifications.')
-                    callback()
-                  }
-                })
+              callback(null, digest)
             }
           } else {
             if (status === 409) {
-              alert('Already published with that project name and edition.')
+              callback(new Error('Already published with that project name and edition.'))
             } else {
-              alert('Server Error')
+              callback(new Error('Server Error'))
             }
+          }
+        })
+    }
+
+    function subscribeToForm (digest, callback) {
+      var url = (
+        'https://api.commonform.org' +
+        formSubscriberAPIPath(digest, publisher)
+      )
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': authorization()
+        }
+      })
+        .then(function (response) {
+          var status = response.status
+          if (status === 204 || status === 201) {
+            callback()
+          } else {
+            alert('Could not subscribe to notifications.')
+            callback()
           }
         })
     }
