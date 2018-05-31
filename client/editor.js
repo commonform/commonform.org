@@ -847,7 +847,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
     })
     section.className = classnames({
       component: isComponent,
-      conspicuous: child.form.conspicuous,
+      conspicuous: form && form.conspicuous,
       selected: selected,
       expanded: isExpanded
     })
