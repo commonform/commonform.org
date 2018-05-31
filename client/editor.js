@@ -14,8 +14,6 @@ var samePath = require('commonform-same-path')
 var substitute = require('commonform-substitute')
 var validate = require('commonform-validate')
 
-// TODO: File open.
-
 var WHITE_FLAG_CHARACTER = '⚐'
 var COMPONENT_CHARACTER = '⚙'
 var WARNING_CHARACTER = '⚠'
