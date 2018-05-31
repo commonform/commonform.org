@@ -20,8 +20,6 @@ var preamble = require('./partials/preamble')
 var projectLink = require('./partials/project-link')
 var publisherLink = require('./partials/publisher-link')
 
-// TODO: Show release notes.
-
 module.exports = function (configuration, request, response) {
   if (request.method !== 'GET') {
     return methodNotAllowed.apply(null, arguments)
