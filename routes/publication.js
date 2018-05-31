@@ -3,10 +3,13 @@ var docx = require('commonform-docx')
 var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
-var notFound = require('./not-found')
 var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
+var notFound = require('./not-found')
 var outlineNumbering = require('outline-numbering')
+var publicationAPIPath = require('../paths/api/publication')
+var publicationFrontEndPath = require('../paths/front-end/publication')
+var publicationsAPIPath = require('../paths/api/publications')
 var reviewersEditionCompare = require('reviewers-edition-compare')
 var reviewersEditionUpgrade = require('reviewers-edition-upgrade')
 var runAuto = require('run-auto')
@@ -30,15 +33,11 @@ module.exports = function (configuration, request, response) {
   }
   var publisher = sanitize(request.params.publisher)
   var project = sanitize(request.params.project)
+  var API = configuration.api
   runAuto({
     publication: function (done) {
       get.concat({
-        url: (
-          configuration.api +
-          '/publishers/' + encodeURIComponent(publisher) +
-          '/projects/' + encodeURIComponent(project) +
-          '/publications/' + encodeURIComponent(edition)
-        ),
+        url: API + publicationAPIPath(publisher, project, edition),
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -46,12 +45,7 @@ module.exports = function (configuration, request, response) {
     },
     project: function (done) {
       get.concat({
-        url: (
-          configuration.api +
-          '/publishers/' + encodeURIComponent(publisher) +
-          '/projects/' + encodeURIComponent(project) +
-          '/publications'
-        ),
+        url: API + publicationsAPIPath(publisher, project),
         json: true
       }, function (error, response, data) {
         done(error, data.sort(reviewersEditionCompare))
@@ -111,18 +105,11 @@ module.exports = function (configuration, request, response) {
       return
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
-    var docxHREF = (
-      '/' + encodeURIComponent(publisher) +
-      '/' + encodeURIComponent(project) +
-      '/' + encodeURIComponent(edition) +
-      '?format=docx'
+    var publicationHREF = publicationFrontEndPath(
+      publisher, project, edition
     )
-    var jsonHREF = (
-      '/' + encodeURIComponent(publisher) +
-      '/' + encodeURIComponent(project) +
-      '/' + encodeURIComponent(edition) +
-      '?format=json'
-    )
+    var docxHREF = publicationHREF + '?format=docx'
+    var jsonHREF = publicationHREF + '?format=json'
     response.end(html`
     ${preamble()}
 <header>
@@ -153,10 +140,8 @@ ${footer()}
       })
       if (upgrades.length !== 0) {
         var upgrade = upgrades[upgrades.length - 1]
-        var href = (
-          '/' + encodeURIComponent(publisher) +
-          '/' + encodeURIComponent(project) +
-          '/' + encodeURIComponent(upgrade)
+        var href = publicationFrontEndPath(
+          publisher, project, upgrade
         )
         return `<p class=warn>
           An
@@ -176,13 +161,9 @@ function redirect (configuration, request, response) {
   var publisher = sanitize(params.publisher)
   var project = sanitize(params.project)
   var edition = sanitize(params.edition)
+  var API = configuration.api
   get.concat({
-    url: (
-      configuration.api +
-      '/publishers/' + encodeURIComponent(publisher) +
-      '/projects/' + encodeURIComponent(project) +
-      '/publications/' + edition
-    )
+    url: API + publicationAPIPath(publisher, project, edition)
   }, function (error, publicationResponse, data) {
     if (error) {
       return internalError(configuration, request, response, error)
@@ -196,10 +177,8 @@ function redirect (configuration, request, response) {
     }
     var body = JSON.parse(data)
     response.statusCode = 303
-    var uri = (
-      '/' + encodeURIComponent(publisher) +
-      '/' + encodeURIComponent(project) +
-      '/' + encodeURIComponent(body.edition)
+    var uri = publicationFrontEndPath(
+      publisher, project, body.edition
     )
     response.setHeader('Location', uri)
     response.end()

@@ -1,6 +1,16 @@
-module.exports = function (repository, publisher, project, edition) {
+module.exports = function () {
+  var firstArgument = arguments[0]
+  var publisher, project, edition
+  if (typeof firstArgument === 'string') {
+    publisher = arguments[0]
+    project = arguments[1]
+    edition = arguments[2]
+  } else {
+    project = firstArgument.oject
+    publisher = firstArgument.publisher
+    edition = firstArgument.edition
+  }
   return (
-    'https://' + repository +
     '/publishers/' + encodeURIComponent(publisher) +
     '/projects/' + encodeURIComponent(project) +
     '/publications/' + encodeURIComponent(edition)

@@ -1,6 +1,7 @@
 var DOCX_CONTENT_TYPE = require('docx-content-type')
 var annotate = require('../util/annotate')
 var docx = require('commonform-docx')
+var formFrontEndPath = require('../paths/front-end/form')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
@@ -88,14 +89,9 @@ module.exports = function (configuration, request, response) {
       commentUI: true,
       annotations: annotate(data.loaded.form)
     }
-    var docxHREF = (
-      '/forms/' + encodeURIComponent(digest) +
-      '?format=docx'
-    )
-    var jsonHREF = (
-      '/forms/' + encodeURIComponent(digest) +
-      '?format=json'
-    )
+    var formHREF = formFrontEndPath(digest)
+    var docxHREF = formHREF + '?format=docx'
+    var jsonHREF = formHREF + '?format=json'
     response.end(html`
     ${preamble()}
 <header>

@@ -11,7 +11,10 @@ var merkleize = require('commonform-merkleize')
 var morph = require('nanomorph')
 var parse = require('commonform-markup-parse')
 var predicate = require('commonform-predicate')
+var projectFrontEndPath = require('../paths/front-end/project')
 var publicationAPIPath = require('../paths/api/publication')
+var publicationFrontEndPath = require('../paths/front-end/publication')
+var publisherFrontEndPath = require('../paths/front-end/publisher')
 var runParallel = require('run-parallel')
 var samePath = require('commonform-same-path')
 var substitute = require('commonform-substitute')
@@ -268,10 +271,8 @@ function renderSaveForm () {
             var status = response.status
             if (status === 204 || status === 201) {
               state.changed = false
-              window.location = (
-                '/' + encodeURIComponent(publisher) +
-                '/' + encodeURIComponent(project) +
-                '/' + encodeURIComponent(edition)
+              window.location = publicationFrontEndPath(
+                publisher, project, edition
               )
             }
           })
@@ -614,9 +615,7 @@ function renderComponent (component, path) {
   p.className = 'identification'
 
   var publisherLink = document.createElement('a')
-  publisherLink.href = (
-    '/' + encodeURIComponent(component.publisher)
-  )
+  publisherLink.href = publisherFrontEndPath(component.publisher)
   publisherLink.target = '_blank'
   publisherLink.appendChild(document.createTextNode(component.publisher))
   p.appendChild(publisherLink)
@@ -624,10 +623,7 @@ function renderComponent (component, path) {
   p.appendChild(document.createTextNode('/'))
 
   var projectLink = document.createElement('a')
-  projectLink.href = (
-    '/' + encodeURIComponent(component.publisher) +
-    '/' + encodeURIComponent(component.project)
-  )
+  projectLink.href = projectFrontEndPath(component.publisher)
   projectLink.target = '_blank'
   projectLink.appendChild(document.createTextNode(component.project))
   p.appendChild(projectLink)
@@ -635,11 +631,7 @@ function renderComponent (component, path) {
   p.appendChild(document.createTextNode('/'))
 
   var editionLink = document.createElement('a')
-  editionLink.href = (
-    '/' + encodeURIComponent(component.publisher) +
-    '/' + encodeURIComponent(component.project) +
-    '/' + encodeURIComponent(component.edition)
-  )
+  editionLink.href = publicationFrontEndPath(component)
   editionLink.target = '_blank'
   editionLink.appendChild(document.createTextNode(component.edition))
   p.appendChild(editionLink)

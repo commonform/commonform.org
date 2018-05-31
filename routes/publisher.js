@@ -2,6 +2,8 @@ var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
+var projectFrontEndPath = require('../paths/front-end/project')
+var publisherAPIPath = require('../paths/api/publisher')
 var runParallel = require('run-parallel')
 var sanitize = require('../util/sanitize')
 
@@ -16,9 +18,8 @@ module.exports = function (configuration, request, response) {
     return methodNotAllowed.apply(null, arguments)
   }
   var publisher = sanitize(request.params.publisher)
-  var publisherURL = (
-    configuration.api + '/publishers/' + encodeURIComponent(publisher)
-  )
+  var API = configuration.api
+  var publisherURL = API + publisherAPIPath(publisher)
   runParallel({
     publisher: function (done) {
       get.concat({
@@ -76,10 +77,7 @@ ${footer()}
   }
 
   function projectLI (project) {
-    var url = (
-      '/' + encodeURIComponent(publisher) +
-      '/' + encodeURIComponent(project)
-    )
+    var url = projectFrontEndPath(publisher, project)
     return html`
       <li>
         ${escape(project)}:
