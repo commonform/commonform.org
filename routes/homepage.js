@@ -38,8 +38,8 @@ module.exports = function (configuration, request, response) {
     ${publishersList(data.publishers)}
     <section>
       <h2>For Publishers</h2>
-      <p><a href=/edit>Write a New Form</a></p>
-      <p><a href="mailto:kyle@kemitchell.com?subject=Common%20Form%20Publisher%20Account">Request a Publisher Account</a></p>
+      <p><a class=button href=/edit>Write a New Form</a></p>
+      <p><a class=button href="mailto:kyle@kemitchell.com?subject=Common%20Form%20Publisher%20Account">Request a Publisher Account</a></p>
     </section>
   </article>
 </main>

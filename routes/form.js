@@ -104,9 +104,9 @@ module.exports = function (configuration, request, response) {
 <main>
   ${lockedHint(data.form)}
   <header>
-    <a href="${docxHREF}">Download .docx</a>
-    <a href="${jsonHREF}">Download .json</a>
-    <a href=/edit?from=${digest}>Edit</a>
+    <a class=button href="${docxHREF}">Download .docx</a>
+    <a class=button href="${jsonHREF}">Download .json</a>
+    <a class=button href=/edit?from=${digest}>Edit</a>
   </header>
   <header>
     ${publicationsSection(data.publications)}

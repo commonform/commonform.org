@@ -125,10 +125,10 @@ module.exports = function (configuration, request, response) {
   <article>
     ${editionWarnings(edition, data.project)}
     ${lockedHint(data.form)}
-    <a href="${docxHREF}">Download .docx</a>
-    <a href="${jsonHREF}">Download .json</a>
-    <a href=/edit?from=${data.publication.digest}>Edit</a>
-    <a href=/forms/${data.publication.digest}>Analyze</a>
+    <a class=button href="${docxHREF}">Download .docx</a>
+    <a class=button href="${jsonHREF}">Download .json</a>
+    <a class=button href=/edit?from=${data.publication.digest}>Edit</a>
+    <a class=button href=/forms/${data.publication.digest}>Analyze</a>
     ${form(data.form, data.loaded)}
   </article>
 </main>
