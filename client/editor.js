@@ -952,14 +952,19 @@ function renderSeries (depth, offset, path, series, tree, options) {
       componentButton.title = 'Replace with component.'
       componentButton.onclick = function () {
         var input = window.prompt(
-          'Enter a new publication ID.',
+          'Enter the URL of a publication.',
           isComponent
-            ? (child.publisher + '/' + child.project + '/' + child.edition)
-            : 'kemitchell/placeholder-component/1e'
+            ? (
+              'https://commonform.org' +
+              '/' + encodeURIComponent(child.publisher) +
+              '/' + encodeURIComponent(child.project) +
+              '/' + encodeURIComponent(child.edition)
+            )
+            : 'https://commonform.org/kemitchell/placeholder-component/1e'
         )
         if (input === null) return
-        var match = /^([^/]+)\/([^/]+)\/(.+)$/.exec(input)
-        if (!match) return alert('Invalid publication ID.')
+        var match = /^https:\/\/commonform\.org\/([^/]+)\/([^/]+)\/(.+)$/.exec(input)
+        if (!match) return alert('Invalid publication URL.')
         var publisher = match[1]
         var project = match[2]
         var edition = match[3]
