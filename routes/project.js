@@ -59,7 +59,7 @@ module.exports = function (configuration, request, response) {
       }, function (error, response, dependents) {
         if (error) return done(error)
         runParallel(dependents.map(function (dependent) {
-          var digest = dependent.parent
+          var digest = dependent.digest
           return function (done) {
             get.concat({
               url: API + publicationsAPIPath(digest),
