@@ -78,8 +78,16 @@ function containsHeading (form) {
 
 function renderForm (depth, path, form, loaded, tree, resolutions, options) {
   var offset = 0
-  var annotationsHere = options.annotations.filter(function (annotation) {
-    return samePath(annotation.path.slice(0, -2), path)
+  var annotationsHere = options.annotations
+    .filter(function (annotation) {
+      return samePath(annotation.path.slice(0, -2), path)
+    })
+  var uniqueAnnotationsHere = []
+  annotationsHere.forEach(function (annotation) {
+    var already = uniqueAnnotationsHere.some(function (otherAnnotation) {
+      return annotation.message === otherAnnotation.message
+    })
+    if (!already) uniqueAnnotationsHere.push(annotation)
   })
   var digest = tree.digest
   var commentsHere = options.comments.filter(function (comment) {
@@ -106,7 +114,7 @@ function renderForm (depth, path, form, loaded, tree, resolutions, options) {
     })
     .join('')
   return html`
-    ${renderAnnotations(annotationsHere)}
+    ${renderAnnotations(uniqueAnnotationsHere)}
     ${loadedGroups}
     ${renderComments(commentsHere, options)}
   `
