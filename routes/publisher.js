@@ -72,7 +72,7 @@ ${footer()}
   }
 
   function projectsList (projects) {
-    return html`<ul>${projects.map(projectLI)}</ul>
+    return html`<h2>Published Projects</h2><ul>${projects.map(projectLI)}</ul>
     `
   }
 
