@@ -50,18 +50,10 @@ function computeState (done) {
   var form = state.form
   fixStrings(form)
   state.tree = merkleize(form)
-  state.annotations = state.annotators
-    .reduce(function (annotations, annotator) {
-      return annotations.concat(annotator(form))
-    }, [])
-  state.analysis = analyze(form)
+  var formAnalysis = analyze(form)
   // Load each component in the form.
-  // Note that we do _not_ run `loadComponents` on the form as a whole.
-  // That would replace terms and references according to substitutions
-  // specified in the components objects.  We need to know what terms
-  // and headings need to be replaced to present UI.
   runParallel(
-    state.analysis.components.map(function (entry) {
+    formAnalysis.components.map(function (entry) {
       var component = entry[0]
       return function (done) {
         fetch(
@@ -76,7 +68,6 @@ function computeState (done) {
             return response.json()
           })
           .then(function (publication) {
-            console.log('%s is %j', 'publication', publication)
             return fetch(
               'https://api.commonform.org' +
               formAPIPath(publication.digest)
@@ -95,9 +86,22 @@ function computeState (done) {
       }
     }),
     function (error, components) {
-      if (error) state.components = false
-      else state.components = components
-      done()
+      if (error) {
+        state.components = false
+        return done()
+      }
+      state.components = components
+      var clone = JSON.parse(JSON.stringify(form))
+      loadComponents(clone, {}, function (error, loaded) {
+        if (error) return done()
+        state.loaded = loaded
+        state.annotations = state.annotators
+          .reduce(function (annotations, annotator) {
+            return annotations.concat(annotator(loaded))
+          }, [])
+        state.analysis = analyze(loaded)
+        done()
+      })
     }
   )
 }
