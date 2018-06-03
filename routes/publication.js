@@ -77,7 +77,9 @@ module.exports = function (configuration, request, response) {
         title: publication.project,
         edition: publication.edition,
         markFilled: true,
-        numbering: outlineNumbering
+        numbering: outlineNumbering,
+        indentMargins: true,
+        centerTitle: false
       }
       if (publication.signaturePages) {
         options.after = signaturePagesToOOXML(publication.signaturePages)

@@ -64,7 +64,9 @@ module.exports = function (configuration, request, response) {
       let options = {
         digest: digest,
         markFilled: true,
-        numbering: outlineNumbering
+        numbering: outlineNumbering,
+        indentMargins: true,
+        centerTitle: false
       }
       response.setHeader('Content-Type', DOCX_CONTENT_TYPE)
       response.setHeader(
