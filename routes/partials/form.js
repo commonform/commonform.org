@@ -84,10 +84,15 @@ function renderForm (depth, path, form, loaded, tree, resolutions, options) {
     })
   var uniqueAnnotationsHere = []
   annotationsHere.forEach(function (annotation) {
-    var already = uniqueAnnotationsHere.some(function (otherAnnotation) {
+    var already = uniqueAnnotationsHere.find(function (otherAnnotation) {
       return annotation.message === otherAnnotation.message
     })
-    if (!already) uniqueAnnotationsHere.push(annotation)
+    if (already) {
+      already.count++
+    } else {
+      annotation.count = 1
+      uniqueAnnotationsHere.push(annotation)
+    }
   })
   var digest = tree.digest
   var commentsHere = options.comments.filter(function (comment) {
@@ -222,9 +227,12 @@ function renderAnnotations (annotations) {
   return annotations
     .map(function (annotation) {
       var classes = 'annotation ' + annotation.level
+      var times = annotation.count !== 1
+        ? ` (×${annotation.count.toString()})`
+        : ''
       return html`
         <aside class="${classes}">
-          <p>${escape(annotation.message)}</p>
+          <p>${escape(annotation.message)}${times}</p>
         </aside>
       `
     })
