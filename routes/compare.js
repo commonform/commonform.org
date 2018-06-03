@@ -151,9 +151,9 @@ function paragraph (data) {
       } else if (predicate.definition(child)) {
         return output.concat(wrapper(definition(child.definition)))
       } else if (predicate.blank(child)) {
-        return output.concat(`<span class=blank></span>`)
+        return output.concat(wrapper(`<span class=blank></span>`))
       } else if (predicate.reference(child)) {
-        return output.concat(reference(child.reference))
+        return output.concat(wrapper(reference(child.reference)))
       }
     }, [])
     .join('')
