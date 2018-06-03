@@ -6,7 +6,6 @@ module.exports = function (form) {
     return html`
       <aside class=hint>
         <p>
-          <img class=icon src=/lock.svg>
           This form is <em>locked</em>.
           Links to this page will always show exactly the same terms.
         </p>
@@ -16,7 +15,6 @@ module.exports = function (form) {
     return html`
       <aside class=hint>
         <p>
-          <img class=icon src=/lock-open.svg>
           This form is <em>unlocked</em>.
           Components of this form may change over time,
           as their authors improve them.

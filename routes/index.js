@@ -18,8 +18,6 @@ staticFile('normalize.css')
 staticFile('styles.css')
 staticFile('editor.bundle.js')
 staticFile('comments.js')
-staticFile('lock.svg')
-staticFile('lock-open.svg')
 
 function staticFile (file) {
   var filePath = path.join(__dirname, '..', 'static', file)
