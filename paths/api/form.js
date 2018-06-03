@@ -1,3 +1,3 @@
-module.exports = function (repository, digest) {
+module.exports = function (digest) {
   return '/forms/' + encodeURIComponent(digest)
 }
