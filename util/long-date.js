@@ -1,7 +1,9 @@
 module.exports = function longDate (date) {
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleTimeString('en-US', {
     day: 'numeric',
     year: 'numeric',
-    month: 'long'
-  })
+    month: 'long',
+    timeZone: 'UTC',
+    hour12: true
+  }) + ' UTC'
 }
