@@ -19,7 +19,7 @@ module.exports = function (form) {
           Components of this form may change over time,
           as their authors improve them.
         </p>
-        <p>Component are marked with ⚙ below.</p>
+        <p>Components are marked with ⚙ below.</p>
       </aside>
     `
   }
