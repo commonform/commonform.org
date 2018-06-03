@@ -17,6 +17,7 @@ var sanitize = require('../util/sanitize')
 var signaturePagesToOOXML = require('ooxml-signature-pages')
 
 var footer = require('./partials/footer')
+var lockedHint = require('./partials/locked-hint')
 var form = require('./partials/form')
 var html = require('./html')
 var preamble = require('./partials/preamble')
@@ -124,6 +125,7 @@ module.exports = function (configuration, request, response) {
     <p>
       <a class=digest href=/forms/${data.publication.digest}>${data.publication.digest}</a>
     </p>
+    ${lockedHint(data.form)}
     <a href="${docxHREF}">Download .docx</a>
     <a href="${jsonHREF}">Download .json</a>
     <a href=/edit?from=${data.publication.digest}>Edit</a>

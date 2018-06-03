@@ -13,6 +13,7 @@ var sanitize = require('../util/sanitize')
 var footer = require('./partials/footer')
 var form = require('./partials/form')
 var html = require('./html')
+var lockedHint = require('./partials/locked-hint')
 var preamble = require('./partials/preamble')
 var publicationLink = require('./partials/publication-link')
 
@@ -99,6 +100,7 @@ module.exports = function (configuration, request, response) {
   <span class=digest>${digest}</span>
 </header>
 <main>
+  ${lockedHint(data.form)}
   <header>
     <a href="${docxHREF}">Download .docx</a>
     <a href="${jsonHREF}">Download .json</a>

@@ -416,3 +416,7 @@ textarea {
 .releaseNotes {
   margin-left: 2rem;
 }
+
+.icon {
+  width: 1.5ex;
+}

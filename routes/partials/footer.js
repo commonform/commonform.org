@@ -9,6 +9,11 @@ module.exports = function (/* scripts */) {
     <a href=https://typographyforlawyers.com/about.html target=_blank>Matthew Butterick</a>.
   </p>
   <p>
+    <a href=https://fontawesome.com>Font Awesome</a>
+    icons by Fonticons, Inc. under
+    <a href=https://fontawesome.com/license>permissive license</a>.
+  </p>
+  <p>
     Common Form is
     <a href=https://github.com/commonform target=_blank>open source software</a>.
   </p>
