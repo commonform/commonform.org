@@ -1,4 +1,5 @@
 var dependentsAPIPath = require('../paths/api/dependents')
+var descriptionAPIPath = require('../paths/api/description')
 var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
@@ -27,6 +28,15 @@ module.exports = function (configuration, request, response) {
   var project = sanitize(request.params.project)
   var API = configuration.api
   runAuto({
+    description: function (done) {
+      get.concat({
+        url: API + descriptionAPIPath(publisher, project),
+        json: true
+      }, function (error, response, description) {
+        if (error) return done(error)
+        done(null, description)
+      })
+    },
     publications: function (done) {
       get.concat({
         url: API + publicationsAPIPath(publisher, project),
@@ -79,6 +89,8 @@ module.exports = function (configuration, request, response) {
       })
     }
   }, function (error, data) {
+    data.publisher = publisher
+    data.project = project
     if (error) {
       return internalError(configuration, request, response, error)
     }
@@ -126,6 +138,9 @@ module.exports = function (configuration, request, response) {
 <main>
 <article>
   <section>
+    ${data.description && renderDescription(data.description)}
+  </section>
+  <section>
     <h2>Editions</h2>
     <ul class=editionsList>${editionsList}</ul>
   </section>
@@ -142,11 +157,37 @@ module.exports = function (configuration, request, response) {
     </p>
   </section>
   ${renderDependents(data.dependents)}
+  <section>
+    <h2>For the Publisher</h2>
+    ${renderDescriptionForm(data)}
+  </section>
 </article>
 </main>
 ${footer()}
     `)
   })
+}
+
+function renderDescription (description) {
+  if (!description) return ''
+  return html`<p>${escape(description)}</p>`
+}
+
+function renderDescriptionForm (data) {
+  var action = (
+    '/' + encodeURIComponent(data.publisher) +
+    '/' + encodeURIComponent(data.project) +
+    '/description'
+  )
+  return html`
+    <form method=POST action="${action}">
+      <input name=project type=hidden value="${escape(data.project)}">
+      <input name=publisher type=text readonly value="${escape(data.publisher)}">
+      <input name=password type=password required placeholder="Password">
+      <input name=description type=text required placeholder="Project Description">
+      <button type=submit>Set Project Description</button>
+    </form>
+  `
 }
 
 function renderDependents (dependents) {

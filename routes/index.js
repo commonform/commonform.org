@@ -11,6 +11,7 @@ routes.set('/compare/:from/:to', require('./compare'))
 routes.set('/forms/:digest', require('./form'))
 routes.set('/:publisher', require('./publisher'))
 routes.set('/:publisher/:project', require('./project'))
+routes.set('/:publisher/:project/description', require('./description'))
 routes.set('/:publisher/:project/:edition', require('./publication'))
 
 staticFile('favicon.ico')
