@@ -383,7 +383,7 @@ del {
   padding: 0;
 }
 
-.saveForm, .annotationOptions, .openFileForm {
+.saveForm, .annotationOptions, .openFileForm, .summary {
   border: 1px solid black;
   border-radius: 1rem;
   margin: 1rem 0;
