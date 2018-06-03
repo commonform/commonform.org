@@ -40,19 +40,22 @@ function renderContents (form) {
   if (!containsHeading(form)) return ''
   return html`<ol class=toc id=toc>${
     form.content.reduce(function (items, element) {
-      if (!element.hasOwnProperty('form')) return items
+      var headingHere = element.hasOwnProperty('heading')
+      var isChild = element.hasOwnProperty('form')
+      var componentOrForm = headingHere || isChild
+      if (!componentOrForm) return items
       var hasHeading = (
-        element.hasOwnProperty('heading') ||
-        containsHeading(element.form)
+        headingHere ||
+        (isChild && containsHeading(element.form))
       )
       if (!hasHeading) return items
       var li = '<li>'
-      if (element.hasOwnProperty('heading')) {
+      if (headingHere) {
         li += renderReference(element.heading)
       } else {
         li += '(No Heading)'
       }
-      li += renderContents(element.form)
+      if (isChild) li += renderContents(element.form)
       li += '</li>'
       return items.concat(li)
     }, [])}</ol>`
@@ -61,10 +64,13 @@ function renderContents (form) {
 function containsHeading (form) {
   return form.content.some(function (element) {
     return (
-      element.hasOwnProperty('form') &&
+      element.hasOwnProperty('heading') ||
       (
-        element.hasOwnProperty('heading') ||
-        containsHeading(element.form)
+        element.hasOwnProperty('form') &&
+        (
+          element.hasOwnProperty('heading') ||
+          containsHeading(element.form)
+        )
       )
     )
   })

@@ -76,6 +76,7 @@ function computeState (done) {
             return response.json()
           })
           .then(function (publication) {
+            console.log('%s is %j', 'publication', publication)
             return fetch(
               'https://api.commonform.org' +
               formAPIPath(publication.digest)
