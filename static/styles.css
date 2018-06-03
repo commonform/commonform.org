@@ -429,6 +429,7 @@ button, .button {
   color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
   display: inline-block;
+  margin: 0.5em 0;
   padding: 0.5em 1em;
   text-align: center;
   text-decoration: none;
@@ -447,4 +448,9 @@ input[name=description] {
   width: 100%;
   display: block;
   box-sizing: border-box;
+}
+
+input {
+  padding: 0.5em 1em;
+  margin: 0.5em 0;
 }
