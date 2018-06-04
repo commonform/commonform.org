@@ -210,9 +210,14 @@ function renderComment (comment, parents, comments, options) {
       replyTo: withParent
     })
   }
+  var content = comment.text
+    .split('\n\n')
+    .map(function (text) {
+      return `<p>${linkifyURLs(escape(text), {attributes: {target: '_blank'}})}</p>`
+    })
   return html`
     <aside class=comment id=${uuid}>
-      <p>${linkifyURLs(escape(comment.text), {attributes: {target: '_blank'}})}</p>
+      ${content}
       <p class=byline>
         &mdash;&nbsp;${publisherLink(comment.publisher)},
         ${escape(longDate(new Date(parseInt(comment.timestamp))))}
