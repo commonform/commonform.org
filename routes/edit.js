@@ -50,6 +50,7 @@ function getResponse (configuration, request, response) {
       <p>To edit forms, you must enable JavaScript.</p>
     </noscript>
   </main>
+  <script>window.domain = ${JSON.stringify(configuration.domain)}</script>
   <script>window.repository = ${JSON.stringify(configuration.repository)}</script>
   <script>window.form = ${JSON.stringify(data.form || DEFAULT_FORM)}</script>
   <script>window.publishers = ${JSON.stringify(data.publishers)}</script>

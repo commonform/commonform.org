@@ -36,6 +36,7 @@ var annotators = [
 
 var state = window.state = {
   repository: window.repository,
+  domain: window.domain,
   form: window.form,
   publishers: window.publishers,
   selected: false,
