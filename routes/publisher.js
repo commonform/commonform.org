@@ -3,7 +3,7 @@ var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
 var projectFrontEndPath = require('../paths/front-end/project')
-var publisherAPIPath = require('../paths/api/publisher')
+var publisherRepositoryPath = require('../paths/repository/publisher')
 var runParallel = require('run-parallel')
 var sanitize = require('../util/sanitize')
 
@@ -18,7 +18,7 @@ module.exports = function (configuration, request, response) {
     return methodNotAllowed.apply(null, arguments)
   }
   var publisher = sanitize(request.params.publisher)
-  var publisherURL = 'https://' + configuration.repository + publisherAPIPath(publisher)
+  var publisherURL = 'https://' + configuration.repository + publisherRepositoryPath(publisher)
   runParallel({
     publisher: function (done) {
       get.concat({

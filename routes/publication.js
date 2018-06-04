@@ -7,9 +7,9 @@ var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
 var notFound = require('./not-found')
 var outlineNumbering = require('outline-numbering')
-var publicationAPIPath = require('../paths/api/publication')
+var publicationRepositoryPath = require('../paths/repository/publication')
 var publicationFrontEndPath = require('../paths/front-end/publication')
-var publicationsAPIPath = require('../paths/api/publications')
+var publicationsRepositoryPath = require('../paths/repository/publications')
 var reviewersEditionCompare = require('reviewers-edition-compare')
 var reviewersEditionUpgrade = require('reviewers-edition-upgrade')
 var runAuto = require('run-auto')
@@ -37,7 +37,7 @@ module.exports = function (configuration, request, response) {
   runAuto({
     publication: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + publicationAPIPath(publisher, project, edition),
+        url: 'https://' + configuration.repository + publicationRepositoryPath(publisher, project, edition),
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -45,7 +45,7 @@ module.exports = function (configuration, request, response) {
     },
     project: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + publicationsAPIPath(publisher, project),
+        url: 'https://' + configuration.repository + publicationsRepositoryPath(publisher, project),
         json: true
       }, function (error, response, data) {
         done(error, data.sort(reviewersEditionCompare))
@@ -163,7 +163,7 @@ function redirect (configuration, request, response) {
   var project = sanitize(params.project)
   var edition = sanitize(params.edition)
   get.concat({
-    url: 'https://' + configuration.repository + publicationAPIPath(publisher, project, edition)
+    url: 'https://' + configuration.repository + publicationRepositoryPath(publisher, project, edition)
   }, function (error, publicationResponse, data) {
     if (error) {
       return internalError(configuration, request, response, error)

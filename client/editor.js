@@ -2,8 +2,8 @@
 var analyze = require('commonform-analyze')
 var classnames = require('classnames')
 var fixStrings = require('commonform-fix-strings')
-var formAPIPath = require('../paths/api/form')
-var formSubscriberAPIPath = require('../paths/api/form-subscriber')
+var formRepositoryPath = require('../paths/repository/form')
+var formSubscriberRepositoryPath = require('../paths/repository/form-subscriber')
 var group = require('commonform-group-series')
 var keyarrayGet = require('keyarray-get')
 var loadComponents = require('commonform-load-components')
@@ -12,7 +12,7 @@ var morph = require('nanomorph')
 var parse = require('commonform-markup-parse')
 var predicate = require('commonform-predicate')
 var projectFrontEndPath = require('../paths/front-end/project')
-var publicationAPIPath = require('../paths/api/publication')
+var publicationRepositoryPath = require('../paths/repository/publication')
 var publicationFrontEndPath = require('../paths/front-end/publication')
 var publisherFrontEndPath = require('../paths/front-end/publisher')
 var runParallel = require('run-parallel')
@@ -59,7 +59,7 @@ function computeState (done) {
       return function (done) {
         fetch(
           'https://' + state.repository +
-          publicationAPIPath(
+          publicationRepositoryPath(
             component.publisher,
             component.project,
             component.edition
@@ -71,7 +71,7 @@ function computeState (done) {
           .then(function (publication) {
             return fetch(
               'https://' + state.repository +
-              formAPIPath(publication.digest)
+              formRepositoryPath(publication.digest)
             )
           })
           .then(function (response) {
@@ -267,7 +267,7 @@ function renderSaveForm () {
         if (error) return window.alert(error.message)
         var url = (
           'https://' + state.repository +
-          publicationAPIPath(publisher, project, edition)
+          publicationRepositoryPath(publisher, project, edition)
         )
         var body = {digest: state.tree.digest}
         if (notes) body.notes = notes.split(/(\r?\n){2}/)
@@ -342,7 +342,7 @@ function renderSaveForm () {
     function subscribeToForm (digest, callback) {
       var url = (
         'https://' + state.repository +
-        formSubscriberAPIPath(digest, publisher)
+        formSubscriberRepositoryPath(digest, publisher)
       )
       fetch(url, {
         method: 'POST',
@@ -1130,7 +1130,7 @@ computeState(function () {
 function fetchPublication (repository, publisher, project, edition, callback) {
   fetch(
     'https://' + state.repository +
-    publicationAPIPath(publisher, project, edition)
+    publicationRepositoryPath(publisher, project, edition)
   )
     .then(function (response) { return response.json() })
     .then(function (editions) { callback(null, editions) })

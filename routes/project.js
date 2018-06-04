@@ -1,14 +1,14 @@
-var dependentsAPIPath = require('../paths/api/dependents')
-var descriptionAPIPath = require('../paths/api/description')
+var dependentsRepositoryPath = require('../paths/repository/dependents')
+var descriptionRepositoryPath = require('../paths/repository/description')
 var escape = require('../util/escape')
-var formPublicationsAPIPath = require('../paths/api/form-publications')
+var formPublicationsRepositoryPath = require('../paths/repository/form-publications')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var longDate = require('../util/long-date')
 var methodNotAllowed = require('./method-not-allowed')
-var publicationAPIPath = require('../paths/api/publication')
+var publicationRepositoryPath = require('../paths/repository/publication')
 var publicationFrontEndPath = require('../paths/front-end/publication')
-var publicationsAPIPath = require('../paths/api/publications')
+var publicationsRepositoryPath = require('../paths/repository/publications')
 var reviewersEditionCompare = require('reviewers-edition-compare')
 var reviewersEditionSpell = require('reviewers-edition-spell')
 var runAuto = require('run-auto')
@@ -30,7 +30,7 @@ module.exports = function (configuration, request, response) {
   runAuto({
     description: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + descriptionAPIPath(publisher, project),
+        url: 'https://' + configuration.repository + descriptionRepositoryPath(publisher, project),
         json: true
       }, function (error, response, description) {
         if (error) return done(error)
@@ -39,7 +39,7 @@ module.exports = function (configuration, request, response) {
     },
     publications: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + publicationsAPIPath(publisher, project),
+        url: 'https://' + configuration.repository + publicationsRepositoryPath(publisher, project),
         json: true
       }, function (error, response, publications) {
         if (error) return done(error)
@@ -49,7 +49,7 @@ module.exports = function (configuration, request, response) {
             .map(function (edition) {
               return function (done) {
                 get.concat({
-                  url: 'https://' + configuration.repository + publicationAPIPath(
+                  url: 'https://' + configuration.repository + publicationRepositoryPath(
                     publisher, project, edition
                   ),
                   json: true
@@ -64,7 +64,7 @@ module.exports = function (configuration, request, response) {
     },
     dependents: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + dependentsAPIPath(publisher, project),
+        url: 'https://' + configuration.repository + dependentsRepositoryPath(publisher, project),
         json: true
       }, function (error, response, dependents) {
         if (error) return done(error)
@@ -72,7 +72,7 @@ module.exports = function (configuration, request, response) {
           var digest = dependent.digest
           return function (done) {
             get.concat({
-              url: 'https://' + configuration.repository + formPublicationsAPIPath(digest),
+              url: 'https://' + configuration.repository + formPublicationsRepositoryPath(digest),
               json: true
             }, function (error, response, data) {
               done(error, data)

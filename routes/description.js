@@ -1,5 +1,5 @@
 var Busboy = require('busboy')
-var descriptionAPIPath = require('../paths/api/description')
+var descriptionRepositoryPath = require('../paths/repository/description')
 var https = require('https')
 var methodNotAllowed = require('./method-not-allowed')
 var projectFrontEndPath = require('../paths/front-end/project')
@@ -25,11 +25,11 @@ module.exports = function (configuration, request, response) {
         https.request({
           method: 'PUT',
           host,
-          path: descriptionAPIPath(data.publisher, data.project),
+          path: descriptionRepositoryPath(data.publisher, data.project),
           auth
         })
           .once('response', function (response) {
-            configuration.log.info(response, 'API: description')
+            configuration.log.info(response, 'Repository: description')
             // TODO: Notify user of errors setting description.
             redirect()
           })
