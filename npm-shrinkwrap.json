@@ -1551,9 +1551,9 @@
       }
     },
     "commonform-substitute": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/commonform-substitute/-/commonform-substitute-1.0.0.tgz",
-      "integrity": "sha512-fvxN7OifddrtNx6EKrqRBLvWJWlcDoQI3AlXeusfIgkftkFCASf2OCiyUxkP63upiEsduq98Q4IIfkTmHQXcpg=="
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/commonform-substitute/-/commonform-substitute-1.0.1.tgz",
+      "integrity": "sha512-WnEllc35H6HWiSp++XvZbh54uzf8dUcWAx8/Y7GS2D8Gn++yWUd1Cw6Q73zeV2ZYlnWOsIAcAgw32fMyHH3M3A=="
     },
     "commonform-validate": {
       "version": "1.0.0",
