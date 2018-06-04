@@ -170,7 +170,7 @@ ${footer()}
 
 function renderDescription (description) {
   if (!description) return ''
-  return html`<p>${linkifyURLs(escape(description))}</p>`
+  return html`<p>${linkifyURLs(escape(description), {attributes: {target: '_blank'}})}</p>`
 }
 
 function renderDescriptionForm (data) {
