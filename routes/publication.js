@@ -73,7 +73,7 @@ module.exports = function (configuration, request, response) {
     var publication = data.publication
     if (request.query.format === 'docx') {
       var options = {
-        title: publication.project,
+        title: publication.title || publication.project,
         edition: publication.edition,
         markFilled: true,
         numbering: outlineNumbering,
