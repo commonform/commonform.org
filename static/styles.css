@@ -460,3 +460,9 @@ input, textarea {
   padding: 0.5em 1em;
   margin: 0.5em 0;
 }
+
+.editor .commonform {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid black;
+}
