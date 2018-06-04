@@ -964,10 +964,8 @@ function renderSeries (depth, offset, path, series, tree, options) {
           'Enter the URL of a publication.',
           isComponent
             ? (
-              'https://commonform.org' +
-              '/' + encodeURIComponent(child.publisher) +
-              '/' + encodeURIComponent(child.project) +
-              '/' + encodeURIComponent(child.edition)
+              'https://' + state.repository +
+              publicationRepositoryPath(child.publisher, child.project, child.edition)
             )
             : 'https://commonform.org/kemitchell/placeholder-component/1e'
         )

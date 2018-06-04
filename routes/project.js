@@ -7,6 +7,7 @@ var internalError = require('./internal-error')
 var linkifyURLs = require('linkify-urls')
 var longDate = require('../util/long-date')
 var methodNotAllowed = require('./method-not-allowed')
+var projectFrontEndPath = require('../paths/front-end/project')
 var publicationFrontEndPath = require('../paths/front-end/publication')
 var publicationRepositoryPath = require('../paths/repository/publication')
 var publicationsRepositoryPath = require('../paths/repository/publications')
@@ -174,11 +175,7 @@ function renderDescription (description) {
 }
 
 function renderDescriptionForm (data) {
-  var action = (
-    '/' + encodeURIComponent(data.publisher) +
-    '/' + encodeURIComponent(data.project) +
-    '/description'
-  )
+  var action = projectFrontEndPath(data.publisher, data.project) + '/description'
   return html`
     <form method=POST action="${action}">
       <input name=project type=hidden value="${escape(data.project)}">
