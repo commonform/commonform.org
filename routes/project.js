@@ -1,6 +1,7 @@
 var dependentsAPIPath = require('../paths/api/dependents')
 var descriptionAPIPath = require('../paths/api/description')
 var escape = require('../util/escape')
+var formPublicationsAPIPath = require('../paths/api/form-publications')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var longDate = require('../util/long-date')
@@ -72,7 +73,7 @@ module.exports = function (configuration, request, response) {
           var digest = dependent.digest
           return function (done) {
             get.concat({
-              url: API + publicationsAPIPath(digest),
+              url: API + formPublicationsAPIPath(digest),
               json: true
             }, function (error, response, data) {
               done(error, data)
