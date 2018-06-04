@@ -146,7 +146,6 @@ module.exports = function (configuration, request, response) {
     <ul class=editionsList>${editionsList}</ul>
   </section>
   <section class=hint>
-    <h2>About Editions</h2>
     <p>
       Common Form publishers use the
       <a href=https://reviewersedition.org>Reviewers Edition</a>
