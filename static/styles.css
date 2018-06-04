@@ -141,6 +141,11 @@ a:hover {
   content: '☞ ';
 }
 
+.toc .component > .reference:before {
+  content: '⚙ ';
+  font-style: normal;
+}
+
 .commonform .blank {
   background: inherit;
   border-bottom: 1px dashed black;

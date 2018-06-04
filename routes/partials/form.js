@@ -21,7 +21,7 @@ module.exports = function (form, loaded, options) {
   var tree = options.tree = merkleize(loaded.form)
   var digest = options.tree.digest
   return html`
-    ${renderTableOfContents(loaded.form)}
+    ${renderTableOfContents(loaded.form, loaded.resolutions)}
     <article class=commonform>
       ${renderForm(0, [], form, loaded.form, tree, loaded.resolutions, options)}
       ${options.commentUI && renderCommentForm({form: digest, root: digest})}
@@ -30,18 +30,18 @@ module.exports = function (form, loaded, options) {
   `
 }
 
-function renderTableOfContents (form) {
+function renderTableOfContents (form, resolutions) {
   if (!containsHeading(form)) return ''
   return html`<header class=toc>
     <h2>Contents</h2>
-    ${renderContents(form)}
+    ${renderContents(form, resolutions, [])}
   </header>`
 }
 
-function renderContents (form) {
+function renderContents (form, resolutions, path) {
   if (!containsHeading(form)) return ''
   return html`<ol class=toc id=toc>${
-    form.content.reduce(function (items, element) {
+    form.content.reduce(function (items, element, index) {
       var headingHere = element.hasOwnProperty('heading')
       var isChild = element.hasOwnProperty('form')
       var componentOrForm = headingHere || isChild
@@ -51,13 +51,26 @@ function renderContents (form) {
         (isChild && containsHeading(element.form))
       )
       if (!hasHeading) return items
-      var li = '<li>'
+      var childPath = path.concat('content', index)
+      var isComponent = resolutions.some(function (resolution) {
+        return samePath(resolution.path, childPath)
+      })
+      var classes = classnames({
+        component: isComponent
+      })
+      var li = `<li class="${classes}">`
       if (headingHere) {
         li += renderReference(element.heading)
       } else {
         li += '(No Heading)'
       }
-      if (isChild) li += renderContents(element.form)
+      if (isChild) {
+        li += renderContents(
+          element.form,
+          resolutions,
+          childPath.concat('form')
+        )
+      }
       li += '</li>'
       return items.concat(li)
     }, [])}</ol>`
