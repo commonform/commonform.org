@@ -212,7 +212,7 @@ function renderComment (comment, parents, comments, options) {
   }
   return html`
     <aside class=comment id=${uuid}>
-      <p>${linkifyURLs(comment.text, {attributes: {target: '_blank'}})}</p>
+      <p>${linkifyURLs(escape(comment.text), {attributes: {target: '_blank'}})}</p>
       <p class=byline>
         &mdash;&nbsp;${publisherLink(comment.publisher)},
         ${escape(longDate(new Date(parseInt(comment.timestamp))))}
