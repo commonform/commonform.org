@@ -404,6 +404,7 @@ del {
 }
 
 textarea {
+  box-sizing: border-box;
   display: block;
   margin: 1rem 0;
   width: 100%;
@@ -450,7 +451,7 @@ input[name=description] {
   box-sizing: border-box;
 }
 
-input {
+input, textarea {
   padding: 0.5em 1em;
   margin: 0.5em 0;
 }
