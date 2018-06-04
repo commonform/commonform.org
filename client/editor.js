@@ -231,6 +231,12 @@ function renderSaveForm () {
   edition.placeholder = 'Edition (optional)'
   publication.appendChild(edition)
 
+  var title = document.createElement('input')
+  title.id = 'title'
+  title.type = 'text'
+  title.placeholder = 'Document Title (optional)'
+  form.appendChild(title)
+
   var notes = document.createElement('textarea')
   notes.placeholder = 'Release Notes (optional)'
   notes.id = 'notes'
@@ -263,6 +269,7 @@ function renderSaveForm () {
     var edition = getValue('edition')
     var subscribe = getValue('subscribe') === 'yes'
     var notes = getValue('notes')
+    var title = getValue('title')
     if (publisher && password && project && edition) {
       saveForm(function (error, digest) {
         if (error) return window.alert(error.message)
@@ -272,6 +279,7 @@ function renderSaveForm () {
         )
         var body = {digest: state.tree.digest}
         if (notes) body.notes = notes.split(/(\r?\n){2}/)
+        if (title) body.title = title.trim()
         fetch(url, {
           method: 'POST',
           headers: {
