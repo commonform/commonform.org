@@ -281,11 +281,11 @@ label input[type=checkbox] {
 
 .editor .selector {
   cursor: pointer;
-  left: 0;
+  left: -0.5rem;
   position: absolute;
   text-align: center;
   text-decoration: none;
-  top: 0.5rem;
+  top: 0;
 }
 
 .selector:before {
