@@ -11,6 +11,8 @@ var publicationLink = require('./publication-link')
 var publisherLink = require('./publisher-link')
 var samePath = require('commonform-same-path')
 
+// TODO: Figure out commenting on displayed components.
+
 module.exports = function (form, loaded, options) {
   options = options || {}
   if (!options.mappings) options.mappings = []
