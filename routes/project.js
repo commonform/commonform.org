@@ -4,6 +4,7 @@ var escape = require('../util/escape')
 var formPublicationsRepositoryPath = require('../paths/repository/form-publications')
 var get = require('simple-get')
 var internalError = require('./internal-error')
+var linkifyURLs = require('linkify-urls')
 var longDate = require('../util/long-date')
 var methodNotAllowed = require('./method-not-allowed')
 var publicationFrontEndPath = require('../paths/front-end/publication')
@@ -169,7 +170,7 @@ ${footer()}
 
 function renderDescription (description) {
   if (!description) return ''
-  return html`<p>${escape(description)}</p>`
+  return html`<p>${linkifyURLs(escape(description))}</p>`
 }
 
 function renderDescriptionForm (data) {
