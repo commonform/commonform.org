@@ -44,7 +44,12 @@ function getResponse (configuration, request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
-  <main id=editor class=editor></main>
+  <main id=editor class=editor>
+    <noscript>
+      <p>Your web browser has JavaScript disabled.</p>
+      <p>To edit forms, you must enable JavaScript.</p>
+    </noscript>
+  </main>
   <script>window.repository = ${JSON.stringify(configuration.repository)}</script>
   <script>window.form = ${JSON.stringify(data.form || DEFAULT_FORM)}</script>
   <script>window.publishers = ${JSON.stringify(data.publishers)}</script>
