@@ -138,6 +138,8 @@ function renderOpenMenu () {
       }
       if (json.hasOwnProperty('content')) {
         update({action: 'load form', form: json})
+      } else if (json.hasOwnProperty('form')) {
+        update({action: 'load form', form: json.form})
       } else if (json.hasOwnProperty('tree')) {
         update({action: 'load form', form: json.tree})
       } else {
