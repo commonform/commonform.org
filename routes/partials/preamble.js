@@ -9,7 +9,7 @@ module.exports = function (title) {
     <link href=/normalize.css rel=stylesheet>
     <link href=https://commonform.org/fonts.css rel=stylesheet>
     <link href=/styles.css rel=stylesheet>
-    <noscript><styles>.yesscript { display:none; }</script></noscript>
+    <noscript><style>.yesscript { display:none; }</style></noscript>
   </head>
   <body>`
 }
