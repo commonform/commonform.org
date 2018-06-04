@@ -27,11 +27,10 @@ module.exports = function (configuration, request, response) {
   }
   var publisher = sanitize(request.params.publisher)
   var project = sanitize(request.params.project)
-  var API = configuration.api
   runAuto({
     description: function (done) {
       get.concat({
-        url: API + descriptionAPIPath(publisher, project),
+        url: 'https://' + configuration.repository + descriptionAPIPath(publisher, project),
         json: true
       }, function (error, response, description) {
         if (error) return done(error)
@@ -40,7 +39,7 @@ module.exports = function (configuration, request, response) {
     },
     publications: function (done) {
       get.concat({
-        url: API + publicationsAPIPath(publisher, project),
+        url: 'https://' + configuration.repository + publicationsAPIPath(publisher, project),
         json: true
       }, function (error, response, publications) {
         if (error) return done(error)
@@ -50,7 +49,7 @@ module.exports = function (configuration, request, response) {
             .map(function (edition) {
               return function (done) {
                 get.concat({
-                  url: API + publicationAPIPath(
+                  url: 'https://' + configuration.repository + publicationAPIPath(
                     publisher, project, edition
                   ),
                   json: true
@@ -65,7 +64,7 @@ module.exports = function (configuration, request, response) {
     },
     dependents: function (done) {
       get.concat({
-        url: API + dependentsAPIPath(publisher, project),
+        url: 'https://' + configuration.repository + dependentsAPIPath(publisher, project),
         json: true
       }, function (error, response, dependents) {
         if (error) return done(error)
@@ -73,7 +72,7 @@ module.exports = function (configuration, request, response) {
           var digest = dependent.digest
           return function (done) {
             get.concat({
-              url: API + formPublicationsAPIPath(digest),
+              url: 'https://' + configuration.repository + formPublicationsAPIPath(digest),
               json: true
             }, function (error, response, data) {
               done(error, data)

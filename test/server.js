@@ -7,7 +7,7 @@ module.exports = function (test) {
   var configuration = {
     log: pino(fs.createWriteStream('test-server.log')),
     domain: 'commonform.org',
-    api: 'https://api.commonform.org'
+    repository: 'api.commonform.org'
   }
   http.createServer()
     .on('request', function (request, response) {

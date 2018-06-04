@@ -35,6 +35,7 @@ var annotators = [
 ]
 
 var state = window.state = {
+  repository: window.repository,
   form: window.form,
   publishers: window.publishers,
   selected: false,
@@ -57,7 +58,7 @@ function computeState (done) {
       var component = entry[0]
       return function (done) {
         fetch(
-          'https://api.commonform.org' +
+          'https://' + state.repository +
           publicationAPIPath(
             component.publisher,
             component.project,
@@ -69,7 +70,7 @@ function computeState (done) {
           })
           .then(function (publication) {
             return fetch(
-              'https://api.commonform.org' +
+              'https://' + state.repository +
               formAPIPath(publication.digest)
             )
           })
@@ -265,7 +266,7 @@ function renderSaveForm () {
       saveForm(function (error, digest) {
         if (error) return window.alert(error.message)
         var url = (
-          'https://api.commonform.org' +
+          'https://' + state.repository +
           publicationAPIPath(publisher, project, edition)
         )
         var body = {digest: state.tree.digest}
@@ -311,7 +312,7 @@ function renderSaveForm () {
     }
 
     function saveForm (callback) {
-      fetch('https://api.commonform.org/forms', {
+      fetch('https://' + state.repository + '/forms', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -340,7 +341,7 @@ function renderSaveForm () {
 
     function subscribeToForm (digest, callback) {
       var url = (
-        'https://api.commonform.org' +
+        'https://' + state.repository +
         formSubscriberAPIPath(digest, publisher)
       )
       fetch(url, {
@@ -554,7 +555,7 @@ function update (message) {
     let path = message.path
     let child = keyarrayGet(state.form, path)
     let component = message.component || {
-      repository: 'api.commonform.org',
+      repository: state.repository,
       publisher: 'kemitchell',
       project: 'placeholder-component',
       edition: '1e',
@@ -977,14 +978,14 @@ function renderSeries (depth, offset, path, series, tree, options) {
         var project = match[2]
         var edition = match[3]
         fetchPublication(
-          'api.commonform.org', publisher, project, edition,
+          state.repository, publisher, project, edition,
           function (error) {
             if (error) return alert('Could not find that publication.')
             update({
               action: 'replace with component',
               path: childPath,
               component: {
-                repository: 'api.commonform.org',
+                repository: state.repository,
                 publisher,
                 project,
                 edition,
@@ -1128,7 +1129,7 @@ computeState(function () {
 
 function fetchPublication (repository, publisher, project, edition, callback) {
   fetch(
-    'https://api.commonform.org' +
+    'https://' + state.repository +
     publicationAPIPath(publisher, project, edition)
   )
     .then(function (response) { return response.json() })

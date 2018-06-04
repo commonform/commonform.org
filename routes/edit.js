@@ -23,7 +23,7 @@ function getResponse (configuration, request, response) {
     form: function (done) {
       if (!digest) return done()
       get.concat({
-        url: configuration.api + '/forms/' + digest,
+        url: 'https://' + configuration.repository + '/forms/' + digest,
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -31,7 +31,7 @@ function getResponse (configuration, request, response) {
     },
     publishers: function (done) {
       get.concat({
-        url: configuration.api + '/publishers',
+        url: 'https://' + configuration.repository + '/publishers',
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -45,6 +45,7 @@ function getResponse (configuration, request, response) {
     response.end(html`
     ${preamble()}
   <main id=editor class=editor></main>
+  <script>window.repository = ${JSON.stringify(configuration.repository)}</script>
   <script>window.form = ${JSON.stringify(data.form || DEFAULT_FORM)}</script>
   <script>window.publishers = ${JSON.stringify(data.publishers)}</script>
   ${footer('/editor.bundle.js')}

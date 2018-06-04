@@ -35,7 +35,7 @@ module.exports = function (configuration, request, response) {
         }
         configuration.log.info(body, 'body')
         configuration.log.info(data, 'data')
-        var host = configuration.api.replace(/^https:\/\//, '')
+        var host = configuration.repository
         var auth = data.publisher + ':' + data.password
         var uuid
         https.request({

@@ -27,7 +27,7 @@ function getResponse (configuration, request, response) {
   runAuto({
     from: function (done) {
       get.concat({
-        url: configuration.api + '/forms/' + from,
+        url: 'https://' + configuration.repository + '/forms/' + from,
         json: true
       }, function (error, response, form) {
         if (error) return done(error)
@@ -38,7 +38,7 @@ function getResponse (configuration, request, response) {
     },
     to: function (done) {
       get.concat({
-        url: configuration.api + '/forms/' + to,
+        url: 'https://' + configuration.repository + '/forms/' + to,
         json: true
       }, function (error, response, form) {
         if (error) return done(error)

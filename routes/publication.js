@@ -34,11 +34,10 @@ module.exports = function (configuration, request, response) {
   }
   var publisher = sanitize(request.params.publisher)
   var project = sanitize(request.params.project)
-  var API = configuration.api
   runAuto({
     publication: function (done) {
       get.concat({
-        url: API + publicationAPIPath(publisher, project, edition),
+        url: 'https://' + configuration.repository + publicationAPIPath(publisher, project, edition),
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -46,7 +45,7 @@ module.exports = function (configuration, request, response) {
     },
     project: function (done) {
       get.concat({
-        url: API + publicationsAPIPath(publisher, project),
+        url: 'https://' + configuration.repository + publicationsAPIPath(publisher, project),
         json: true
       }, function (error, response, data) {
         done(error, data.sort(reviewersEditionCompare))
@@ -54,7 +53,7 @@ module.exports = function (configuration, request, response) {
     },
     form: ['publication', function (data, done) {
       get.concat({
-        url: configuration.api + '/forms/' + data.publication.digest,
+        url: 'https://' + configuration.repository + '/forms/' + data.publication.digest,
         json: true
       }, function (error, response, form) {
         done(error, form)
@@ -163,9 +162,8 @@ function redirect (configuration, request, response) {
   var publisher = sanitize(params.publisher)
   var project = sanitize(params.project)
   var edition = sanitize(params.edition)
-  var API = configuration.api
   get.concat({
-    url: API + publicationAPIPath(publisher, project, edition)
+    url: 'https://' + configuration.repository + publicationAPIPath(publisher, project, edition)
   }, function (error, publicationResponse, data) {
     if (error) {
       return internalError(configuration, request, response, error)

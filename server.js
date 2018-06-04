@@ -9,7 +9,7 @@ var configuration = {
   port: process.env.PORT ? parseInt(process.env.PORT) : 8080,
   log: log,
   domain: process.env.DOMAIN || 'commonform.org',
-  api: process.env.API || 'https://api.commonform.org'
+  repository: process.env.REPOSITORY || 'api.commonform.org'
 }
 
 var server = http.createServer(function (request, response) {

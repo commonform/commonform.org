@@ -18,8 +18,7 @@ module.exports = function (configuration, request, response) {
     return methodNotAllowed.apply(null, arguments)
   }
   var publisher = sanitize(request.params.publisher)
-  var API = configuration.api
-  var publisherURL = API + publisherAPIPath(publisher)
+  var publisherURL = 'https://' + configuration.repository + publisherAPIPath(publisher)
   runParallel({
     publisher: function (done) {
       get.concat({

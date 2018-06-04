@@ -20,7 +20,7 @@ module.exports = function (configuration, request, response) {
         }
       })
       .once('finish', function () {
-        var host = configuration.api.replace(/^https:\/\//, '')
+        var host = configuration.repository
         var auth = data.publisher + ':' + data.password
         https.request({
           method: 'PUT',

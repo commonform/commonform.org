@@ -25,7 +25,7 @@ module.exports = function (configuration, request, response) {
   runAuto({
     form: function (done) {
       get.concat({
-        url: configuration.api + '/forms/' + digest,
+        url: 'https://' + configuration.repository + '/forms/' + digest,
         json: true
       }, function (error, response, form) {
         done(error, form)
@@ -39,7 +39,7 @@ module.exports = function (configuration, request, response) {
     }],
     publications: function (done) {
       get.concat({
-        url: configuration.api + '/forms/' + digest + '/publications',
+        url: 'https://' + configuration.repository + '/forms/' + digest + '/publications',
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -48,7 +48,7 @@ module.exports = function (configuration, request, response) {
     comments: function (done) {
       get.concat({
         url: (
-          configuration.api +
+          'https://' + configuration.repository +
           '/annotations?context=' + digest
         ),
         json: true

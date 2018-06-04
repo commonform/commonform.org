@@ -15,7 +15,7 @@ module.exports = function (configuration, request, response) {
   runParallel({
     publishers: function (done) {
       get.concat({
-        url: configuration.api + '/publishers',
+        url: 'https://' + configuration.repository + '/publishers',
         json: true
       }, function (error, response, json) {
         if (error) return done(error)
