@@ -1556,9 +1556,9 @@
       "integrity": "sha512-WnEllc35H6HWiSp++XvZbh54uzf8dUcWAx8/Y7GS2D8Gn++yWUd1Cw6Q73zeV2ZYlnWOsIAcAgw32fMyHH3M3A=="
     },
     "commonform-validate": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/commonform-validate/-/commonform-validate-1.0.0.tgz",
-      "integrity": "sha512-VIc+YI59OWtxdYSgA7t75gKrxaGDn3Tl+AMcOtc2DeBaE4wLxVIoO/r38kLAVd07zBEeS5F6na12tlTjhUVypg==",
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/commonform-validate/-/commonform-validate-1.0.1.tgz",
+      "integrity": "sha512-d8z0Mk9vspmlIGohf+TliZj5jd89m8XD7nYGKioym/7YTIcmDwU3rRDdzxVD6jPVFUEdrrYE1DXD735zV/LUEA==",
       "requires": {
         "contiguous": "1.0.1",
         "is-array": "1.0.1",

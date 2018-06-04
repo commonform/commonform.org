@@ -41,7 +41,7 @@
     "commonform-mscd": "^0.1.3",
     "commonform-same-path": "^1.0.0",
     "commonform-substitute": "^1.0.1",
-    "commonform-validate": "^1.0.0",
+    "commonform-validate": "^1.0.1",
     "commonform-wordy": "^1.0.0",
     "concat-stream": "^1.6.2",
     "docx-content-type": "^1.0.0",
