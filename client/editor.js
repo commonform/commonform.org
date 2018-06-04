@@ -576,6 +576,7 @@ function update (message) {
     })
     if (index) state.expanded.splice(index, 1)
   } else if (action === 'load form') {
+    state.changed = true
     state.form = message.form
     state.expanded = []
     clearSelected()
