@@ -565,6 +565,15 @@ function update (message) {
     if (child.heading) component.heading = child.heading
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1, component)
+  } else if (action === 'replace with form') {
+    state.changed = true
+    let path = message.path
+    let currentChild = keyarrayGet(state.form, path)
+    let form = message.form
+    let newChild = {form}
+    if (currentChild.heading) newChild.heading = currentChild.heading
+    let parent = parentOfPath(path)
+    parent.content.splice(path[path.length - 1], 1, newChild)
   } else if (action === 'expand component') {
     let path = message.path
     var already = state.expanded.some(function (element) {
@@ -962,37 +971,63 @@ function renderSeries (depth, offset, path, series, tree, options) {
       componentButton.title = 'Replace with component.'
       componentButton.onclick = function () {
         var input = window.prompt(
-          'Enter the URL of a publication.',
+          'Enter the URL of a publication or form.',
           isComponent
             ? (
               'https://' + state.repository +
               publicationRepositoryPath(child.publisher, child.project, child.edition)
             )
-            : 'https://commonform.org/kemitchell/placeholder-component/1e'
+            : ''
         )
         if (input === null) return
-        var match = /^https:\/\/commonform\.org\/([^/]+)\/([^/]+)\/(.+)$/.exec(input)
-        if (!match) return alert('Invalid publication URL.')
-        var publisher = match[1]
-        var project = match[2]
-        var edition = match[3]
-        fetchPublication(
-          state.repository, publisher, project, edition,
-          function (error) {
-            if (error) return alert('Could not find that publication.')
-            update({
-              action: 'replace with component',
-              path: childPath,
-              component: {
-                repository: state.repository,
-                publisher,
-                project,
-                edition,
-                substitutions: {terms: {}, headings: {}}
-              }
-            })
-          }
+        var componentRE = new RegExp(
+          '^' +
+          'https:\\/\\/' +
+          state.domain +
+          '\\/([^/]+)\\/([^/]+)\\/(.+)' +
+          '$'
         )
+        var componentMatch = componentRE.exec(input)
+        if (componentMatch) {
+          var publisher = componentMatch[1]
+          var project = componentMatch[2]
+          var edition = componentMatch[3]
+          return fetchPublication(
+            state.repository, publisher, project, edition,
+            function (error) {
+              if (error) return alert('Could not find that publication.')
+              update({
+                action: 'replace with component',
+                path: childPath,
+                component: {
+                  repository: state.repository,
+                  publisher,
+                  project,
+                  edition,
+                  substitutions: {terms: {}, headings: {}}
+                }
+              })
+            }
+          )
+        }
+        var formRE = new RegExp(
+          '^' +
+          'https:\\/\\/' +
+          state.domain +
+          '\\/forms\\/([a-f0-9]{64})' +
+          '$'
+        )
+        var formMatch = formRE.exec(input)
+        if (!formMatch) return alert('Invalid URL')
+        var digest = formMatch[1]
+        return fetchForm(state.repository, digest, function (error, form) {
+          if (error) return alert('Could not find that form.')
+          update({
+            action: 'replace with form',
+            path: childPath,
+            form: form
+          })
+        })
       }
       section.appendChild(componentButton)
     }
@@ -1133,6 +1168,13 @@ function fetchPublication (repository, publisher, project, edition, callback) {
   )
     .then(function (response) { return response.json() })
     .then(function (editions) { callback(null, editions) })
+    .catch(callback)
+}
+
+function fetchForm (repository, digest, callback) {
+  fetch('https://' + state.repository + formRepositoryPath(digest))
+    .then(function (response) { return response.json() })
+    .then(function (form) { callback(null, form) })
     .catch(callback)
 }
 
