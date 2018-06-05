@@ -90,7 +90,8 @@ module.exports = function (configuration, request, response) {
     var options = {
       comments: data.comments,
       commentUI: true,
-      annotations: annotate(data.loaded.form)
+      annotations: annotate(data.loaded.form),
+      childLinks: true
     }
     var formHREF = formFrontEndPath(digest)
     var docxHREF = formHREF + '?format=docx'
