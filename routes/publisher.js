@@ -1,7 +1,7 @@
 var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
-var linkifyURLs = require('linkify-urls')
+var linkify = require('../util/linkify')
 var methodNotAllowed = require('./method-not-allowed')
 var projectFrontEndPath = require('../paths/front-end/project')
 var publisherRepositoryPath = require('../paths/repository/publisher')
@@ -68,7 +68,7 @@ ${footer()}
 
   function about (publisher) {
     if (!publisher.about) return ''
-    return html`<p>${linkifyURLs(escape(publisher.about), {attributions: {target: '_blank'}})}</p>`
+    return html`<p>${linkify(escape(publisher.about))}</p>`
   }
 
   function projectsList (projects) {
