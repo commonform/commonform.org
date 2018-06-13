@@ -257,6 +257,8 @@ label input[type=checkbox] {
   color: transparent;
   cursor: pointer;
   display: block;
+  margin: 0;
+  padding: 0;
   text-align: left;
   width: 100%;
 }
