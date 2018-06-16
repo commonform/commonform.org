@@ -149,11 +149,12 @@ a:hover {
 .commonform .blank {
   background: inherit;
   border-bottom: 1px dashed black;
-  border-top: none;
-  border-right: none;
   border-left: none;
+  border-right: none;
+  border-top: none;
+  box-sizing: border-box;
   display: inline-block;
-  width: 10rem;
+  width: 100%;
 }
 
 .commonform .child-link {
