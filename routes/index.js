@@ -18,6 +18,7 @@ staticFile('favicon.ico')
 staticFile('normalize.css')
 staticFile('styles.css')
 staticFile('editor.bundle.js')
+staticFile('download.bundle.js')
 staticFile('comments.js')
 
 function staticFile (file) {

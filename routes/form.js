@@ -105,7 +105,7 @@ module.exports = function (configuration, request, response) {
 <main>
   ${lockedHint(data.form)}
   <header>
-    <a class=button href="${docxHREF}">Download .docx</a>
+    <a class="button docx" href="${docxHREF}">Download .docx</a>
     <a class=button href="${jsonHREF}">Download .json</a>
     <a class=button href=/edit?from=${digest}>Edit</a>
   </header>
@@ -115,7 +115,8 @@ module.exports = function (configuration, request, response) {
   </header>
   ${form(data.form, data.loaded, options)}
 </main>
-${footer('/comments.js')}
+<script>window.digest = ${JSON.stringify(digest)}</script>
+${footer('/comments.js', '/download.bundle.js')}
     `)
   })
 }
