@@ -10,6 +10,7 @@ var outlineNumbering = require('outline-numbering')
 var publicationFrontEndPath = require('../paths/front-end/publication')
 var publicationRepositoryPath = require('../paths/repository/publication')
 var publicationsRepositoryPath = require('../paths/repository/publications')
+var querystring = require('querystring')
 var reviewersEditionCompare = require('reviewers-edition-compare')
 var reviewersEditionUpgrade = require('reviewers-edition-upgrade')
 var runAuto = require('run-auto')
@@ -113,6 +114,9 @@ module.exports = function (configuration, request, response) {
     )
     var docxHREF = publicationHREF + '?format=docx'
     var jsonHREF = publicationHREF + '?format=json'
+    var editHREF = '/edit?' + querystring.stringify({
+      publisher, project, edition
+    })
     response.end(html`
     ${preamble()}
 <header>
@@ -127,7 +131,7 @@ module.exports = function (configuration, request, response) {
     ${lockedHint(data.form)}
     <a class="button docx" href="${docxHREF}">Download .docx</a>
     <a class=button href="${jsonHREF}">Download .json</a>
-    <a class=button href=/edit?from=${data.publication.digest}>Edit</a>
+    <a class=button href="${editHREF}">Edit</a>
     <a class=button href=/forms/${data.publication.digest}>Analyze</a>
     ${form(data.form, data.loaded, formOptions)}
   </article>

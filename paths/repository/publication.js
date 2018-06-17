@@ -6,7 +6,7 @@ module.exports = function () {
     project = arguments[1]
     edition = arguments[2]
   } else {
-    project = firstArgument.oject
+    project = firstArgument.project
     publisher = firstArgument.publisher
     edition = firstArgument.edition
   }

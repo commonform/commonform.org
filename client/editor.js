@@ -35,6 +35,10 @@ var annotators = [
   {name: 'MSCD', annotator: require('commonform-mscd')}
 ]
 
+if (window.publication.signaturePages) {
+  normalizeSignaturePages(window.publication.signaturePages)
+}
+
 var state = window.state = {
   repository: window.repository,
   domain: window.domain,
@@ -43,16 +47,30 @@ var state = window.state = {
   selected: false,
   annotators: [annotators[0].annotator],
   expanded: [], // paths of components to expand
-  // TODO: Load signature pages from window.
-  // TODO: Normalize signature page data.
-  // TODO: Check that signature page terms defined.
-  signaturePages: []
+  signaturePages: window.publication.signaturePages || []
+}
+
+function normalizeSignaturePages (pages) {
+  var terms = Object.keys(analyze(window.form).definitions)
+  pages.forEach(function (page) {
+    if (Array.isArray(page.information)) {
+      var asObject = {}
+      page.information.forEach(function (key) {
+        asObject[key] = null
+      })
+      page.information = asObject
+    }
+    if (!page.hasOwnProperty('entities')) page.entities = []
+    if (!page.hasOwnProperty('information')) page.information = {}
+    if (page.term && terms.indexOf(page.term) === -1) delete page.term
+  })
 }
 
 function clearSelected () {
   state.selected = false
 }
 
+// TODO: Show error if term in signature page isn't defined.
 function computeState (done) {
   var form = state.form
   fixStrings(form)
@@ -212,6 +230,7 @@ function renderSaveForm () {
   publisher.required = true
   publisher.autocomplete = 'username'
   publisher.placeholder = 'Publisher Name'
+  publisher.value = window.publication.publisher || ''
   credentials.appendChild(publisher)
 
   var password = document.createElement('input')
@@ -228,7 +247,7 @@ function renderSaveForm () {
   var project = document.createElement('input')
   project.id = 'project'
   project.type = 'text'
-  project.placeholder = 'Project Name (optional)'
+  project.placeholder = window.publication.project || 'Project Name (optional)'
   publication.appendChild(project)
 
   var edition = document.createElement('input')
@@ -241,6 +260,7 @@ function renderSaveForm () {
   title.id = 'title'
   title.type = 'text'
   title.placeholder = 'Document Title (optional)'
+  title.value = window.publication.title || ''
   form.appendChild(title)
 
   var notes = document.createElement('textarea')

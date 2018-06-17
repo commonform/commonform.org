@@ -1,6 +1,7 @@
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var methodNotAllowed = require('./method-not-allowed')
+var publicationRepositoryPath = require('../paths/repository/publication')
 var runAuto = require('run-auto')
 
 var footer = require('./partials/footer')
@@ -17,20 +18,12 @@ module.exports = function (configuration, request, response) {
   }
 }
 
-// TODO: Support editing from publication, with meta.
-
 function getResponse (configuration, request, response) {
   var digest = request.query.from
-  runAuto({
-    form: function (done) {
-      if (!digest) return done()
-      get.concat({
-        url: 'https://' + configuration.repository + '/forms/' + digest,
-        json: true
-      }, function (error, response, data) {
-        done(error, data)
-      })
-    },
+  var publisher = request.query.publisher
+  var project = request.query.project
+  var edition = request.query.edition
+  var tasks = {
     publishers: function (done) {
       get.concat({
         url: 'https://' + configuration.repository + '/publishers',
@@ -39,7 +32,38 @@ function getResponse (configuration, request, response) {
         done(error, data)
       })
     }
-  }, function (error, data) {
+  }
+  if (digest) {
+    tasks.form = function (done) {
+      get.concat({
+        url: 'https://' + configuration.repository + '/forms/' + digest,
+        json: true
+      }, function (error, response, data) {
+        done(error, data)
+      })
+    }
+  } else if (publisher && project && edition) {
+    tasks.publication = function (done) {
+      if (digest) return done(null, {digest})
+      if (!publisher) return done()
+      get.concat({
+        url: 'https://' + configuration.repository + publicationRepositoryPath(publisher, project, edition),
+        json: true
+      }, function (error, response, data) {
+        done(error, data)
+      })
+    }
+    tasks.form = ['publication', function (data, done) {
+      if (!data.publication) return done()
+      get.concat({
+        url: 'https://' + configuration.repository + '/forms/' + data.publication.digest,
+        json: true
+      }, function (error, response, data) {
+        done(error, data)
+      })
+    }]
+  }
+  runAuto(tasks, function (error, data) {
     if (error) {
       return internalError(configuration, request, response, error)
     }
@@ -56,6 +80,7 @@ function getResponse (configuration, request, response) {
   <script>window.repository = ${JSON.stringify(configuration.repository)}</script>
   <script>window.form = ${JSON.stringify(data.form || DEFAULT_FORM)}</script>
   <script>window.publishers = ${JSON.stringify(data.publishers)}</script>
+  <script>window.publication = ${JSON.stringify(data.publication || {})}</script>
   ${footer('/editor.bundle.js')}
     `)
   })
