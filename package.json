@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "busboy": "^0.2.14",
+    "capitalize": "^1.0.0",
     "classnames": "^2.2.5",
     "commonform-analyze": "^3.0.0",
     "commonform-archaic": "^1.2.2",

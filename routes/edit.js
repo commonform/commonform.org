@@ -17,6 +17,8 @@ module.exports = function (configuration, request, response) {
   }
 }
 
+// TODO: Support editing from publication, with meta.
+
 function getResponse (configuration, request, response) {
   var digest = request.query.from
   runAuto({

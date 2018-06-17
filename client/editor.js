@@ -1,5 +1,6 @@
 /* eslint-env browser */
 var analyze = require('commonform-analyze')
+var capitalize = require('capitalize')
 var classnames = require('classnames')
 var fixStrings = require('commonform-fix-strings')
 var formRepositoryPath = require('../paths/repository/form')
@@ -41,7 +42,11 @@ var state = window.state = {
   publishers: window.publishers,
   selected: false,
   annotators: [annotators[0].annotator],
-  expanded: [] // paths of components to expand
+  expanded: [], // paths of components to expand
+  // TODO: Load signature pages from window.
+  // TODO: Normalize signature page data.
+  // TODO: Check that signature page terms defined.
+  signaturePages: []
 }
 
 function clearSelected () {
@@ -120,6 +125,7 @@ function render () {
   section.className = 'commonform'
   section.appendChild(renderContents(0, [], state.form, state.tree))
   article.appendChild(section)
+  article.appendChild(renderSignaturePages())
   return article
 }
 
@@ -306,6 +312,13 @@ function renderSaveForm () {
           })
       })
     } else if (publisher && password) {
+      if (state.signaturePages.length !== 0) {
+        var response = window.confirm(
+          'Save the form without signature pages?\n' +
+          '(Signature pages can only be saved with published forms.)'
+        )
+        if (!response) return
+      }
       saveForm(function (error, digest) {
         if (error) return window.alert(error.message)
         state.changed = false
@@ -448,6 +461,228 @@ function renderSummary () {
     header.appendChild(headingsList)
   }
   return header
+}
+
+function renderSignaturePages () {
+  var pages = state.signaturePages
+
+  var section = document.createElement('section')
+  section.className = 'signaturePages'
+
+  pages.forEach(function (page, pageIndex) {
+    section.appendChild(renderSignaturePage(page, pageIndex))
+  })
+
+  var button = document.createElement('button')
+  button.onclick = function (event) {
+    event.preventDefault()
+    event.stopPropagation()
+    update({action: 'add signature page'})
+  }
+  button.appendChild(document.createTextNode('Add Signature Page'))
+  section.appendChild(button)
+
+  return section
+}
+
+function renderSignaturePage (page, pageIndex) {
+  var entities = page.entities || []
+  var information = page.information || []
+
+  var div = document.createElement('div')
+  div.className = classnames('page', {samePage: page.samePage})
+
+  var samePageToggle = document.createElement('input')
+  samePageToggle.type = 'checkbox'
+  samePageToggle.onclick = function () {
+    update({action: 'toggle same page', pageIndex})
+  }
+  if (page.samePage) samePageToggle.checked = true
+  var samePageLabel = document.createElement('label')
+  samePageLabel.appendChild(samePageToggle)
+  samePageLabel.appendChild(document.createTextNode('Same Page'))
+  div.appendChild(samePageLabel)
+
+  var headerInput = document.createElement('input')
+  headerInput.className = 'header'
+  headerInput.type = 'text'
+  headerInput.value = page.header || ''
+  headerInput.placeholder = 'Signature Page Header'
+  headerInput.onchange = function () {
+    update({
+      action: 'set signature page header',
+      pageIndex,
+      header: this.value
+    })
+  }
+  div.appendChild(headerInput)
+
+  var terms = Object.keys(state.analysis.definitions)
+  if (terms.length !== 0) {
+    var definedTermP = document.createElement('p')
+    var termLabel = document.createElement('label')
+    termLabel.appendChild(document.createTextNode('Defined Term for Party'))
+    var select = document.createElement('select')
+    select.onchange = function () {
+      update({
+        action: 'set signature page term',
+        term: this.value,
+        pageIndex
+      })
+    }
+    var blank = document.createElement('option')
+    select.appendChild(blank)
+    terms.forEach(function (term) {
+      var option = document.createElement('option')
+      option.value = term
+      option.appendChild(document.createTextNode(term))
+      if (page.term === term) option.selected = true
+      select.appendChild(option)
+    })
+    termLabel.appendChild(select)
+    definedTermP.appendChild(termLabel)
+    div.appendChild(definedTermP)
+  }
+
+  if (entities.length !== 0) {
+    entities.forEach(function (entity, entityIndex) {
+      div.appendChild(renderEntity(entity, pageIndex, entityIndex))
+    })
+  }
+
+  var addEntity = document.createElement('button')
+  addEntity.appendChild(document.createTextNode('Add Prefilled Entity'))
+  addEntity.onclick = function () {
+    update({
+      action: 'add signature page entity',
+      pageIndex
+    })
+  }
+  div.appendChild(addEntity)
+
+  var byP = document.createElement('p')
+  var byLabel = document.createElement('label')
+  byLabel.appendChild(document.createTextNode('By'))
+  var byInput = document.createElement('input')
+  byInput.type = 'text'
+  byInput.placeholder = '/s/ Jane Doe'
+  byInput.onchange = function () {
+    update({
+      action: 'set conformed signature',
+      pageIndex,
+      value: this.value
+    })
+  }
+  byInput.value = page.conformed || ''
+  byLabel.appendChild(byInput)
+  byP.appendChild(byLabel)
+  div.appendChild(byP)
+
+  var nameP = document.createElement('p')
+  var nameLabel = document.createElement('label')
+  nameLabel.appendChild(document.createTextNode('Name'))
+  var nameInput = document.createElement('input')
+  nameInput.type = 'text'
+  nameInput.onchange = function () {
+    update({
+      action: 'set signature page name',
+      pageIndex,
+      value: this.value
+    })
+  }
+  nameInput.placeholder = 'Jane Doe'
+  nameInput.value = page.name || ''
+  nameLabel.appendChild(nameInput)
+  nameP.appendChild(nameLabel)
+  div.appendChild(nameP)
+
+  var optional = ['date', 'email', 'address']
+  optional.forEach(function (key) {
+    var p = document.createElement('p')
+    var display = key === 'email' ? 'E-Mail' : capitalize(key)
+    var label = document.createElement('label')
+    var checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    checkbox.onchange = function () {
+      var action = this.checked
+        ? 'require signature page information'
+        : 'do not require signature page information'
+      update({action, key, pageIndex})
+    }
+    label.appendChild(checkbox)
+    label.appendChild(document.createTextNode('Require ' + display))
+    p.appendChild(label)
+    if (information.hasOwnProperty(key)) {
+      checkbox.checked = true
+      var input = document.createElement('input')
+      input.type = 'text'
+      input.placeholder = 'Prefill ' + display
+      input.value = information[key] || ''
+      input.onchange = function () {
+        update({
+          action: 'prefill signature page information',
+          pageIndex,
+          key,
+          value: this.value
+        })
+      }
+      p.appendChild(input)
+    }
+    div.appendChild(p)
+  })
+
+  var deleteButton = document.createElement('button')
+  deleteButton.appendChild(document.createTextNode('Delete Signature Page'))
+  deleteButton.onclick = function () {
+    update({
+      action: 'delete signature page',
+      pageIndex
+    })
+  }
+  div.appendChild(deleteButton)
+
+  return div
+}
+
+function renderEntity (entity, pageIndex, entityIndex) {
+  var p = document.createElement('p')
+  p.appendChild(labeledInput('name', 'Name', 'SomeCo, Inc.'))
+  p.appendChild(labeledInput('form', 'Legal Form', 'corporation'))
+  p.appendChild(labeledInput('jurisdiction', 'Jurisdiction', 'Delaware'))
+  p.appendChild(labeledInput('by', 'Signing', 'Chief Executive Officer'))
+  var button = document.createElement('button')
+  button.appendChild(document.createTextNode('Delete Prefilled Entity'))
+  button.onclick = function () {
+    update({
+      action: 'delete signature page entity',
+      pageIndex,
+      entityIndex
+    })
+  }
+  p.appendChild(button)
+  return p
+
+  function labeledInput (key, text, placeholder) {
+    var p = document.createElement('p')
+    var label = document.createElement('label')
+    var input = document.createElement('input')
+    input.type = 'text'
+    input.value = entity[key] || ''
+    input.placeholder = placeholder
+    input.onchange = function () {
+      update({
+        action: 'prefill signature page entity',
+        key,
+        pageIndex,
+        entityIndex,
+        value: this.value
+      })
+    }
+    label.appendChild(document.createTextNode(text))
+    label.appendChild(input)
+    p.appendChild(label)
+    return p
+  }
 }
 
 function update (message) {
@@ -599,7 +834,103 @@ function update (message) {
     state.form = message.form
     state.expanded = []
     clearSelected()
+  } else if (action === 'add signature page') {
+    state.changed = true
+    state.signaturePages.push({
+      entities: [],
+      information: {}
+    })
+  } else if (action === 'delete signature page') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    state.signaturePages.splice(pageIndex, 1)
+  } else if (action === 'toggle same page') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let signaturePages = state.signaturePages
+    let page = signaturePages[pageIndex]
+    if (page.samePage) delete page.samePage
+    else page.samePage = true
+  } else if (action === 'require signature page information') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let key = message.key
+    let page = state.signaturePages[pageIndex]
+    let information = page.information
+    if (!information.hasOwnProperty(key)) {
+      information[key] = null
+    }
+  } else if (action === 'do not require signature page information') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let key = message.key
+    let page = state.signaturePages[pageIndex]
+    let information = page.information
+    delete information[key]
+  } else if (action === 'add signature page entity') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let page = state.signaturePages[pageIndex]
+    page.entities.push({
+      name: null,
+      form: null,
+      jurisdiction: null,
+      by: null
+    })
+  } else if (action === 'delete signature page entity') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let entityIndex = message.entityIndex
+    let page = state.signaturePages[pageIndex]
+    page.entities.splice(entityIndex, 1)
+  } else if (action === 'prefill signature page entity') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let entityIndex = message.entityIndex
+    let page = state.signaturePages[pageIndex]
+    let entity = page.entities[entityIndex]
+    let key = message.key
+    let value = message.value
+    if (value) entity[key] = value
+    else delete entity[key]
+  } else if (action === 'set signature page term') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let page = state.signaturePages[pageIndex]
+    let term = message.term
+    if (message.term) page.term = term
+    else delete page.term
+  } else if (action === 'set signature page header') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let page = state.signaturePages[pageIndex]
+    let header = message.header
+    if (header) page.header = message.header
+    else delete page.header
+  } else if (action === 'set conformed signature') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let page = state.signaturePages[pageIndex]
+    let value = message.value
+    if (value) page.conformed = value
+    else delete page.conformed
+  } else if (action === 'set signature page name') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let page = state.signaturePages[pageIndex]
+    let value = message.value
+    if (value) page.name = value
+    else delete page.name
+  } else if (action === 'prefill signature page information') {
+    state.changed = true
+    let pageIndex = message.pageIndex
+    let page = state.signaturePages[pageIndex]
+    let value = message.value
+    let key = message.key
+    if (value) page.information[key] = value
+    else delete page.information[key]
   }
+
   if (!message.doNotComputeState) {
     fixSubstitutions()
     computeState(renderAndMorph)

@@ -464,8 +464,23 @@ input, textarea {
   margin: 0.5em 0;
 }
 
-.editor .commonform {
+.editor .commonform,
+.editor .signaturePages {
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid black;
+}
+
+.header {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.editor .signaturePages {
+  padding-left: 0;
+}
+
+.signaturePages label input[type=text],
+.signaturePages label select {
+  margin-left: 1rem;
 }
