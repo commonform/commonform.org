@@ -10,7 +10,7 @@ var preamble = require('./partials/preamble')
 
 var DEFAULT_FORM = {content: ['Click to change text.']}
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method === 'GET') {
     return getResponse.apply(this, arguments)
   } else {
@@ -18,7 +18,7 @@ module.exports = function (configuration, request, response) {
   }
 }
 
-function getResponse (configuration, request, response) {
+function getResponse (request, response) {
   var digest = request.query.from
   var publisher = request.query.publisher
   var project = request.query.project
@@ -26,7 +26,7 @@ function getResponse (configuration, request, response) {
   var tasks = {
     publishers: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + '/publishers',
+        url: 'https://' + process.env.REPOSITORY + '/publishers',
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -36,7 +36,7 @@ function getResponse (configuration, request, response) {
   if (digest) {
     tasks.form = function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + '/forms/' + digest,
+        url: 'https://' + process.env.REPOSITORY + '/forms/' + digest,
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -47,7 +47,7 @@ function getResponse (configuration, request, response) {
       if (digest) return done(null, {digest})
       if (!publisher) return done()
       get.concat({
-        url: 'https://' + configuration.repository + publicationRepositoryPath(publisher, project, edition),
+        url: 'https://' + process.env.REPOSITORY + publicationRepositoryPath(publisher, project, edition),
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -56,7 +56,7 @@ function getResponse (configuration, request, response) {
     tasks.form = ['publication', function (data, done) {
       if (!data.publication) return done()
       get.concat({
-        url: 'https://' + configuration.repository + '/forms/' + data.publication.digest,
+        url: 'https://' + process.env.REPOSITORY + '/forms/' + data.publication.digest,
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -65,7 +65,7 @@ function getResponse (configuration, request, response) {
   }
   runAuto(tasks, function (error, data) {
     if (error) {
-      return internalError(configuration, request, response, error)
+      return internalError(request, response, error)
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
@@ -76,8 +76,8 @@ function getResponse (configuration, request, response) {
       <p>To edit forms, you must enable JavaScript.</p>
     </noscript>
   </main>
-  <script>window.domain = ${JSON.stringify(configuration.domain)}</script>
-  <script>window.repository = ${JSON.stringify(configuration.repository)}</script>
+  <script>window.domain = ${JSON.stringify(process.env.DOMAIN)}</script>
+  <script>window.repository = ${JSON.stringify(process.env.REPOSITORY)}</script>
   <script>window.form = ${JSON.stringify(data.form || DEFAULT_FORM)}</script>
   <script>window.publishers = ${JSON.stringify(data.publishers)}</script>
   <script>window.publication = ${JSON.stringify(data.publication || {})}</script>

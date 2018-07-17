@@ -14,12 +14,12 @@ var gravatar = require('./partials/gravatar')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method !== 'GET') {
     return methodNotAllowed.apply(null, arguments)
   }
   var publisher = sanitize(request.params.publisher)
-  var publisherURL = 'https://' + configuration.repository + publisherRepositoryPath(publisher)
+  var publisherURL = 'https://' + process.env.REPOSITORY + publisherRepositoryPath(publisher)
   runParallel({
     publisher: function (done) {
       get.concat({
@@ -39,13 +39,13 @@ module.exports = function (configuration, request, response) {
     }
   }, function (error, data) {
     if (error) {
-      return internalError(configuration, request, response, error)
+      return internalError(request, response, error)
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble()}
 <header>
-  <a href=/>${escape(configuration.domain)}</a> /
+  <a href=/>${escape(process.env.DOMAIN)}</a> /
   ${escape(publisher)}
 </header>
 <main>

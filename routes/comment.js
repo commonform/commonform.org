@@ -3,7 +3,7 @@ var https = require('https')
 var methodNotAllowed = require('./method-not-allowed')
 var pump = require('pump')
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method !== 'POST') {
     return methodNotAllowed.apply(null, arguments)
   }
@@ -33,9 +33,9 @@ module.exports = function (configuration, request, response) {
           replyTo: data.replyTo,
           text: data.text
         }
-        configuration.log.info(body, 'body')
-        configuration.log.info(data, 'data')
-        var host = configuration.repository
+        request.log.info(body, 'body')
+        request.log.info(data, 'data')
+        var host = process.env.REPOSITORY
         var auth = data.publisher + ':' + data.password
         var uuid
         https.request({
@@ -57,15 +57,13 @@ module.exports = function (configuration, request, response) {
                 .once('response', function (response) {
                   var statusCode = response.statusCode
                   if (statusCode !== 204 && statusCode === 201) {
-                    configuration.log.error(
-                      {statusCode, path}
-                    )
+                    request.log.error({statusCode, path})
                   }
                   redirect()
                 })
                 .end()
             } else {
-              configuration.log.error({statusCode, path: '/annotations'})
+              request.log.error({statusCode, path: '/annotations'})
             }
           })
           .end(JSON.stringify(body))

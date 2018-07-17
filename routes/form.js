@@ -18,7 +18,7 @@ var lockedHint = require('./partials/locked-hint')
 var preamble = require('./partials/preamble')
 var publicationLink = require('./partials/publication-link')
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method !== 'GET') {
     return methodNotAllowed.apply(null, arguments)
   }
@@ -26,7 +26,7 @@ module.exports = function (configuration, request, response) {
   runAuto({
     form: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + '/forms/' + digest,
+        url: 'https://' + process.env.REPOSITORY + '/forms/' + digest,
         json: true
       }, function (error, response, form) {
         var statusCode = response.statusCode
@@ -46,7 +46,7 @@ module.exports = function (configuration, request, response) {
     }],
     publications: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + '/forms/' + digest + '/publications',
+        url: 'https://' + process.env.REPOSITORY + '/forms/' + digest + '/publications',
         json: true
       }, function (error, response, data) {
         var statusCode = response.statusCode
@@ -61,7 +61,7 @@ module.exports = function (configuration, request, response) {
     comments: function (done) {
       get.concat({
         url: (
-          'https://' + configuration.repository +
+          'https://' + process.env.REPOSITORY +
           '/annotations?context=' + digest
         ),
         json: true
@@ -78,14 +78,14 @@ module.exports = function (configuration, request, response) {
   }, function (error, data) {
     if (error) {
       if (error.statusCode === 404) {
-        return notFound(configuration, request, response,
+        return notFound(request, response,
           [
             'The server does not have a form ' +
             'with that ID.'
           ]
         )
       }
-      return internalError(configuration, request, response, error)
+      return internalError(request, response, error)
     }
     if (request.query.format === 'docx') {
       let options = {
@@ -126,7 +126,7 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <header>
-  <a href=/>${escape(configuration.domain)}</a> /
+  <a href=/>${escape(process.env.DOMAIN)}</a> /
   <span class=digest>${digest}</span>
 </header>
 <main>

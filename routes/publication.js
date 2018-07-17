@@ -25,7 +25,7 @@ var preamble = require('./partials/preamble')
 var projectLink = require('./partials/project-link')
 var publisherLink = require('./partials/publisher-link')
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method !== 'GET') {
     return methodNotAllowed.apply(null, arguments)
   }
@@ -38,7 +38,7 @@ module.exports = function (configuration, request, response) {
   runAuto({
     publication: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + publicationRepositoryPath(publisher, project, edition),
+        url: 'https://' + process.env.REPOSITORY + publicationRepositoryPath(publisher, project, edition),
         json: true
       }, function (error, response, data) {
         done(error, data)
@@ -46,7 +46,7 @@ module.exports = function (configuration, request, response) {
     },
     project: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + publicationsRepositoryPath(publisher, project),
+        url: 'https://' + process.env.REPOSITORY + publicationsRepositoryPath(publisher, project),
         json: true
       }, function (error, response, data) {
         done(error, data.sort(reviewersEditionCompare))
@@ -54,7 +54,7 @@ module.exports = function (configuration, request, response) {
     },
     form: ['publication', function (data, done) {
       get.concat({
-        url: 'https://' + configuration.repository + '/forms/' + data.publication.digest,
+        url: 'https://' + process.env.REPOSITORY + '/forms/' + data.publication.digest,
         json: true
       }, function (error, response, form) {
         done(error, form)
@@ -69,7 +69,7 @@ module.exports = function (configuration, request, response) {
     }]
   }, function (error, data) {
     if (error) {
-      return internalError(configuration, request, response, error)
+      return internalError(request, response, error)
     }
     var publication = data.publication
     if (request.query.format === 'docx') {
@@ -120,7 +120,7 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <header>
-  <a href=/>${escape(configuration.domain)}</a> /
+  <a href=/>${escape(process.env.DOMAIN)}</a> /
   ${publisherLink(publisher)} /
   ${projectLink(data.publication)} /
   ${escape(edition)}
@@ -162,20 +162,20 @@ ${footer('/download.bundle.js')}
   })
 }
 
-function redirect (configuration, request, response) {
+function redirect (request, response) {
   var params = request.params
   var publisher = sanitize(params.publisher)
   var project = sanitize(params.project)
   var edition = sanitize(params.edition)
   get.concat({
-    url: 'https://' + configuration.repository + publicationRepositoryPath(publisher, project, edition)
+    url: 'https://' + process.env.REPOSITORY + publicationRepositoryPath(publisher, project, edition)
   }, function (error, publicationResponse, data) {
     if (error) {
-      return internalError(configuration, request, response, error)
+      return internalError(request, response, error)
     }
     var statusCode = publicationResponse.statusCode
     if (statusCode !== 200) {
-      return notFound(configuration, request, response, [
+      return notFound(request, response, [
         'No current publication found.',
         'The publisher may have published only drafts so far.'
       ])

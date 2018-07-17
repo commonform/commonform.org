@@ -23,7 +23,7 @@ var preamble = require('./partials/preamble')
 var publisherLink = require('./partials/publisher-link')
 var publicationLink = require('./partials/publication-link')
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method !== 'GET') {
     return methodNotAllowed.apply(null, arguments)
   }
@@ -32,7 +32,7 @@ module.exports = function (configuration, request, response) {
   runAuto({
     description: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + descriptionRepositoryPath(publisher, project),
+        url: 'https://' + process.env.REPOSITORY + descriptionRepositoryPath(publisher, project),
         json: true
       }, function (error, response, description) {
         if (error) return done(error)
@@ -41,7 +41,7 @@ module.exports = function (configuration, request, response) {
     },
     publications: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + publicationsRepositoryPath(publisher, project),
+        url: 'https://' + process.env.REPOSITORY + publicationsRepositoryPath(publisher, project),
         json: true
       }, function (error, response, publications) {
         if (error) return done(error)
@@ -51,7 +51,7 @@ module.exports = function (configuration, request, response) {
             .map(function (edition) {
               return function (done) {
                 get.concat({
-                  url: 'https://' + configuration.repository + publicationRepositoryPath(
+                  url: 'https://' + process.env.REPOSITORY + publicationRepositoryPath(
                     publisher, project, edition
                   ),
                   json: true
@@ -66,7 +66,7 @@ module.exports = function (configuration, request, response) {
     },
     dependents: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + dependentsRepositoryPath(publisher, project),
+        url: 'https://' + process.env.REPOSITORY + dependentsRepositoryPath(publisher, project),
         json: true
       }, function (error, response, dependents) {
         if (error) return done(error)
@@ -74,7 +74,7 @@ module.exports = function (configuration, request, response) {
           var digest = dependent.digest
           return function (done) {
             get.concat({
-              url: 'https://' + configuration.repository + formPublicationsRepositoryPath(digest),
+              url: 'https://' + process.env.REPOSITORY + formPublicationsRepositoryPath(digest),
               json: true
             }, function (error, response, data) {
               done(error, data)
@@ -94,7 +94,7 @@ module.exports = function (configuration, request, response) {
     data.publisher = publisher
     data.project = project
     if (error) {
-      return internalError(configuration, request, response, error)
+      return internalError(request, response, error)
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     var editionsList = data.publications.map(function (publication, index) {
@@ -133,7 +133,7 @@ module.exports = function (configuration, request, response) {
     response.end(html`
     ${preamble()}
 <header>
-  <a href=/>${escape(configuration.domain)}</a> /
+  <a href=/>${escape(process.env.DOMAIN)}</a> /
   ${publisherLink(publisher)} /
   ${escape(project)}
 </header>

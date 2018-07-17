@@ -23,7 +23,7 @@ staticFile('comments.js')
 
 function staticFile (file) {
   var filePath = path.join(__dirname, '..', 'static', file)
-  routes.set('/' + file, function (configuration, request, response) {
+  routes.set('/' + file, function (request, response) {
     pump(send(request, filePath), response)
   })
 }

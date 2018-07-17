@@ -13,7 +13,7 @@ var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method === 'GET') {
     return getResponse.apply(this, arguments)
   } else {
@@ -21,13 +21,13 @@ module.exports = function (configuration, request, response) {
   }
 }
 
-function getResponse (configuration, request, response) {
+function getResponse (request, response) {
   var from = sanitize(request.params.from)
   var to = sanitize(request.params.to)
   runAuto({
     from: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + '/forms/' + from,
+        url: 'https://' + process.env.REPOSITORY + '/forms/' + from,
         json: true
       }, function (error, response, form) {
         if (error) return done(error)
@@ -38,7 +38,7 @@ function getResponse (configuration, request, response) {
     },
     to: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + '/forms/' + to,
+        url: 'https://' + process.env.REPOSITORY + '/forms/' + to,
         json: true
       }, function (error, response, form) {
         if (error) return done(error)
@@ -49,7 +49,7 @@ function getResponse (configuration, request, response) {
     }
   }, function (error, data) {
     if (error) {
-      return internalError(configuration, request, response, error)
+      return internalError(request, response, error)
     }
     var comparison = diff(data.from, data.to)
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')

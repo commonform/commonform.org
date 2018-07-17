@@ -4,9 +4,7 @@ var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
-module.exports = function notFound (
-  configuration, request, response, message
-) {
+module.exports = function notFound (request, response, message) {
   response.statusCode = 404
   response.setHeader('Content-Type', 'text/html')
   response.end(html`

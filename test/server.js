@@ -2,17 +2,17 @@ var fs = require('fs')
 var handler = require('../')
 var http = require('http')
 var pino = require('pino')
+var pinoHTTP = require('pino-http')
 
 module.exports = function (test) {
-  var configuration = {
-    log: pino(fs.createWriteStream('test-server.log')),
-    domain: 'commonform.org',
-    repository: 'api.commonform.org'
-  }
+  var log = pino(fs.createWriteStream('test-server.log'))
+  process.env.REPOSITORY = 'api.commonform.org'
+  process.env.DOMAIN = 'commonform.org'
   http.createServer()
     .on('request', function (request, response) {
       try {
-        handler(configuration, request, response)
+        pinoHTTP({logger: log})(request, response)
+        handler(request, response)
       } catch (error) {
         console.error(error)
       }
@@ -22,7 +22,7 @@ module.exports = function (test) {
       var port = server.address().port
       test(port, function closeServer () {
         server.close()
-      }, configuration)
+      }, log)
     })
 }
 

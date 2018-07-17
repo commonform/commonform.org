@@ -63,6 +63,7 @@
     "ooxml-signature-pages": "^2.0.0",
     "outline-numbering": "^1.0.2",
     "pino": "^4.17.3",
+    "pino-http": "^3.2.2",
     "pump": "^3.0.0",
     "reviewers-edition-compare": "^1.0.5",
     "reviewers-edition-spell": "^2.0.0",
@@ -76,7 +77,7 @@
     "send": "^0.16.2",
     "simple-get": "^3.0.2",
     "to-mention-link": "^0.1.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.3.2"
   },
   "lint-staged": {
     "*.js": "standard",

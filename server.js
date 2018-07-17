@@ -1,19 +1,14 @@
 var handler = require('./')
 var http = require('http')
 var pino = require('pino')
+var pinoHTTP = require('pino-http')
 var uuid = require('uuid')
 
 var log = pino({server: uuid.v4()})
 
-var configuration = {
-  port: process.env.PORT ? parseInt(process.env.PORT) : 8080,
-  log: log,
-  domain: process.env.DOMAIN || 'commonform.org',
-  repository: process.env.REPOSITORY || 'api.commonform.org'
-}
-
 var server = http.createServer(function (request, response) {
-  handler(configuration, request, response)
+  pinoHTTP({logger: log, genReqId: uuid.v4})(request, response)
+  handler(request, response)
 })
 
 function close () {
@@ -36,8 +31,7 @@ process.on('uncaughtException', function (exception) {
   close()
 })
 
-server.listen(configuration.port, function () {
+server.listen(process.env.PORT || 8080, function () {
   // If the environment set PORT=0, we'll get a random high port.
-  configuration.port = this.address().port
-  log.info({port: configuration.port}, 'listening')
+  log.info({port: this.address().port}, 'listening')
 })

@@ -5,7 +5,7 @@ var methodNotAllowed = require('./method-not-allowed')
 var projectFrontEndPath = require('../paths/front-end/project')
 var pump = require('pump')
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method !== 'POST') {
     return methodNotAllowed.apply(null, arguments)
   }
@@ -20,7 +20,7 @@ module.exports = function (configuration, request, response) {
         }
       })
       .once('finish', function () {
-        var host = configuration.repository
+        var host = process.env.REPOSITORY
         var auth = data.publisher + ':' + data.password
         https.request({
           method: 'PUT',
@@ -29,7 +29,7 @@ module.exports = function (configuration, request, response) {
           auth
         })
           .once('response', function (response) {
-            configuration.log.info(response, 'Repository: description')
+            request.log.info(response, 'Repository: description')
             // TODO: Notify user of errors setting description.
             redirect()
           })

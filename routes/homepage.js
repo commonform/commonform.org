@@ -8,14 +8,14 @@ var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
-module.exports = function (configuration, request, response) {
+module.exports = function (request, response) {
   if (request.method !== 'GET') {
     return methodNotAllowed.apply(null, arguments)
   }
   runParallel({
     publishers: function (done) {
       get.concat({
-        url: 'https://' + configuration.repository + '/publishers',
+        url: 'https://' + process.env.REPOSITORY + '/publishers',
         json: true
       }, function (error, response, json) {
         if (error) return done(error)
@@ -24,7 +24,7 @@ module.exports = function (configuration, request, response) {
     }
   }, function (error, data) {
     if (error) {
-      return internalError(configuration, request, response, error)
+      return internalError(request, response, error)
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`

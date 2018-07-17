@@ -4,9 +4,7 @@ var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
-module.exports = function internalError (
-  configuration, request, response, error
-) {
+module.exports = function internalError (request, response, error) {
   request.log.error(error)
   response.statusCode = 500
   response.setHeader('Content-Type', 'text/html')
