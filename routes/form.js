@@ -6,6 +6,7 @@ var get = require('simple-get')
 var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
+var notFound = require('./not-found')
 var outlineNumbering = require('outline-numbering')
 var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
@@ -28,6 +29,12 @@ module.exports = function (configuration, request, response) {
         url: 'https://' + configuration.repository + '/forms/' + digest,
         json: true
       }, function (error, response, form) {
+        var statusCode = response.statusCode
+        if (statusCode !== 200) {
+          var newError = new Error('server responded ' + statusCode)
+          newError.statusCode = statusCode
+          return done(newError)
+        }
         done(error, form)
       })
     },
@@ -42,6 +49,12 @@ module.exports = function (configuration, request, response) {
         url: 'https://' + configuration.repository + '/forms/' + digest + '/publications',
         json: true
       }, function (error, response, data) {
+        var statusCode = response.statusCode
+        if (statusCode !== 200) {
+          var newError = new Error('server responded ' + statusCode)
+          newError.statusCode = statusCode
+          return done(newError)
+        }
         done(error, data)
       })
     },
@@ -53,11 +66,25 @@ module.exports = function (configuration, request, response) {
         ),
         json: true
       }, function (error, response, data) {
+        var statusCode = response.statusCode
+        if (statusCode !== 200) {
+          var newError = new Error('server responded ' + statusCode)
+          newError.statusCode = statusCode
+          return done(newError)
+        }
         done(error, data)
       })
     }
   }, function (error, data) {
     if (error) {
+      if (error.statusCode === 404) {
+        return notFound(configuration, request, response,
+          [
+            'The server does not have a form ' +
+            'with that ID.'
+          ]
+        )
+      }
       return internalError(configuration, request, response, error)
     }
     if (request.query.format === 'docx') {
