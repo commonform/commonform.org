@@ -247,7 +247,10 @@ function renderSaveForm () {
   var project = document.createElement('input')
   project.id = 'project'
   project.type = 'text'
-  project.placeholder = window.publication.project || 'Project Name (optional)'
+  project.placeholder = (
+    (window.publication.project || 'Project Name') +
+    ' (optional)'
+  )
   publication.appendChild(project)
 
   var edition = document.createElement('input')
