@@ -968,7 +968,7 @@ function update (message) {
 }
 
 function fixSubstitutions () {
-  var analysis = analyze(state.form)
+  var analysis = state.analysis
   var definitions = Object.keys(analysis.definitions)
   var headings = Object.keys(analysis.headings)
   function recurse (form) {
