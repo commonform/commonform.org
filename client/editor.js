@@ -66,6 +66,40 @@ function normalizeSignaturePages (pages) {
   })
 }
 
+function conformedSignaturePages () {
+  return state.signaturePages
+    .map(function (normalizedPage) {
+      var standardPage = {}
+      if (normalizedPage.entities.length !== 0) {
+        standardPage.entities = normalizedPage.entities
+          .map(function (entity) {
+            var standardEntity = {}
+            ;['name', 'form', 'jurisdiction', 'by']
+              .forEach(function (key) {
+                if (entity[key]) {
+                  standardEntity[key] = entity[key]
+                }
+              })
+            return standardEntity
+          })
+      }
+      if (normalizedPage.header) {
+        standardPage.header = normalizedPage.header
+      }
+      if (normalizedPage.samePage) {
+        standardPage.samePage = true
+      }
+      standardPage.information = []
+      Object.keys(normalizedPage.information)
+        .forEach(function (key) {
+          if (normalizedPage.information[key] !== undefined) {
+            standardPage.information.push(key)
+          }
+        })
+      return standardPage
+    })
+}
+
 function clearSelected () {
   state.selected = false
 }
@@ -310,7 +344,7 @@ function renderSaveForm () {
         if (notes) body.notes = notes.split(/(\r?\n){2}/)
         if (title) body.title = title.trim()
         if (state.signaturePages.length !== 0) {
-          body.signaturePages = state.signaturePages
+          body.signaturePages = conformedSignaturePages()
         }
         fetch(url, {
           method: 'POST',
