@@ -309,6 +309,9 @@ function renderSaveForm () {
         var body = {digest: state.tree.digest}
         if (notes) body.notes = notes.split(/(\r?\n){2}/)
         if (title) body.title = title.trim()
+        if (state.signaturePages.length !== 0) {
+          body.signaturePages = state.signaturePages
+        }
         fetch(url, {
           method: 'POST',
           headers: {
