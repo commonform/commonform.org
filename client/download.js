@@ -1,6 +1,7 @@
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
 var outline = require('outline-numbering')
+var signaturePagesToOOXML = require('ooxml-signature-pages')
 
 document.addEventListener('DOMContentLoaded', function () {
   enableBlankInputs()
@@ -33,6 +34,9 @@ function overrideButtonClickHandler () {
             publication.publisher, publication.project, publication.edition
           ].join(' ')
           options.title = publication.publisher + ' ' + publication.project
+        }
+        if (publication.signaturePages) {
+          options.after = signaturePagesToOOXML(publication.signaturePages)
         }
       } else title = window.tree.digest
       var blanks = []
