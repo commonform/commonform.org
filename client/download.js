@@ -11,7 +11,7 @@ function overrideButtonClickHandler () {
   var buttons = document.getElementsByClassName('docx')
   for (var index = 0; index < buttons.length; index++) {
     var button = buttons[index]
-    button.href = null
+    button.removeAttribute('href')
     button.addEventListener('click', function (event) {
       event.preventDefault()
       event.stopPropagation()
