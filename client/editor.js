@@ -1076,7 +1076,7 @@ function renderComponent (component, path) {
   p.appendChild(document.createTextNode('/'))
 
   var projectLink = document.createElement('a')
-  projectLink.href = projectFrontEndPath(component.publisher)
+  projectLink.href = projectFrontEndPath(component)
   projectLink.target = '_blank'
   projectLink.appendChild(document.createTextNode(component.project))
   p.appendChild(projectLink)
