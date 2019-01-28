@@ -1,4 +1,5 @@
 var DOCX_CONTENT_TYPE = require('docx-content-type')
+var DOCX_STYLES = require('../docx-styles')
 var annotate = require('../util/annotate')
 var docx = require('commonform-docx')
 var formFrontEndPath = require('../paths/front-end/form')
@@ -93,7 +94,8 @@ module.exports = function (request, response) {
         markFilled: true,
         numbering: outlineNumbering,
         indentMargins: true,
-        centerTitle: false
+        centerTitle: false,
+        styles: DOCX_STYLES
       }
       response.setHeader('Content-Type', DOCX_CONTENT_TYPE)
       response.setHeader(

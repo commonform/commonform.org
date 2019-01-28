@@ -1,4 +1,5 @@
 var DOCX_CONTENT_TYPE = require('docx-content-type')
+var DOCX_STYLES = require('../docx-styles')
 var docx = require('commonform-docx')
 var escape = require('../util/escape')
 var get = require('simple-get')
@@ -79,7 +80,8 @@ module.exports = function (request, response) {
         markFilled: true,
         numbering: outlineNumbering,
         indentMargins: true,
-        centerTitle: false
+        centerTitle: false,
+        styles: DOCX_STYLES
       }
       if (publication.signaturePages) {
         options.after = signaturePagesToOOXML(publication.signaturePages)
