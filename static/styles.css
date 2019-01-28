@@ -279,7 +279,7 @@ label input[type=checkbox] {
 .editor section {
   margin-left: 0;
   padding-bottom: 0.5rem;
-  padding-left: 2.50rem;
+  padding-left: 3.50rem;
   padding-top: 0.5rem;
 }
 
@@ -289,11 +289,11 @@ label input[type=checkbox] {
 
 .editor .selector {
   cursor: pointer;
-  left: -0.5rem;
+  left: 0.5rem;
   position: absolute;
   text-align: center;
   text-decoration: none;
-  top: 0;
+  top: 0.5rem;
 }
 
 .selector:before {

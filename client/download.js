@@ -1,7 +1,6 @@
 var DOCX_OPTIONS = require('../docx-options')
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
-var outline = require('outline-numbering')
 var signaturePagesToOOXML = require('ooxml-signature-pages')
 
 document.addEventListener('DOMContentLoaded', function () {

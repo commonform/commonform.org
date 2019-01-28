@@ -8,7 +8,6 @@ var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
 var methodNotAllowed = require('./method-not-allowed')
 var notFound = require('./not-found')
-var outlineNumbering = require('outline-numbering')
 var runAuto = require('run-auto')
 var sanitize = require('../util/sanitize')
 
