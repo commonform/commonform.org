@@ -1,3 +1,4 @@
+var DOCX_STYLES = require('../docx-styles')
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
 var outline = require('outline-numbering')
@@ -20,7 +21,8 @@ function overrideButtonClickHandler () {
         numbering: outline,
         markFilled: true,
         indentMargins: true,
-        centerTitle: true
+        centerTitle: true,
+        styles: DOCX_STYLES
       }
       var publication = window.publication
       var title
