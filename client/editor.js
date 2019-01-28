@@ -779,7 +779,7 @@ function update (message) {
     newParent.content.splice(newPath[newPath.length - 1], 0, moving)
     if (!validate.form(clone, {allowComponents: true})) return
     state.form = clone
-    state.selected = newPath
+    clearSelected()
   } else if (action === 'heading') {
     state.changed = true
     let child = keyarrayGet(state.form, message.path)
