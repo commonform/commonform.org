@@ -1,5 +1,5 @@
 var DOCX_CONTENT_TYPE = require('docx-content-type')
-var DOCX_STYLES = require('../docx-styles')
+var DOCX_OPTIONS = require('../docx-options')
 var docx = require('commonform-docx')
 var escape = require('../util/escape')
 var get = require('simple-get')
@@ -74,15 +74,14 @@ module.exports = function (request, response) {
     }
     var publication = data.publication
     if (request.query.format === 'docx') {
-      var options = {
-        title: publication.title || publication.project,
-        edition: publication.edition,
-        markFilled: true,
-        numbering: outlineNumbering,
-        indentMargins: true,
-        centerTitle: false,
-        styles: DOCX_STYLES
-      }
+      var options = Object.assign(
+        {},
+        DOCX_OPTIONS,
+        {
+          title: publication.title || publication.project,
+          edition: publication.edition
+        }
+      )
       if (publication.signaturePages) {
         options.after = signaturePagesToOOXML(publication.signaturePages)
       }

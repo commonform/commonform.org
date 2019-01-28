@@ -1,4 +1,4 @@
-var DOCX_STYLES = require('../docx-styles')
+var DOCX_OPTIONS = require('../docx-options')
 var docx = require('commonform-docx')
 var filesaver = require('filesaver.js').saveAs
 var outline = require('outline-numbering')
@@ -17,13 +17,7 @@ function overrideButtonClickHandler () {
     button.addEventListener('click', function (event) {
       event.preventDefault()
       event.stopPropagation()
-      var options = {
-        numbering: outline,
-        markFilled: true,
-        indentMargins: true,
-        centerTitle: true,
-        styles: DOCX_STYLES
-      }
+      var options = Object.assign({}, DOCX_OPTIONS)
       var publication = window.publication
       var title
       if (publication) {

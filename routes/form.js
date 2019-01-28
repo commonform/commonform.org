@@ -1,5 +1,5 @@
 var DOCX_CONTENT_TYPE = require('docx-content-type')
-var DOCX_STYLES = require('../docx-styles')
+var DOCX_OPTIONS = require('../docx-options')
 var annotate = require('../util/annotate')
 var docx = require('commonform-docx')
 var formFrontEndPath = require('../paths/front-end/form')
@@ -89,14 +89,9 @@ module.exports = function (request, response) {
       return internalError(request, response, error)
     }
     if (request.query.format === 'docx') {
-      let options = {
-        digest: digest,
-        markFilled: true,
-        numbering: outlineNumbering,
-        indentMargins: true,
-        centerTitle: false,
-        styles: DOCX_STYLES
-      }
+      let options = Object.assign(
+        {}, DOCX_OPTIONS, {digest: digest}
+      )
       response.setHeader('Content-Type', DOCX_CONTENT_TYPE)
       response.setHeader(
         'Content-Disposition',
