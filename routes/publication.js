@@ -117,8 +117,13 @@ module.exports = function (request, response) {
     var editHREF = '/edit?' + querystring.stringify({
       publisher, project, edition
     })
+    var title = publisher + '’s ' + project + ' ' + edition
+    var metadata = {
+      title: title,
+      description: 'legal form on ' + process.env.DOMAIN
+    }
     response.end(html`
-    ${preamble()}
+    ${preamble(title, metadata)}
 <header>
   <a href=/>${escape(process.env.DOMAIN)}</a> /
   ${publisherLink(publisher)} /

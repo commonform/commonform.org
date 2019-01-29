@@ -130,8 +130,13 @@ module.exports = function (request, response) {
         `
       }
     })
+    var title = publisher + '’s ' + project
+    var metadata = {
+      title,
+      description: 'form project on ' + process.env.DOMAIN
+    }
     response.end(html`
-    ${preamble()}
+    ${preamble(title, metadata)}
 <header>
   <a href=/>${escape(process.env.DOMAIN)}</a> /
   ${publisherLink(publisher)} /
