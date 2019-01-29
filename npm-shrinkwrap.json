@@ -5030,9 +5030,9 @@
       "dev": true
     },
     "ooxml-signature-pages": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/ooxml-signature-pages/-/ooxml-signature-pages-2.0.0.tgz",
-      "integrity": "sha512-VXSN4ew1q6fjyrrE+o8Q8HTru6luriqowlFNVnAXC1qiiBPJMxyVlrxWykuI5u80ACKdtuTCwxjLZCD11FDzkw==",
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/ooxml-signature-pages/-/ooxml-signature-pages-2.0.1.tgz",
+      "integrity": "sha512-Egu1n0JtN/lOtGUgXZ02PIWKqOs0smBXbKCqon4/Q1+E+VUwk2X6gcEw4MuTcFaLDy8BuxNgrrhBqOP2vCeg9A==",
       "requires": {
         "capitalize": "^1.0.0",
         "indefinite-article": "0.0.2",
