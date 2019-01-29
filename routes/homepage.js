@@ -34,7 +34,8 @@ module.exports = function (request, response) {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
     ${preamble(title, metadata)}
-<header>
+<header class=homepage>
+  <img alt="Common Form logotype" src=/logo.svg>
   <h1>Common Form</h1>
   <p>a free, open repository of legal forms</p>
 </header>

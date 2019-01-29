@@ -20,6 +20,20 @@ body > header {
   margin-top: 1rem;
 }
 
+
+header.homepage {
+  padding-bottom: 0;
+  text-align: center;
+}
+
+header.homepage img {
+  width: 7rem;
+}
+
+header.homepage h1 {
+  margin: 1rem;
+}
+
 main > article > section {
   margin-bottom: 2rem;
 }
