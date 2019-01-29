@@ -9,7 +9,7 @@
     "lint-staged": "^7.1.3",
     "simple-concat": "^1.0.0",
     "standard": "^11.0.1",
-    "tape": "^4.9.0",
+    "tape": "^4.9.2",
     "webdriverio": "^4.12.0"
   },
   "scripts": {
