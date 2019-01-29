@@ -42,8 +42,13 @@ module.exports = function (request, response) {
       return internalError(request, response, error)
     }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
+    var title = publisher
+    var metadata = {
+      title,
+      description: 'publisher page on ' + process.env.DOMAIN
+    }
     response.end(html`
-    ${preamble()}
+    ${preamble(title, metadata)}
 <header>
   <a href=/>${escape(process.env.DOMAIN)}</a> /
   ${escape(publisher)}
