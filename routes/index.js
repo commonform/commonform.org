@@ -20,6 +20,7 @@ staticFile('styles.css')
 staticFile('editor.bundle.js')
 staticFile('download.bundle.js')
 staticFile('comments.js')
+staticFile('logo-on-white.png')
 
 function staticFile (file) {
   var filePath = path.join(__dirname, '..', 'static', file)
