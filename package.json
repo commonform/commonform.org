@@ -68,7 +68,7 @@
     "reviewers-edition-compare": "^1.0.5",
     "reviewers-edition-spell": "^2.0.0",
     "reviewers-edition-upgrade": "^1.0.2",
-    "rimraf": "^2.6.2",
+    "rimraf": "^2.6.3",
     "run-auto": "^2.0.3",
     "run-parallel": "^1.1.9",
     "run-parallel-limit": "^1.0.5",
