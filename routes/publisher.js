@@ -45,7 +45,8 @@ module.exports = function (request, response) {
     var title = publisher
     var metadata = {
       title,
-      description: 'publisher page on ' + process.env.DOMAIN
+      description: 'publisher page on ' + process.env.DOMAIN,
+      image: data.publisher.gravatar
     }
     response.end(html`
     ${preamble(title, metadata)}
