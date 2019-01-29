@@ -26,9 +26,14 @@ module.exports = function (request, response) {
     if (error) {
       return internalError(request, response, error)
     }
+    var title = 'Common Form'
+    var metadata = {
+      title,
+      description: 'a free, open repository of legal forms'
+    }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     response.end(html`
-    ${preamble()}
+    ${preamble(title, metadata)}
 <header>
   <h1>Common Form</h1>
   <p>a free, open repository of legal forms</p>
