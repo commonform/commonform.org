@@ -23,7 +23,6 @@ body > header {
 
 header.homepage {
   padding-bottom: 0;
-  text-align: center;
 }
 
 header.homepage img {
@@ -31,7 +30,7 @@ header.homepage img {
 }
 
 header.homepage h1 {
-  margin: 1rem;
+  margin: 1rem 0;
 }
 
 main > article > section {
