@@ -1,7 +1,7 @@
 {
   "private": true,
   "devDependencies": {
-    "browserify": "^16.2.2",
+    "browserify": "^16.2.3",
     "chromedriver": "^2.38.2",
     "husky": "^0.14.3",
     "istanbul": "^0.4.5",
