@@ -30,7 +30,7 @@ function overrideButtonClickHandlers (className) {
       if (publication) {
         options.edition = publication.edition
         if (publication.title) {
-          title = publication.title
+          title = publication.title + ' ' + publication.edition
           options.title = title
         } else {
           title = [
