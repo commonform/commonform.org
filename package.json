@@ -3,6 +3,7 @@
   "devDependencies": {
     "browserify": "^16.2.3",
     "chromedriver": "^2.45.0",
+    "commonform-markdown": "^1.2.2",
     "husky": "^0.14.3",
     "istanbul": "^0.4.5",
     "licensee": "^5.0.0",

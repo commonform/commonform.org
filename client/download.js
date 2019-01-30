@@ -1,22 +1,30 @@
+/* eslint-env browser */
 var DOCX_OPTIONS = require('../docx-options')
 var docx = require('commonform-docx')
+var markdown = require('commonform-markdown')
 var filesaver = require('filesaver.js').saveAs
 var signaturePagesToOOXML = require('ooxml-signature-pages')
 
 document.addEventListener('DOMContentLoaded', function () {
   enableBlankInputs()
-  overrideButtonClickHandler()
+  overrideButtonClickHandlers('docx')
+  overrideButtonClickHandlers('markdown')
 })
 
-function overrideButtonClickHandler () {
-  var buttons = document.getElementsByClassName('docx')
+function overrideButtonClickHandlers (className) {
+  var buttons = document.getElementsByClassName(className)
   for (var index = 0; index < buttons.length; index++) {
     var button = buttons[index]
     button.removeAttribute('href')
     button.addEventListener('click', function (event) {
       event.preventDefault()
       event.stopPropagation()
-      var options = Object.assign({}, DOCX_OPTIONS)
+      var options
+      if (className === 'markdown') {
+        options = {}
+      } else {
+        options = Object.assign({}, DOCX_OPTIONS)
+      }
       var publication = window.publication
       var title
       if (publication) {
@@ -44,11 +52,19 @@ function overrideButtonClickHandler () {
           value: input.value
         })
       }
-      filesaver(
-        docx(window.loaded.form, blanks, options).generate({type: 'blob'}),
-        title + '.docx',
-        true
-      )
+      if (className === 'markdown') {
+        var blob = new Blob(
+          [markdown(window.loaded.form, blanks, options)],
+          {type: 'text/plain;charset=utf-8'}
+        )
+        filesaver(blob, title + '.md', true)
+      } else {
+        filesaver(
+          docx(window.loaded.form, blanks, options).generate({type: 'blob'}),
+          title + '.docx',
+          true
+        )
+      }
       return false
     })
   }

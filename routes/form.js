@@ -6,6 +6,7 @@ var formFrontEndPath = require('../paths/front-end/form')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
+var markdown = require('commonform-markdown')
 var methodNotAllowed = require('./method-not-allowed')
 var notFound = require('./not-found')
 var runAuto = require('run-auto')
@@ -100,6 +101,15 @@ module.exports = function (request, response) {
         docx(data.loaded.form, [], options).generate({type: 'nodebuffer'})
       )
       return
+    } else if (request.query.format === 'md') {
+      let options = {digest: digest}
+      response.setHeader('Content-Type', 'text/plain')
+      response.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${digest}.md"`
+      )
+      response.end(markdown(data.loaded.form, [], options))
+      return
     } else if (request.query.format === 'json') {
       response.setHeader('Content-Type', 'application/json')
       response.setHeader(
@@ -118,6 +128,7 @@ module.exports = function (request, response) {
     }
     var formHREF = formFrontEndPath(digest)
     var docxHREF = formHREF + '?format=docx'
+    var mdHREF = formHREF + '?format=md'
     var jsonHREF = formHREF + '?format=json'
     response.end(html`
     ${preamble()}
@@ -129,6 +140,7 @@ module.exports = function (request, response) {
   ${lockedHint(data.form)}
   <header>
     <a class="button docx" href="${docxHREF}">Download .docx</a>
+    <a class="button markdown" href="${mdHREF}">Download .md</a>
     <a class=button href="${jsonHREF}">Download .json</a>
     <a class=button href=/edit?from=${digest}>Edit</a>
   </header>

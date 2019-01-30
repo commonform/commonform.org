@@ -5,6 +5,7 @@ var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
+var markdown = require('commonform-markdown')
 var methodNotAllowed = require('./method-not-allowed')
 var notFound = require('./not-found')
 var publicationFrontEndPath = require('../paths/front-end/publication')
@@ -73,7 +74,7 @@ module.exports = function (request, response) {
     }
     var publication = data.publication
     if (request.query.format === 'docx') {
-      var options = Object.assign(
+      let options = Object.assign(
         {},
         DOCX_OPTIONS,
         {
@@ -91,6 +92,20 @@ module.exports = function (request, response) {
       )
       response.end(
         docx(data.loaded.form, [], options).generate({type: 'nodebuffer'})
+      )
+      return
+    } else if (request.query.format === 'md') {
+      let options = {
+        title: publication.title || publication.project,
+        edition: publication.edition
+      }
+      response.setHeader('Content-Type', 'text/plain')
+      response.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${publication.project} ${publication.edition}.md"`
+      )
+      response.end(
+        markdown(data.loaded.form, [], options)
       )
       return
     } else if (request.query.format === 'json') {
@@ -113,6 +128,7 @@ module.exports = function (request, response) {
       publisher, project, edition
     )
     var docxHREF = publicationHREF + '?format=docx'
+    var mdHREF = publicationHREF + '?format=md'
     var jsonHREF = publicationHREF + '?format=json'
     var editHREF = '/edit?' + querystring.stringify({
       publisher, project, edition
@@ -135,6 +151,7 @@ module.exports = function (request, response) {
     ${editionWarnings(edition, data.project)}
     ${lockedHint(data.form)}
     <a class="button docx" href="${docxHREF}">Download .docx</a>
+    <a class="button markdown" href="${mdHREF}">Download .md</a>
     <a class=button href="${jsonHREF}">Download .json</a>
     <a class=button href="${editHREF}">Edit</a>
     <a class=button href=/forms/${data.publication.digest}>Analyze</a>
