@@ -48,6 +48,7 @@ module.exports = function (request, response) {
         runParallel(
           publications
             .sort(reviewersEditionCompare)
+            .reverse()
             .map(function (edition) {
               return function (done) {
                 get.concat({
