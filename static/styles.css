@@ -167,7 +167,7 @@ a:hover {
   border-top: none;
   box-sizing: border-box;
   display: inline-block;
-  width: 100%;
+  max-width: 10rem;
 }
 
 .commonform .child-link {
