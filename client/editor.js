@@ -1327,26 +1327,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
       }
     }
     section.appendChild(selector)
-    if (child.heading) {
-      var heading = document.createElement('h1')
-      heading.className = 'heading'
-      heading.appendChild(document.createTextNode(child.heading || ''))
-      if (!fixed) {
-        heading.contentEditable = true
-        heading.spellcheck = true
-        heading.onkeydown = function (event) {
-          if (event.which === 13 || event.keyCode === 13) this.blur()
-        }
-        heading.onblur = function (event) {
-          update({
-            action: 'heading',
-            path: childPath,
-            heading: event.target.textContent
-          })
-        }
-      }
-      section.appendChild(heading)
-    } else if (selected && !fixed) {
+    if (!child.heading && selected && !fixed) {
       var headingButton = document.createElement('button')
       headingButton.appendChild(document.createTextNode(WHITE_FLAG_CHARACTER))
       headingButton.onclick = function () {
@@ -1476,6 +1457,26 @@ function renderSeries (depth, offset, path, series, tree, options) {
           section.appendChild(expandButton)
         }
       }
+    }
+    if (child.heading) {
+      var heading = document.createElement('h1')
+      heading.className = 'heading'
+      heading.appendChild(document.createTextNode(child.heading || ''))
+      if (!fixed) {
+        heading.contentEditable = true
+        heading.spellcheck = true
+        heading.onkeydown = function (event) {
+          if (event.which === 13 || event.keyCode === 13) this.blur()
+        }
+        heading.onblur = function (event) {
+          update({
+            action: 'heading',
+            path: childPath,
+            heading: event.target.textContent
+          })
+        }
+      }
+      section.appendChild(heading)
     }
     var annotations = state.annotations
       .filter(function (annotation) {
