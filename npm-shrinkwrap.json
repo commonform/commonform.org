@@ -1088,9 +1088,9 @@
       }
     },
     "commonform-docx": {
-      "version": "1.3.5",
-      "resolved": "https://registry.npmjs.org/commonform-docx/-/commonform-docx-1.3.5.tgz",
-      "integrity": "sha512-vJEuhKqWUuqqX2vSbKMvpqGsH9KjH3GtmUE3RJpJXuyo8nlevFy6O8eDefj6Vn9+H89C4MqkFAw2N9h1rwhARA==",
+      "version": "1.4.0",
+      "resolved": "https://registry.npmjs.org/commonform-docx/-/commonform-docx-1.4.0.tgz",
+      "integrity": "sha512-MYXT7xXYmXNMdNsckwKytJaXo8uH0ydDA/hAAruXN/J/VwZRvIRVb+WBQ5e2yXGKPTZvggl2OueR/w4KyL/aQw==",
       "requires": {
         "commonform-flatten": "^0.8.0",
         "commonform-hash": "^0.4.3",
