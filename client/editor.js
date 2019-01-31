@@ -1137,13 +1137,7 @@ function renderComponent (component, path) {
         if (substituted === undefined) nullOption.selected = true
         select.appendChild(nullOption)
         Object.keys(state.analysis.definitions)
-          .sort(function lowerCaseAlphabetical (a, b) {
-            var aLower = a.toLowerCase()
-            var bLower = b.toLowerCase()
-            if (aLower < bLower) return -1
-            if (aLower > bLower) return 1
-            return 0
-          })
+          .sort()
           .forEach(function (term) {
             var option = document.createElement('option')
             option.value = term
@@ -1161,7 +1155,7 @@ function renderComponent (component, path) {
     var headings = document.createElement('ul')
     headings.className = 'substitutions headings'
     headingsToResolve
-      .sort()
+      .sort(lowerCaseAlphabetical)
       .forEach(function (original) {
         var substituted = component.substitutions.headings[original]
         var li = document.createElement('li')
@@ -1175,13 +1169,15 @@ function renderComponent (component, path) {
             substituted: this.value
           })
         }
-        Object.keys(state.analysis.headings).forEach(function (heading) {
-          var option = document.createElement('option')
-          option.value = heading
-          option.appendChild(document.createTextNode(heading))
-          if (heading === substituted) option.selected = true
-          select.appendChild(option)
-        })
+        Object.keys(state.analysis.headings)
+          .sort(lowerCaseAlphabetical)
+          .forEach(function (heading) {
+            var option = document.createElement('option')
+            option.value = heading
+            option.appendChild(document.createTextNode(heading))
+            if (heading === substituted) option.selected = true
+            select.appendChild(option)
+          })
         var nullOption = document.createElement('option')
         nullOption.value = ''
         nullOption.appendChild(document.createTextNode('(Leave undefined.)'))
@@ -1194,6 +1190,14 @@ function renderComponent (component, path) {
   }
 
   return fragment
+
+  function lowerCaseAlphabetical (a, b) {
+    var aLower = a.toLowerCase()
+    var bLower = b.toLowerCase()
+    if (aLower < bLower) return -1
+    if (aLower > bLower) return 1
+    return 0
+  }
 }
 
 function renderContents (depth, path, form, tree, options) {
