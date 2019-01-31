@@ -1131,13 +1131,21 @@ function renderComponent (component, path) {
             substituted: this.value
           })
         }
-        Object.keys(state.analysis.definitions).forEach(function (term) {
-          var option = document.createElement('option')
-          option.value = term
-          option.appendChild(document.createTextNode(term))
-          if (term === substituted) option.selected = true
-          select.appendChild(option)
-        })
+        Object.keys(state.analysis.definitions)
+          .sort(function lowerCaseAlphabetical (a, b) {
+            var aLower = a.toLowerCase()
+            var bLower = b.toLowerCase()
+            if (aLower < bLower) return -1
+            if (aLower > bLower) return 1
+            return 0
+          })
+          .forEach(function (term) {
+            var option = document.createElement('option')
+            option.value = term
+            option.appendChild(document.createTextNode(term))
+            if (term === substituted) option.selected = true
+            select.appendChild(option)
+          })
         var nullOption = document.createElement('option')
         nullOption.value = ''
         nullOption.appendChild(document.createTextNode('(Leave undefined.)'))
