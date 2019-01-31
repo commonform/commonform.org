@@ -808,7 +808,6 @@ function update (message) {
     if (!isValidForm(clone)) return
     state.form = clone
   } else if (action === 'delete content') {
-    state.changed = true
     let path = message.path
     let offset = message.offset
     let length = message.length
@@ -817,6 +816,7 @@ function update (message) {
     let spliceArguments = [offset, length]
     contentArray.splice.apply(contentArray, spliceArguments)
     if (!isValidForm(clone)) return
+    state.changed = true
     state.form = clone
   } else if (action === 'toggle annotator') {
     var annotator = message.annotator.annotator
@@ -824,19 +824,18 @@ function update (message) {
     if (index === -1) state.annotators.push(annotator)
     else state.annotators.splice(index, 1)
   } else if (action === 'toggle conspicuous') {
-    state.changed = true
     let path = message.path
     let child = keyarrayGet(state.form, path)
     if (child.form.conspicuous) delete child.form.conspicuous
     else child.form.conspicuous = 'yes'
-  } else if (action === 'toggle update') {
     state.changed = true
+  } else if (action === 'toggle update') {
     let path = message.path
     let component = keyarrayGet(state.form, path)
     if (component.upgrade) delete component.upgrade
     else component.upgrade = 'yes'
-  } else if (action === 'substitute term') {
     state.changed = true
+  } else if (action === 'substitute term') {
     let path = message.path
     let component = keyarrayGet(state.form, path)
     let original = message.original
@@ -846,8 +845,8 @@ function update (message) {
     } else {
       component.substitutions.terms[original] = substituted
     }
-  } else if (action === 'substitute heading') {
     state.changed = true
+  } else if (action === 'substitute heading') {
     let path = message.path
     let component = keyarrayGet(state.form, path)
     let original = message.original
@@ -857,8 +856,8 @@ function update (message) {
     } else {
       component.substitutions.headings[original] = substituted
     }
-  } else if (action === 'replace with component') {
     state.changed = true
+  } else if (action === 'replace with component') {
     let path = message.path
     let child = keyarrayGet(state.form, path)
     let component = message.component || {
@@ -871,8 +870,8 @@ function update (message) {
     if (child.heading) component.heading = child.heading
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1, component)
-  } else if (action === 'replace with form') {
     state.changed = true
+  } else if (action === 'replace with form') {
     let path = message.path
     let currentChild = keyarrayGet(state.form, path)
     let form = message.form
@@ -880,6 +879,7 @@ function update (message) {
     if (currentChild.heading) newChild.heading = currentChild.heading
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1, newChild)
+    state.changed = true
   } else if (action === 'expand component') {
     let path = message.path
     var already = state.expanded.some(function (element) {
@@ -893,29 +893,28 @@ function update (message) {
     })
     if (index) state.expanded.splice(index, 1)
   } else if (action === 'load form') {
-    state.changed = true
     state.form = message.form
     state.expanded = []
     clearSelected()
-  } else if (action === 'add signature page') {
     state.changed = true
+  } else if (action === 'add signature page') {
     state.signaturePages.push({
       entities: [],
       information: {}
     })
-  } else if (action === 'delete signature page') {
     state.changed = true
+  } else if (action === 'delete signature page') {
     let pageIndex = message.pageIndex
     state.signaturePages.splice(pageIndex, 1)
-  } else if (action === 'toggle same page') {
     state.changed = true
+  } else if (action === 'toggle same page') {
     let pageIndex = message.pageIndex
     let signaturePages = state.signaturePages
     let page = signaturePages[pageIndex]
     if (page.samePage) delete page.samePage
     else page.samePage = true
-  } else if (action === 'require signature page information') {
     state.changed = true
+  } else if (action === 'require signature page information') {
     let pageIndex = message.pageIndex
     let key = message.key
     let page = state.signaturePages[pageIndex]
@@ -923,15 +922,15 @@ function update (message) {
     if (!information.hasOwnProperty(key)) {
       information[key] = null
     }
-  } else if (action === 'do not require signature page information') {
     state.changed = true
+  } else if (action === 'do not require signature page information') {
     let pageIndex = message.pageIndex
     let key = message.key
     let page = state.signaturePages[pageIndex]
     let information = page.information
     delete information[key]
-  } else if (action === 'add signature page entity') {
     state.changed = true
+  } else if (action === 'add signature page entity') {
     let pageIndex = message.pageIndex
     let page = state.signaturePages[pageIndex]
     page.entities.push({
@@ -940,14 +939,14 @@ function update (message) {
       jurisdiction: null,
       by: null
     })
-  } else if (action === 'delete signature page entity') {
     state.changed = true
+  } else if (action === 'delete signature page entity') {
     let pageIndex = message.pageIndex
     let entityIndex = message.entityIndex
     let page = state.signaturePages[pageIndex]
     page.entities.splice(entityIndex, 1)
-  } else if (action === 'prefill signature page entity') {
     state.changed = true
+  } else if (action === 'prefill signature page entity') {
     let pageIndex = message.pageIndex
     let entityIndex = message.entityIndex
     let page = state.signaturePages[pageIndex]
@@ -956,42 +955,43 @@ function update (message) {
     let value = message.value
     if (value) entity[key] = value
     else delete entity[key]
-  } else if (action === 'set signature page term') {
     state.changed = true
+  } else if (action === 'set signature page term') {
     let pageIndex = message.pageIndex
     let page = state.signaturePages[pageIndex]
     let term = message.term
     if (message.term) page.term = term
     else delete page.term
-  } else if (action === 'set signature page header') {
     state.changed = true
+  } else if (action === 'set signature page header') {
     let pageIndex = message.pageIndex
     let page = state.signaturePages[pageIndex]
     let header = message.header
     if (header) page.header = message.header
     else delete page.header
-  } else if (action === 'set conformed signature') {
     state.changed = true
+  } else if (action === 'set conformed signature') {
     let pageIndex = message.pageIndex
     let page = state.signaturePages[pageIndex]
     let value = message.value
     if (value) page.conformed = value
     else delete page.conformed
-  } else if (action === 'set signature page name') {
     state.changed = true
+  } else if (action === 'set signature page name') {
     let pageIndex = message.pageIndex
     let page = state.signaturePages[pageIndex]
     let value = message.value
     if (value) page.name = value
     else delete page.name
-  } else if (action === 'prefill signature page information') {
     state.changed = true
+  } else if (action === 'prefill signature page information') {
     let pageIndex = message.pageIndex
     let page = state.signaturePages[pageIndex]
     let value = message.value
     let key = message.key
     if (value) page.information[key] = value
     else delete page.information[key]
+    state.changed = true
   }
 
   if (!message.doNotComputeState) {
