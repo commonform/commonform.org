@@ -776,10 +776,11 @@ function update (message) {
     let oldPath = state.selected
     let newPath = message.path
     let moving = keyarrayGet(clone, oldPath)
-    let oldParent = keyarrayGet(clone, oldPath.slice(0, -2))
-    oldParent.content.splice(oldPath[oldPath.length - 1], 1)
+    // CAVEAT: Insert under new parent _before_ removing from old.
     let newParent = keyarrayGet(clone, newPath.slice(0, -2))
     newParent.content.splice(newPath[newPath.length - 1], 0, moving)
+    let oldParent = keyarrayGet(clone, oldPath.slice(0, -2))
+    oldParent.content.splice(oldPath[oldPath.length - 1], 1)
     if (!isValidForm(clone)) return
     state.form = clone
     clearSelected()
