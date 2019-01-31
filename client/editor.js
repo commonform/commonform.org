@@ -1169,6 +1169,11 @@ function renderComponent (component, path) {
             substituted: this.value
           })
         }
+        var nullOption = document.createElement('option')
+        nullOption.value = ''
+        nullOption.appendChild(document.createTextNode('(Leave undefined.)'))
+        if (substituted === undefined) nullOption.selected = true
+        select.appendChild(nullOption)
         Object.keys(state.analysis.headings)
           .sort(lowerCaseAlphabetical)
           .forEach(function (heading) {
@@ -1178,11 +1183,6 @@ function renderComponent (component, path) {
             if (heading === substituted) option.selected = true
             select.appendChild(option)
           })
-        var nullOption = document.createElement('option')
-        nullOption.value = ''
-        nullOption.appendChild(document.createTextNode('(Leave undefined.)'))
-        if (substituted === undefined) nullOption.selected = true
-        select.appendChild(nullOption)
         li.appendChild(select)
         headings.appendChild(li)
       })
