@@ -757,7 +757,7 @@ function update (message) {
     let clone = JSON.parse(JSON.stringify(state.form))
     let parent = parentOfPath(path, clone)
     parent.content.splice(path[path.length - 1], 1)
-    if (!validate.form(clone, {allowComponents: true})) return
+    if (!isValidForm(clone)) return
     state.form = clone
     clearSelected()
   } else if (action === 'child') {
@@ -767,7 +767,7 @@ function update (message) {
     let parent = keyarrayGet(clone, path.slice(0, -2))
     let child = {form: {content: ['...']}}
     parent.content.splice(path[path.length - 1], 0, child)
-    if (!validate.form(clone, {allowComponents: true})) return
+    if (!isValidForm(clone)) return
     state.form = clone
     clearSelected()
   } else if (action === 'move') {
@@ -780,7 +780,7 @@ function update (message) {
     oldParent.content.splice(oldPath[oldPath.length - 1], 1)
     let newParent = keyarrayGet(clone, newPath.slice(0, -2))
     newParent.content.splice(newPath[newPath.length - 1], 0, moving)
-    if (!validate.form(clone, {allowComponents: true})) return
+    if (!isValidForm(clone)) return
     state.form = clone
     clearSelected()
   } else if (action === 'heading') {
@@ -805,7 +805,7 @@ function update (message) {
     }
     let spliceArguments = [offset, length].concat(parsed)
     contentArray.splice.apply(contentArray, spliceArguments)
-    if (!validate.form(clone, {allowComponents: true})) return
+    if (!isValidForm(clone)) return
     state.form = clone
   } else if (action === 'delete content') {
     state.changed = true
@@ -816,7 +816,7 @@ function update (message) {
     let contentArray = keyarrayGet(clone, path).content
     let spliceArguments = [offset, length]
     contentArray.splice.apply(contentArray, spliceArguments)
-    if (!validate.form(clone, {allowComponents: true})) return
+    if (!isValidForm(clone)) return
     state.form = clone
   } else if (action === 'toggle annotator') {
     var annotator = message.annotator.annotator
@@ -1000,10 +1000,15 @@ function update (message) {
   } else {
     setImmediate(renderAndMorph)
   }
+
   function renderAndMorph () {
     window.requestAnimationFrame(function () {
       morph(rendered, render())
     })
+  }
+
+  function isValidForm (form) {
+    return validate.form(form, {allowComponents: true})
   }
 }
 
