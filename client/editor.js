@@ -1131,6 +1131,11 @@ function renderComponent (component, path) {
             substituted: this.value
           })
         }
+        var nullOption = document.createElement('option')
+        nullOption.value = ''
+        nullOption.appendChild(document.createTextNode('(Leave undefined.)'))
+        if (substituted === undefined) nullOption.selected = true
+        select.appendChild(nullOption)
         Object.keys(state.analysis.definitions)
           .sort(function lowerCaseAlphabetical (a, b) {
             var aLower = a.toLowerCase()
@@ -1146,11 +1151,6 @@ function renderComponent (component, path) {
             if (term === substituted) option.selected = true
             select.appendChild(option)
           })
-        var nullOption = document.createElement('option')
-        nullOption.value = ''
-        nullOption.appendChild(document.createTextNode('(Leave undefined.)'))
-        if (substituted === undefined) nullOption.selected = true
-        select.appendChild(nullOption)
         li.appendChild(select)
         terms.appendChild(li)
       })
