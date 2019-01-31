@@ -754,7 +754,7 @@ function update (message) {
   } else if (action === 'delete') {
     state.changed = true
     let path = message.path
-    let clone = JSON.parse(JSON.stringify(state.form))
+    let clone = cloneForm()
     let parent = parentOfPath(path, clone)
     parent.content.splice(path[path.length - 1], 1)
     if (!isValidForm(clone)) return
@@ -763,7 +763,7 @@ function update (message) {
   } else if (action === 'child') {
     state.changed = true
     let path = message.path
-    let clone = JSON.parse(JSON.stringify(state.form))
+    let clone = cloneForm()
     let parent = keyarrayGet(clone, path.slice(0, -2))
     let child = {form: {content: ['...']}}
     parent.content.splice(path[path.length - 1], 0, child)
@@ -772,7 +772,7 @@ function update (message) {
     clearSelected()
   } else if (action === 'move') {
     state.changed = true
-    let clone = JSON.parse(JSON.stringify(state.form))
+    let clone = cloneForm()
     let oldPath = state.selected
     let newPath = message.path
     let moving = keyarrayGet(clone, oldPath)
@@ -796,7 +796,7 @@ function update (message) {
     let markup = message.markup
     let offset = message.offset
     let length = message.length
-    let clone = JSON.parse(JSON.stringify(state.form))
+    let clone = cloneForm()
     let contentArray = keyarrayGet(clone, path).content
     try {
       var parsed = parse(markup).form.content
@@ -812,7 +812,7 @@ function update (message) {
     let path = message.path
     let offset = message.offset
     let length = message.length
-    let clone = JSON.parse(JSON.stringify(state.form))
+    let clone = cloneForm()
     let contentArray = keyarrayGet(clone, path).content
     let spliceArguments = [offset, length]
     contentArray.splice.apply(contentArray, spliceArguments)
@@ -1006,6 +1006,10 @@ function update (message) {
     window.requestAnimationFrame(function () {
       morph(rendered, render())
     })
+  }
+
+  function cloneForm () {
+    return JSON.parse(JSON.stringify(state.form))
   }
 
   function isValidForm (form) {
