@@ -754,8 +754,11 @@ function update (message) {
   } else if (action === 'delete') {
     state.changed = true
     let path = message.path
-    let parent = parentOfPath(path)
+    let clone = JSON.parse(JSON.stringify(state.form))
+    let parent = parentOfPath(path, clone)
     parent.content.splice(path[path.length - 1], 1)
+    if (!validate.form(clone, {allowComponents: true})) return
+    state.form = clone
     clearSelected()
   } else if (action === 'child') {
     state.changed = true
@@ -1549,8 +1552,9 @@ function renderDropZone (effect, path) {
   return button
 }
 
-function parentOfPath (path) {
-  return keyarrayGet(state.form, path.slice(0, -2))
+function parentOfPath (path, form) {
+  form = form || state.form
+  return keyarrayGet(form, path.slice(0, -2))
 }
 
 var rendered
