@@ -10,10 +10,10 @@ module.exports = function (request, response) {
     return methodNotAllowed.apply(null, arguments)
   }
   var fields = ['password', 'publisher', 'description', 'project']
-  var data = {replyTo: []}
+  var data = { replyTo: [] }
   pump(
     request,
-    new Busboy({headers: request.headers})
+    new Busboy({ headers: request.headers })
       .on('field', function (name, value) {
         if (value && fields.includes(name)) {
           data[name] = value.trim().replace(/\r\n/g, '\n')

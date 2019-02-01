@@ -5,7 +5,7 @@ var tape = require('tape')
 
 tape.test('GET /', function (test) {
   server(function (port, closeServer) {
-    http.request({port: port})
+    http.request({ port: port })
       .once('response', function (response) {
         test.equal(
           response.statusCode, 200,

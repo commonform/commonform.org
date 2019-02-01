@@ -18,7 +18,7 @@ var tape = require('tape')
 
   tape.test(`GET ${pathForJSON}`, function (test) {
     server(function (port, closeServer) {
-      http.request({port, path: pathForJSON})
+      http.request({ port, path: pathForJSON })
         .once('response', function (response) {
           test.equal(
             response.statusCode, 200,
@@ -37,7 +37,7 @@ var tape = require('tape')
               test.equal(json.project, project, 'project')
               test.equal(json.edition, edition, 'edition')
               test.deepEqual(
-                json.form, {content: ['This is a test form.']}, 'form'
+                json.form, { content: ['This is a test form.'] }, 'form'
               )
               test.end()
               closeServer()
@@ -50,7 +50,7 @@ var tape = require('tape')
 
   tape.test(`GET ${pathForDOCX}`, function (test) {
     server(function (port, closeServer) {
-      http.request({port, path: pathForDOCX})
+      http.request({ port, path: pathForDOCX })
         .once('response', function (response) {
           test.equal(
             response.statusCode, 200,

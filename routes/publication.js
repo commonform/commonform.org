@@ -65,7 +65,7 @@ module.exports = function (request, response) {
       var clone = JSON.parse(JSON.stringify(data.form))
       loadComponents(clone, {}, function (error, form, resolutions) {
         if (error) return done(error)
-        done(null, {form, resolutions})
+        done(null, { form, resolutions })
       })
     }]
   }, function (error, data) {
@@ -91,7 +91,7 @@ module.exports = function (request, response) {
         `attachment; filename="${publication.project} ${publication.edition}.docx"`
       )
       response.end(
-        docx(data.loaded.form, [], options).generate({type: 'nodebuffer'})
+        docx(data.loaded.form, [], options).generate({ type: 'nodebuffer' })
       )
       return
     } else if (request.query.format === 'md') {
@@ -117,12 +117,12 @@ module.exports = function (request, response) {
       var combined = Object.assign(
         {},
         data.publication,
-        {form: data.form, loaded: data.loaded}
+        { form: data.form, loaded: data.loaded }
       )
       response.end(JSON.stringify(combined))
       return
     }
-    var formOptions = {publisher, project, edition}
+    var formOptions = { publisher, project, edition }
     response.setHeader('Content-Type', 'text/html; charset=UTF-8')
     var publicationHREF = publicationFrontEndPath(
       publisher, project, edition

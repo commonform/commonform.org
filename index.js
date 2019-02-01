@@ -8,7 +8,7 @@ module.exports = function onRequest (request, response) {
   // Logging
   var log = request.log
   var id = uuid.v4()
-  request.log = log.child({request: id})
+  request.log = log.child({ request: id })
   request.log.info(request)
   request.id = id
   response.once('finish', function () {

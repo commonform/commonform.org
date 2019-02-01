@@ -42,7 +42,7 @@ module.exports = function (request, response) {
     loaded: ['form', function (data, done) {
       loadComponents(data.form, {}, function (error, form, resolutions) {
         if (error) return done(error)
-        done(null, {form, resolutions})
+        done(null, { form, resolutions })
       })
     }],
     publications: function (done) {
@@ -90,7 +90,7 @@ module.exports = function (request, response) {
     }
     if (request.query.format === 'docx') {
       let options = Object.assign(
-        {}, DOCX_OPTIONS, {digest: digest}
+        {}, DOCX_OPTIONS, { digest: digest }
       )
       response.setHeader('Content-Type', DOCX_CONTENT_TYPE)
       response.setHeader(
@@ -98,11 +98,11 @@ module.exports = function (request, response) {
         `attachment; filename="${digest}.docx"`
       )
       response.end(
-        docx(data.loaded.form, [], options).generate({type: 'nodebuffer'})
+        docx(data.loaded.form, [], options).generate({ type: 'nodebuffer' })
       )
       return
     } else if (request.query.format === 'md') {
-      let options = {digest: digest}
+      let options = { digest: digest }
       response.setHeader('Content-Type', 'text/plain')
       response.setHeader(
         'Content-Disposition',

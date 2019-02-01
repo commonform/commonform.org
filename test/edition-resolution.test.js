@@ -10,7 +10,7 @@ var tape = require('tape')
 
   tape.test(`GET ${latest}`, function (test) {
     server(function (port, closeServer) {
-      http.request({port: port, path: latest})
+      http.request({ port: port, path: latest })
         .once('response', function (response) {
           test.equal(
             response.statusCode, 303,
@@ -30,7 +30,7 @@ var tape = require('tape')
 
   tape.test(`GET ${current}`, function (test) {
     server(function (port, closeServer) {
-      http.request({port: port, path: current})
+      http.request({ port: port, path: current })
         .once('response', function (response) {
           test.equal(
             response.statusCode, 303,

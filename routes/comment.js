@@ -11,10 +11,10 @@ module.exports = function (request, response) {
     'context', 'form', 'password', 'publisher', 'replyTo[]', 'text',
     'subscribe'
   ]
-  var data = {replyTo: []}
+  var data = { replyTo: [] }
   pump(
     request,
-    new Busboy({headers: request.headers})
+    new Busboy({ headers: request.headers })
       .on('field', function (name, value) {
         if (value && fields.includes(name)) {
           value = value.trim().replace(/\r\n/g, '\n')
@@ -42,7 +42,7 @@ module.exports = function (request, response) {
           method: 'POST',
           host,
           path: '/annotations',
-          headers: {'Content-Type': 'application/json'},
+          headers: { 'Content-Type': 'application/json' },
           auth
         })
           .once('response', function (response) {
@@ -57,13 +57,13 @@ module.exports = function (request, response) {
                 .once('response', function (response) {
                   var statusCode = response.statusCode
                   if (statusCode !== 204 && statusCode === 201) {
-                    request.log.error({statusCode, path})
+                    request.log.error({ statusCode, path })
                   }
                   redirect()
                 })
                 .end()
             } else {
-              request.log.error({statusCode, path: '/annotations'})
+              request.log.error({ statusCode, path: '/annotations' })
             }
           })
           .end(JSON.stringify(body))

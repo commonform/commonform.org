@@ -55,12 +55,12 @@ function overrideButtonClickHandlers (className) {
       if (className === 'markdown') {
         var blob = new Blob(
           [markdown(window.loaded.form, blanks, options)],
-          {type: 'text/plain;charset=utf-8'}
+          { type: 'text/plain;charset=utf-8' }
         )
         filesaver(blob, title + '.md', true)
       } else {
         filesaver(
-          docx(window.loaded.form, blanks, options).generate({type: 'blob'}),
+          docx(window.loaded.form, blanks, options).generate({ type: 'blob' }),
           title + '.docx',
           true
         )

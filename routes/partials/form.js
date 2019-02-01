@@ -24,7 +24,7 @@ module.exports = function (form, loaded, options) {
     ${renderTableOfContents(loaded.form, loaded.resolutions)}
     <article class=commonform>
       ${renderForm(0, [], form, loaded.form, tree, loaded.resolutions, options)}
-      ${options.commentUI && renderCommentForm({form: digest, root: digest})}
+      ${options.commentUI && renderCommentForm({ form: digest, root: digest })}
     </article>
     ${scriptTag(form, loaded, options)}
   `

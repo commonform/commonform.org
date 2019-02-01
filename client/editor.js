@@ -29,10 +29,10 @@ var CIRCLE_MINUS = '⊖'
 var CIRCLE_PLUS = '⊕'
 
 var annotators = [
-  {name: 'structural errors', annotator: require('commonform-lint')},
-  {name: 'archaisms', annotator: require('commonform-archaic')},
-  {name: 'wordiness', annotator: require('commonform-wordy')},
-  {name: 'MSCD', annotator: require('commonform-mscd')}
+  { name: 'structural errors', annotator: require('commonform-lint') },
+  { name: 'archaisms', annotator: require('commonform-archaic') },
+  { name: 'wordiness', annotator: require('commonform-wordy') },
+  { name: 'MSCD', annotator: require('commonform-mscd') }
 ]
 
 if (window.publication.signaturePages) {
@@ -138,7 +138,7 @@ function computeState (done) {
           .then(function (form) {
             loadComponents(form, {}, function (error, loaded) {
               if (error) return done(error)
-              done(null, {component, loaded})
+              done(null, { component, loaded })
             })
           })
           .catch(done)
@@ -197,11 +197,11 @@ function renderOpenMenu () {
         window.alert(error.message)
       }
       if (json.hasOwnProperty('content')) {
-        update({action: 'load form', form: json})
+        update({ action: 'load form', form: json })
       } else if (json.hasOwnProperty('form')) {
-        update({action: 'load form', form: json.form})
+        update({ action: 'load form', form: json.form })
       } else if (json.hasOwnProperty('tree')) {
-        update({action: 'load form', form: json.tree})
+        update({ action: 'load form', form: json.tree })
       } else {
         window.alert('Not a Common Form project file.')
       }
@@ -238,7 +238,7 @@ function renderOptions () {
     var input = document.createElement('input')
     input.type = 'checkbox'
     input.onchange = function () {
-      update({action: 'toggle annotator', annotator: element})
+      update({ action: 'toggle annotator', annotator: element })
     }
     if (state.annotators.indexOf(element.annotator) !== -1) {
       input.checked = true
@@ -340,7 +340,7 @@ function renderSaveForm () {
           'https://' + state.repository +
           publicationRepositoryPath(publisher, project, edition)
         )
-        var body = {digest: state.tree.digest}
+        var body = { digest: state.tree.digest }
         if (notes) body.notes = notes.split(/(\r?\n){2}/)
         if (title) body.title = title.trim()
         if (state.signaturePages.length !== 0) {
@@ -463,7 +463,7 @@ function renderSaveForm () {
 }
 
 function renderAnnotationCounts () {
-  var counts = {info: 0, warn: 0, error: 0}
+  var counts = { info: 0, warn: 0, error: 0 }
   state.annotations.forEach(function (annotation) {
     counts[annotation.level]++
   })
@@ -537,7 +537,7 @@ function renderSignaturePages () {
   button.onclick = function (event) {
     event.preventDefault()
     event.stopPropagation()
-    update({action: 'add signature page'})
+    update({ action: 'add signature page' })
   }
   button.appendChild(document.createTextNode('Add Signature Page'))
   section.appendChild(button)
@@ -550,12 +550,12 @@ function renderSignaturePage (page, pageIndex) {
   var information = page.information || []
 
   var div = document.createElement('div')
-  div.className = classnames('page', {samePage: page.samePage})
+  div.className = classnames('page', { samePage: page.samePage })
 
   var samePageToggle = document.createElement('input')
   samePageToggle.type = 'checkbox'
   samePageToggle.onclick = function () {
-    update({action: 'toggle same page', pageIndex})
+    update({ action: 'toggle same page', pageIndex })
   }
   if (page.samePage) samePageToggle.checked = true
   var samePageLabel = document.createElement('label')
@@ -667,7 +667,7 @@ function renderSignaturePage (page, pageIndex) {
       var action = this.checked
         ? 'require signature page information'
         : 'do not require signature page information'
-      update({action, key, pageIndex})
+      update({ action, key, pageIndex })
     }
     label.appendChild(checkbox)
     label.appendChild(document.createTextNode('Require ' + display))
@@ -765,7 +765,7 @@ function update (message) {
     let path = message.path
     let clone = cloneForm()
     let parent = keyarrayGet(clone, path.slice(0, -2))
-    let child = {form: {content: ['...']}}
+    let child = { form: { content: ['...'] } }
     parent.content.splice(path[path.length - 1], 0, child)
     if (!isValidForm(clone)) return
     state.form = clone
@@ -867,7 +867,7 @@ function update (message) {
       publisher: 'kemitchell',
       project: 'placeholder-component',
       edition: '1e',
-      substitutions: {terms: {}, headings: {}}
+      substitutions: { terms: {}, headings: { } }
     }
     if (child.heading) component.heading = child.heading
     let parent = parentOfPath(path)
@@ -877,7 +877,7 @@ function update (message) {
     let path = message.path
     let currentChild = keyarrayGet(state.form, path)
     let form = message.form
-    let newChild = {form}
+    let newChild = { form }
     if (currentChild.heading) newChild.heading = currentChild.heading
     let parent = parentOfPath(path)
     parent.content.splice(path[path.length - 1], 1, newChild)
@@ -1014,7 +1014,7 @@ function update (message) {
   }
 
   function isValidForm (form) {
-    return validate.form(form, {allowComponents: true})
+    return validate.form(form, { allowComponents: true })
   }
 }
 
@@ -1334,7 +1334,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
     if (!fixed) {
       selector.onclick = function () {
         if (selected) {
-          update({action: 'deselect'})
+          update({ action: 'deselect' })
         } else {
           update({
             action: 'select',
@@ -1410,7 +1410,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
                   publisher,
                   project,
                   edition,
-                  substitutions: {terms: {}, headings: {}}
+                  substitutions: { terms: {}, headings: {} }
                 }
               })
             }
@@ -1526,7 +1526,7 @@ function renderSeries (depth, offset, path, series, tree, options) {
           childPath.concat('form'),
           expanded,
           merkleize(expanded),
-          {fixed: true}
+          { fixed: true }
         ))
       } else {
         section.appendChild(renderComponent(child, childPath))
@@ -1562,13 +1562,13 @@ function renderDropZone (effect, path) {
   var button = document.createElement('button')
   if (effect === 'child') {
     button.onclick = function () {
-      update({action: 'child', path: path})
+      update({ action: 'child', path: path })
       this.blur()
     }
     button.className = 'child-button'
   } else if (effect === 'move') {
     button.onclick = function (event) {
-      update({action: 'move', path: path})
+      update({ action: 'move', path: path })
       this.blur()
     }
     button.className = 'move-button'

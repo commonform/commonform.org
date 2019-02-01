@@ -88,8 +88,8 @@ ${footer()}
       <li>
         ${escape(project)}:
         <a href="${url}">editions</a>,
-        ${editionLink({publisher, project, edition: 'current'})},
-        ${editionLink({publisher, project, edition: 'latest'})}
+        ${editionLink({ publisher, project, edition: 'current' })},
+        ${editionLink({ publisher, project, edition: 'latest' })}
       </li>
     `
   }

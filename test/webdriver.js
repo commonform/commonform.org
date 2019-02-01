@@ -19,7 +19,7 @@ var webdriver = module.exports = require('webdriverio')
       browserName: 'chrome',
       chromeOptions: process.env.DISABLE_HEADLESS
         ? undefined
-        : {args: ['headless', '--disable-gpu']}
+        : { args: ['headless', '--disable-gpu'] }
     }
   })
   .init()

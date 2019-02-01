@@ -11,7 +11,7 @@ module.exports = function (test) {
   http.createServer()
     .on('request', function (request, response) {
       try {
-        pinoHTTP({logger: log})(request, response)
+        pinoHTTP({ logger: log })(request, response)
         handler(request, response)
       } catch (error) {
         console.error(error)

@@ -8,7 +8,7 @@ var footer = require('./partials/footer')
 var html = require('./html')
 var preamble = require('./partials/preamble')
 
-var DEFAULT_FORM = {content: ['Click to change text.']}
+var DEFAULT_FORM = { content: ['Click to change text.'] }
 
 module.exports = function (request, response) {
   if (request.method === 'GET') {
@@ -44,7 +44,7 @@ function getResponse (request, response) {
     }
   } else if (publisher && project && edition) {
     tasks.publication = function (done) {
-      if (digest) return done(null, {digest})
+      if (digest) return done(null, { digest })
       if (!publisher) return done()
       get.concat({
         url: 'https://' + process.env.REPOSITORY + publicationRepositoryPath(publisher, project, edition),

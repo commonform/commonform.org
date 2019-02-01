@@ -7,7 +7,7 @@ var tape = require('tape')
   var path = '/test/test/1e'
   tape.test(`GET ${path}`, function (test) {
     server(function (port, closeServer) {
-      http.request({port, path})
+      http.request({ port, path })
         .once('response', function (response) {
           test.equal(
             response.statusCode, 200,
@@ -41,7 +41,7 @@ var tape = require('tape')
   var path = `/edit?from=${digest}`
   tape.test(`GET ${path}`, function (test) {
     server(function (port, closeServer) {
-      http.request({port, path})
+      http.request({ port, path })
         .once('response', function (response) {
           test.equal(
             response.statusCode, 200,

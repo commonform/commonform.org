@@ -7,7 +7,7 @@ module.exports = function (string) {
 }
 
 function urls (string) {
-  return linkifyURLs(string, {attributes: {target: '_blank'}})
+  return linkifyURLs(string, { attributes: { target: '_blank' } })
 }
 
 function mentions (string) {
