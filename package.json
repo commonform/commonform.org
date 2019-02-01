@@ -11,7 +11,7 @@
     "simple-concat": "^1.0.0",
     "standard": "^11.0.1",
     "tape": "^4.9.2",
-    "webdriverio": "^5.4.8"
+    "webdriverio": "^5.4.9"
   },
   "scripts": {
     "build": "npm run build:editor && npm run build:download",

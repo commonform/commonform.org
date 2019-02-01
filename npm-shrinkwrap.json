@@ -7040,9 +7040,9 @@
       "dev": true
     },
     "webdriver": {
-      "version": "5.4.8",
-      "resolved": "https://registry.npmjs.org/webdriver/-/webdriver-5.4.8.tgz",
-      "integrity": "sha512-wT3KPzeqlKFYKYutc762kwQGbLLVvsXD/GMzQFb8ZgXNwE9uP18ZiCS+NRJS12sUpzfuFHOgZnVxNq/dGy0jjw==",
+      "version": "5.4.9",
+      "resolved": "https://registry.npmjs.org/webdriver/-/webdriver-5.4.9.tgz",
+      "integrity": "sha512-NUKPgdOl8H6sBdTUd4IogiE3pV95VDH9BgPTcOEAEQctyVtTZwxtONod6s0TzZGnmJ9YdqvXGeLaMhjTlKiDTA==",
       "dev": true,
       "requires": {
         "@wdio/config": "^5.4.6",
@@ -7053,9 +7053,9 @@
       }
     },
     "webdriverio": {
-      "version": "5.4.8",
-      "resolved": "https://registry.npmjs.org/webdriverio/-/webdriverio-5.4.8.tgz",
-      "integrity": "sha512-b22ucxlDVv4dob+AVQdjrPpTNLLz8T9uxY6eLT6O+Cqyntun3sVDpPBaDEzcISjZSEjvte7t4ON+6aMAbNXmQA==",
+      "version": "5.4.9",
+      "resolved": "https://registry.npmjs.org/webdriverio/-/webdriverio-5.4.9.tgz",
+      "integrity": "sha512-bU5E93X57ldZOoY2GZUyxak92RJoxLj1Z6q3C9pmU/tcGfOBUYJZH9v0rorALcHSD9qKvcmNVIq/wm7TVVUHhQ==",
       "dev": true,
       "requires": {
         "@wdio/config": "^5.4.6",
@@ -7067,7 +7067,7 @@
         "lodash.zip": "^4.2.0",
         "rgb2hex": "^0.1.0",
         "serialize-error": "^3.0.0",
-        "webdriver": "^5.4.8"
+        "webdriver": "^5.4.9"
       }
     },
     "whatwg-fetch": {
