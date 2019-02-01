@@ -831,9 +831,9 @@
       "optional": true
     },
     "capitalize": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/capitalize/-/capitalize-1.0.0.tgz",
-      "integrity": "sha1-3IAsWAruEBkpAg0soUtMqKCuRL4="
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/capitalize/-/capitalize-2.0.0.tgz",
+      "integrity": "sha512-HwGrAbSn44Tm5Nz+m02oQHf+9y771rmb/cTbXFcoADy29LFRCj4PhWBT54qxfY2HJBWBplwx17Pd4ek6OFbr/Q=="
     },
     "caseless": {
       "version": "0.12.0",
@@ -4683,6 +4683,13 @@
         "indefinite-article": "0.0.2",
         "string-repeat": "^1.1.1",
         "xml-escape": "^1.0.0"
+      },
+      "dependencies": {
+        "capitalize": {
+          "version": "1.0.0",
+          "resolved": "https://registry.npmjs.org/capitalize/-/capitalize-1.0.0.tgz",
+          "integrity": "sha1-3IAsWAruEBkpAg0soUtMqKCuRL4="
+        }
       }
     },
     "optimist": {
