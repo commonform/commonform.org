@@ -3847,9 +3847,9 @@
       }
     },
     "linkify-urls": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/linkify-urls/-/linkify-urls-2.0.0.tgz",
-      "integrity": "sha512-SmZP8SIqsxNKfYol5ZlLkiNGhx7M9pZr+pDzC5wabImog7bXFqo2V1Q0eRJloVFVwfE9pAh1WZHk6mwLgyefwQ==",
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/linkify-urls/-/linkify-urls-3.0.0.tgz",
+      "integrity": "sha512-hYOB5p3G2t8U9PXigra9uwzAeE6NzVjU8NCnNgXWMRMzG1jfS7uJs1avXBEMUw6ru12m2vs+7GJ5/MPsReUNBw==",
       "requires": {
         "create-html-element": "^2.0.0"
       }
