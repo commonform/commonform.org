@@ -63,7 +63,7 @@
     "ooxml-signature-pages": "^2.0.1",
     "outline-numbering": "^1.0.2",
     "pino": "^5.11.1",
-    "pino-http": "^3.2.2",
+    "pino-http": "^4.1.0",
     "pump": "^3.0.0",
     "reviewers-edition-compare": "^1.0.5",
     "reviewers-edition-spell": "^2.0.0",
