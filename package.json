@@ -46,7 +46,7 @@
     "commonform-substitute": "^1.0.1",
     "commonform-validate": "^1.0.1",
     "commonform-wordy": "^1.0.0",
-    "concat-stream": "^1.6.2",
+    "concat-stream": "^2.0.0",
     "docx-content-type": "^1.0.0",
     "doubleplus-numbers": "^0.2.1",
     "ecb": "^1.0.0",
