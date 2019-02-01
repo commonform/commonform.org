@@ -27,7 +27,7 @@
     "outdated": "npm outdated | tee outdated.log"
   },
   "dependencies": {
-    "busboy": "^0.2.14",
+    "busboy": "^0.3.0",
     "capitalize": "^1.0.0",
     "classnames": "^2.2.6",
     "commonform-analyze": "^3.0.0",
