@@ -5007,12 +5007,19 @@
       }
     },
     "pino-http": {
-      "version": "4.1.0",
-      "resolved": "https://registry.npmjs.org/pino-http/-/pino-http-4.1.0.tgz",
-      "integrity": "sha512-IRmQMLFK2M/N05T+yitm7IL1duTjs5YlsfVCV6Pm5akFl6mIbr/fx9K2F4JZtEiwRFfyGb1A9MRJ/YhKd+3TUw==",
+      "version": "4.2.0",
+      "resolved": "https://registry.npmjs.org/pino-http/-/pino-http-4.2.0.tgz",
+      "integrity": "sha512-yLOpH8fwnUJ3n++QmjS9HtxooJN8OKKcbbW+deRh7GqNHyY5+M9ehmH1X69pY+vuCxBY6hKGJGO2wmHG6OEmDQ==",
       "requires": {
         "pino": "^5.0.0",
-        "pino-std-serializers": "^2.1.0"
+        "pino-std-serializers": "^2.4.0"
+      },
+      "dependencies": {
+        "pino-std-serializers": {
+          "version": "2.4.1",
+          "resolved": "https://registry.npmjs.org/pino-std-serializers/-/pino-std-serializers-2.4.1.tgz",
+          "integrity": "sha512-v/JglhO0aFcvkMV9VUxhgyuJo8K1si857Ww86Tx8H2cjC/kp0ndzzcF6Vbxr4RgKFYJdHfLVpEuD55znMZuxnw=="
+        }
       }
     },
     "pino-std-serializers": {
