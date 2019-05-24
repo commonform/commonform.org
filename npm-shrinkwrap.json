@@ -1212,27 +1212,12 @@
       }
     },
     "commonform-markup-parse": {
-      "version": "0.4.2",
-      "resolved": "https://registry.npmjs.org/commonform-markup-parse/-/commonform-markup-parse-0.4.2.tgz",
-      "integrity": "sha512-qR2X8VNkNqRrMJZJO3jW8sNdSJtyabFq5oPEwocPCm5sfQMcHHaTAK0WpFeKnJrb5DgkE4Qb70tr1xCThIsNqg==",
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/commonform-markup-parse/-/commonform-markup-parse-1.1.0.tgz",
+      "integrity": "sha512-2TpLH7ZcMIkgMTv879wVoDsvxIqVfwRawmFKr7btMxxm9XEW7u6oK0l2jKOxNH1typTvP70n2EUHtFtrnor7hQ==",
       "requires": {
-        "commonform-fix-strings": "^0.2.2",
+        "commonform-fix-strings": "^1.0.0",
         "string-repeat": "^1.1.1"
-      },
-      "dependencies": {
-        "commonform-fix-strings": {
-          "version": "0.2.5",
-          "resolved": "https://registry.npmjs.org/commonform-fix-strings/-/commonform-fix-strings-0.2.5.tgz",
-          "integrity": "sha1-1pgi2sN5dmlMnKITs/IRE/hk2E4=",
-          "requires": {
-            "commonform-predicate": "^0.4.3"
-          }
-        },
-        "commonform-predicate": {
-          "version": "0.4.4",
-          "resolved": "https://registry.npmjs.org/commonform-predicate/-/commonform-predicate-0.4.4.tgz",
-          "integrity": "sha1-3UH9J90UEwFJm2ccyLfH5RwQF/c="
-        }
       }
     },
     "commonform-markup-stringify": {
