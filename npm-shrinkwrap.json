@@ -1415,11 +1415,6 @@
         }
       }
     },
-    "commonform-markup-stringify": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/commonform-markup-stringify/-/commonform-markup-stringify-1.0.0.tgz",
-      "integrity": "sha1-MdswYVxArKoAfViABWUS/Kq5pZ8="
-    },
     "commonform-merkleize": {
       "version": "0.3.2",
       "resolved": "https://registry.npmjs.org/commonform-merkleize/-/commonform-merkleize-0.3.2.tgz",
