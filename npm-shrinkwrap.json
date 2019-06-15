@@ -289,11 +289,6 @@
       "integrity": "sha1-fajPLiZijtcygDWB/SH2fKzS7uw=",
       "dev": true
     },
-    "array-find": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/array-find/-/array-find-1.0.0.tgz",
-      "integrity": "sha1-bI4obRHtdoMn+OYuzuhzU8o+eLg="
-    },
     "array-find-index": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/array-find-index/-/array-find-index-1.0.2.tgz",
@@ -1444,23 +1439,11 @@
       }
     },
     "commonform-lint": {
-      "version": "3.0.0",
-      "resolved": "https://registry.npmjs.org/commonform-lint/-/commonform-lint-3.0.0.tgz",
-      "integrity": "sha512-RTnVZ9q7rBRelLjOSrrFXdMYuo1wz5rvn80+TzOhWgWBL3tHlkbkI6z7FVK4GKQFfJ/pBDW3097AbNZBcsJuxg==",
+      "version": "3.0.2",
+      "resolved": "https://registry.npmjs.org/commonform-lint/-/commonform-lint-3.0.2.tgz",
+      "integrity": "sha512-l97tqGhIJhDgZtRVwDvH76u6a5QR7sGXkV37TM7NVsUe3zkVxeAHfXbrUnwOxxSmqvbdLcYVBuQGbAQqUjWKSA==",
       "requires": {
-        "commonform-analyze": "^3.0.0"
-      },
-      "dependencies": {
-        "commonform-analyze": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/commonform-analyze/-/commonform-analyze-3.0.0.tgz",
-          "integrity": "sha512-Nj4qRJIHJi9dypwXkG9cgS4gqQXTPxjg9aeVt+bPejufcLUnef3ei81KwFcup45lT8RgAv4oENAgub6AfLBweQ==",
-          "requires": {
-            "array-find": "^1.0.0",
-            "commonform-predicate": "^2.0.0",
-            "stringify-clone": "^2.0.0"
-          }
-        }
+        "commonform-analyze": "^4.0.0"
       }
     },
     "commonform-load-components": {
@@ -1559,11 +1542,6 @@
           }
         }
       }
-    },
-    "commonform-predicate": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/commonform-predicate/-/commonform-predicate-2.0.0.tgz",
-      "integrity": "sha512-HqdTSpSusxkedHDRTiaqwXhNlspYHiioQLJPYE3PgbU/WaZGdgXI21Fjz2FRrhNdiolarQGANAK1E9y2ul1hBw=="
     },
     "commonform-prepare-blanks": {
       "version": "1.0.2",
@@ -6950,11 +6928,6 @@
       "requires": {
         "escape-goat": "^1.1.0"
       }
-    },
-    "stringify-clone": {
-      "version": "2.0.1",
-      "resolved": "https://registry.npmjs.org/stringify-clone/-/stringify-clone-2.0.1.tgz",
-      "integrity": "sha512-3C9Ri/ytPQdLDNtNDot9nhdajlp0pE3Xb9gd/c4/37UiU8/Qo0WFgTbT0g0ZXURE5YaE0yvIwI208fvLeGPrTw=="
     },
     "stringify-object": {
       "version": "3.3.0",

@@ -32,7 +32,7 @@
     "commonform-diff": "^1.0.2",
     "commonform-docx": "^5.0.2",
     "commonform-group-series": "^2.0.0",
-    "commonform-lint": "^3.0.0",
+    "commonform-lint": "^3.0.2",
     "commonform-load-components": "^1.3.1",
     "commonform-merkleize": "^0.3.2",
     "commonform-mscd": "^0.1.3",
