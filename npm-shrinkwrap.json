@@ -5142,21 +5142,14 @@
       }
     },
     "ooxml-signature-pages": {
-      "version": "3.0.0",
-      "resolved": "https://registry.npmjs.org/ooxml-signature-pages/-/ooxml-signature-pages-3.0.0.tgz",
-      "integrity": "sha512-6OuQ1DcTfiJcoNmF4rpyWaH85WYNkT8/4PHdqmTcKQty7/B9KUjZrp389oay4TBF9CKbM+pfAU1/GucDT+mFXA==",
+      "version": "3.0.2",
+      "resolved": "https://registry.npmjs.org/ooxml-signature-pages/-/ooxml-signature-pages-3.0.2.tgz",
+      "integrity": "sha512-1z9HVxpKVyk3m14nscrW2XQIn2TC9+7AVy8oBoMdlOmjuT7hMDjxUoaw80AGQ+VkUu9kJ1pRrLUMkmy92NTF6A==",
       "requires": {
-        "capitalize": "^1.0.0",
+        "capitalize": "^2.0.0",
         "indefinite-article": "0.0.2",
         "string-repeat": "^1.1.1",
         "xml-escape": "^1.0.0"
-      },
-      "dependencies": {
-        "capitalize": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/capitalize/-/capitalize-1.0.0.tgz",
-          "integrity": "sha1-3IAsWAruEBkpAg0soUtMqKCuRL4="
-        }
       }
     },
     "optimist": {

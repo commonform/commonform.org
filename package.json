@@ -50,7 +50,7 @@
     "json-parse-errback": "^2.0.1",
     "linkify-urls": "^3.1.0",
     "mkdirp": "^0.5.1",
-    "ooxml-signature-pages": "^3.0.0",
+    "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^1.0.2",
     "pino": "^5.12.6",
     "pino-http": "^4.2.0",
