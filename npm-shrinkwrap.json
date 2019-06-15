@@ -1189,13 +1189,18 @@
       "dev": true
     },
     "commonform-analyze": {
-      "version": "3.0.0",
-      "resolved": "https://registry.npmjs.org/commonform-analyze/-/commonform-analyze-3.0.0.tgz",
-      "integrity": "sha512-Nj4qRJIHJi9dypwXkG9cgS4gqQXTPxjg9aeVt+bPejufcLUnef3ei81KwFcup45lT8RgAv4oENAgub6AfLBweQ==",
+      "version": "4.0.0",
+      "resolved": "https://registry.npmjs.org/commonform-analyze/-/commonform-analyze-4.0.0.tgz",
+      "integrity": "sha512-6Ov9WR8OAg6ot8M/YTMtf2PCshP1HrhJYv7ddPs++xV0tvLxGdMQrJh+gKN+K0kZrq5kgRCRQ6OdAsPgZPHj4A==",
       "requires": {
-        "array-find": "^1.0.0",
-        "commonform-predicate": "^2.0.0",
-        "stringify-clone": "^2.0.0"
+        "commonform-predicate": "^3.0.1"
+      },
+      "dependencies": {
+        "commonform-predicate": {
+          "version": "3.0.1",
+          "resolved": "https://registry.npmjs.org/commonform-predicate/-/commonform-predicate-3.0.1.tgz",
+          "integrity": "sha512-YzhrIRUTl0VitxlZM+fDmMepsinkaMHHuAsw0aUY9ang5nO79ymfib8fQqeG7mp7Bp5sJb15Spyi0qbvp8oMDw=="
+        }
       }
     },
     "commonform-archaic": {
@@ -1354,6 +1359,18 @@
       "integrity": "sha512-RTnVZ9q7rBRelLjOSrrFXdMYuo1wz5rvn80+TzOhWgWBL3tHlkbkI6z7FVK4GKQFfJ/pBDW3097AbNZBcsJuxg==",
       "requires": {
         "commonform-analyze": "^3.0.0"
+      },
+      "dependencies": {
+        "commonform-analyze": {
+          "version": "3.0.0",
+          "resolved": "https://registry.npmjs.org/commonform-analyze/-/commonform-analyze-3.0.0.tgz",
+          "integrity": "sha512-Nj4qRJIHJi9dypwXkG9cgS4gqQXTPxjg9aeVt+bPejufcLUnef3ei81KwFcup45lT8RgAv4oENAgub6AfLBweQ==",
+          "requires": {
+            "array-find": "^1.0.0",
+            "commonform-predicate": "^2.0.0",
+            "stringify-clone": "^2.0.0"
+          }
+        }
       }
     },
     "commonform-load-components": {
@@ -6746,9 +6763,9 @@
       }
     },
     "stringify-clone": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/stringify-clone/-/stringify-clone-2.0.0.tgz",
-      "integrity": "sha1-/5/9iAaqsPlhYa7lHFpmf07n/ZQ="
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/stringify-clone/-/stringify-clone-2.0.1.tgz",
+      "integrity": "sha512-3C9Ri/ytPQdLDNtNDot9nhdajlp0pE3Xb9gd/c4/37UiU8/Qo0WFgTbT0g0ZXURE5YaE0yvIwI208fvLeGPrTw=="
     },
     "stringify-object": {
       "version": "3.3.0",
