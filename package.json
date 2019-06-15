@@ -51,7 +51,7 @@
     "linkify-urls": "^3.1.0",
     "mkdirp": "^0.5.1",
     "ooxml-signature-pages": "^3.0.2",
-    "outline-numbering": "^1.0.2",
+    "outline-numbering": "^2.0.0",
     "pino": "^5.12.6",
     "pino-http": "^4.2.0",
     "pump": "^3.0.0",
