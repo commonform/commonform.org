@@ -1471,13 +1471,23 @@
       }
     },
     "commonform-mscd": {
-      "version": "0.1.3",
-      "resolved": "https://registry.npmjs.org/commonform-mscd/-/commonform-mscd-0.1.3.tgz",
-      "integrity": "sha1-Rk5ii3wYgDxrDtnpLjaVy8m0ndI=",
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/commonform-mscd/-/commonform-mscd-1.0.0.tgz",
+      "integrity": "sha512-7h5VTqaR+S9qXsp+6cIkaFz5apKWS4Iu2hI7rZU7ODUK0oYl94FuOa9+vpI37hCx7IWWVMknhjIE3tqhd7W/mw==",
       "requires": {
-        "commonform-regexp-annotator": "^1.0.3",
+        "commonform-regexp-annotator": "^2.0.0",
         "escape-regexp": "0.0.1",
         "mscd": "^0.1.0"
+      },
+      "dependencies": {
+        "commonform-regexp-annotator": {
+          "version": "2.0.0",
+          "resolved": "https://registry.npmjs.org/commonform-regexp-annotator/-/commonform-regexp-annotator-2.0.0.tgz",
+          "integrity": "sha512-NTLjPRIHyM21Rx/7h6xyP7TAZM/H4TybNMiZXDOXt/dlGr3F+dbND5nyPKA5iYzz8g0hZYbVeocikwuKqcRncQ==",
+          "requires": {
+            "commonform-predicate": "^3.0.1"
+          }
+        }
       }
     },
     "commonform-normalize": {
@@ -1542,6 +1552,11 @@
           }
         }
       }
+    },
+    "commonform-predicate": {
+      "version": "3.0.1",
+      "resolved": "https://registry.npmjs.org/commonform-predicate/-/commonform-predicate-3.0.1.tgz",
+      "integrity": "sha512-YzhrIRUTl0VitxlZM+fDmMepsinkaMHHuAsw0aUY9ang5nO79ymfib8fQqeG7mp7Bp5sJb15Spyi0qbvp8oMDw=="
     },
     "commonform-prepare-blanks": {
       "version": "1.0.2",
@@ -4915,9 +4930,9 @@
       "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g="
     },
     "mscd": {
-      "version": "0.1.6",
-      "resolved": "https://registry.npmjs.org/mscd/-/mscd-0.1.6.tgz",
-      "integrity": "sha1-5cYM2gZ0xNVF4+Avd7R4UF+pupU="
+      "version": "0.1.7",
+      "resolved": "https://registry.npmjs.org/mscd/-/mscd-0.1.7.tgz",
+      "integrity": "sha512-jjdcvBCcBvAPxuexgGjEi0vlcdWNhsap9IuN7NVCI4IpmPQS/l5snnreXjHes0NUtFBwWjvm9I0+3t6q84ft8A=="
     },
     "mute-stream": {
       "version": "0.0.7",
