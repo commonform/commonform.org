@@ -1204,12 +1204,12 @@
       }
     },
     "commonform-archaic": {
-      "version": "1.2.2",
-      "resolved": "https://registry.npmjs.org/commonform-archaic/-/commonform-archaic-1.2.2.tgz",
-      "integrity": "sha1-/RJUK4VYldqn4N7/igriUqEIBtU=",
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/commonform-archaic/-/commonform-archaic-2.0.1.tgz",
+      "integrity": "sha512-YXc2RuYyWq1qcssf43jcfT+NahMp0SRN3vvhwcl7Lo8LTnoVW18/uA3lPBY8vEwDTXZQcFma8M3JPnIQG0yzwg==",
       "requires": {
         "american-legal-archaisms": "~1.0.4",
-        "commonform-phrase-annotator": "~1.0.0"
+        "commonform-phrase-annotator": "^2.0.0"
       }
     },
     "commonform-commonmark": {
@@ -1448,12 +1448,27 @@
       }
     },
     "commonform-phrase-annotator": {
-      "version": "1.0.2",
-      "resolved": "https://registry.npmjs.org/commonform-phrase-annotator/-/commonform-phrase-annotator-1.0.2.tgz",
-      "integrity": "sha1-7ssBcCtf1SZJpOG1pcn2iisjxgQ=",
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/commonform-phrase-annotator/-/commonform-phrase-annotator-2.0.0.tgz",
+      "integrity": "sha512-JZO1QWcPlUXlYBZnFiirinIkaYCYBpJX+AKZ8ocXhwd/TLctzEwYA9cf3jN+ZX8PLve1BaHG6B6X48IQQ0XTEg==",
       "requires": {
-        "commonform-regexp-annotator": "^1.0.1",
+        "commonform-regexp-annotator": "^2.0.0",
         "escape-regexp": "0.0.1"
+      },
+      "dependencies": {
+        "commonform-predicate": {
+          "version": "3.0.1",
+          "resolved": "https://registry.npmjs.org/commonform-predicate/-/commonform-predicate-3.0.1.tgz",
+          "integrity": "sha512-YzhrIRUTl0VitxlZM+fDmMepsinkaMHHuAsw0aUY9ang5nO79ymfib8fQqeG7mp7Bp5sJb15Spyi0qbvp8oMDw=="
+        },
+        "commonform-regexp-annotator": {
+          "version": "2.0.0",
+          "resolved": "https://registry.npmjs.org/commonform-regexp-annotator/-/commonform-regexp-annotator-2.0.0.tgz",
+          "integrity": "sha512-NTLjPRIHyM21Rx/7h6xyP7TAZM/H4TybNMiZXDOXt/dlGr3F+dbND5nyPKA5iYzz8g0hZYbVeocikwuKqcRncQ==",
+          "requires": {
+            "commonform-predicate": "^3.0.1"
+          }
+        }
       }
     },
     "commonform-predicate": {
