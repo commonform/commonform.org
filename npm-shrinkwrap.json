@@ -1420,11 +1420,18 @@
       }
     },
     "commonform-group-series": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/commonform-group-series/-/commonform-group-series-1.0.0.tgz",
-      "integrity": "sha512-a7RssBzzK0cBUAllDc0Z06WMF3YsAlMJ20VJ9I06g+uXJX/sbOUU2oIRec3tqq4LL3IW+QqwSsUU+82jJ5zBfQ==",
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/commonform-group-series/-/commonform-group-series-2.0.0.tgz",
+      "integrity": "sha512-tSwjR8jmzltGBzUB+q8mNhPv3+34FAs+p6ChmfRxEYp61yyJAkKj4CX+TWs8dX+A6NISM2jgfxzHI34nhgl0IQ==",
       "requires": {
-        "commonform-predicate": "^2.0.0"
+        "commonform-predicate": "^3.0.0"
+      },
+      "dependencies": {
+        "commonform-predicate": {
+          "version": "3.0.1",
+          "resolved": "https://registry.npmjs.org/commonform-predicate/-/commonform-predicate-3.0.1.tgz",
+          "integrity": "sha512-YzhrIRUTl0VitxlZM+fDmMepsinkaMHHuAsw0aUY9ang5nO79ymfib8fQqeG7mp7Bp5sJb15Spyi0qbvp8oMDw=="
+        }
       }
     },
     "commonform-hash": {
