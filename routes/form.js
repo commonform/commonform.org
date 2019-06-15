@@ -6,7 +6,7 @@ var formFrontEndPath = require('../paths/front-end/form')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
-var markdown = require('commonform-markdown')
+var commonmark = require('commonform-commonmark')
 var methodNotAllowed = require('./method-not-allowed')
 var notFound = require('./not-found')
 var runAuto = require('run-auto')
@@ -108,7 +108,7 @@ module.exports = function (request, response) {
         'Content-Disposition',
         `attachment; filename="${digest}.md"`
       )
-      response.end(markdown(data.loaded.form, [], options))
+      response.end(commonmark.stringify(data.loaded.form, [], options))
       return
     } else if (request.query.format === 'json') {
       response.setHeader('Content-Type', 'application/json')

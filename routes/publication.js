@@ -5,7 +5,7 @@ var escape = require('../util/escape')
 var get = require('simple-get')
 var internalError = require('./internal-error')
 var loadComponents = require('commonform-load-components')
-var markdown = require('commonform-markdown')
+var commonmark = require('commonform-commonmark')
 var methodNotAllowed = require('./method-not-allowed')
 var notFound = require('./not-found')
 var publicationFrontEndPath = require('../paths/front-end/publication')
@@ -105,7 +105,7 @@ module.exports = function (request, response) {
         `attachment; filename="${publication.project} ${publication.edition}.md"`
       )
       response.end(
-        markdown(data.loaded.form, [], options)
+        commonmark.stringify(data.loaded.form, [], options)
       )
       return
     } else if (request.query.format === 'json') {

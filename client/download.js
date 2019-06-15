@@ -1,7 +1,7 @@
 /* eslint-env browser */
 var DOCX_OPTIONS = require('../docx-options')
 var docx = require('commonform-docx')
-var markdown = require('commonform-markdown')
+var commonmark = require('commonform-commonmark')
 var filesaver = require('filesaver.js').saveAs
 var signaturePagesToOOXML = require('ooxml-signature-pages')
 
@@ -54,7 +54,7 @@ function overrideButtonClickHandlers (className) {
       }
       if (className === 'markdown') {
         var blob = new Blob(
-          [markdown(window.loaded.form, blanks, options)],
+          [commonmark.stringify(window.loaded.form, blanks, options)],
           { type: 'text/plain;charset=utf-8' }
         )
         filesaver(blob, title + '.md', true)
