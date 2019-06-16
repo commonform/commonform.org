@@ -964,9 +964,9 @@
       }
     },
     "commonform-commonmark": {
-      "version": "4.1.0",
-      "resolved": "https://registry.npmjs.org/commonform-commonmark/-/commonform-commonmark-4.1.0.tgz",
-      "integrity": "sha512-hAyca7yJnw1VmtoffbdaaQNZnraBzSOzjpjE3QosXdOB+1PIHl+t0B1ErzDeeLxGreMtqi/UOQxRobmhST884g==",
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/commonform-commonmark/-/commonform-commonmark-4.1.1.tgz",
+      "integrity": "sha512-umCJISyj0IYENsR9c1kE5cPXCI8Gem3Vq7kViJKfR4ifxPA6G8w/hdGHO5vhbG0jhjsDtIpuGN3r03rpBUVesg==",
       "dev": true,
       "requires": {
         "commonform-fix-strings": "^2.0.1",
