@@ -2,7 +2,6 @@
   "private": true,
   "dependencies": {
     "busboy": "^0.3.1",
-    "capitalize": "^2.0.0",
     "classnames": "^2.2.6",
     "commonform-analyze": "^4.0.0",
     "commonform-archaic": "^2.0.1",
