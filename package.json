@@ -1,26 +1,5 @@
 {
   "private": true,
-  "devDependencies": {
-    "browserify": "^16.2.3",
-    "chromedriver": "^75.0.0",
-    "commonform-commonmark": "^4.1.0",
-    "istanbul": "^0.4.5",
-    "licensee": "^7.0.1",
-    "standard": "^12.0.1",
-    "tape": "^4.10.2",
-    "webdriverio": "^5.10.4"
-  },
-  "scripts": {
-    "build": "npm run build:download",
-    "build:download": "browserify client/download.js > static/download.bundle.js",
-    "lint": "standard",
-    "coverage": "NODE_ENV=test istanbul cover -- tape test/*.test.js",
-    "postcoverage": "istanbul check-coverage coverage/coverage.json --statements 100 --functions 100 --branches 100 --lines 100",
-    "test": "NODE_ENV=test tape test/**.test.js",
-    "license": "licensee --errors-only",
-    "prestart": "npm run build",
-    "outdated": "npm outdated | tee outdated.log"
-  },
   "dependencies": {
     "busboy": "^0.3.1",
     "capitalize": "^2.0.0",
@@ -67,5 +46,26 @@
     "simple-get": "^3.0.3",
     "to-mention-link": "^0.1.0",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "chromedriver": "^75.0.0",
+    "commonform-commonmark": "^4.1.0",
+    "istanbul": "^0.4.5",
+    "licensee": "^7.0.1",
+    "standard": "^12.0.1",
+    "tape": "^4.10.2",
+    "webdriverio": "^5.10.4"
+  },
+  "scripts": {
+    "build": "npm run build:download",
+    "build:download": "browserify client/download.js > static/download.bundle.js",
+    "coverage": "NODE_ENV=test istanbul cover -- tape test/*.test.js",
+    "license": "licensee --errors-only",
+    "lint": "standard",
+    "outdated": "npm outdated | tee outdated.log",
+    "postcoverage": "istanbul check-coverage coverage/coverage.json --statements 100 --functions 100 --branches 100 --lines 100",
+    "prestart": "npm run build",
+    "test": "NODE_ENV=test tape test/**.test.js"
   }
 }
