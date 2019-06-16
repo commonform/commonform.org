@@ -32,7 +32,6 @@
     "reviewers-edition-upgrade": "^1.0.2",
     "run-auto": "^2.0.3",
     "run-parallel": "^1.1.9",
-    "run-parallel-limit": "^1.0.5",
     "run-series": "^1.1.8",
     "run-waterfall": "^1.1.6",
     "send": "^0.17.1",
