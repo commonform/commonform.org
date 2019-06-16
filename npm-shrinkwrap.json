@@ -1749,11 +1749,6 @@
         }
       }
     },
-    "ecb": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/ecb/-/ecb-1.0.0.tgz",
-      "integrity": "sha1-6IcsmGNTlnHWi/aukbN1f6siPZA="
-    },
     "ecc-jsbn": {
       "version": "0.1.1",
       "resolved": "https://registry.npmjs.org/ecc-jsbn/-/ecc-jsbn-0.1.1.tgz",
