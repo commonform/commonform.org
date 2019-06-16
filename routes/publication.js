@@ -90,9 +90,10 @@ module.exports = function (request, response) {
         'Content-Disposition',
         `attachment; filename="${publication.project} ${publication.edition}.docx"`
       )
-      response.end(
-        docx(data.loaded.form, [], options).generate({ type: 'nodebuffer' })
-      )
+
+      docx(data.loaded.form, [], options)
+        .generateNodeStream()
+        .pipe(response)
       return
     } else if (request.query.format === 'md') {
       let options = {

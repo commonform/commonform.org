@@ -59,11 +59,11 @@ function overrideButtonClickHandlers (className) {
         )
         filesaver(blob, title + '.md', true)
       } else {
-        filesaver(
-          docx(window.loaded.form, blanks, options).generate({ type: 'blob' }),
-          title + '.docx',
-          true
-        )
+        docx(window.loaded.form, blanks, options)
+          .generateAsync({ type: 'blob' })
+          .then(function (blob) {
+            filesaver(blob, title + '.docx', true)
+          })
       }
       return false
     })
