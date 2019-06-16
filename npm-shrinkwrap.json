@@ -4698,11 +4698,6 @@
       "resolved": "https://registry.npmjs.org/run-series/-/run-series-1.1.8.tgz",
       "integrity": "sha512-+GztYEPRpIsQoCSraWHDBs9WVy4eVME16zhOtDB4H9J4xN0XRhknnmLOl+4gRgZtu8dpp9N/utSPjKH/xmDzXg=="
     },
-    "run-waterfall": {
-      "version": "1.1.6",
-      "resolved": "https://registry.npmjs.org/run-waterfall/-/run-waterfall-1.1.6.tgz",
-      "integrity": "sha512-dApPbpIK0hbFi2zqfJxrsnfmJW2HCQHFrSsmqF3Fp9TKm5WVf++zE6BSw0hPcA7rPapO37h12Swk2E6Va3tF7Q=="
-    },
     "safe-buffer": {
       "version": "5.1.2",
       "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz",
