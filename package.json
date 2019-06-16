@@ -17,7 +17,6 @@
     "commonform-wordy": "^1.0.0",
     "docx-content-type": "^1.0.0",
     "doubleplus-numbers": "^0.2.1",
-    "escape-string-regexp": "^2.0.0",
     "filesaver.js": "^1.3.4",
     "form-data": "^2.3.3",
     "html-entities": "^1.2.1",
