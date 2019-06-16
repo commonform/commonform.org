@@ -24,6 +24,7 @@ module.exports = function (title, metadata) {
 <html lang=en>
   <head>
     <meta charset=UTF-8>
+    <meta name=viewport content="width=device-width, initial-scale=1">
     <title>Common Form${title ? (' / ' + escape(title)) : ''}</title>
     <link href=/normalize.css rel=stylesheet>
     <link href=https://commonform.org/fonts.css rel=stylesheet>
