@@ -15,7 +15,6 @@
     "commonform-predicate": "^3.0.1",
     "commonform-same-path": "^1.0.0",
     "commonform-wordy": "^1.0.0",
-    "concat-stream": "^2.0.0",
     "docx-content-type": "^1.0.0",
     "doubleplus-numbers": "^0.2.1",
     "escape-string-regexp": "^2.0.0",
