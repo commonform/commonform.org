@@ -32,6 +32,7 @@
     "rx-lite-aggregates": "4.0.8",
     "source-map": "0.1.43 || 0.2.0",
     "streamsearch": "0.1.2",
+    "string.prototype.repeat": "0.2.0",
     "timers-browserify": "1.4.2",
     "wgxpath": "1.0.0",
     "window-size": "0.1.0",
