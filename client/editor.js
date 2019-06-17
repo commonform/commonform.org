@@ -4,12 +4,6 @@ var commonmark = require('commonform-commonmark')
 var critique = require('commonform-critique')
 var lint = require('commonform-lint')
 
-var dirty = false
-
-window.addEventListener('beforeunload', function (event) {
-  if (dirty) event.returnValue = 'If you leave this page without saving, your work will be lost.'
-})
-
 document.addEventListener('DOMContentLoaded', function () {
   parseAndAnnotateOnEdit()
   setDirtyFlagOnEdit()
@@ -68,6 +62,12 @@ function parseAndAnnotateOnEdit () {
 
 // If the user changes the content in the editor, mark it
 // dirty, so we can warn on `beforeunload`.
+var dirty = false
+
+window.addEventListener('beforeunload', function (event) {
+  if (dirty) event.returnValue = 'If you leave this page without saving, your work will be lost.'
+})
+
 function setDirtyFlagOnEdit () {
   var editors = [ 'editor', 'notes', 'signaturePages' ]
   editors.forEach(function (id) {
