@@ -50,8 +50,9 @@
     "webdriverio": "^5.10.4"
   },
   "scripts": {
-    "build": "npm run build:download",
+    "build": "npm run build:editor ; npm run build:download",
     "build:download": "browserify client/download.js > static/download.bundle.js",
+    "build:editor": "browserify client/editor.js > static/editor.bundle.js",
     "coverage": "NODE_ENV=test istanbul cover -- tape test/*.test.js",
     "license": "licensee --errors-only",
     "lint": "standard",

@@ -100,7 +100,7 @@ function getResponse (request, response, parameters) {
   <main>
     ${flash}
     <form method=POST action=/edit>
-      <textarea name=markup class=editor>${markup}</textarea>
+      <textarea id=editor name=markup class=editor>${markup}</textarea>
       <p>
         Typing Reference:
         <a
@@ -139,8 +139,8 @@ function getResponse (request, response, parameters) {
           placeholder="${(publication ? escape(publication.title) : 'Title') + ' (optional)'}">
       </p>
       <label for=notes>Release Notes</label>
-      <textarea name=notes></textarea>
-      <label for=signaturePages>Signature Pages (JSON)</label>
+      <textarea id=notes name=notes></textarea>
+      <label id=signaturePages for=signaturePages>Signature Pages (JSON)</label>
       <textarea name=signaturePages>${signaturePages}</textarea>
       <p>
         <label>
@@ -153,7 +153,7 @@ function getResponse (request, response, parameters) {
       </p>
     </form>
   </main>
-  ${footer()}
+  ${footer('/editor.bundle.js')}
     `)
   })
 }
