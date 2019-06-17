@@ -107,7 +107,8 @@ function getResponse (request, response, parameters) {
           href=https://type.commonform.org
           target=_blank>type.commonform.org</a>
       </p>
-      <p>
+      <fieldset>
+        <legend>Publisher</legend>
         <input
           name=publisher
           type=text
@@ -121,8 +122,9 @@ function getResponse (request, response, parameters) {
           autocomplete=current-password
           placeholder=Password
           required>
-      </p>
-      <p>
+      </fieldset>
+      <fieldset>
+        <legend>Publication (optional)</legend>
         <input
           name=project
           type=text
@@ -131,23 +133,24 @@ function getResponse (request, response, parameters) {
           name=edition
           type=text
           placeholder="Edition (optional)">
-      </p>
-      <p>
-        <input
-          name=title
-          type=text
-          placeholder="${(publication ? escape(publication.title) : 'Title') + ' (optional)'}">
-      </p>
-      <label for=notes>Release Notes</label>
-      <textarea id=notes name=notes></textarea>
-      <label id=signaturePages for=signaturePages>Signature Pages (JSON)</label>
-      <textarea name=signaturePages>${signaturePages}</textarea>
-      <p>
+        <p>
+          <input
+            name=title
+            type=text
+            placeholder="${(publication ? escape(publication.title) : 'Title') + ' (optional)'}">
+        </p>
+        <label for=notes>Release Notes</label>
+        <textarea id=notes name=notes></textarea>
+        <label id=signaturePages for=signaturePages>Signature Pages (JSON)</label>
+        <textarea name=signaturePages>${signaturePages}</textarea>
+      </fieldset>
+      <fieldset>
+        <legend>Notifications</legend>
         <label>
           <input name=subscribe type=checkbox checked>
           Subscribe
         </label>
-      </p>
+      </fieldset>
       <p>
         <input type=submit value=Submit>
       </p>
