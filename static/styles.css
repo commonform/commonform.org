@@ -173,19 +173,20 @@ a:hover {
   font-size: 75%;
 }
 
+p.info, p.warn, p.error {
+  padding: 0.5rem;
+}
+
 .info {
   background-color: #d5ffd3;
-  padding: 0.5rem;
 }
 
 .warn  {
   background-color: #ffe7bc;
-  padding: 0.5rem;
 }
 
 .error {
   background-color: #ffbdbc;
-  padding: 0.5rem;
 }
 
 header.toc {

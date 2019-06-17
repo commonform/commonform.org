@@ -5,6 +5,7 @@
     "classnames": "^2.2.6",
     "commonform-analyze": "^4.0.0",
     "commonform-archaic": "^2.0.1",
+    "commonform-critique": "^1.0.2",
     "commonform-diff": "^1.0.2",
     "commonform-docx": "^5.0.2",
     "commonform-group-series": "^2.0.0",

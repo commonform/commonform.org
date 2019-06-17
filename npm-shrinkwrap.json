@@ -980,6 +980,25 @@
         "yargs": "^13.2.4"
       }
     },
+    "commonform-critique": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/commonform-critique/-/commonform-critique-1.0.2.tgz",
+      "integrity": "sha512-VUer3dBrUErgyxuFjpbABC2AODGm+/xvL8tkdHhwwt4UPULY0OT6N4pMFyMkKc5buspWFfXmL5TuRmeCd+dDaA==",
+      "requires": {
+        "commonform-archaic": "^2.0.1",
+        "commonform-mscd": "^1.0.0",
+        "commonform-predicate": "^3.0.1",
+        "doubleplus-numbers": "^0.2.0",
+        "wordy-words": "^1.0.0"
+      },
+      "dependencies": {
+        "wordy-words": {
+          "version": "1.0.0",
+          "resolved": "https://registry.npmjs.org/wordy-words/-/wordy-words-1.0.0.tgz",
+          "integrity": "sha512-yADoIf2iMVQyzzaZWlnP3RedZJzgg/9mhNx5tXinKNi4vYxyqePXpq78ZGUgZsyphL8fuNNWpyzaXINWpEn2ew=="
+        }
+      }
+    },
     "commonform-diff": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/commonform-diff/-/commonform-diff-1.0.2.tgz",
