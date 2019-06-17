@@ -1,11 +1,14 @@
 /* eslint-env browser */
+var Ajv = require('ajv')
 var classnames = require('classnames')
 var commonmark = require('commonform-commonmark')
 var critique = require('commonform-critique')
 var lint = require('commonform-lint')
+var signaturePageSchema = require('signature-page-schema')
 
 document.addEventListener('DOMContentLoaded', function () {
   parseAndAnnotateOnEdit()
+  parseSignaturePages()
   setDirtyFlagOnEdit()
 })
 
@@ -58,6 +61,29 @@ function parseAndAnnotateOnEdit () {
     emptyReadout()
     append(message)
   }
+}
+
+var ajv = new Ajv()
+var validSignaturePage = ajv.compile(signaturePageSchema)
+
+// Parse the signature page JSON.
+function parseSignaturePages () {
+  var signaturePages = document.getElementById('signaturePages')
+  signaturePages.addEventListener('input', function () {
+    var value = signaturePages.value.trim()
+    if (value.length === 0) return
+    // Parse.
+    try {
+      var parsed = JSON.parse(value)
+    } catch (error) {
+      return invalid()
+    }
+    if (!Array.isArray(parsed)) return invalid()
+    if (!parsed.every(validSignaturePage)) return invalid()
+    return valid()
+  })
+  function valid () { signaturePages.className = '' }
+  function invalid () { signaturePages.className = 'error' }
 }
 
 // If the user changes the content in the editor, mark it

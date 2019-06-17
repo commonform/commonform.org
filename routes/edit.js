@@ -141,8 +141,8 @@ function getResponse (request, response, parameters) {
         </p>
         <label for=notes>Release Notes</label>
         <textarea id=notes name=notes></textarea>
-        <label id=signaturePages for=signaturePages>Signature Pages (JSON)</label>
-        <textarea name=signaturePages>${signaturePages}</textarea>
+        <label for=signaturePages>Signature Pages (JSON)</label>
+        <textarea id=signaturePages name=signaturePages>${signaturePages}</textarea>
       </fieldset>
       <fieldset>
         <legend>Notifications</legend>
