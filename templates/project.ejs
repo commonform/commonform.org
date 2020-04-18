@@ -16,6 +16,7 @@
     </header>
     <main role=main>
       <h2><%= publisher %>’s <%= project %></h2>
+      <p class=description><%= description %></p>
       <% editions.forEach((edition) => { %>
       <a href=./<%= edition.number %>><%= edition.spelled %></a>
       (<%= edition.frontMatter.published %>)

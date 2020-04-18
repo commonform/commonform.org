@@ -26,6 +26,7 @@ const validateFrontMatter = ajv.compile(
   require('./schemas/front-matter'),
 )
 const validateProject = ajv.compile(require('./schemas/project'))
+const validatePublisher = ajv.compile(require('./schemas/publisher'))
 
 rimraf.sync('site')
 
@@ -151,6 +152,25 @@ indexFiles.forEach((projectFile) => {
   projectMetadata[publisher][project] = meta
 })
 
+const publisherFiles = glob.sync('forms/*/index.md')
+
+const publisherMetadata = {}
+
+publisherFiles.forEach(file => {
+  const contents = fs.readFileSync(file)
+  const parsed = grayMatter(contents)
+  const meta = parsed.data
+  meta.description = parsed.content
+  if (!validatePublisher(meta)) {
+    console.error(validatePublisher.errors)
+    throw new Error(`invalid publisher meta: ${file}`)
+  }
+  const [_, publisher] = path.dirname(file).split(path.sep)
+  if (!publisherMetadata[publisher]) {
+    publisherMetadata[publisher] = meta
+  }
+})
+
 runSeries(
   formFiles.map((file) => {
     return (done) => {
@@ -196,7 +216,12 @@ runSeries(
             },
             frontMatter,
           )
-          const html = ejs.render(templates.form, data)
+          let html
+          try {
+            html = ejs.render(templates.form, data)
+          } catch (error) {
+            throw new Error(`${file}: ${error.message}`)
+          }
           const page = path.join(
             'site',
             publisher,
@@ -301,7 +326,11 @@ function renderPublisherPages() {
         publisher,
         'index.html',
       )
-      const data = Object.assign({}, publishers[publisher])
+      const data = Object.assign(
+        {},
+        publisherMetadata[publisher],
+        publishers[publisher]
+      )
       const html = ejs.render(templates.publisher, data)
       fs.writeFileSync(publisherPage, html)
     }
@@ -327,11 +356,11 @@ function renderPublisherPages() {
           .sort((a, b) => {
             return revedCompare(a.edition, b.edition)
           })
-        const data = {
+        const data = Object.assign({
           publisher,
           project,
           editions,
-        }
+        }, projectMetadata[publisher][project])
         const html = ejs.render(templates.project, data)
         fs.writeFileSync(projectPage, html)
       })

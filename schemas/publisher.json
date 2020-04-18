@@ -1,12 +1,14 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "buildingBlock"
-  ],
   "properties": {
-    "buildingBlock": {
-      "type": "boolean"
+    "website": {
+      "type": "string",
+      "format": "uri"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
     },
     "description": {
       "type": "string"
