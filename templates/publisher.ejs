@@ -16,9 +16,11 @@
     </header>
     <main role=main>
       <h2><%= publisher %>’s Forms</h2>
-      <% Object.keys(projects).forEach((project) => { %>
-      <a href=./<%= project %>><%= project %></a>
-      <% }) %>
+      <ul>
+        <% Object.keys(projects).forEach((project) => { %>
+        <li><a href=./<%= project %>><%= project %></a></li>
+        <% }) %>
+      </ul>
     </main>
     <footer role=contentinfo></footer>
   </body>
