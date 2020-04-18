@@ -186,7 +186,7 @@ runSeries(
       }
       const form = commonmark.parse(markup).form
       loadComponents(
-        form,
+        clone(form),
         loadOptions,
         (error, loaded, resolutions) => {
           if (error) throw error
@@ -294,7 +294,9 @@ runSeries(
           )
           fs.writeFileSync(
             jsonFile,
-            JSON.stringify({ frontMatter, form }),
+            JSON.stringify(
+              Object.assign({}, frontMatter, { form }),
+            ),
           )
 
           const markdownFile = path.join(
@@ -398,3 +400,7 @@ glob.sync('static/*').forEach((file) => {
   const basename = path.basename(file)
   fs.copyFileSync(file, path.join('site', basename))
 })
+
+function clone(x) {
+  return JSON.parse(JSON.stringify(x))
+}
