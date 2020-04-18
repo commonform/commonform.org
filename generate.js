@@ -40,15 +40,14 @@ glob.sync('templates/*.ejs').forEach((file) => {
 const publishers = {}
 
 const markdownFiles = glob.sync('forms/*/*/*.md')
-const formFiles = markdownFiles.filter(file => {
+const formFiles = markdownFiles.filter((file) => {
   return path.basename(file) !== 'index.md'
 })
-const indexFiles = markdownFiles.filter(file => {
+const indexFiles = markdownFiles.filter((file) => {
   return path.basename(file) === 'index.md'
 })
 
 const forms = formFiles.map((file) => {
-  if (path.basename(file) === 'index.html') return
   const contents = fs.readFileSync(file, 'utf8')
   const parsed = grayMatter(contents)
   const markup = parsed.content
@@ -60,7 +59,7 @@ const forms = formFiles.map((file) => {
   const form = commonmark.parse(markup).form
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
-  const edition = frontMatter.edition
+  const edition = path.basename(file, '.md')
   return {
     publisher,
     project,
@@ -176,7 +175,7 @@ runSeries(
           })
           const dirname = path.dirname(file)
           const [_, publisher, project] = dirname.split(path.sep)
-          const edition = frontMatter.edition
+          const edition = path.basename(file, '.md')
           const title = frontMatter.title || project
           const data = Object.assign(
             {
@@ -193,6 +192,7 @@ runSeries(
               notes: false,
               publisher,
               rendered,
+              edition,
             },
             frontMatter,
           )

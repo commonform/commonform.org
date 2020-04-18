@@ -1,15 +1,11 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": ["edition", "published"],
+  "required": ["published"],
   "properties": {
     "title": {
       "type": "string",
       "minLength": 3
-    },
-    "edition": {
-      "type": "string",
-      "minLength": 2
     },
     "published": {
       "type": "string",
