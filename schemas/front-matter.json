@@ -1,7 +1,7 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": ["title", "edition", "published"],
+  "required": ["edition", "published"],
   "properties": {
     "title": {
       "type": "string",

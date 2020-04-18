@@ -48,8 +48,10 @@ glob.sync('forms/**/*.md').forEach((file) => {
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
   const edition = frontMatter.edition
+  const title = frontMatter.title || project
   const data = Object.assign(
     {
+      title,
       github: `https://github.com/commonform/commonform-static/blob/master/${file}`,
       digest: hash(form),
       docx: `${edition}.docx`,
@@ -77,7 +79,7 @@ glob.sync('forms/**/*.md').forEach((file) => {
   }
   publishers[publisher].projects[project][edition] = frontMatter
   docx(form, [], {
-    title: frontMatter.title,
+    title,
     edition,
     centerTitle: false,
     indentMargins: true,
