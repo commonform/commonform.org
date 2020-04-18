@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "required": [
+    "buildingBlock"
+  ],
+  "properties": {
+    "buildingBlock": {
+      "type": "boolean"
+    }
+  }
+}

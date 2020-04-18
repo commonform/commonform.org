@@ -25,6 +25,10 @@
           <td><a href="/<%= publisher %>/<%= project %>"><%= project %></a></td>
         </tr>
         <tr>
+          <th>Type</th>
+          <td><%= projectMetadata.buildingBlock ? 'Building Block' : 'Complete Form' %></td>
+        </tr>
+        <tr>
           <th>Published</th>
           <td><%= published %></td>
         </tr>
@@ -38,6 +42,18 @@
             </ul>
           </td>
         </tr>
+        <% if (notes) { %>
+        <tr>
+          <th>Release Notes</th>
+          <td>
+            <ul>
+              <% notes.forEach((note) => { %>
+              <li><%= note %></li>
+              <% }) %>
+            </ul>
+          </td>
+        </tr>
+        <% } %>
       </table>
       <%- rendered %>
     </main>

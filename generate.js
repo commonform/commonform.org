@@ -25,6 +25,9 @@ const ajv = new AJV()
 const validateFrontMatter = ajv.compile(
   require('./schemas/front-matter'),
 )
+const validateProject = ajv.compile(
+  require('./schemas/project'),
+)
 
 rimraf.sync('site')
 
@@ -124,6 +127,23 @@ const loadOptions = {
   },
 }
 
+const projectFiles = glob.sync('forms/**/*.json')
+
+const projectMetadata = {}
+
+projectFiles.forEach(projectFile => {
+  const data = require('./' + projectFile)
+  if (!validateProject(data)) {
+    console.error(validateProject.errors)
+    throw new Error(`invalid project meta: ${projectFile}`)
+  }
+  const [_, publisher, project] = projectFile.replace('.json', '').split(path.sep)
+  if (!projectMetadata[publisher]) {
+    projectMetadata[publisher] = {}
+  }
+  projectMetadata[publisher][project] = data
+})
+
 runSeries(
   formFiles.map((file) => {
     return (done) => {
@@ -160,6 +180,8 @@ runSeries(
               markdown: `${edition}.md`,
               spelled: revedSpell(edition),
               project,
+              projectMetadata: projectMetadata[publisher][project],
+              notes: false,
               publisher,
               rendered,
             },
@@ -181,9 +203,11 @@ runSeries(
             }
           }
           if (!publishers[publisher].projects[project]) {
-            publishers[publisher].projects[project] = {}
+            publishers[publisher].projects[project] = Object.assign({
+              editions: {}
+            }, projectMetadata[publisher][project])
           }
-          publishers[publisher].projects[project][
+          publishers[publisher].projects[project].editions[
             edition
           ] = frontMatter
           docx(loaded, [], {
@@ -276,9 +300,9 @@ function renderPublisherPages() {
           project,
           'index.html',
         )
-        const editions = Object.keys(projects[project])
+        const editions = Object.keys(projects[project].editions)
           .map((edition) => {
-            const frontMatter = projects[project][edition]
+            const frontMatter = projects[project].editions[edition]
             return {
               number: edition,
               spelled: revedSpell(edition),

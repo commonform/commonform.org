@@ -16,9 +16,20 @@
     </header>
     <main role=main>
       <h2><%= publisher %>’s Forms</h2>
+      <h3>Forms</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].buildingBlock === false) { %>
         <li><a href=./<%= project %>><%= project %></a></li>
+        <% } %>
+        <% }) %>
+      </ul>
+      <h3>Building Blocks</h3>
+      <ul>
+        <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].buildingBlock === true) { %>
+        <li><a href=./<%= project %>><%= project %></a></li>
+        <% } %>
         <% }) %>
       </ul>
     </main>
