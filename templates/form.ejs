@@ -13,20 +13,30 @@
       <h1><%= publisher %>’s <%= title %> </h1>
       <p class=edition><%= spelled %></p>
     </header>
-    <nav role="navigation">
-      <a href="/<%= publisher %>">Forms by <%= publisher %></a>
-      <a href="/<%= publisher %>/<%= project %>">Editions of <%= project %></a>
-    </nav>
     <main role="main">
       <dl>
+        <dt>Publisher</dt>
+        <dd><a href="/<%= publisher %>"><%= publisher %></a></dd>
+        <dt>Project</dt>
+        <dd><a href="/<%= publisher %>/<%= project %>"><%= project %></a></dd>
         <dt>Published</dt>
         <dd><%= published %></dd>
-        <dt>Code</dt>
+        <dt>Digest</dt>
         <dd><code class="digest"><%= digest %></code></dd>
+        <dt>Downloads</dt>
+        <dd>
+          <ul>
+            <li><a href="<%= docx %>">Microsoft Word</a></li>
+            <li><a href="<%= json %>">JSON Data</a></li>
+            <li><a href="<%= markdown %>">Markdown</a></li>
+          </ul>
+        </dd>
       </dl>
-      <a href="<$= docx %>">Download a Microsoft Word file.</a>
-      <article class="commonform"><%- rendered %></article>
+      <%- toc %>
+      <%- rendered %>
     </main>
-    <footer role="contentinfo"></footer>
+    <footer role="contentinfo">
+      <a href="<%= github %>">Source file on GitHub.</a>
+    </footer>
   </body>
 </html>

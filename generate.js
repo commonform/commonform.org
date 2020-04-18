@@ -44,14 +44,17 @@ glob.sync('forms/**/*.md').forEach((file) => {
     throw new Error(`invalid front matter: ${file}`)
   }
   const form = commonmark.parse(markup).form
-  const rendered = toHTML(form, [], { html5: true, ids: true })
+  const rendered = toHTML(form, [], { html5: true, lists: true, ids: true })
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
   const edition = frontMatter.edition
   const data = Object.assign(
     {
+      github: `https://github.com/commonform/commonform-static/blob/master/${file}`,
       digest: hash(form),
       docx: `${edition}.docx`,
+      json: `${edition}.json`,
+      markdown: `${edition}.md`,
       spelled: revedSpell(edition),
       project,
       publisher,
@@ -106,6 +109,12 @@ glob.sync('forms/**/*.md').forEach((file) => {
       const wordFile = path.join('site', publisher, project, `${edition}.docx`)
       fs.writeFileSync(wordFile, buffer)
     })
+
+  const jsonFile = path.join('site', publisher, project, `${edition}.json`)
+  fs.writeFileSync(jsonFile, JSON.stringify({ frontMatter, form }))
+
+  const markdownFile = path.join('site', publisher, project, `${edition}.md`)
+  fs.writeFileSync(markdownFile, markup)
 })
 
 Object.keys(publishers).forEach((publisher) => {
