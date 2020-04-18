@@ -25,9 +25,7 @@ const ajv = new AJV()
 const validateFrontMatter = ajv.compile(
   require('./schemas/front-matter'),
 )
-const validateProject = ajv.compile(
-  require('./schemas/project'),
-)
+const validateProject = ajv.compile(require('./schemas/project'))
 
 rimraf.sync('site')
 
@@ -41,9 +39,16 @@ glob.sync('templates/*.ejs').forEach((file) => {
 
 const publishers = {}
 
-const formFiles = glob.sync('forms/**/*.md')
+const markdownFiles = glob.sync('forms/*/*/*.md')
+const formFiles = markdownFiles.filter(file => {
+  return path.basename(file) !== 'index.md'
+})
+const indexFiles = markdownFiles.filter(file => {
+  return path.basename(file) === 'index.md'
+})
 
 const forms = formFiles.map((file) => {
+  if (path.basename(file) === 'index.html') return
   const contents = fs.readFileSync(file, 'utf8')
   const parsed = grayMatter(contents)
   const markup = parsed.content
@@ -127,21 +132,24 @@ const loadOptions = {
   },
 }
 
-const projectFiles = glob.sync('forms/**/*.json')
-
 const projectMetadata = {}
 
-projectFiles.forEach(projectFile => {
-  const data = require('./' + projectFile)
-  if (!validateProject(data)) {
+indexFiles.forEach((projectFile) => {
+  const contents = fs.readFileSync(projectFile)
+  const parsed = grayMatter(contents)
+  const meta = parsed.data
+  meta.description = parsed.content
+  if (!validateProject(meta)) {
     console.error(validateProject.errors)
     throw new Error(`invalid project meta: ${projectFile}`)
   }
-  const [_, publisher, project] = projectFile.replace('.json', '').split(path.sep)
+  const [_, publisher, project] = projectFile
+    .replace('.json', '')
+    .split(path.sep)
   if (!projectMetadata[publisher]) {
     projectMetadata[publisher] = {}
   }
-  projectMetadata[publisher][project] = data
+  projectMetadata[publisher][project] = meta
 })
 
 runSeries(
@@ -180,7 +188,8 @@ runSeries(
               markdown: `${edition}.md`,
               spelled: revedSpell(edition),
               project,
-              projectMetadata: projectMetadata[publisher][project],
+              projectMetadata:
+                projectMetadata[publisher][project],
               notes: false,
               publisher,
               rendered,
@@ -203,9 +212,14 @@ runSeries(
             }
           }
           if (!publishers[publisher].projects[project]) {
-            publishers[publisher].projects[project] = Object.assign({
-              editions: {}
-            }, projectMetadata[publisher][project])
+            publishers[publisher].projects[
+              project
+            ] = Object.assign(
+              {
+                editions: {},
+              },
+              projectMetadata[publisher][project],
+            )
           }
           publishers[publisher].projects[project].editions[
             edition
@@ -302,7 +316,8 @@ function renderPublisherPages() {
         )
         const editions = Object.keys(projects[project].editions)
           .map((edition) => {
-            const frontMatter = projects[project].editions[edition]
+            const frontMatter =
+              projects[project].editions[edition]
             return {
               number: edition,
               spelled: revedSpell(edition),
