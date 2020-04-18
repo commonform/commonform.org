@@ -22,7 +22,9 @@ const numberings = {
 }
 
 const ajv = new AJV()
-const validateFrontMatter = ajv.compile(require('./schemas/front-matter'))
+const validateFrontMatter = ajv.compile(
+  require('./schemas/front-matter'),
+)
 
 rimraf.sync('site')
 
@@ -37,6 +39,91 @@ glob.sync('templates/*.ejs').forEach((file) => {
 const publishers = {}
 
 const formFiles = glob.sync('forms/**/*.md')
+
+const forms = formFiles.map((file) => {
+  const contents = fs.readFileSync(file, 'utf8')
+  const parsed = grayMatter(contents)
+  const markup = parsed.content
+  const frontMatter = parsed.data
+  if (!validateFrontMatter(frontMatter)) {
+    console.error(validateFrontMatter.errors)
+    throw new Error(`invalid front matter: ${file}`)
+  }
+  const form = commonmark.parse(markup).form
+  const dirname = path.dirname(file)
+  const [_, publisher, project] = dirname.split(path.sep)
+  const edition = frontMatter.edition
+  return {
+    publisher,
+    project,
+    edition,
+    frontMatter,
+    digest: hash(form),
+    form,
+  }
+})
+
+function getForm(repository, digest, callback) {
+  if (repository !== 'commonform.org')
+    return callback(
+      new Error(`invalid repository: ${repository}`),
+    )
+  const result = forms.find((element) => {
+    return element.digest === digest
+  })
+  callback(null, result ? result.form : false)
+}
+
+function getPublication(
+  repository,
+  publisher,
+  project,
+  edition,
+  callback,
+) {
+  if (repository !== 'commonform.org')
+    return callback(
+      new Error(`invalid repository: ${repository}`),
+    )
+  const publication = forms.find((element) => {
+    return (
+      element.publisher === publisher &&
+      element.project === project &&
+      element.edition === edition
+    )
+  })
+  const result = publication
+    ? { digest: publication.digest }
+    : false
+  callback(null, result)
+}
+
+function getEditions(repository, publisher, project, callback) {
+  if (repository !== 'commonform.org')
+    return callback(
+      new Error(`invalid repository: ${repository}`),
+    )
+  const editions = forms
+    .filter((element) => {
+      return (
+        element.publisher === publisher &&
+        element.project === project
+      )
+    })
+    .map((element) => element.edition)
+  const result = editions.length > 0 ? editions : false
+  callback(null, result)
+}
+
+const loadOptions = {
+  repositories: ['commonform.org'],
+  caches: {
+    editions: { get: getEditions },
+    publications: { get: getPublication },
+    forms: { get: getForm },
+  },
+}
+
 runSeries(
   formFiles.map((file) => {
     return (done) => {
@@ -49,97 +136,112 @@ runSeries(
         throw new Error(`invalid front matter: ${file}`)
       }
       const form = commonmark.parse(markup).form
-      loadComponents(form, {}, (error, loaded, resolutions) => {
-        if (error) throw error
-        const rendered = toHTML(loaded, [], {
-          html5: true,
-          lists: true,
-          ids: true,
-        })
-        const dirname = path.dirname(file)
-        const [_, publisher, project] = dirname.split(path.sep)
-        const edition = frontMatter.edition
-        const title = frontMatter.title || project
-        const data = Object.assign(
-          {
-            title,
-            github: `https://github.com/commonform/commonform-static/blob/master/${file}`,
-            digest: hash(form),
-            docx: `${edition}.docx`,
-            json: `${edition}.json`,
-            markdown: `${edition}.md`,
-            spelled: revedSpell(edition),
-            project,
-            publisher,
-            rendered,
-          },
-          frontMatter,
-        )
-        const html = ejs.render(templates.form, data)
-        const page = path.join('site', publisher, project, `${edition}.html`)
-        fs.mkdirSync(path.dirname(page), { recursive: true })
-        fs.writeFileSync(page, html)
-        if (!publishers[publisher]) {
-          publishers[publisher] = {
-            publisher,
-            projects: {},
-          }
-        }
-        if (!publishers[publisher].projects[project]) {
-          publishers[publisher].projects[project] = {}
-        }
-        publishers[publisher].projects[project][edition] = frontMatter
-        docx(loaded, [], {
-          title,
-          edition,
-          centerTitle: false,
-          indentMargins: true,
-          markFilled: true,
-          numbering: numberings[frontMatter.numbering || 'outline'],
-          after: frontMatter.signaturePages
-            ? ooxmlSignaturePages(frontMatter.signaturePages)
-            : false,
-          styles: frontMatter.styles || {
-            alignment: 'left',
-            heading: {
-              italic: true,
-            },
-            reference: {
-              italic: true,
-            },
-            referenceHeading: {
-              italic: true,
-            },
-          },
-        })
-          .generateAsync({ type: 'nodebuffer' })
-          .then((buffer) => {
-            const wordFile = path.join(
-              'site',
-              publisher,
-              project,
-              `${edition}.docx`,
-            )
-            fs.writeFileSync(wordFile, buffer)
+      loadComponents(
+        form,
+        loadOptions,
+        (error, loaded, resolutions) => {
+          if (error) throw error
+          const rendered = toHTML(loaded, [], {
+            html5: true,
+            lists: true,
+            ids: true,
           })
+          const dirname = path.dirname(file)
+          const [_, publisher, project] = dirname.split(path.sep)
+          const edition = frontMatter.edition
+          const title = frontMatter.title || project
+          const data = Object.assign(
+            {
+              title,
+              github: `https://github.com/commonform/commonform-static/blob/master/${file}`,
+              digest: hash(form),
+              docx: `${edition}.docx`,
+              json: `${edition}.json`,
+              markdown: `${edition}.md`,
+              spelled: revedSpell(edition),
+              project,
+              publisher,
+              rendered,
+            },
+            frontMatter,
+          )
+          const html = ejs.render(templates.form, data)
+          const page = path.join(
+            'site',
+            publisher,
+            project,
+            `${edition}.html`,
+          )
+          fs.mkdirSync(path.dirname(page), { recursive: true })
+          fs.writeFileSync(page, html)
+          if (!publishers[publisher]) {
+            publishers[publisher] = {
+              publisher,
+              projects: {},
+            }
+          }
+          if (!publishers[publisher].projects[project]) {
+            publishers[publisher].projects[project] = {}
+          }
+          publishers[publisher].projects[project][
+            edition
+          ] = frontMatter
+          docx(loaded, [], {
+            title,
+            edition,
+            centerTitle: false,
+            indentMargins: true,
+            markFilled: true,
+            numbering:
+              numberings[frontMatter.numbering || 'outline'],
+            after: frontMatter.signaturePages
+              ? ooxmlSignaturePages(frontMatter.signaturePages)
+              : false,
+            styles: frontMatter.styles || {
+              alignment: 'left',
+              heading: {
+                italic: true,
+              },
+              reference: {
+                italic: true,
+              },
+              referenceHeading: {
+                italic: true,
+              },
+            },
+          })
+            .generateAsync({ type: 'nodebuffer' })
+            .then((buffer) => {
+              const wordFile = path.join(
+                'site',
+                publisher,
+                project,
+                `${edition}.docx`,
+              )
+              fs.writeFileSync(wordFile, buffer)
+            })
 
-        const jsonFile = path.join(
-          'site',
-          publisher,
-          project,
-          `${edition}.json`,
-        )
-        fs.writeFileSync(jsonFile, JSON.stringify({ frontMatter, form }))
+          const jsonFile = path.join(
+            'site',
+            publisher,
+            project,
+            `${edition}.json`,
+          )
+          fs.writeFileSync(
+            jsonFile,
+            JSON.stringify({ frontMatter, form }),
+          )
 
-        const markdownFile = path.join(
-          'site',
-          publisher,
-          project,
-          `${edition}.md`,
-        )
-        fs.writeFileSync(markdownFile, markup)
-        done()
-      })
+          const markdownFile = path.join(
+            'site',
+            publisher,
+            project,
+            `${edition}.md`,
+          )
+          fs.writeFileSync(markdownFile, markup)
+          done()
+        },
+      )
     }
   }),
   () => {
@@ -156,7 +258,11 @@ function renderPublisherPages() {
     renderProjectsPages()
 
     function renderPublisherPage() {
-      const publisherPage = path.join('site', publisher, 'index.html')
+      const publisherPage = path.join(
+        'site',
+        publisher,
+        'index.html',
+      )
       const data = Object.assign({}, publishers[publisher])
       const html = ejs.render(templates.publisher, data)
       fs.writeFileSync(publisherPage, html)
@@ -164,7 +270,12 @@ function renderPublisherPages() {
 
     function renderProjectsPages() {
       Object.keys(projects).forEach((project) => {
-        const projectPage = path.join('site', publisher, project, 'index.html')
+        const projectPage = path.join(
+          'site',
+          publisher,
+          project,
+          'index.html',
+        )
         const editions = Object.keys(projects[project])
           .map((edition) => {
             const frontMatter = projects[project][edition]
