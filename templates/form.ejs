@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= publisher %>’s <%= title %> <%= edition %></title>
+    <link rel=stylesheet href=/normalize.css> <link rel=stylesheet
+    href=/fonts.css> <link rel=stylesheet href=/styles.css>
+  </head>
+  <body>
+    <header role="banner">
+      <a href=/><img alt="Common Form logotype" src=/logo.svg></a>
+      <h1><%= publisher %>’s <%= title %> </h1>
+      <p class=edition><%= spelled %></p>
+    </header>
+    <nav role="navigation">
+      <a href="/<%= publisher %>">Forms by <%= publisher %></a>
+      <a href="/<%= publisher %>/<%= project %>">Editions of <%= project %></a>
+    </nav>
+    <main role="main">
+      <dl>
+        <dt>Published</dt>
+        <dd><%= published %></dd>
+        <dt>Code</dt>
+        <dd><code class="digest"><%= digest %></code></dd>
+      </dl>
+      <a href="<$= docx %>">Download a Microsoft Word file.</a>
+      <article class="commonform"><%- rendered %></article>
+    </main>
+    <footer role="contentinfo"></footer>
+  </body>
+</html>

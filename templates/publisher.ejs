@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang=en-US>
+  <head>
+    <meta charset=UTF-8>
+    <meta name=viewport content="width=device-width, initial-scale=1" />
+    <title><%= publisher %>’s Forms</title>
+    <link rel=stylesheet href=/normalize.css>
+    <link rel=stylesheet href=/fonts.css>
+    <link rel=stylesheet href=/styles.css>
+  </head>
+  <body>
+    <header role=banner class="homepage">
+      <a href=/><img alt="Common Form logotype" src=/logo.svg></a>
+      <h1>Common Form</h1>
+      <p>a free, open repository of legal forms</p>
+    </header>
+    <main role=main>
+      <h2><%= publisher %>’s Forms</h2>
+      <% Object.keys(projects).forEach((project) => { %>
+      <a href=./<%= project %>><%= project %></a>
+      <% }) %>
+    </main>
+    <footer role=contentinfo></footer>
+  </body>
+</html>
