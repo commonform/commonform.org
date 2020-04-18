@@ -162,7 +162,7 @@ publisherFiles.forEach((file) => {
   const contents = fs.readFileSync(file)
   const parsed = grayMatter(contents)
   const meta = parsed.data
-  meta.description = parsed.content
+  meta.about = parsed.content
   if (!validatePublisher(meta)) {
     console.error(validatePublisher.errors)
     throw new Error(`invalid publisher meta: ${file}`)
@@ -333,10 +333,12 @@ function renderPublisherPages() {
           email: false,
           website: false,
           location: false,
-          hasBuildingBlocks: Object.keys(projects).some(key => {
-            return projects[key].buildingBlock === true
-          }),
-          hasCompleteForms: Object.keys(projects).some(key => {
+          hasBuildingBlocks: Object.keys(projects).some(
+            (key) => {
+              return projects[key].buildingBlock === true
+            },
+          ),
+          hasCompleteForms: Object.keys(projects).some((key) => {
             return projects[key].buildingBlock === false
           }),
         },

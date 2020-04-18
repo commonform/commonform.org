@@ -16,16 +16,32 @@
     </header>
     <main role=main>
       <h2><%= publisher %>’s Forms</h2>
-      <p class=description><%= description %></p>
-      <% if (email) { %>
-      <p class=email><a href="mailto:<%= email %>"><%= email %></a></p>
-      <% } %>
-      <% if (website) { %>
-      <p class=website><a href="<%= website %>"><%= website %></a></p>
-      <% } %>
-      <% if (location) { %>
-      <p class=location><%= location %></p>
-      <% } %>
+      <table>
+        <% if (about) { %>
+        <tr>
+          <th>About</th>
+          <td><%= about %></td>
+        </tr>
+        <% } %>
+        <% if (email) { %>
+        <tr>
+          <th>E-Mail</th>
+          <td><a href="mailto:<%= email %>"><%= email %></a></td>
+        </tr>
+        <% } %>
+        <% if (website) { %>
+        <tr>
+          <th>Website</th>
+          <td><a href="<%= website %>"><%= website %></a></td>
+        </tr>
+        <% } %>
+        <% if (location) { %>
+        <tr>
+          <th>Location</th>
+          <td><%= location %></td>
+        </tr>
+        <% } %>
+      </table>
       <% if (hasCompleteForms) { %>
       <h3>Forms</h3>
       <ul>

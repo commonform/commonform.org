@@ -43,74 +43,83 @@ main > article > section {
     font-size: 23px;
   }
 }
+
 @media all and (max-width: 1000px) {
   html {
     font-size: 23px;
   }
 }
+
 @media all and (max-width: 960px) {
   html {
     font-size: 22px;
   }
 }
+
 @media all and (max-width: 920px) {
   html {
     font-size: 21px;
   }
 }
+
 @media all and (max-width: 880px) {
   html {
     font-size: 20px;
   }
 }
+
 @media all and (max-width: 840px) {
   html {
     font-size: 19px;
   }
 }
+
 @media all and (max-width: 800px) {
   html {
     font-size: 18px;
   }
 }
+
 @media all and (max-width: 760px) {
   html {
     font-size: 17px;
   }
 }
+
 @media all and (max-width: 720px) {
   html {
     font-size: 16px;
   }
 }
+
 @media all and (max-width: 680px) {
   html {
     font-size: 15px;
   }
 }
+
 @media all and (max-width: 640px) {
   html {
     font-size: 14px;
   }
 }
+
 @media all and (max-width: 600px) {
   html {
     font-size: 13px;
   }
 }
+
 @media all and (max-width: 560px) {
   html {
     font-size: 12px;
   }
 }
+
 @media all and (max-width: 520px) {
   html {
     font-size: 11px;
   }
-}
-
-.digest {
-  font-family: Triplicate, 'Andale Mono', monospace;
 }
 
 a {
@@ -121,86 +130,23 @@ a:hover {
   text-decoration: underline;
 }
 
-.commonform {
-  margin-left: 1rem;
-}
-
-.commonform section {
-  margin-bottom: 1rem;
-  margin-left: 2rem;
-  margin-top: 1rem;
-  padding: 0 0 0.5rem 0.5rem;
-  position: relative;
-}
-
-.editor {
-  min-height: 20rem;
-}
-
-.commonform .conspicuous > p {
+.conspicuous > p {
   font-style: italic;
   font-weight: bold;
 }
 
-.commonform p {
-  margin: 0;
-}
-
-.commonform section:before {
-  content: '§';
-  left: -1rem;
-  position: absolute;
-}
-
-.commonform .component:before {
-  content: '⚙';
-}
-
-.commonform .heading {
-  box-sizing: border-box;
-  display: block;
-  font-size: 100%;
-  font-weight: bold;
-  width: 100%;
-}
-
-.commonform dfn {
+dfn {
   font-weight: bold;
 }
 
-.commonform .use,
-.commonform .reference {
+.use,
+.reference {
   color: inherit;
   font-style: italic;
 }
 
-.reference {
-  color: black;
-  font-style: italic;
-}
-
-.reference:before {
-  content: '☞ ';
-}
-
-.toc .component > .reference:before {
-  content: '⚙ ';
-  font-style: normal;
-}
-
-.commonform .blank {
-  background: inherit;
-  border-bottom: 1px dashed black;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  box-sizing: border-box;
-  display: inline-block;
-  max-width: 10rem;
-}
-
-.commonform .child-link {
-  font-size: 75%;
+.blank {
+  background: yellow;
 }
 
 p.info,
@@ -221,14 +167,6 @@ p.error {
   background-color: #ffbdbc;
 }
 
-header.toc {
-  margin-bottom: 3rem;
-}
-
-.toc ol {
-  list-style-type: none;
-}
-
 body > footer {
   font-size: 75%;
   text-align: right;
@@ -237,281 +175,6 @@ body > footer {
 body > header > h1 {
   margin-top: 0;
   padding-top: 0;
-}
-
-.hidden {
-  display: none;
-}
-
-.selected {
-  background: rgb(255, 255, 213);
-}
-
-.expanded {
-  color: #777;
-}
-
-fieldset {
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-}
-
-.commonform input[type='text'],
-.commonform input[type='password'] {
-  padding: 1ex;
-}
-
-.annotationCounts {
-  position: fixed;
-  right: 1rem;
-  top: 1rem;
-  z-index: 100;
-}
-
-.annotationCounts .count {
-  cursor: pointer;
-  margin: 0 1ex;
-  text-decoration: none;
-}
-
-button + button {
-  margin-left: 1ex;
-}
-
-label input[type='checkbox'] {
-  margin: 0 1ex 0 1ex;
-}
-
-.component .substitutions {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.terms:before {
-  content: 'Term Substitutions';
-  font-weight: bold;
-}
-
-.headings:before {
-  content: 'Heading Substitutions';
-  font-weight: bold;
-}
-
-.component .identification {
-  padding: 1rem 0;
-}
-
-.child-button,
-.move-button {
-  background: inherit;
-  border: 1px dashed #eee;
-  color: transparent;
-  cursor: pointer;
-  display: block;
-  margin: 0 0.5rem;
-  padding: 0;
-  text-align: left;
-  user-select: none;
-  width: 100%;
-}
-
-.child-button:before {
-  content: 'Add § here.';
-}
-
-.move-button:before {
-  content: 'Move here.';
-}
-
-.child-button:hover,
-.move-button:hover {
-  color: #777;
-}
-
-.selector:before {
-  content: '§' !important;
-}
-
-.summary {
-  margin: 0;
-  padding: 0;
-}
-
-.undefined,
-.brokenReferences {
-  list-style-type: none;
-  padding: 0;
-}
-
-.undefined:before {
-  content: 'Undefined Terms: ';
-}
-
-.brokenReferences:before {
-  content: 'Broken References: ';
-}
-
-.undefined li,
-.brokenReferences li {
-  display: inline;
-}
-
-.summary li:after {
-  content: ', ';
-}
-
-.summary li:last-child:after {
-  content: '';
-}
-
-.comment,
-.annotation,
-.hint {
-  border-left: 1px solid #777;
-  border-radius: 1rem;
-  border: 1px solid #777;
-  margin-bottom: 1rem;
-  padding: 1rem;
-}
-
-.comment,
-.hint {
-  background-color: rgb(230, 230, 255);
-}
-
-.byline {
-  display: block;
-  text-align: right;
-}
-
-ins,
-del {
-  height: auto;
-  margin: 0;
-  padding: 0;
-  width: auto;
-}
-
-ins {
-  color: rgb(0, 200, 0);
-}
-
-del {
-  color: rgb(200, 0, 0);
-}
-
-.diff .changed {
-  border-right: 2px solid orange;
-}
-
-.diff .text {
-  padding-right: 0.5rem;
-}
-
-.columnList {
-  column-count: 3;
-  column-gap: 1rem;
-  list-style-type: none;
-  padding: 0;
-}
-
-.columnList li {
-  margin: 0;
-  padding: 0;
-}
-
-.editionsList {
-  list-style-type: none;
-  padding: 0;
-}
-
-.saveForm,
-.annotationOptions,
-.openFileForm,
-.summary {
-  border: 1px solid black;
-  border-radius: 1rem;
-  margin: 1rem 0;
-  padding: 1rem;
-}
-
-.saveForm p {
-  margin: 0.5rem 0;
-}
-
-.saveForm input + input {
-  margin-left: 1rem;
-}
-
-textarea {
-  box-sizing: border-box;
-  display: block;
-  margin: 1rem 0;
-  width: 100%;
-}
-
-.commentForm button {
-  margin-top: 1rem;
-}
-
-.releaseNotes {
-  margin-left: 2rem;
-}
-
-.icon {
-  width: 1.5ex;
-}
-
-button,
-.button {
-  background-color: #e6e6e6;
-  border-radius: 2px;
-  border: transparent;
-  color: #444;
-  color: rgba(0, 0, 0, 0.8);
-  cursor: pointer;
-  display: inline-block;
-  margin: 0.5em 0;
-  padding: 0.5em 1em;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  vertical-align: middle;
-  white-space: nowrap;
-}
-
-button:hover,
-.button:hover {
-  filter: alpha(opacity=90);
-  background-image: linear-gradient(
-    transparent,
-    rgba(0, 0, 0, 0.05) 40%,
-    rgba(0, 0, 0, 0.1)
-  );
-  text-decoration: none;
-}
-
-input[name='description'] {
-  width: 100%;
-  display: block;
-  box-sizing: border-box;
-}
-
-input,
-textarea {
-  padding: 0.5em 1em;
-  margin: 0.5em 0;
-}
-
-.header {
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.signaturePages label input[type='text'],
-.signaturePages label select {
-  margin-left: 1rem;
 }
 
 td,
@@ -533,6 +196,6 @@ th {
 
 .digest {
   color: #777;
-  font-family: monospace;
+  font-family: Triplicate, 'Andale Mono', monospace;
   font-size: 90%;
 }

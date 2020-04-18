@@ -14,7 +14,7 @@
       "type": "string",
       "format": "email"
     },
-    "description": {
+    "about": {
       "type": "string"
     }
   }
