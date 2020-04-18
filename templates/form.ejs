@@ -12,27 +12,33 @@
       <a href=/><img alt="Common Form logotype" src=/logo.svg></a>
       <h1><%= publisher %>’s <%= title %> </h1>
       <p class=edition><%= spelled %></p>
+      <p class=digest><code class=digest><%= digest %></code></p>
     </header>
     <main role="main">
-      <dl>
-        <dt>Publisher</dt>
-        <dd><a href="/<%= publisher %>"><%= publisher %></a></dd>
-        <dt>Project</dt>
-        <dd><a href="/<%= publisher %>/<%= project %>"><%= project %></a></dd>
-        <dt>Published</dt>
-        <dd><%= published %></dd>
-        <dt>Digest</dt>
-        <dd><code class="digest"><%= digest %></code></dd>
-        <dt>Downloads</dt>
-        <dd>
-          <ul>
-            <li><a href="<%= docx %>">Microsoft Word</a></li>
-            <li><a href="<%= json %>">JSON Data</a></li>
-            <li><a href="<%= markdown %>">Markdown</a></li>
-          </ul>
-        </dd>
-      </dl>
-      <%- toc %>
+      <table>
+        <tr>
+          <th>Publisher</th>
+          <td><a href="/<%= publisher %>"><%= publisher %></a></td>
+        </tr>
+        <tr>
+          <th>Project</th>
+          <td><a href="/<%= publisher %>/<%= project %>"><%= project %></a></td>
+        </tr>
+        <tr>
+          <th>Published</th>
+          <td><%= published %></td>
+        </tr>
+        <tr>
+          <th>Downloads</th>
+          <td>
+            <ul>
+              <li><a href="<%= docx %>">Microsoft Word</a></li>
+              <li><a href="<%= json %>">JSON Data</a></li>
+              <li><a href="<%= markdown %>">Markdown</a></li>
+            </ul>
+          </td>
+        </tr>
+      </table>
       <%- rendered %>
     </main>
     <footer role="contentinfo">

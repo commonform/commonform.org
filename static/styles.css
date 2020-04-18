@@ -12,7 +12,7 @@ body > header,
 body > footer {
   margin-left: auto;
   margin-right: auto;
-  max-width: 50rem;
+  max-width: 33rem;
   padding: 1rem 2rem;
 }
 
@@ -511,4 +511,26 @@ textarea {
 .signaturePages label input[type='text'],
 .signaturePages label select {
   margin-left: 1rem;
+}
+
+td, th {
+  padding: 0.5ex;
+  vertical-align: top;
+}
+
+td ul {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+th {
+  text-align: right;
+}
+
+.digest {
+  color: #777;
+  font-family: monospace;
+  font-size: 90%;
 }
