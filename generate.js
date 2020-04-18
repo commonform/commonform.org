@@ -89,20 +89,15 @@ glob.sync('forms/**/*.md').forEach((file) => {
       ? ooxmlSignaturePages(frontMatter.signaturePages)
       : false,
     styles: frontMatter.styles || {
-      centerTitle: false,
-      indentMargins: true,
-      markFilled: true,
-      styles: {
-        alignment: 'left',
-        heading: {
-          italic: true,
-        },
-        reference: {
-          italic: true,
-        },
-        referenceHeading: {
-          italic: true,
-        },
+      alignment: 'left',
+      heading: {
+        italic: true,
+      },
+      reference: {
+        italic: true,
+      },
+      referenceHeading: {
+        italic: true,
       },
     },
   })
