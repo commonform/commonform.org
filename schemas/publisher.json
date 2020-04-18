@@ -6,6 +6,10 @@
       "type": "string",
       "format": "uri"
     },
+    "location": {
+      "type": "string",
+      "minLength": 2
+    },
     "email": {
       "type": "string",
       "format": "email"

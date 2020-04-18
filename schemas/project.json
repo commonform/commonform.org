@@ -1,9 +1,7 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "buildingBlock"
-  ],
+  "required": ["buildingBlock"],
   "properties": {
     "buildingBlock": {
       "type": "boolean"
