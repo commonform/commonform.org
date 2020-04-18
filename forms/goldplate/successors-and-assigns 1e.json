@@ -1,0 +1,37 @@
+{
+  "digest": "25f1f534bb19faf3d8f975be976c9a13029bb34b92ec29ab617886b2d77c2ff4",
+  "edition": "1e",
+  "project": "successors-and-assigns",
+  "publisher": "goldplate",
+  "form": {
+    "content": [
+      {
+        "form": {
+          "content": [
+            "This ",
+            { "use": "Agreement" },
+            " binds and benefits the parties and their respective permitted successors and assigns."
+          ]
+        },
+        "heading": "Successors and Assigns"
+      }
+    ]
+  },
+  "loaded": {
+    "form": {
+      "content": [
+        {
+          "form": {
+            "content": [
+              "This ",
+              { "use": "Agreement" },
+              " binds and benefits the parties and their respective permitted successors and assigns."
+            ]
+          },
+          "heading": "Successors and Assigns"
+        }
+      ]
+    },
+    "resolutions": []
+  }
+}
