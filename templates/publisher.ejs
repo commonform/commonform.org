@@ -16,13 +16,10 @@
     </header>
     <main role=main>
       <h2><%= publisher %>’s Forms</h2>
+      <% if (about) { %>
+      <%- about %>
+      <% } %>
       <table>
-        <% if (about) { %>
-        <tr>
-          <th>About</th>
-          <td><%= about %></td>
-        </tr>
-        <% } %>
         <% if (email) { %>
         <tr>
           <th>E-Mail</th>

@@ -17,7 +17,12 @@
       <h2>Publishers</h2>
       <ul>
         <% publishers.forEach((publisher) => { %>
-        <li><a href="<%= publisher %>"><%= publisher %></a></li>
+        <li>
+          <a href="<%= publisher.name %>"><%= publisher.name %></a>
+          <% if (publisher.about) { %>
+          <%- publisher.about %>
+          <% } %>
+        </li>
         <% }) %>
       </ul>
     </main>

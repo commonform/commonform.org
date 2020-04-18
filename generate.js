@@ -8,6 +8,7 @@ const glob = require('glob')
 const grayMatter = require('gray-matter')
 const hash = require('commonform-hash')
 const loadComponents = require('commonform-load-components')
+const markdown = require('./markdown')
 const ooxmlSignaturePages = require('ooxml-signature-pages')
 const path = require('path')
 const revedCompare = require('reviewers-edition-compare')
@@ -140,7 +141,7 @@ indexFiles.forEach((projectFile) => {
   const contents = fs.readFileSync(projectFile)
   const parsed = grayMatter(contents)
   const meta = parsed.data
-  meta.description = parsed.content
+  meta.description = markdown(parsed.content)
   if (!validateProject(meta)) {
     console.error(validateProject.errors)
     throw new Error(`invalid project meta: ${projectFile}`)
@@ -162,7 +163,7 @@ publisherFiles.forEach((file) => {
   const contents = fs.readFileSync(file)
   const parsed = grayMatter(contents)
   const meta = parsed.data
-  meta.about = parsed.content
+  meta.about = markdown(parsed.content)
   if (!validatePublisher(meta)) {
     console.error(validatePublisher.errors)
     throw new Error(`invalid publisher meta: ${file}`)
@@ -390,7 +391,14 @@ function renderPublisherPages() {
 function renderHomePage() {
   const page = path.join('site', 'index.html')
   const data = {
-    publishers: Object.keys(publishers),
+    publishers: Object.keys(publishers)
+      .map((publisher) => {
+        return Object.assign(
+          { name: publisher },
+          publisherMetadata[publisher],
+        )
+      })
+      .sort((a, b) => a.name.localeCompare(b.name)),
   }
   const html = ejs.render(templates.home, data)
   fs.writeFileSync(page, html)
