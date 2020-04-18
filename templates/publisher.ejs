@@ -26,6 +26,7 @@
       <% if (location) { %>
       <p class=location><%= location %></p>
       <% } %>
+      <% if (hasCompleteForms) { %>
       <h3>Forms</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
@@ -34,6 +35,8 @@
         <% } %>
         <% }) %>
       </ul>
+      <% } %>
+      <% if (hasBuildingBlocks) { %>
       <h3>Building Blocks</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
@@ -42,6 +45,7 @@
         <% } %>
         <% }) %>
       </ul>
+      <% } %>
     </main>
     <footer role=contentinfo></footer>
   </body>

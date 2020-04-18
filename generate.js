@@ -333,6 +333,12 @@ function renderPublisherPages() {
           email: false,
           website: false,
           location: false,
+          hasBuildingBlocks: Object.keys(projects).some(key => {
+            return projects[key].buildingBlock === true
+          }),
+          hasCompleteForms: Object.keys(projects).some(key => {
+            return projects[key].buildingBlock === false
+          }),
         },
         publisherMetadata[publisher],
         publishers[publisher],
