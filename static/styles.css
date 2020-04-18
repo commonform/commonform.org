@@ -513,7 +513,8 @@ textarea {
   margin-left: 1rem;
 }
 
-td, th {
+td,
+th {
   padding: 0.5ex;
   vertical-align: top;
 }
