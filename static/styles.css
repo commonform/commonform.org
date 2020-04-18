@@ -199,3 +199,7 @@ th {
   font-family: Triplicate, 'Andale Mono', monospace;
   font-size: 90%;
 }
+
+.term {
+  font-style: italic;
+}
