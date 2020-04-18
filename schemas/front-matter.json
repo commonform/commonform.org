@@ -1,10 +1,7 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "edition",
-    "published"
-  ],
+  "required": ["edition", "published"],
   "properties": {
     "title": {
       "type": "string",
@@ -19,10 +16,7 @@
       "format": "date-time"
     },
     "numbering": {
-      "enum": [
-        "outline",
-        "decimal"
-      ]
+      "enum": ["outline", "decimal"]
     },
     "notes": {
       "type": "array",
