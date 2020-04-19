@@ -16,6 +16,7 @@
     </header>
     <main role=main>
       <h2><%= project %></h2>
+      <%- description %>
       <table>
         <tr>
           <th>Publisher</th>
@@ -26,7 +27,6 @@
           <td><%= buildingBlock ? 'Building Block ' : 'Complete Form'%></td>
         </tr>
       </table>
-      <%- description %>
       <ul>
         <% editions.forEach((edition) => { %>
         <li>
