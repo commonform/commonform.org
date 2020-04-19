@@ -1,5 +1,11 @@
 # Contributing to commonform.org
 
+All data about publishers, projects, and forms lives in [`./data`](./data).
+
+Images, styles, and other static assets live in [`./static`](./static).
+
+The code for generating webpages, downloads, and indexes starts in [`./generate.js`](./generate.js).
+
 ## Creating a Publisher Profile
 
 You can create a publisher profile for yourself by sending a pull request on GitHub.
