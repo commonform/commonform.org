@@ -48,6 +48,18 @@
           <td><%= location %></td>
         </tr>
         <% } %>
+        <% if (trademarks) { %>
+        <tr>
+          <th>Trademarks</th>
+          <td>
+            <ul>
+              <% trademarks.forEach((number) => { %>
+              <li><a href="https://tsdr.uspto.gov/#caseNumber=<%= number %>&caseSearchType=US_APPLICATION&caseType=DEFAULT&searchType=statusSearch"><%= number %></a></li>
+              <% }) %>
+            </ul>
+          </td>
+        </tr>
+        <% } %>
       </table>
       <% if (hasCompleteForms) { %>
       <h3>Forms</h3>

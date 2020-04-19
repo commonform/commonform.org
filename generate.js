@@ -350,6 +350,7 @@ function renderPublisherPages() {
           website: false,
           location: false,
           name: false,
+          trademarks: false,
           hasComponents: Object.keys(projects).some((key) => {
             return projects[key].component === true
           }),
@@ -391,6 +392,7 @@ function renderPublisherPages() {
             publisher,
             project,
             editions,
+            trademarks: false,
           },
           projectMetadata[publisher][project],
         )

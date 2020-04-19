@@ -5,6 +5,14 @@
     "name": {
       "type": "string"
     },
+    "trademarks": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "min": 0
+      },
+      "minItems": 1
+    },
     "type": {
       "enum": [
         "project",
