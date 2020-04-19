@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 const AJV = require('ajv')
 const commonmark = require('commonmark')
-const markup = require('commonform-commonmark')
 const docx = require('commonform-docx')
 const ejs = require('ejs')
+const englishMonths = require('english-months')
 const fs = require('fs')
 const glob = require('glob')
 const grayMatter = require('gray-matter')
 const hash = require('commonform-hash')
 const loadComponents = require('commonform-load-components')
+const markup = require('commonform-commonmark')
 const ooxmlSignaturePages = require('ooxml-signature-pages')
 const path = require('path')
 const revedCompare = require('reviewers-edition-compare')
@@ -223,6 +224,9 @@ runSeries(
               license: false,
               publisher,
               publisherMetadata: publisherMetadata[publisher],
+              publishedDisplay: displayDate(
+                frontMatter.published,
+              ),
               rendered,
               edition,
             },
@@ -427,4 +431,15 @@ function markdown(markup) {
   const writer = new commonmark.HtmlRenderer({ safe: true })
   const parsed = reader.parse(markup)
   return writer.render(parsed)
+}
+
+function displayDate(string) {
+  const date = new Date(string)
+  return (
+    englishMonths[date.getMonth()] +
+    ' ' +
+    date.getDate() +
+    ', ' +
+    date.getFullYear()
+  )
 }

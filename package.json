@@ -13,6 +13,7 @@
     "commonmark": "^0.29.1",
     "decimal-numbering": "^3.0.2",
     "ejs": "^3.0.2",
+    "english-months": "^1.0.3",
     "glob": "^7.1.6",
     "gray-matter": "^4.0.2",
     "ooxml-signature-pages": "^3.0.2",
