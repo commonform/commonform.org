@@ -15,6 +15,14 @@ footer[role='contentinfo'] {
   padding: 0;
 }
 
+header[role='banner'] {
+  margin-top: 4rem;
+}
+
+header[role='banner'] h1 {
+  margin-top: 0.5rem;
+}
+
 main[role='main'] {
   margin-top: 2rem;
 }
