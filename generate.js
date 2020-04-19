@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const AJV = require('ajv')
-const commonmark = require('commonform-commonmark')
+const commonmark = require('commonmark')
+const markup = require('commonform-commonmark')
 const docx = require('commonform-docx')
 const ejs = require('ejs')
 const fs = require('fs')
@@ -8,7 +9,6 @@ const glob = require('glob')
 const grayMatter = require('gray-matter')
 const hash = require('commonform-hash')
 const loadComponents = require('commonform-load-components')
-const markdown = require('./markdown')
 const ooxmlSignaturePages = require('ooxml-signature-pages')
 const path = require('path')
 const revedCompare = require('reviewers-edition-compare')
@@ -56,13 +56,13 @@ const indexFiles = markdownFiles.filter((file) => {
 const forms = formFiles.map((file) => {
   const contents = fs.readFileSync(file, 'utf8')
   const parsed = grayMatter(contents)
-  const markup = parsed.content
+  const content = parsed.content
   const frontMatter = parsed.data
   if (!validateFrontMatter(frontMatter)) {
     console.error(validateFrontMatter.errors)
     throw new Error(`invalid front matter: ${file}`)
   }
-  const form = commonmark.parse(markup).form
+  const form = markup.parse(content).form
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
   const edition = path.basename(file, '.md')
@@ -181,13 +181,13 @@ runSeries(
     return (done) => {
       const contents = fs.readFileSync(file, 'utf8')
       const parsed = grayMatter(contents)
-      const markup = parsed.content
+      const content = parsed.content
       const frontMatter = parsed.data
       if (!validateFrontMatter(frontMatter)) {
         console.error(validateFrontMatter.errors)
         throw new Error(`invalid front matter: ${file}`)
       }
-      const form = commonmark.parse(markup).form
+      const form = markup.parse(content).form
       loadComponents(
         clone(form),
         loadOptions,
@@ -309,7 +309,7 @@ runSeries(
             project,
             `${edition}.md`,
           )
-          fs.writeFileSync(markdownFile, markup)
+          fs.writeFileSync(markdownFile, content)
           done()
         },
       )
@@ -414,4 +414,11 @@ glob.sync('static/*').forEach((file) => {
 
 function clone(x) {
   return JSON.parse(JSON.stringify(x))
+}
+
+function markdown(markup) {
+  const reader = new commonmark.Parser()
+  const writer = new commonmark.HtmlRenderer({ safe: true })
+  const parsed = reader.parse(markup)
+  return writer.render(parsed)
 }
