@@ -48,7 +48,10 @@
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
         <% if (projects[project].component === false) { %>
-        <li><a href=./<%= project %>><%= project %></a></li>
+        <li>
+          <a href=./<%= project %>><%= project %></a>
+          <%- projects[project].description %>
+        </li>
         <% } %>
         <% }) %>
       </ul>
@@ -58,7 +61,10 @@
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
         <% if (projects[project].component === true) { %>
-        <li><a href=./<%= project %>><%= project %></a></li>
+        <li>
+          <a href=./<%= project %>><%= project %></a>
+          <%- projects[project].description %>
+        </li>
         <% } %>
         <% }) %>
       </ul>
