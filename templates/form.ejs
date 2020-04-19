@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang=en-US>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset=UTF-8>
+    <meta name=viewport content="width=device-width, initial-scale=1">
     <title><%= title %> <%= edition %></title>
     <link rel=stylesheet href=/normalize.css> <link rel=stylesheet
     href=/fonts.css> <link rel=stylesheet href=/styles.css>
   </head>
   <body>
-    <header role="banner">
+    <header role=banner>
       <a href=/><img alt="Common Form logotype" src=/logo.svg></a>
       <h1><%= title %> </h1>
       <p class=edition><%= spelled %></p>
       <p class=digest><code class=digest><%= digest %></code></p>
     </header>
-    <main role="main">
+    <main role=main>
       <table>
         <tr>
           <th>Publisher</th>
@@ -57,7 +57,7 @@
       </table>
       <%- rendered %>
     </main>
-    <footer role="contentinfo">
+    <footer role=contentinfo>
       <% if (publisherMetadata.email) { %>
       <p><a href="mailto:<%= publisherMetadata.email %>?subject=<%= encodeURIComponent(`Feedback on ${project} ${edition}`) %>">E-mail the publisher of this form.</a></p>
       <% } %>
