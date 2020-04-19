@@ -12,7 +12,6 @@
       <a href=/><img alt="Common Form logotype" src=/logo.svg></a>
       <h1><%= title %> </h1>
       <p class=edition><%= spelled %></p>
-      <p class=digest><code class=digest><%= digest %></code></p>
     </header>
     <main role=main>
       <table>
@@ -56,6 +55,7 @@
         <% } %>
       </table>
       <%- rendered %>
+      <p class=digest><code class=digest><%= digest %></code></p>
     </main>
     <footer role=contentinfo>
       <% if (publisherMetadata.email) { %>
