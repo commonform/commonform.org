@@ -1,6 +1,6 @@
 ---
 type: individual
-email: kyle@kemitchell.com
+email: commonform@kemitchell.com
 website: https://kemitchell.com
 location: Oakland, California, USA
 ---

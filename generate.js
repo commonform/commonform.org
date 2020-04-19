@@ -214,6 +214,7 @@ runSeries(
                 projectMetadata[publisher][project],
               notes: false,
               publisher,
+              publisherMetadata: publisherMetadata[publisher],
               rendered,
               edition,
             },

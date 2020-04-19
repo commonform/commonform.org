@@ -58,7 +58,10 @@
       <%- rendered %>
     </main>
     <footer role="contentinfo">
-      <a href="<%= github %>">Source file on GitHub.</a>
+      <% if (publisherMetadata.email) { %>
+      <p><a href="mailto:<%= publisherMetadata.email %>?subject=<%= encodeURIComponent(`Feedback on ${project} ${edition}`) %>">E-mail the publisher of this form.</a></p>
+      <% } %>
+      <p><a href="<%= github %>">Source file on GitHub.</a></p>
     </footer>
   </body>
 </html>
