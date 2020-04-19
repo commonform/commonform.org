@@ -1,4 +1,5 @@
 ---
+name: SaaS Passport
 type: project
 email: feedback@saaspassport.com
 website: https://saaspassport.com
