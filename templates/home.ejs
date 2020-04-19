@@ -20,7 +20,7 @@
       <ul>
         <% publishers.forEach((publisher) => { %>
         <li>
-          <a href="<%= publisher.name %>"><%= publisher.name %></a>
+          <a href="<%= publisher.id %>"><%= publisher.id %></a>
           <% if (publisher.about) { %>
           <%- publisher.about %>
           <% } %>

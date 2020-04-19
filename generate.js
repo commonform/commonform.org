@@ -409,11 +409,11 @@ function renderHomePage() {
     publishers: Object.keys(publishers)
       .map((publisher) => {
         return Object.assign(
-          { name: publisher },
+          { id: publisher },
           publisherMetadata[publisher],
         )
       })
-      .sort((a, b) => a.name.localeCompare(b.name)),
+      .sort((a, b) => a.id.localeCompare(b.id)),
   }
   const html = ejs.render(templates.home, data)
   fs.writeFileSync(page, html)
