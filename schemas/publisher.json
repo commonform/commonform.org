@@ -2,6 +2,13 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "type": {
+      "enum": [
+        "project",
+        "organization",
+        "individual"
+      ]
+    },
     "website": {
       "type": "string",
       "format": "uri"

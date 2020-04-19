@@ -1,4 +1,5 @@
 ---
+type: individual
 email: kyle@kemitchell.com
 website: https://kemitchell.com
 location: Oakland, California, USA
