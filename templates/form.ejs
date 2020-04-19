@@ -31,6 +31,20 @@
           <th>Published</th>
           <td><%= published %></td>
         </tr>
+        <% if (license) { %>
+        <tr>
+          <th>License</th>
+          <td>
+            <% if (license === 'kemitchell/law-form-license/1e') { %>
+            <a href="/<%= license %>">Law Form License 1e</a>
+            <% } else if (license === 'kemitchell/tiny-verbatim-license/1e') { %>
+            <a href="/<%= license %>">Tiny Verbatim Copyright License 1e</a>
+            <% } else if (license === 'CC0-1.0') { %>
+            <a href=https://creativecommons.org/publicdomain/zero/1.0/legalcode>CC0 1.0 Universal</a>
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
         <tr>
           <th>Downloads</th>
           <td>

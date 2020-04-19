@@ -62,7 +62,12 @@ const forms = formFiles.map((file) => {
     console.error(validateFrontMatter.errors)
     throw new Error(`invalid front matter: ${file}`)
   }
-  const form = markup.parse(content).form
+  let form
+  try {
+    form = markup.parse(content).form
+  } catch (error) {
+    throw new Error(`invalid markup: ${file}`)
+  }
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
   const edition = path.basename(file, '.md')
@@ -215,6 +220,7 @@ runSeries(
               projectMetadata:
                 projectMetadata[publisher][project],
               notes: false,
+              license: false,
               publisher,
               publisherMetadata: publisherMetadata[publisher],
               rendered,

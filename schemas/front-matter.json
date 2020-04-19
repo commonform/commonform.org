@@ -11,6 +11,13 @@
       "type": "string",
       "format": "date-time"
     },
+    "license": {
+      "enum": [
+        "CC0-1.0",
+        "kemitchell/law-form-license/1e",
+        "kemitchell/tiny-verbatim-license/1e"
+      ]
+    },
     "numbering": {
       "enum": ["outline", "decimal"]
     },
