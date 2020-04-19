@@ -177,6 +177,10 @@ main[role='main'] > h1 {
   padding-top: 0;
 }
 
+th {
+  text-align: left;
+}
+
 td,
 th {
   padding: 0.5ex;
@@ -188,10 +192,6 @@ td ul {
   margin-top: 0;
   padding-bottom: 0;
   padding-top: 0;
-}
-
-th {
-  text-align: right;
 }
 
 .digest {
