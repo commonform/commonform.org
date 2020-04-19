@@ -136,6 +136,7 @@ a:hover {
 
 dfn {
   font-weight: bold;
+  font-style: normal;
 }
 
 .use,
