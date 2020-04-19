@@ -67,6 +67,11 @@
           </td>
         </tr>
         <% } %>
+        <tr>
+          <th>Permalink</th>
+          <% const permalink = `https://commonform.org/${publisher}/${project}/${edition}` %>
+          <td><a href="<%= permalink %>"><%= permalink %></a></td>
+        </tr>
       </table>
       <%- rendered %>
       <p class=digest><code class=digest><%= digest %></code></p>
