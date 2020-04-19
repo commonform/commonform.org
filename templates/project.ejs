@@ -15,7 +15,17 @@
       <p>a free, open repository of legal forms</p>
     </header>
     <main role=main>
-      <h2><%= publisher %>’s <%= project %></h2>
+      <h2><%= project %></h2>
+      <table>
+        <tr>
+          <th>Publisher</th>
+          <td><a href="/<%= publisher %>"><%= publisher %></a></td>
+        </tr>
+        <tr>
+          <th>Type</th>
+          <td><%= buildingBlock ? 'Building Block ' : 'Complete Form'%></td>
+        </tr>
+      </table>
       <%- description %>
       <ul>
         <% editions.forEach((edition) => { %>
