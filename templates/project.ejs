@@ -17,10 +17,12 @@
     <main role=main>
       <h2><%= publisher %>’s <%= project %></h2>
       <%- description %>
-      <% editions.forEach((edition) => { %>
-      <a href=./<%= edition.number %>><%= edition.spelled %></a>
-      (<%= edition.frontMatter.published %>)
+      <ul>
+        <% editions.forEach((edition) => { %>
+        <li><a href=./<%= edition.number %>><%= edition.spelled %></a></li>
+        (<%= edition.frontMatter.published %>)
       <% }) %>
+      </ul>
     </main>
     <footer role=contentinfo>
       <p><a href=https://reviewersedition.org/>What's with the edition numbers?</a></p>

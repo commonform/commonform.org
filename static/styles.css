@@ -25,11 +25,7 @@ header[role='banner'] h1 {
 
 main[role='main'] {
   margin-top: 2rem;
-}
-
-main[role='main'] {
-  padding-bottom: 0;
-  margin-bottom: 0;
+  margin-bottom: 2rem;
 }
 
 header[role='banner'] img {
