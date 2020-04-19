@@ -47,17 +47,17 @@
       <h3>Forms</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].buildingBlock === false) { %>
+        <% if (projects[project].component === false) { %>
         <li><a href=./<%= project %>><%= project %></a></li>
         <% } %>
         <% }) %>
       </ul>
       <% } %>
-      <% if (hasBuildingBlocks) { %>
+      <% if (hasComponents) { %>
       <h3>Building Blocks</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].buildingBlock === true) { %>
+        <% if (projects[project].component === true) { %>
         <li><a href=./<%= project %>><%= project %></a></li>
         <% } %>
         <% }) %>

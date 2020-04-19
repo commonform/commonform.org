@@ -1,3 +1,3 @@
 ---
-buildingBlock: false
+component: false
 ---
