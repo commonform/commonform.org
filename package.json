@@ -17,6 +17,7 @@
     "gray-matter": "^4.0.2",
     "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^2.0.0",
+    "resolutions-schedules-exhibits-numbering": "^1.0.0",
     "reviewers-edition-compare": "^1.0.5",
     "reviewers-edition-spell": "^2.0.0",
     "rimraf": "^3.0.2",

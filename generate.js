@@ -20,6 +20,8 @@ const toHTML = require('commonform-html')
 const numberings = {
   decimal: require('decimal-numbering'),
   outline: require('outline-numbering'),
+  rse: require('resolutions-schedules-exhibits-numbering'),
+  ase: require('agreement-schedules-exhibits-numbering'),
 }
 
 const ajv = new AJV()
