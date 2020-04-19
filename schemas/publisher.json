@@ -2,8 +2,15 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "name": {
+      "type": "string"
+    },
     "type": {
-      "enum": ["project", "organization", "individual"]
+      "enum": [
+        "project",
+        "organization",
+        "individual"
+      ]
     },
     "website": {
       "type": "string",

@@ -349,6 +349,7 @@ function renderPublisherPages() {
           email: false,
           website: false,
           location: false,
+          name: false,
           hasComponents: Object.keys(projects).some((key) => {
             return projects[key].component === true
           }),
