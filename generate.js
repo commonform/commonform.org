@@ -380,6 +380,7 @@ function renderPublisherPages() {
             return {
               number: edition,
               spelled: revedSpell(edition),
+              published: displayDate(frontMatter.published),
               frontMatter,
             }
           })
