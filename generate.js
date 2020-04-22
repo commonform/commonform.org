@@ -13,9 +13,11 @@ const markup = require('commonform-commonmark')
 const ooxmlSignaturePages = require('ooxml-signature-pages')
 const path = require('path')
 const revedCompare = require('reviewers-edition-compare')
+const revedParse = require('reviewers-edition-parse')
 const revedSpell = require('reviewers-edition-spell')
 const rimraf = require('rimraf')
 const runSeries = require('run-series')
+const semver = require('semver')
 const toHTML = require('commonform-html')
 
 const numberings = {
@@ -71,11 +73,11 @@ const forms = formFiles.map((file) => {
   }
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
-  const edition = path.basename(file, '.md')
+  const number = path.basename(file, '.md')
   return {
     publisher,
     project,
-    edition,
+    number,
     frontMatter,
     digest: hash(form),
     form,
@@ -97,7 +99,7 @@ function getPublication(
   repository,
   publisher,
   project,
-  edition,
+  number,
   callback,
 ) {
   if (repository !== 'commonform.org')
@@ -108,7 +110,7 @@ function getPublication(
     return (
       element.publisher === publisher &&
       element.project === project &&
-      element.edition === edition
+      element.number === number
     )
   })
   const result = publication
@@ -129,7 +131,8 @@ function getEditions(repository, publisher, project, callback) {
         element.project === project
       )
     })
-    .map((element) => element.edition)
+    .map((element) => element.number)
+    .filter((number) => isRevEd(number))
   const result = editions.length > 0 ? editions : false
   callback(null, result)
 }
@@ -206,17 +209,17 @@ runSeries(
           })
           const dirname = path.dirname(file)
           const [_, publisher, project] = dirname.split(path.sep)
-          const edition = path.basename(file, '.md')
+          const number = path.basename(file, '.md')
           const title = frontMatter.title || project
           const data = Object.assign(
             {
               title,
               github: `https://github.com/commonform/commonform.org/blob/master/${file}`,
               digest: hash(form),
-              docx: `${edition}.docx`,
-              json: `${edition}.json`,
-              markdown: `${edition}.md`,
-              spelled: revedSpell(edition),
+              docx: `${number}.docx`,
+              json: `${number}.json`,
+              markdown: `${number}.md`,
+              spelled: spellNumber(number),
               project,
               projectMetadata:
                 projectMetadata[publisher][project],
@@ -228,7 +231,7 @@ runSeries(
                 frontMatter.published,
               ),
               rendered,
-              edition,
+              number,
             },
             frontMatter,
           )
@@ -242,7 +245,7 @@ runSeries(
             'site',
             publisher,
             project,
-            `${edition}.html`,
+            `${number}.html`,
           )
           fs.mkdirSync(path.dirname(page), { recursive: true })
           fs.writeFileSync(page, html)
@@ -257,17 +260,17 @@ runSeries(
               project
             ] = Object.assign(
               {
-                editions: {},
+                numbers: {},
               },
               projectMetadata[publisher][project],
             )
           }
-          publishers[publisher].projects[project].editions[
-            edition
+          publishers[publisher].projects[project].numbers[
+            number
           ] = frontMatter
           docx(loaded, [], {
             title,
-            edition,
+            number,
             centerTitle: false,
             indentMargins: true,
             markFilled: true,
@@ -295,7 +298,7 @@ runSeries(
                 'site',
                 publisher,
                 project,
-                `${edition}.docx`,
+                `${number}.docx`,
               )
               fs.writeFileSync(wordFile, buffer)
             })
@@ -304,7 +307,7 @@ runSeries(
             'site',
             publisher,
             project,
-            `${edition}.json`,
+            `${number}.json`,
           )
           fs.writeFileSync(
             jsonFile,
@@ -317,7 +320,7 @@ runSeries(
             'site',
             publisher,
             project,
-            `${edition}.md`,
+            `${number}.md`,
           )
           fs.writeFileSync(markdownFile, content)
           done()
@@ -373,25 +376,24 @@ function renderPublisherPages() {
           project,
           'index.html',
         )
-        const editions = Object.keys(projects[project].editions)
-          .map((edition) => {
-            const frontMatter =
-              projects[project].editions[edition]
+        const numbers = Object.keys(projects[project].numbers)
+          .map((number) => {
+            const frontMatter = projects[project].numbers[number]
             return {
-              number: edition,
-              spelled: revedSpell(edition),
+              number: number,
+              spelled: spellNumber(number),
               published: displayDate(frontMatter.published),
               frontMatter,
             }
           })
           .sort((a, b) => {
-            return revedCompare(a.edition, b.edition)
+            return compareNumber(a.number, b.number)
           })
         const data = Object.assign(
           {
             publisher,
             project,
-            editions,
+            numbers,
             trademarks: false,
           },
           projectMetadata[publisher][project],
@@ -444,4 +446,26 @@ function displayDate(string) {
     ', ' +
     date.getFullYear()
   )
+}
+
+function isRevEd(string) {
+  return !!revedParse(string)
+}
+
+function spellNumber(string) {
+  return isRevEd(string) ? revedSpell(string) : string
+}
+
+function compareNumber(a, b) {
+  var aIsRevEd = isRevEd(a)
+  var bIsRevEd = isRevEd(b)
+  if (aIsRevEd && !bIsRevEd) {
+    return -1
+  } else if (!aIsRevEd && bIsRevEd) {
+    return 1
+  } else if (aIsRevEd && bIsRevEd) {
+    return revedCompare(a, b)
+  } else {
+    return semver.compare(a, b)
+  }
 }

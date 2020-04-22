@@ -1,9 +1,7 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "published"
-  ],
+  "required": ["published"],
   "properties": {
     "title": {
       "type": "string",
@@ -22,10 +20,7 @@
       ]
     },
     "numbering": {
-      "enum": [
-        "outline",
-        "decimal"
-      ]
+      "enum": ["outline", "decimal"]
     },
     "notes": {
       "type": "array",
