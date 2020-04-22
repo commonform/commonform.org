@@ -19,6 +19,32 @@
       <% if (about) { %>
       <%- about %>
       <% } %>
+      <% if (hasCompleteForms) { %>
+      <h3>Forms</h3>
+      <ul>
+        <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].component === false) { %>
+        <li>
+          <a href=./<%= project %>><%= project %></a>
+          <%- projects[project].description %>
+        </li>
+        <% } %>
+        <% }) %>
+      </ul>
+      <% } %>
+      <% if (hasComponents) { %>
+      <h3>Components</h3>
+      <ul>
+        <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].component === true) { %>
+        <li>
+          <a href=./<%= project %>><%= project %></a>
+          <%- projects[project].description %>
+        </li>
+        <% } %>
+        <% }) %>
+      </ul>
+      <% } %>
       <table>
         <% if (name) { %>
         <tr>
@@ -61,32 +87,6 @@
         </tr>
         <% } %>
       </table>
-      <% if (hasCompleteForms) { %>
-      <h3>Forms</h3>
-      <ul>
-        <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].component === false) { %>
-        <li>
-          <a href=./<%= project %>><%= project %></a>
-          <%- projects[project].description %>
-        </li>
-        <% } %>
-        <% }) %>
-      </ul>
-      <% } %>
-      <% if (hasComponents) { %>
-      <h3>Components</h3>
-      <ul>
-        <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].component === true) { %>
-        <li>
-          <a href=./<%= project %>><%= project %></a>
-          <%- projects[project].description %>
-        </li>
-        <% } %>
-        <% }) %>
-      </ul>
-      <% } %>
     </main>
     <footer role=contentinfo></footer>
   </body>
