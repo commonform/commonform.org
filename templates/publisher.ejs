@@ -23,6 +23,7 @@
       <h3>Forms</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].archived) return %>
         <% if (projects[project].star && !projects[project].component) { %>
         <li class=star>
           <a href=./<%= project %>><%= project %></a>
@@ -31,6 +32,7 @@
         <% } %>
         <% }) %>
         <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].archived) return %>
         <% if (!projects[project].star && !projects[project].component) { %>
         <li>
           <a href=./<%= project %>><%= project %></a>
@@ -44,6 +46,7 @@
       <h3>Components</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].archived) return %>
         <% if (projects[project].star && projects[project].component) { %>
         <li class=star>
           <a href=./<%= project %>><%= project %></a>
@@ -52,7 +55,21 @@
         <% } %>
         <% }) %>
         <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].archived) return %>
         <% if (!projects[project].star && projects[project].component) { %>
+        <li>
+          <a href=./<%= project %>><%= project %></a>
+          <%- projects[project].description %>
+        </li>
+        <% } %>
+        <% }) %>
+      </ul>
+      <% } %>
+      <% if (hasArchivedForms) { %>
+      <h3>Archived</h3>
+      <ul>
+        <% Object.keys(projects).forEach((project) => { %>
+        <% if (projects[project].archived) { %>
         <li>
           <a href=./<%= project %>><%= project %></a>
           <%- projects[project].description %>

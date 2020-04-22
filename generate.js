@@ -360,6 +360,9 @@ function renderPublisherPages() {
           hasCompleteForms: Object.keys(projects).some((key) => {
             return projects[key].component === false
           }),
+          hasArchivedForms: Object.keys(projects).some((key) => {
+            return projects[key].archived
+          }),
         },
         publisherMetadata[publisher],
         publishers[publisher],
@@ -395,6 +398,7 @@ function renderPublisherPages() {
             project,
             numbers,
             trademarks: false,
+            archived: false,
             website: false,
           },
           projectMetadata[publisher][project],

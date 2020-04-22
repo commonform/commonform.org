@@ -8,6 +8,9 @@
     "component": {
       "type": "boolean"
     },
+    "archived": {
+      "type": "boolean"
+    },
     "star": {
       "type": "boolean"
     },
