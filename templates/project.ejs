@@ -17,6 +17,14 @@
     <main role=main>
       <h2><%= project %></h2>
       <%- description %>
+      <ul>
+        <% editions.forEach((edition) => { %>
+        <li>
+          <a href=./<%= edition.number %>><%= edition.spelled %></a>
+          (<%= edition.published %>)
+        </li>
+      <% }) %>
+      </ul>
       <table>
         <tr>
           <th>Publisher</th>
@@ -39,14 +47,6 @@
         </tr>
         <% } %>
       </table>
-      <ul>
-        <% editions.forEach((edition) => { %>
-        <li>
-          <a href=./<%= edition.number %>><%= edition.spelled %></a>
-          (<%= edition.published %>)
-        </li>
-      <% }) %>
-      </ul>
     </main>
     <footer role=contentinfo>
       <p><a href=/guide#editions>What's with the edition numbers?</a></p>
