@@ -1,7 +1,9 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": ["component"],
+  "required": [
+    "component"
+  ],
   "properties": {
     "component": {
       "type": "boolean"
@@ -16,6 +18,10 @@
         "min": 0
       },
       "minItems": 1
+    },
+    "website": {
+      "type": "string",
+      "format": "uri"
     },
     "description": {
       "type": "string"

@@ -395,6 +395,7 @@ function renderPublisherPages() {
             project,
             numbers,
             trademarks: false,
+            website: false,
           },
           projectMetadata[publisher][project],
         )

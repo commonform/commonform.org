@@ -47,6 +47,12 @@
           </td>
         </tr>
         <% } %>
+        <% if (website) { %>
+        <tr>
+          <th>Website</th>
+          <td><a href="<%= website %>"><%= website %></a></td>
+        </tr>
+        <% } %>
       </table>
     </main>
     <footer role=contentinfo>
