@@ -23,7 +23,15 @@
       <h3>Forms</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].component === false) { %>
+        <% if (projects[project].star && !projects[project].component) { %>
+        <li class=star>
+          <a href=./<%= project %>><%= project %></a>
+          <%- projects[project].description %>
+        </li>
+        <% } %>
+        <% }) %>
+        <% Object.keys(projects).forEach((project) => { %>
+        <% if (!projects[project].star && !projects[project].component) { %>
         <li>
           <a href=./<%= project %>><%= project %></a>
           <%- projects[project].description %>
@@ -36,7 +44,15 @@
       <h3>Components</h3>
       <ul>
         <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].component === true) { %>
+        <% if (projects[project].star && projects[project].component) { %>
+        <li class=star>
+          <a href=./<%= project %>><%= project %></a>
+          <%- projects[project].description %>
+        </li>
+        <% } %>
+        <% }) %>
+        <% Object.keys(projects).forEach((project) => { %>
+        <% if (!projects[project].star && projects[project].component) { %>
         <li>
           <a href=./<%= project %>><%= project %></a>
           <%- projects[project].description %>

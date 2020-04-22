@@ -6,6 +6,9 @@
     "component": {
       "type": "boolean"
     },
+    "star": {
+      "type": "boolean"
+    },
     "trademarks": {
       "type": "array",
       "items": {

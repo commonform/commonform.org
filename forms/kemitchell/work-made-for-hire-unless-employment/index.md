@@ -1,3 +1,4 @@
 ---
 component: true
+star: true
 ---
