@@ -19,6 +19,7 @@
       <p><a href=/guide>You can publish to commonform.org.</a></p>
       <ul>
         <% publishers.forEach((publisher) => { %>
+        <% if (publisher.id === 'test') return %>
         <li>
           <a href="<%= publisher.id %>"><%= publisher.id %></a>
           <% if (publisher.about) { %>
