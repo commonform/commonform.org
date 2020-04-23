@@ -446,6 +446,20 @@ function renderPublisherPages() {
         )
         const html = ejs.render(templates.project, data)
         fs.writeFileSync(projectPage, html)
+        const json = JSON.stringify({
+          publisher,
+          project,
+          editions: editions.map((edition) => {
+            return edition.number
+          }),
+        })
+        const jsonFile = path.join(
+          'site',
+          publisher,
+          project,
+          'index.json',
+        )
+        fs.writeFileSync(jsonFile, json)
       })
     }
   })
