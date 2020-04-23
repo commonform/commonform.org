@@ -1,9 +1,7 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "component"
-  ],
+  "required": ["component"],
   "properties": {
     "component": {
       "type": "boolean"
