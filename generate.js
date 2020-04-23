@@ -365,6 +365,7 @@ runSeries(
   () => {
     renderPublisherPages()
     renderHomePage()
+    renderAtomFeeds()
   },
 )
 
@@ -464,6 +465,78 @@ function renderHomePage() {
   }
   const html = ejs.render(templates.home, data)
   fs.writeFileSync(page, html)
+}
+
+function renderAtomFeeds() {
+  Object.keys(publishers).forEach((publisher) => {
+    const publisherMeta = publisherMetadata[publisher]
+    const projects = publishers[publisher].projects
+    const feed = path.join('site', publisher, 'feed.xml')
+    const publisherPosts = []
+    Object.keys(projects).forEach((project) => {
+      const projectPosts = []
+      const projectMeta = projects[project]
+      const editions = projects[project].editions
+      Object.keys(editions).forEach((edition) => {
+        const editionMeta = editions[edition]
+        const permalink = `https://commonform.org/${publisher}/${project}/${edition}`
+        const post = toPost({
+          project,
+          edition,
+          projectMeta,
+          editionMeta,
+          permalink,
+        })
+        publisherPosts.push(post)
+        projectPosts.push(post)
+        projectPosts.sort(revereseChronological)
+        const xml = ejs.render(templates.feed, {
+          title: `${
+            publisherMeta.name || publisher
+          }’s ${project}`,
+          description: 'forms on commonform.org',
+          link: `https://commonform.org/${publisher}/${project}`,
+          href: `https://commonform.org/${publisher}/${project}/feed.xml`,
+          posts: projectPosts,
+        })
+        const feed = path.join(
+          'site',
+          publisher,
+          project,
+          'feed.xml',
+        )
+        fs.writeFileSync(feed, xml)
+      })
+    })
+    publisherPosts.sort(revereseChronological)
+    const xml = ejs.render(templates.feed, {
+      title: `${publisherMeta.name || publisher}’s Forms`,
+      description: 'forms on commonform.org',
+      link: `https://commonform.org/${publisher}`,
+      href: `https://commonform.org/${publisher}/feed.xml`,
+      posts: publisherPosts,
+    })
+    fs.writeFileSync(feed, xml)
+  })
+  function revereseChronological(a, b) {
+    return b.date.localeCompare(a.date)
+  }
+}
+
+function toPost({
+  project,
+  edition,
+  projectMeta,
+  editionMeta,
+  permalink,
+}) {
+  return {
+    title: `${projectMeta.title || project} ${edition}`,
+    description: '',
+    date: editionMeta.published,
+    link: permalink,
+    permalink,
+  }
 }
 
 glob.sync('static/*').forEach((file) => {
