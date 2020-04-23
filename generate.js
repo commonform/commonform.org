@@ -347,6 +347,9 @@ function renderPublisherPages() {
         publisher,
         'index.html',
       )
+      const projectsArray = Object.keys(projects).map((key) =>
+        Object.assign({ name: key }, projects[key]),
+      )
       const data = Object.assign(
         {
           email: false,
@@ -354,14 +357,14 @@ function renderPublisherPages() {
           location: false,
           name: false,
           trademarks: false,
-          hasComponents: Object.keys(projects).some((key) => {
-            return projects[key].component === true
+          components: projectsArray.filter((project) => {
+            return !project.archived && project.component
           }),
-          hasCompleteForms: Object.keys(projects).some((key) => {
-            return projects[key].component === false
+          completeForms: projectsArray.filter((project) => {
+            return !project.archived && !project.component
           }),
-          hasArchivedForms: Object.keys(projects).some((key) => {
-            return projects[key].archived
+          archived: projectsArray.filter((project) => {
+            return project.archived
           }),
         },
         publisherMetadata[publisher],

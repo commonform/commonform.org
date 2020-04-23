@@ -19,62 +19,56 @@
       <% if (about) { %>
       <%- about %>
       <% } %>
-      <% if (hasCompleteForms) { %>
+      <% if (completeForms.length) { %>
       <h3>Forms</h3>
       <ul>
-        <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].archived) return %>
-        <% if (projects[project].star && !projects[project].component) { %>
+        <% completeForms.forEach((project) => { %>
+        <% if (project.star) { %>
         <li class=star>
-          <a href=./<%= project %>><%= project %></a>
-          <%- projects[project].description %>
+          <a href=./<%= project.name %>><%= project.name%></a>
+          <%- project.description %>
         </li>
         <% } %>
         <% }) %>
-        <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].archived) return %>
-        <% if (!projects[project].star && !projects[project].component) { %>
+        <% completeForms.forEach((project) => { %>
+        <% if (!project.star) { %>
         <li>
-          <a href=./<%= project %>><%= project %></a>
-          <%- projects[project].description %>
+          <a href=./<%= project.name %>><%= project.name %></a>
+          <%- project.description %>
         </li>
         <% } %>
         <% }) %>
       </ul>
       <% } %>
-      <% if (hasComponents) { %>
+      <% if (components.length) { %>
       <h3>Components</h3>
       <ul>
-        <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].archived) return %>
-        <% if (projects[project].star && projects[project].component) { %>
+        <% components.forEach((project) => { %>
+        <% if (project.star) { %>
         <li class=star>
-          <a href=./<%= project %>><%= project %></a>
-          <%- projects[project].description %>
+          <a href=./<%= project.name %>><%= project.name %></a>
+          <%- project.description %>
         </li>
         <% } %>
         <% }) %>
-        <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].archived) return %>
-        <% if (!projects[project].star && projects[project].component) { %>
+        <% components.forEach((project) => { %>
+        <% if (!project.star) { %>
         <li>
-          <a href=./<%= project %>><%= project %></a>
-          <%- projects[project].description %>
+          <a href=./<%= project.name %>><%= project.name %></a>
+          <%- project.description %>
         </li>
         <% } %>
         <% }) %>
       </ul>
       <% } %>
-      <% if (hasArchivedForms) { %>
+      <% if (archived.length) { %>
       <h3>Archived</h3>
       <ul>
-        <% Object.keys(projects).forEach((project) => { %>
-        <% if (projects[project].archived) { %>
+        <% archived.forEach((project) => { %>
         <li>
-          <a href=./<%= project %>><%= project %></a>
-          <%- projects[project].description %>
+          <a href=./<%= project.name %>><%= project.name %></a>
+          <%- project.description %>
         </li>
-        <% } %>
         <% }) %>
       </ul>
       <% } %>
