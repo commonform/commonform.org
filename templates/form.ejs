@@ -18,6 +18,10 @@
       <p class=digest><code class=digest><%= digest %></code></p>
       <table>
         <tr>
+          <th>Type</th>
+          <td><%= projectMetadata.component ? 'Component' : 'Form' %></td>
+        </tr>
+        <tr>
           <th>Publisher</th>
           <td><a href="/<%= publisher %>"><%= publisher %></a></td>
         </tr>
@@ -45,10 +49,6 @@
           </td>
         </tr>
         <% } %>
-        <tr>
-          <th>Type</th>
-          <td><%= projectMetadata.component ? 'Component' : 'Form' %></td>
-        </tr>
         <% if (license) { %>
         <tr>
           <th>License</th>
