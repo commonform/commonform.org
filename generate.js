@@ -271,9 +271,7 @@ runSeries(
             'site',
             publisher,
             project,
-            edition,
-            'annotated',
-            'index.html',
+            `${edition}-annotated.html`,
           )
           fs.mkdirSync(path.dirname(annotated), {
             recursive: true,
