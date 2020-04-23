@@ -7,6 +7,8 @@
     <link rel=stylesheet href=/normalize.css>
     <link rel=stylesheet href=/fonts.css>
     <link rel=stylesheet href=/styles.css>
+    <% const rss = `https://commonform.org/${publisher}/feed.xml` %>
+    <link rel=alternate href="<%= rss %>"/feed.xml type=application/rss+xml>
   </head>
   <body>
     <header role=banner>
@@ -90,6 +92,10 @@
           <td><a href="mailto:<%= email %>"><%= email %></a></td>
         </tr>
         <% } %>
+        <tr>
+          <th>RSS Feed</th>
+          <td><a href="<%= rss %>"><%= rss %></a></td>
+        </tr>
         <% if (website) { %>
         <tr>
           <th>Website</th>
