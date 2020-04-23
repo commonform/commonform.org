@@ -30,7 +30,7 @@
   "devDependencies": {
     "husky": "^4.2.5",
     "lint-staged": "^10.1.7",
-    "prettier": "^2.0.4"
+    "prettier": "^2.0.5"
   },
   "scripts": {
     "audit": "npm audit --production",
