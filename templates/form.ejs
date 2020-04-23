@@ -26,6 +26,22 @@
           <td><a href="/<%= publisher %>/<%= project %>"><%= project %></a></td>
         </tr>
         <tr>
+          <th>Edition</th>
+          <td><%= edition %></td>
+        </tr>
+        <% if (notes) { %>
+        <tr>
+          <th>Release Notes</th>
+          <td>
+            <ul>
+              <% notes.forEach((note) => { %>
+              <li><%= note %></li>
+              <% }) %>
+            </ul>
+          </td>
+        </tr>
+        <% } %>
+        <tr>
           <th>Type</th>
           <td><%= projectMetadata.component ? 'Component' : 'Form' %></td>
         </tr>
@@ -59,18 +75,6 @@
             </ul>
           </td>
         </tr>
-        <% if (notes) { %>
-        <tr>
-          <th>Release Notes</th>
-          <td>
-            <ul>
-              <% notes.forEach((note) => { %>
-              <li><%= note %></li>
-              <% }) %>
-            </ul>
-          </td>
-        </tr>
-        <% } %>
         <tr>
           <th>Permalink</th>
           <% const permalink = `https://commonform.org/${publisher}/${project}/${edition}` %>
