@@ -1,7 +1,7 @@
 ---
 name: Kyle E. Mitchell
 type: individual
-email: commonform@kemitchell.com
+email: kyle@kemitchell.com
 website: https://kemitchell.com
 location: Oakland, California, USA
 ---
