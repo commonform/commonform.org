@@ -18,10 +18,10 @@
       <h2><%= project %></h2>
       <%- description %>
       <ul>
-        <% numbers.forEach((number) => { %>
+        <% editions.forEach((edition) => { %>
         <li>
-          <a href=./<%= number.number %>><%= number.spelled %></a>
-          (<%= number.published %>)
+          <a href=./<%= edition.number %>><%= edition.spelled %></a>
+          (<%= edition.published %>)
         </li>
       <% }) %>
       </ul>

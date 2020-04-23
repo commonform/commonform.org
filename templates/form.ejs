@@ -11,7 +11,7 @@
     <header role=banner>
       <a href=/><img alt="Common Form logotype" src=/logo.svg></a>
       <h1><%= title %> </h1>
-      <p class=number><%= spelled %></p>
+      <p class=edition><%= spelled %></p>
     </header>
     <main role=main>
       <%- rendered %>
@@ -53,9 +53,9 @@
           <th>Downloads</th>
           <td>
             <ul>
-              <li><a download="<%= publisher %> <%= project %> <%= number %>.docx" href="<%= docx %>">Microsoft Word</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= number %>.json" href="<%= json %>">JSON Data</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= number %>.md" href="<%= markdown %>">Markdown</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= edition %>.docx" href="<%= docx %>">Microsoft Word</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= edition %>.json" href="<%= json %>">JSON Data</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= edition %>.md" href="<%= markdown %>">Markdown</a></li>
             </ul>
           </td>
         </tr>
@@ -73,14 +73,14 @@
         <% } %>
         <tr>
           <th>Permalink</th>
-          <% const permalink = `https://commonform.org/${publisher}/${project}/${number}` %>
+          <% const permalink = `https://commonform.org/${publisher}/${project}/${edition}` %>
           <td><a href="<%= permalink %>"><%= permalink %></a></td>
         </tr>
       </table>
     </main>
     <footer role=contentinfo>
       <% if (publisherMetadata.email) { %>
-      <p><a href="mailto:<%= publisherMetadata.email %>?subject=<%= encodeURIComponent(`Feedback on ${project} ${number}`) %>">E-mail the publisher of this form.</a></p>
+      <p><a href="mailto:<%= publisherMetadata.email %>?subject=<%= encodeURIComponent(`Feedback on ${project} ${edition}`) %>">E-mail the publisher of this form.</a></p>
       <% } %>
       <p><a href="<%= github %>">Source file on GitHub.</a></p>
     </footer>
