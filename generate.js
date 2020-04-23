@@ -419,7 +419,7 @@ function renderPublisherPages() {
               number: edition,
               spelled: projectMetadata[publisher][project].semver
                 ? toSemVer(edition)
-                : edition,
+                : revedSpell(edition),
               published: displayDate(frontMatter.published),
               frontMatter,
             }
