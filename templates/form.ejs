@@ -29,6 +29,10 @@
           <th>Edition</th>
           <td><%= edition %></td>
         </tr>
+        <tr>
+          <th>Published</th>
+          <td><%= publishedDisplay %></td>
+        </tr>
         <% if (notes) { %>
         <tr>
           <th>Release Notes</th>
@@ -44,10 +48,6 @@
         <tr>
           <th>Type</th>
           <td><%= projectMetadata.component ? 'Component' : 'Form' %></td>
-        </tr>
-        <tr>
-          <th>Published</th>
-          <td><%= publishedDisplay %></td>
         </tr>
         <% if (license) { %>
         <tr>
