@@ -17,6 +17,7 @@ const revedSpell = require('reviewers-edition-spell')
 const rimraf = require('rimraf')
 const runSeries = require('run-series')
 const toHTML = require('commonform-html')
+const toSemVer = require('reviewers-edition-to-semver')
 
 const numberings = {
   decimal: require('decimal-numbering'),
@@ -216,7 +217,9 @@ runSeries(
               docx: `${edition}.docx`,
               json: `${edition}.json`,
               markdown: `${edition}.md`,
-              spelled: revedSpell(edition),
+              spelled: projectMetadata[publisher][project].semver
+                ? toSemVer(edition)
+                : revedSpell(edition),
               project,
               projectMetadata:
                 projectMetadata[publisher][project],
@@ -385,7 +388,9 @@ function renderPublisherPages() {
               projects[project].editions[edition]
             return {
               number: edition,
-              spelled: revedSpell(edition),
+              spelled: projectMetadata[publisher][project].semver
+                ? toSemVer(edition)
+                : edition,
               published: displayDate(frontMatter.published),
               frontMatter,
             }

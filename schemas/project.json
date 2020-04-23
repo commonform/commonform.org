@@ -20,6 +20,9 @@
       },
       "minItems": 1
     },
+    "semver": {
+      "type": "boolean"
+    },
     "website": {
       "type": "string",
       "format": "uri"

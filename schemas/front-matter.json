@@ -35,6 +35,9 @@
         "minLength": 1
       }
     },
+    "semver": {
+      "type": "boolean"
+    },
     "signaturePages": {
       "type": "array"
     }
