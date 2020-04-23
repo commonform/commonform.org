@@ -37,6 +37,11 @@ const validatePublisher = ajv.compile(
   require('./schemas/publisher'),
 )
 
+process.on('uncaughtException', (error) => {
+  console.error(error)
+  process.exit(1)
+})
+
 rimraf.sync('site')
 
 fs.mkdirSync('site', { recursive: true })
