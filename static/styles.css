@@ -149,10 +149,12 @@ dfn {
   background: yellow;
 }
 
-p.info,
-p.warn,
-p.error {
-  padding: 0.5rem;
+.info,
+.warn,
+.error {
+  padding: 1ex;
+  border-radius: 1ex;
+  margin: 1ex 0;
 }
 
 .info {

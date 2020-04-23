@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const AJV = require('ajv')
 const commonmark = require('commonmark')
+const critique = require('commonform-critique')
 const docx = require('commonform-docx')
 const ejs = require('ejs')
 const englishMonths = require('english-months')
@@ -8,6 +9,7 @@ const fs = require('fs')
 const glob = require('glob')
 const grayMatter = require('gray-matter')
 const hash = require('commonform-hash')
+const lint = require('commonform-lint')
 const loadComponents = require('commonform-load-components')
 const markup = require('commonform-commonmark')
 const ooxmlSignaturePages = require('ooxml-signature-pages')
@@ -209,6 +211,9 @@ runSeries(
           const [_, publisher, project] = dirname.split(path.sep)
           const edition = path.basename(file, '.md')
           const title = frontMatter.title || project
+          const annotations = []
+            .concat(lint(form))
+            .concat(critique(form))
           const data = Object.assign(
             {
               title,
@@ -235,6 +240,7 @@ runSeries(
             },
             frontMatter,
           )
+
           let html
           try {
             html = ejs.render(templates.form, data)
@@ -249,6 +255,31 @@ runSeries(
           )
           fs.mkdirSync(path.dirname(page), { recursive: true })
           fs.writeFileSync(page, html)
+
+          data.rendered = toHTML(loaded, [], {
+            html5: true,
+            lists: true,
+            ids: true,
+            annotations,
+          })
+          try {
+            html = ejs.render(templates.form, data)
+          } catch (error) {
+            throw new Error(`${file}: ${error.message}`)
+          }
+          const annotated = path.join(
+            'site',
+            publisher,
+            project,
+            edition,
+            'annotated',
+            'index.html',
+          )
+          fs.mkdirSync(path.dirname(annotated), {
+            recursive: true,
+          })
+          fs.writeFileSync(annotated, html)
+
           if (!publishers[publisher]) {
             publishers[publisher] = {
               publisher,
