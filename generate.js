@@ -90,18 +90,7 @@ const forms = formFiles.map((file) => {
   }
 })
 
-function getForm(repository, digest, callback) {
-  if (repository !== 'commonform.org')
-    return callback(
-      new Error(`invalid repository: ${repository}`),
-    )
-  const result = forms.find((element) => {
-    return element.digest === digest
-  })
-  callback(null, result ? result.form : false)
-}
-
-function getPublication(
+function getForm(
   repository,
   publisher,
   project,
@@ -112,17 +101,14 @@ function getPublication(
     return callback(
       new Error(`invalid repository: ${repository}`),
     )
-  const publication = forms.find((element) => {
+  const result = forms.find((element) => {
     return (
       element.publisher === publisher &&
       element.project === project &&
       element.edition === edition
     )
   })
-  const result = publication
-    ? { digest: publication.digest }
-    : false
-  callback(null, result)
+  callback(null, result ? result.form : false)
 }
 
 function getEditions(repository, publisher, project, callback) {
@@ -146,7 +132,6 @@ const loadOptions = {
   repositories: ['commonform.org'],
   caches: {
     editions: { get: getEditions },
-    publications: { get: getPublication },
     forms: { get: getForm },
   },
 }
