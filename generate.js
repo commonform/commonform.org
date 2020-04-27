@@ -192,7 +192,7 @@ runSeries(
         loadOptions,
         (error, loaded, resolutions) => {
           if (error) throw error
-          const rendered = toHTML(loaded, [], {
+          const rendered = toHTML(form, [], {
             html5: true,
             lists: true,
             ids: true,
@@ -210,8 +210,10 @@ runSeries(
               github: `https://github.com/commonform/commonform.org/blob/master/${file}`,
               digest: hash(form),
               docx: `${edition}.docx`,
+              completeDocx: `${edition}-complete.docx`,
               json: `${edition}.json`,
               markdown: `${edition}.md`,
+              completeMarkdown: `${edition}-complete.md`,
               spelled: projectMetadata[publisher][project].semver
                 ? toSemVer(edition)
                 : revedSpell(edition),
@@ -246,7 +248,28 @@ runSeries(
           fs.mkdirSync(path.dirname(page), { recursive: true })
           fs.writeFileSync(page, html)
 
-          data.rendered = toHTML(loaded, [], {
+          data.rendered = toHTML(clone(loaded), [], {
+            html5: true,
+            lists: true,
+            ids: true,
+          })
+          try {
+            html = ejs.render(templates.form, data)
+          } catch (error) {
+            throw new Error(`${file}: ${error.message}`)
+          }
+          const complete = path.join(
+            'site',
+            publisher,
+            project,
+            `${edition}-complete.html`,
+          )
+          fs.mkdirSync(path.dirname(complete), {
+            recursive: true,
+          })
+          fs.writeFileSync(complete, html)
+
+          data.rendered = toHTML(clone(loaded), [], {
             html5: true,
             lists: true,
             ids: true,
@@ -287,7 +310,7 @@ runSeries(
           publishers[publisher].projects[project].editions[
             edition
           ] = frontMatter
-          docx(loaded, [], {
+          var docxOptions = {
             title,
             edition,
             centerTitle: false,
@@ -310,7 +333,8 @@ runSeries(
                 italic: true,
               },
             },
-          })
+          }
+          docx(form, [], docxOptions)
             .generateAsync({ type: 'nodebuffer' })
             .then((buffer) => {
               const wordFile = path.join(
@@ -318,6 +342,17 @@ runSeries(
                 publisher,
                 project,
                 `${edition}.docx`,
+              )
+              fs.writeFileSync(wordFile, buffer)
+            })
+          docx(clone(loaded), [], docxOptions)
+            .generateAsync({ type: 'nodebuffer' })
+            .then((buffer) => {
+              const wordFile = path.join(
+                'site',
+                publisher,
+                project,
+                `${edition}-complete.docx`,
               )
               fs.writeFileSync(wordFile, buffer)
             })
@@ -342,6 +377,18 @@ runSeries(
             `${edition}.md`,
           )
           fs.writeFileSync(markdownFile, content)
+
+          const completeMarkdownFile = path.join(
+            'site',
+            publisher,
+            project,
+            `${edition}-complete.md`,
+          )
+          fs.writeFileSync(
+            completeMarkdownFile,
+            markup.stringify(loaded),
+          )
+
           done()
         },
       )
