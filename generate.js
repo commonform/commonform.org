@@ -198,6 +198,7 @@ runSeries(
             lists: true,
             ids: true,
             depth: 1,
+            classNames: ['form'],
           })
           const dirname = path.dirname(file)
           const [_, publisher, project] = dirname.split(path.sep)
@@ -259,6 +260,7 @@ runSeries(
             lists: true,
             ids: true,
             depth: 1,
+            classNames: ['form'],
           })
           try {
             html = ejs.render(templates.form, data)
@@ -281,6 +283,7 @@ runSeries(
             lists: true,
             ids: true,
             depth: 1,
+            classNames: ['form'],
             annotations,
           })
           try {

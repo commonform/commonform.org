@@ -278,3 +278,8 @@ p {
 .star a:before {
   content: '☆';
 }
+
+.form {
+  border: 1px dashed #ccc;
+  padding: 0 1rem;
+}
