@@ -49,15 +49,16 @@
           </td>
         </tr>
         <% } %>
+        <% const prefix = new RegExp('^https://') %>
         <% if (website) { %>
         <tr>
           <th>Website</th>
-          <td><a href="<%= website %>"><%= website %></a></td>
+          <td><a href="<%= website %>"><%= website.replace(prefix, '') %></a></td>
         </tr>
         <% } %>
         <tr>
           <th>RSS Feed</th>
-          <td><a href="<%= rss %>"><%= rss %></a></td>
+          <td><a href="<%= rss %>"><%= rss.replace(prefix, '') %></a></td>
         </tr>
       </table>
     </main>
