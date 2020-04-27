@@ -90,17 +90,17 @@
         <tr>
           <th>Permalink</th>
           <% const permalink = `https://commonform.org/${publisher}/${project}/${edition}` %>
-          <td><a href="<%= permalink %>"><%= permalink %></a></td>
+          <td><a href="<%= permalink %>"><%= permalink.replace(/^https:\/\//, '') %></a></td>
         </tr>
         <tr>
           <th>Complete</th>
           <% const complete = `https://commonform.org/${publisher}/${project}/${edition}-complete` %>
-          <td><a href="<%= complete %>"><%= complete %></a></td>
+          <td><a href="<%= complete %>"><%= complete.replace(/^https:\/\//, '') %></a></td>
         </tr>
         <tr>
           <th>Annotated</th>
           <% const annotated = `https://commonform.org/${publisher}/${project}/${edition}-annotated` %>
-          <td><a href="<%= annotated %>"><%= annotated %></a></td>
+          <td><a href="<%= annotated %>"><%= annotated.replace(/^https:\/\//, '') %></a></td>
         </tr>
       </table>
     </main>
