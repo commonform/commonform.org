@@ -283,3 +283,23 @@ p {
   border: 1px dashed #ccc;
   padding: 0 1rem;
 }
+
+.form ol {
+  list-style-type: decimal;
+}
+
+.form ol ol {
+  list-style-type: lower-alpha;
+}
+
+.form ol ol ol {
+  list-style-type: lower-roman;
+}
+
+.form ol ol ol {
+  list-style-type: upper-alpha;
+}
+
+.form ol ol ol ol {
+  list-style-type: upper-roman;
+}
