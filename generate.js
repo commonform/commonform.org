@@ -204,6 +204,7 @@ runSeries(
             lists: true,
             ids: true,
             depth: 1,
+            smartify: true,
             classNames: ['form'],
           })
           const dirname = path.dirname(file)
@@ -266,6 +267,7 @@ runSeries(
             lists: true,
             ids: true,
             depth: 1,
+            smartify: true,
             classNames: ['form'],
           })
           try {
@@ -289,6 +291,7 @@ runSeries(
             lists: true,
             ids: true,
             depth: 1,
+            smartify: true,
             classNames: ['form'],
             annotations,
           })
@@ -333,6 +336,7 @@ runSeries(
             centerTitle: false,
             indentMargins: true,
             markFilled: true,
+            smartify: true,
             numbering:
               numberings[frontMatter.numbering || 'outline'],
             after: frontMatter.signaturePages
