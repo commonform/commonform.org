@@ -37,6 +37,16 @@
           <th>Published</th>
           <td><%= publishedDisplay %></td>
         </tr>
+        <tr>
+          <th>Upgrades</th>
+          <td>
+            <% if (locked) { %>
+            The form’s text will not change.
+            <% } else { %>
+            Some components used in this form may upgrade automatically over time.
+            <% } %>
+          </td>
+        </tr>
         <% if (notes) { %>
         <tr>
           <th>Release Notes</th>

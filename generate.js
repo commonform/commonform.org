@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const AJV = require('ajv')
+const analyze = require('commonform-analyze')
 const commonmark = require('commonmark')
 const critique = require('commonform-critique')
 const docx = require('commonform-docx')
@@ -204,6 +205,7 @@ runSeries(
           const annotations = []
             .concat(lint(form))
             .concat(critique(form))
+          var analysis = analyze(form)
           const data = Object.assign(
             {
               title,
@@ -229,6 +231,9 @@ runSeries(
               ),
               rendered,
               edition,
+              locked: analysis.components.every(
+                (element) => !has(element[0], 'upgrade'),
+              ),
             },
             frontMatter,
           )
@@ -610,4 +615,8 @@ function displayDate(string) {
     ', ' +
     date.getFullYear()
   )
+}
+
+function has(object, key) {
+  return Object.prototype.hasOwnProperty.call(object, key)
 }
