@@ -108,6 +108,7 @@
       <% if (publisherMetadata.email) { %>
       <p><a href="mailto:<%= publisherMetadata.email %>?subject=<%= encodeURIComponent(`Feedback on ${project} ${edition}`) %>">E-mail the publisher of this form.</a></p>
       <% } %>
+      <p>This form has been <a href=/permanence>permanently published</a>.</p>
       <p><a href="<%= github %>">Source file on GitHub.</a></p>
     </footer>
   </body>
