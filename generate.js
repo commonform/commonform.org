@@ -197,6 +197,7 @@ runSeries(
             html5: true,
             lists: true,
             ids: true,
+            depth: 1,
           })
           const dirname = path.dirname(file)
           const [_, publisher, project] = dirname.split(path.sep)
@@ -257,6 +258,7 @@ runSeries(
             html5: true,
             lists: true,
             ids: true,
+            depth: 1,
           })
           try {
             html = ejs.render(templates.form, data)
@@ -278,6 +280,7 @@ runSeries(
             html5: true,
             lists: true,
             ids: true,
+            depth: 1,
             annotations,
           })
           try {
