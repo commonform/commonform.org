@@ -2,8 +2,21 @@
 
 html {
   font-family: Equity, Georgia, serif;
+  font-size: 2.4vw;
   line-height: 1.4;
   text-rendering: optimizeLegibility;
+}
+
+@media all and (min-width: 1000px) {
+  html {
+    font-size: 24px;
+  }
+}
+
+@media all and (max-width: 520px) {
+  html {
+    font-size: 18px;
+  }
 }
 
 header[role='banner'],
@@ -12,7 +25,7 @@ footer[role='contentinfo'] {
   margin-left: auto;
   margin-right: auto;
   max-width: 33rem;
-  padding: 0;
+  padding: 0 1rem;
 }
 
 header[role='banner'] {
@@ -302,4 +315,8 @@ p {
 
 .form ol ol ol ol {
   list-style-type: upper-roman;
+}
+
+ul {
+  padding-left: 1rem;
 }
