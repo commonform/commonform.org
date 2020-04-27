@@ -2,7 +2,8 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "published"
+    "published",
+    "digest"
   ],
   "properties": {
     "title": {
