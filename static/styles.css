@@ -37,6 +37,10 @@ main[role='main'] h1 {
   margin: 1rem 0;
 }
 
+main[role='main'] img {
+  max-width: 100%;
+}
+
 @media all {
   html {
     font-size: 23px;
