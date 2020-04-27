@@ -78,6 +78,12 @@ const forms = formFiles.map((file) => {
   } catch (error) {
     throw new Error(`invalid markup: ${file}`)
   }
+  const digest = hash(form)
+  if (frontMatter.digest && frontMatter.digest !== digest) {
+    throw new Error(
+      `${file} form digest does not match front matter`,
+    )
+  }
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
   const edition = path.basename(file, '.md')

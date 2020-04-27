@@ -1,7 +1,9 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": ["published"],
+  "required": [
+    "published"
+  ],
   "properties": {
     "title": {
       "type": "string",
@@ -10,6 +12,10 @@
     "published": {
       "type": "string",
       "format": "date"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
     },
     "license": {
       "enum": [
@@ -20,7 +26,10 @@
       ]
     },
     "numbering": {
-      "enum": ["outline", "decimal"]
+      "enum": [
+        "outline",
+        "decimal"
+      ]
     },
     "notes": {
       "type": "array",
