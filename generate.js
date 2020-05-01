@@ -355,7 +355,7 @@ runSeries(
               },
             },
           }
-          docx(form, [], docxOptions)
+          docx(clone(form), [], docxOptions)
             .generateAsync({ type: 'nodebuffer' })
             .then((buffer) => {
               const wordFile = path.join(
