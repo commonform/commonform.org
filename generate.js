@@ -18,6 +18,7 @@ const path = require('path')
 const revedCompare = require('reviewers-edition-compare')
 const revedSpell = require('reviewers-edition-spell')
 const rimraf = require('rimraf')
+const runParallel = require('run-parallel')
 const runSeries = require('run-series')
 const toHTML = require('commonform-html')
 const toSemVer = require('reviewers-edition-to-semver')
@@ -194,10 +195,20 @@ runSeries(
         throw new Error(`invalid front matter: ${file}`)
       }
       const form = markup.parse(content).form
-      loadComponents(
-        clone(form),
-        loadOptions,
-        (error, loaded, resolutions) => {
+      runParallel(
+        {
+          original: (done) => {
+            const options = Object.assign(
+              { original: true },
+              loadOptions,
+            )
+            loadComponents(clone(form), options, done)
+          },
+          upgraded: (done) => {
+            loadComponents(clone(form), loadOptions, done)
+          },
+        },
+        (error, loaded) => {
           if (error) throw error
           const rendered = toHTML(form, [], {
             html5: true,
@@ -221,10 +232,12 @@ runSeries(
               github: `https://github.com/commonform/commonform.org/blob/master/${file}`,
               digest: hash(form),
               docx: `${edition}.docx`,
-              completeDocx: `${edition}-complete.docx`,
+              originalDOCX: `${edition}-original.docx`,
+              upgradedDOCX: `${edition}-upgraded.docx`,
               json: `${edition}.json`,
               markdown: `${edition}.md`,
-              completeMarkdown: `${edition}-complete.md`,
+              originalMarkdown: `${edition}-original.md`,
+              upgradedMarkdown: `${edition}-upgraded.md`,
               spelled: projectMetadata[publisher][project].semver
                 ? toSemVer(edition)
                 : revedSpell(edition),
@@ -262,31 +275,36 @@ runSeries(
           fs.mkdirSync(path.dirname(page), { recursive: true })
           fs.writeFileSync(page, html)
 
-          data.rendered = toHTML(clone(loaded), [], {
-            html5: true,
-            lists: true,
-            ids: true,
-            depth: 1,
-            smartify: true,
-            classNames: ['form'],
-          })
-          try {
-            html = ejs.render(templates.form, data)
-          } catch (error) {
-            throw new Error(`${file}: ${error.message}`)
-          }
-          const complete = path.join(
-            'site',
-            publisher,
-            project,
-            `${edition}-complete.html`,
-          )
-          fs.mkdirSync(path.dirname(complete), {
-            recursive: true,
-          })
-          fs.writeFileSync(complete, html)
+          writeHTML(loaded.original, 'original')
+          writeHTML(loaded.upgraded, 'upgraded')
 
-          data.rendered = toHTML(clone(loaded), [], {
+          function writeHTML(form, suffix) {
+            data.rendered = toHTML(clone(form), [], {
+              html5: true,
+              lists: true,
+              ids: true,
+              depth: 1,
+              smartify: true,
+              classNames: ['form'],
+            })
+            try {
+              html = ejs.render(templates.form, data)
+            } catch (error) {
+              throw new Error(`${file}: ${error.message}`)
+            }
+            const htmlFile = path.join(
+              'site',
+              publisher,
+              project,
+              `${edition}-${suffix}.html`,
+            )
+            fs.mkdirSync(path.dirname(htmlFile), {
+              recursive: true,
+            })
+            fs.writeFileSync(htmlFile, html)
+          }
+
+          data.rendered = toHTML(clone(loaded.upgraded), [], {
             html5: true,
             lists: true,
             ids: true,
@@ -355,28 +373,31 @@ runSeries(
               },
             },
           }
-          docx(clone(form), [], docxOptions)
-            .generateAsync({ type: 'nodebuffer' })
-            .then((buffer) => {
-              const wordFile = path.join(
-                'site',
-                publisher,
-                project,
-                `${edition}.docx`,
-              )
-              fs.writeFileSync(wordFile, buffer)
+
+          writeDOCX(form, '')
+          writeDOCX(
+            loaded.upgraded,
+            '-upgraded',
+            '(with updates and corrections)',
+          )
+          writeDOCX(loaded.original, '-original', '(original)')
+
+          function writeDOCX(form, suffix, label) {
+            const options = Object.assign({}, docxOptions, {
+              edition: docxOptions.edition + ' ' + label,
             })
-          docx(clone(loaded), [], docxOptions)
-            .generateAsync({ type: 'nodebuffer' })
-            .then((buffer) => {
-              const wordFile = path.join(
-                'site',
-                publisher,
-                project,
-                `${edition}-complete.docx`,
-              )
-              fs.writeFileSync(wordFile, buffer)
-            })
+            docx(clone(form), [], options)
+              .generateAsync({ type: 'nodebuffer' })
+              .then((buffer) => {
+                const wordFile = path.join(
+                  'site',
+                  publisher,
+                  project,
+                  `${edition}${suffix}.docx`,
+                )
+                fs.writeFileSync(wordFile, buffer)
+              })
+          }
 
           const jsonFile = path.join(
             'site',
@@ -399,16 +420,20 @@ runSeries(
           )
           fs.writeFileSync(markdownFile, content)
 
-          const completeMarkdownFile = path.join(
-            'site',
-            publisher,
-            project,
-            `${edition}-complete.md`,
-          )
-          fs.writeFileSync(
-            completeMarkdownFile,
-            markup.stringify(loaded),
-          )
+          writeMarkdown(loaded.original, '-original')
+          writeMarkdown(loaded.upgraded, '-upgraded')
+          function writeMarkdown(form, suffix) {
+            const completeMarkdownFile = path.join(
+              'site',
+              publisher,
+              project,
+              `${edition}${suffix}.md`,
+            )
+            fs.writeFileSync(
+              completeMarkdownFile,
+              markup.stringify(form),
+            )
+          }
 
           done()
         },
