@@ -423,14 +423,14 @@ runSeries(
           writeMarkdown(loaded.original, '-original')
           writeMarkdown(loaded.upgraded, '-upgraded')
           function writeMarkdown(form, suffix) {
-            const completeMarkdownFile = path.join(
+            const markdownFile = path.join(
               'site',
               publisher,
               project,
               `${edition}${suffix}.md`,
             )
             fs.writeFileSync(
-              completeMarkdownFile,
+              markdownFile,
               markup.stringify(form),
             )
           }
