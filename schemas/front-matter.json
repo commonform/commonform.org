@@ -18,6 +18,7 @@
     "license": {
       "enum": [
         "CC0-1.0",
+        "CC-BY-4.0",
         "kemitchell/law-form-license/1e",
         "kemitchell/tiny-verbatim-license/1e",
         "waypoint/waypoint-license/1e"
