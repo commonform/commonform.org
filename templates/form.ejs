@@ -16,7 +16,7 @@
     <main role=main>
       <%- rendered %>
       <p id=digest class=digest><code class=digest><%= digest %></code></p>
-      <table>
+      <table id=metadata>
         <tr>
           <th>Type</th>
           <td><%= projectMetadata.component ? 'Component' : 'Form' %></td>
