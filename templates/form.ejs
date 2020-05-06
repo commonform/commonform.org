@@ -95,6 +95,11 @@
           <td><a href="<%= permalink %>"><%= permalink.replace(/^https:\/\//, '') %></a></td>
         </tr>
         <tr>
+          <th>Original</th>
+          <% const original = `https://commonform.org/${publisher}/${project}/${edition}-original` %>
+          <td><a href="<%= original %>"><%= original.replace(/^https:\/\//, '') %></a></td>
+        </tr>
+        <tr>
           <th>Upgraded</th>
           <% const upgraded = `https://commonform.org/${publisher}/${project}/${edition}-upgraded` %>
           <td><a href="<%= upgraded %>"><%= upgraded.replace(/^https:\/\//, '') %></a></td>
