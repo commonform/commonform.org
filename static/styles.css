@@ -163,7 +163,7 @@ dfn {
 }
 
 .blank {
-  background: yellow;
+  border-bottom: 1px dashed black;
 }
 
 .info,
