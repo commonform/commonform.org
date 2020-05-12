@@ -383,6 +383,7 @@ runSeries(
           writeDOCX(loaded.original, '-original', '(original)')
 
           function writeDOCX(form, suffix, label) {
+            label = label || ''
             const options = Object.assign({}, docxOptions, {
               edition: docxOptions.edition + ' ' + label,
             })
