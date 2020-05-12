@@ -1,6 +1,7 @@
 ---
 component: false
 star: true
+featured: true
 ---
 
-base terms
+standard legal terms for software as a service sales

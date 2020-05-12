@@ -15,7 +15,18 @@
       <p>an open repository of legal forms</p>
     </header>
     <main role=main>
-      <h2>Publishers</h2>
+      <h2>Featured Forms</h2>
+      <ul class=featured>
+      <% featured.forEach((feature) => { %>
+        <li>
+          <a href="/<%= feature.publisher %>/<%= feature.project %>/<%= feature.edition %>">
+            <%= feature.title %>
+          </a>
+          <%- feature.description %>
+        </li>
+      <% }) %>
+      </ul>
+      <h2>Projects and Publishers</h2>
       <p><a href=/guide>You can publish to commonform.org.</a></p>
       <ul>
         <% publishers.forEach((publisher) => { %>

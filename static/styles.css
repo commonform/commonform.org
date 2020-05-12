@@ -320,3 +320,16 @@ p {
 ul {
   padding-left: 1rem;
 }
+
+.featured {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(3, 33.3%);
+}
+
+.featured li {
+  border-radius: 1ex;
+  border: 1px solid black;
+  display: block;
+  padding: 1rem;
+}

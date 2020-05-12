@@ -558,7 +558,33 @@ function renderPublisherPages() {
 
 function renderHomePage() {
   const page = path.join('site', 'index.html')
+  const featured = []
+  Object.keys(publishers).forEach((publisherName) => {
+    const publisher = publishers[publisherName]
+    const projects = publishers[publisherName].projects
+    Object.keys(projects).forEach((projectName) => {
+      const project = projects[projectName]
+      const editions = project.editions
+      const latest = Object.keys(editions)
+        .sort((a, b) => revedCompare(a, b))
+        .reverse()[0]
+      const edition = editions[latest]
+      if (project.featured) {
+        featured.push({
+          publisher: publisherName,
+          name: publisherMetadata[publisherName].name,
+          project: projectName,
+          description: project.description,
+          edition: latest,
+          published: edition.published,
+          title: edition.title,
+        })
+      }
+    })
+  })
+  featured.sort((a, b) => b.published.localeCompare(a.published))
   const data = {
+    featured,
     publishers: Object.keys(publishers)
       .map((publisher) => {
         return Object.assign(

@@ -1,6 +1,7 @@
 ---
 component: false
 star: true
+featured: true
 ---
 
-plain-English consulting terms
+plain-English terms for independent contractors

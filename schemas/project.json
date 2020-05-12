@@ -12,6 +12,9 @@
     "star": {
       "type": "boolean"
     },
+    "featured": {
+      "type": "boolean"
+    },
     "trademarks": {
       "type": "array",
       "items": {
