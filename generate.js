@@ -15,6 +15,7 @@ const loadComponents = require('commonform-load-components')
 const markup = require('commonform-commonmark')
 const ooxmlSignaturePages = require('ooxml-signature-pages')
 const path = require('path')
+const prepareBlanks = require('commonform-prepare-blanks')
 const revedCompare = require('reviewers-edition-compare')
 const revedSpell = require('reviewers-edition-spell')
 const rimraf = require('rimraf')
@@ -187,14 +188,15 @@ runSeries(
   formFiles.map((file) => {
     return (done) => {
       const contents = fs.readFileSync(file, 'utf8')
-      const parsed = grayMatter(contents)
-      const content = parsed.content
-      const frontMatter = parsed.data
+      const split = grayMatter(contents)
+      const content = split.content
+      const frontMatter = split.data
       if (!validateFrontMatter(frontMatter)) {
         console.error(validateFrontMatter.errors)
         throw new Error(`invalid front matter: ${file}`)
       }
-      const form = markup.parse(content).form
+      const parsed = markup.parse(content)
+      const form = parsed.form
       runParallel(
         {
           original: (done) => {
@@ -210,7 +212,11 @@ runSeries(
         },
         (error, loaded) => {
           if (error) throw error
-          const rendered = toHTML(form, [], {
+          const values = prepareBlanks(
+            frontMatter.defaults || {},
+            parsed.directions,
+          )
+          const rendered = toHTML(clone(form), values, {
             html5: true,
             lists: true,
             ids: true,
@@ -281,7 +287,7 @@ runSeries(
           writeHTML(loaded.upgraded, 'upgraded')
 
           function writeHTML(form, suffix) {
-            data.rendered = toHTML(clone(form), [], {
+            data.rendered = toHTML(clone(form), values, {
               html5: true,
               lists: true,
               ids: true,
@@ -306,15 +312,19 @@ runSeries(
             fs.writeFileSync(htmlFile, html)
           }
 
-          data.rendered = toHTML(clone(loaded.upgraded), [], {
-            html5: true,
-            lists: true,
-            ids: true,
-            depth: 1,
-            smartify: true,
-            classNames: ['form'],
-            annotations,
-          })
+          data.rendered = toHTML(
+            clone(loaded.upgraded),
+            values,
+            {
+              html5: true,
+              lists: true,
+              ids: true,
+              depth: 1,
+              smartify: true,
+              classNames: ['form'],
+              annotations,
+            },
+          )
           try {
             html = ejs.render(templates.form, data)
           } catch (error) {
@@ -389,7 +399,7 @@ runSeries(
             const options = Object.assign({}, docxOptions, {
               edition: spelled + ' ' + label,
             })
-            docx(clone(form), [], options)
+            docx(clone(form), values, options)
               .generateAsync({ type: 'nodebuffer' })
               .then((buffer) => {
                 const wordFile = path.join(
