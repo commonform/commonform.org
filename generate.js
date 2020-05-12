@@ -226,6 +226,10 @@ runSeries(
             .concat(lint(form))
             .concat(critique(form))
           var analysis = analyze(form)
+          const spelled = projectMetadata[publisher][project]
+            .semver
+            ? toSemVer(edition)
+            : revedSpell(edition)
           const data = Object.assign(
             {
               title,
@@ -238,9 +242,7 @@ runSeries(
               markdown: `${edition}.md`,
               originalMarkdown: `${edition}-original.md`,
               upgradedMarkdown: `${edition}-upgraded.md`,
-              spelled: projectMetadata[publisher][project].semver
-                ? toSemVer(edition)
-                : revedSpell(edition),
+              spelled,
               project,
               projectMetadata:
                 projectMetadata[publisher][project],
@@ -385,7 +387,7 @@ runSeries(
           function writeDOCX(form, suffix, label) {
             label = label || ''
             const options = Object.assign({}, docxOptions, {
-              edition: docxOptions.edition + ' ' + label,
+              edition: spelled + ' ' + label,
             })
             docx(clone(form), [], options)
               .generateAsync({ type: 'nodebuffer' })
