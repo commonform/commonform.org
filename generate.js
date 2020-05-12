@@ -3,7 +3,6 @@ const AJV = require('ajv')
 const analyze = require('commonform-analyze')
 const commonmark = require('commonmark')
 const critique = require('commonform-critique')
-const docx = require('commonform-docx')
 const ejs = require('ejs')
 const englishMonths = require('english-months')
 const fs = require('fs')
@@ -16,12 +15,13 @@ const markup = require('commonform-commonmark')
 const ooxmlSignaturePages = require('ooxml-signature-pages')
 const path = require('path')
 const prepareBlanks = require('commonform-prepare-blanks')
+const renderDOCX = require('commonform-docx')
+const renderHTML = require('commonform-html')
 const revedCompare = require('reviewers-edition-compare')
 const revedSpell = require('reviewers-edition-spell')
 const rimraf = require('rimraf')
 const runParallel = require('run-parallel')
 const runSeries = require('run-series')
-const toHTML = require('commonform-html')
 const toSemVer = require('reviewers-edition-to-semver')
 
 const numberings = {
@@ -216,7 +216,7 @@ runSeries(
             frontMatter.defaults || {},
             parsed.directions,
           )
-          const rendered = toHTML(clone(form), values, {
+          const rendered = renderHTML(clone(form), values, {
             html5: true,
             lists: true,
             ids: true,
@@ -287,7 +287,7 @@ runSeries(
           writeHTML(loaded.upgraded, 'upgraded')
 
           function writeHTML(form, suffix) {
-            data.rendered = toHTML(clone(form), values, {
+            data.rendered = renderHTML(clone(form), values, {
               html5: true,
               lists: true,
               ids: true,
@@ -312,7 +312,7 @@ runSeries(
             fs.writeFileSync(htmlFile, html)
           }
 
-          data.rendered = toHTML(
+          data.rendered = renderHTML(
             clone(loaded.upgraded),
             values,
             {
@@ -399,7 +399,7 @@ runSeries(
             const options = Object.assign({}, docxOptions, {
               edition: spelled + ' ' + label,
             })
-            docx(clone(form), values, options)
+            renderDOCX(clone(form), values, options)
               .generateAsync({ type: 'nodebuffer' })
               .then((buffer) => {
                 const wordFile = path.join(
