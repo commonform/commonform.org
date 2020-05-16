@@ -17,6 +17,7 @@
       <p>an open repository of legal forms</p>
     </header>
     <main role=main>
+      <% if (logo) { %><img class=logo src="<%= logo %>" alt=logo><% } %>
       <h2><%= publisher %></h2>
       <% if (about) { %>
       <%- about %>

@@ -481,6 +481,7 @@ function renderPublisherPages() {
           email: false,
           website: false,
           location: false,
+          logo: false,
           name: false,
           trademarks: false,
           components: projectsArray.filter((project) => {
@@ -531,6 +532,7 @@ function renderPublisherPages() {
             editions,
             trademarks: false,
             archived: false,
+            logo: false,
             website: false,
           },
           projectMetadata[publisher][project],
@@ -578,6 +580,7 @@ function renderHomePage() {
           edition: latest,
           published: edition.published,
           title: edition.title,
+          logo: project.logo || false,
         })
       }
     })

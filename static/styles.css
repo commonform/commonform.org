@@ -54,6 +54,11 @@ main[role='main'] img {
   max-width: 100%;
 }
 
+main[role='main'] .logo {
+  max-height: 4rem;
+  max-width: 4rem;
+}
+
 @media all {
   html {
     font-size: 23px;
@@ -325,6 +330,7 @@ ul {
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(3, 33.3%);
+  text-align: center;
 }
 
 .featured li {
@@ -332,4 +338,15 @@ ul {
   border: 1px solid black;
   display: block;
   padding: 1rem;
+}
+
+.feartured li a,
+.featured li .logo {
+  display: block;
+}
+
+.featured li .logo {
+  display: block;
+  height: 4rem;
+  margin: 0 auto 1rem auto;
 }

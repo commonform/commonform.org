@@ -28,6 +28,10 @@
       "type": "string",
       "format": "email"
     },
+    "logo": {
+      "type": "string",
+      "format": "uri-reference"
+    },
     "about": {
       "type": "string"
     }

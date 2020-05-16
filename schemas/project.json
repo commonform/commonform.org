@@ -30,6 +30,10 @@
       "type": "string",
       "format": "uri"
     },
+    "logo": {
+      "type": "string",
+      "format": "uri-reference"
+    },
     "description": {
       "type": "string"
     }
