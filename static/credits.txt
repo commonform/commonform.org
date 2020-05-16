@@ -1,0 +1,211 @@
+Adam Kirkton: source-map
+Adriano Melo: number-to-words
+Aleksey Pilyugin: number-to-words
+Aleksey V Zapparov: js-yaml
+Alexander Solovyov: source-map
+Alexandru Marasteanu: sprintf-js
+Amila Welihinda: micromatch
+Andre Staltz: rxjs
+Andrei Tuputcyn: pako
+Andrew Kassen: @kemitchell/docopt, docopt
+Andrew Meyer: gray-matter
+Andrew Rhyne: debug
+Andrey Okonetchnikov: lint-staged
+André Cruz: cross-spawn
+Ansel Halliburton: doubleplus-numbers
+Anthony McCormick: string-argv
+Antoine Motet: spdx-expression-parse
+António Afonso: jszip
+Ariya Hidayat: esprima
+Arnout Kazemier: querystringify, requires-port, url-parse
+Ben Coe: cliui, require-main-filename, set-blocking, signal-exit, y18n, yargs-parser
+Ben Lesh: rxjs, symbol-observable
+Ben Newman: regenerator-runtime
+Blaine Bublitz: normalize-path
+Blue Oak Council Inc.: @blueoak/list
+Bogdan Chadkin: cosmiconfig, micromatch
+Brett Zamir: licensee
+Brian Donovan: lines-and-columns
+Brian Woodward: braces, gray-matter, micromatch, repeat-string
+C. Scott Ananian: spdx-expression-parse
+Caesar Schinas: gray-matter
+Calvin Metcalf: immediate
+Caolan McMahon: async
+Chase Douglas: source-map
+Chris Montgomery: source-map
+Chris Truter: source-map
+Christian Zommerfelds: spdx-correct
+Conrad Irwin: source-map
+DY: color-name
+Dan Butvinik: spdx-correct, spdx-whitelisted
+Dan Flettre: github-slugger
+Daniel Espeset: source-map
+David Caccavella: slice-ansi
+David Clark: cosmiconfig
+David Duponchel: jszip
+David Fox-Powell: kind-of
+David Glasser: source-map
+Desmond Brand: dedent
+Devon Govett: micromatch
+Djordje Lukic: depcheck
+Domenic Denicola: immediate
+Dominic Tarr: sha.js
+Donavon West: immediate
+Duncan Beevers: source-map
+Eddy Bruël: source-map
+Edo Rivai: fill-range
+Eemeli Aro: yaml
+Elan Shanker: braces, micromatch
+Emil Bay: nanoassert
+Eugene Sharygin: braces
+Eugene Shkuropat: argparse
+Evan Wallace: source-map
+Evan You: de-indent, vue-template-compiler
+Evgeny Poberezkin: ajv, fast-deep-equal, json-schema-traverse
+Fabrício Matté: micromatch
+Felix Boehm: entities
+Felix Gnass: source-map
+Feross Aboukhadijeh: run-parallel, run-parallel-limit, run-series, safe-buffer, simple-concat
+ForbesLindesay: is-promise
+Franz Buchinger: jszip
+Friedel Ziegelmayer: pako
+Gary Court: uri-js
+Gary Katsevman: object-keys
+Gary Ye: source-map
+Gilad Peleg: source-map
+Hawken Rives: source-map
+Heather Arthur: color-convert, source-map
+Hugh Kennedy: source-map
+Ian Storm Taylor: gray-matter
+Isaac Z. Schlueter: core-util-is, dezalgo, fs.realpath, glob, inflight, isexe, minimatch, normalize-package-data, npm-normalize-package-bin, once, read-package-json, read-package-tree, readdir-scoped-modules, rimraf, which, wrappy
+Ivan Starkov: object-keys
+J. Ryan Stinnett: source-map
+Jack Herrington: source-map
+Jake Verbaten: xtend
+Jakob Krigovsky: licensee
+James: kind-of
+James Halliday: concat-map, deep-equal, fast-json-stable-stringify, minimist, object-inspect, resolve, semver-compare
+James Long: prettier
+Jamie Wong: source-map
+Javier Blanco: path-parse
+Jean-loup Gailly: pako
+Jeff Cross: rxjs
+Jeff McAffer: spdx-whitelisted
+Jeremiah Hall: number-to-words
+Jmeas Smith: source-map
+John Gozde: source-map
+John MacFarlane: commonmark
+John-David Dalton: lodash
+Jon Schlinkert: braces, extend-shallow, fill-range, gray-matter, is-directory, is-extendable, is-number, kind-of, micromatch, normalize-path, picomatch, repeat-string, romanize, section-matter, strip-bom-string, to-regex-range
+Jordan Harband: define-properties, es-abstract, es-to-primitive, function-bind, has, has-symbols, is-arguments, is-callable, is-date-object, is-object, is-regex, is-symbol, object-is, object-keys, object.assign, object.getownpropertydescriptors, regexp.prototype.flags, string.prototype.trimend, string.prototype.trimleft, string.prototype.trimright, string.prototype.trimstart
+Julian Gruber: balanced-match, brace-expansion, isarray
+Junle Li: depcheck
+Junyoung Clare Jang: @types/color-name
+Kat Marchán: json-parse-better-errors
+Ken Sheedlo: kind-of
+Kevin Mårtensson: shebang-command
+Khaled Al-Ansari: string.prototype.trimend, string.prototype.trimstart
+Kirill Efimov: pako
+Kyle E. Mitchell: @kemitchell/docopt, agreement-schedules-exhibits-numbering, alphabet-numbering, american-legal-archaisms, commonform-analyze, commonform-archaic, commonform-commonmark, commonform-critique, commonform-docx, commonform-fix-strings, commonform-flatten, commonform-get-editions, commonform-get-form, commonform-group-series, commonform-hash, commonform-html, commonform-lint, commonform-load-components, commonform-mscd, commonform-number, commonform-phrase-annotator, commonform-predicate, commonform-prepare-blanks, commonform-regexp-annotator, commonform-resolve, commonform-same-path, commonform-serialize, commonform-smartify, commonform-substitute, correct-license-metadata, creditstxt, decimal-numbering, english-months, json-parse-errback, licensee, lower-alpha, markdown-escape, mscd, npm-authors-contributors, ooxml-signature-pages, outline-numbering, plan-addenda-exhibits-numbering, resolutions-schedules-exhibits-numbering, reviewers-edition-compare, reviewers-edition-parse, reviewers-edition-spell, reviewers-edition-to-semver, reviewers-edition-upgrade, spdx-compare, spdx-correct, spdx-exceptions, spdx-expression-parse, spdx-expression-validate, spdx-osi, spdx-ranges, spdx-whitelisted, validate-npm-package-license, wordy-words
+Kyle Mitchell: romanize
+Linus Unnebäck: repeat-string
+Mark Adler: pako
+Mark Stacey: validate-npm-package-license
+Martin Eneqvist: number-to-words
+Martin Grenfell: js-yaml
+Martin Kolárik: micromatch
+Mathias Buus: end-of-stream
+Mathias Buus Madsen: pump
+Mathias Bynens: emoji-regex, he, jsesc, lodash, punycode, string.prototype.repeat
+Mathieu Dutour: deps-regex
+Matt DesLauriers: require-package-name
+Matt Esch: xtend
+Matteo Collina: split2
+Matthew Davidson: node-sass-tilde-importer
+Matthew Eernisse: ejs, filelist, jake
+Matthew Podwysocki: rxjs
+Matthias Rolke: @kemitchell/docopt, docopt
+Maximilian Lloyd: string-repeat
+Meryn Stol: normalize-package-data
+Michael Ferris: string-argv
+Michael Ficarra: source-map
+Michael Hernandez - michael.hernandez1988@gmail.com: xml-escape
+Michael Z Goddard: source-map
+Microsoft Corp.: tslib
+Miguel Mota: kind-of
+Mihai Bazon: source-map
+Miles Elam: source-map
+Nathan Rajlich: debug, object-keys, util-deprecate
+Nick Fitzgerald: source-map
+Nicolas Lalevée: source-map
+OJ Kwon: rxjs
+Ole Michelsen: compare-versions
+Olsten Larck: is-number, micromatch
+Osman Nuri Okumuş: gray-matter
+Paul Jacobson: argparse
+Paul Miller: fill-range, micromatch
+Paul Taylor: rxjs
+Pawel Kadluczka: gray-matter
+Peter Bright: micromatch
+Peter deHaan: kind-of
+Qix: is-arrayish
+Raynos: function-bind, is-object, object-keys, xtend
+Rebecca Turner: hosted-git-info
+Rob Loach: gray-matter
+Robert Kowalski: normalize-package-data
+Rod Vagg: through2
+Rodrigo Neri: indefinite-article
+Rouven Weßling: fill-range, is-number, to-regex-range
+Ryan Day: walkdir
+Ryan Seddon: source-map
+Sam Roberts: debuglog
+Sam Verschueren: listr, listr-silent-renderer, listr-update-renderer, listr-verbose-renderer
+Sasha Koss: date-fns
+Sebastian McKenzie: @babel/code-frame, @babel/generator, @babel/parser, @babel/runtime, @babel/template, @babel/traverse, @babel/types
+Shahar Or: get-own-enumerable-property-symbols
+Shinnosuke Watanabe: spdx-expression-parse, spdx-license-ids
+Simon Lydell: js-tokens, source-map
+Sindre Sorhus: ansi-escapes, ansi-regex, ansi-styles, any-observable, array-find-index, builtin-modules, caller-callsite, caller-path, callsites, camelcase, cli-cursor, cli-truncate, code-point-at, decamelize, elegant-spinner, escape-string-regexp, execa, figures, find-up, find-versions, fs-access, get-stream, globals, has-ansi, has-flag, import-fresh, indent-string, is-fullwidth-code-point, is-obj, is-observable, is-regexp, is-stream, locate-path, log-symbols, log-update, mimic-fn, npm-run-path, null-check, number-is-nan, object-assign, onetime, p-limit, p-locate, p-map, p-try, parent-module, parse-json, path-exists, path-is-absolute, path-key, path-type, pkg-dir, resolve-from, restore-cursor, semver-regex, set-immediate-shim, shebang-regex, slash, string-width, stringify-object, strip-ansi, strip-final-newline, supports-color, to-fast-properties, wrap-ansi
+Stefan Penner: get-caller-file
+Stephen Crane: source-map
+Stephen Sugden: capitalize, merge-stream
+Stuart Carnie: @kemitchell/docopt, docopt
+Stuart Knightley: jszip
+Suhas Karanth: cosmiconfig
+TJ Holowaychuk: commander, debug
+Tal Einat: spdx-correct
+The Linux Foundation: spdx-exceptions, spdx-ranges
+Thiago de Arruda: has
+Thijs Busser: repeat-string
+Thomas Watson Steen: ci-info
+Thorsten Lorenz: find-parent-dir
+Titus: repeat-string
+Titus Wormer: github-slugger
+Tobias Koppers: source-map
+Todd Wolfson: source-map
+Tom Byrer: micromatch
+Troy Goode: require-directory
+Tyler Akins: micromatch
+Typicode: husky
+Vitaly Puzrin: js-yaml, pako
+Vladimir Keleshev: @kemitchell/docopt, docopt
+Vladimir Zapparov: js-yaml
+Xavier Damman: opencollective-postinstall
+Yaffle: immediate
+Yargs Contributors: yargs
+Zach Whaley: gray-matter
+Zoltan Kochan: which-pm-runs
+azu: source-map
+djchie: source-map
+dmrzn: number-to-words
+ehmicky: human-signals
+hemanth.hm: braces
+laggingreflex: kind-of
+mrmlnc: @types/parse-json
+nexdrew: which-module
+suchipi: @babel/highlight
+tjfontaine: walkdir
+tunnckoCore: kind-of
+typicode: please-upgrade-node
+usrbincc: source-map
+yiminghe: jszip

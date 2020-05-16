@@ -31,13 +31,14 @@
   },
   "devDependencies": {
     "commonform-prepare-blanks": "^1.0.2",
+    "creditstxt": "^1.0.2",
     "husky": "^4.2.5",
     "lint-staged": "^10.1.7",
     "prettier": "^2.0.5"
   },
   "scripts": {
     "audit": "npm audit --production",
-    "build": "node ./generate.js | tee build.log",
+    "build": "node ./generate.js | tee build.log ; npx creditstxt > site/credits.txt",
     "check": "prettier --check .",
     "deps": "depcheck",
     "format": "prettier --write .",

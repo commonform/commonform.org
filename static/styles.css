@@ -360,3 +360,7 @@ ul {
   height: 4rem;
   margin: 0 auto 1rem auto;
 }
+
+.thanks {
+  column-count: 2;
+}
