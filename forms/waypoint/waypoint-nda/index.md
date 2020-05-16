@@ -5,4 +5,4 @@ featured: true
 logo: https://waypointnda.com/logo.svg
 ---
 
-the standard business nondisclosure agreement
+the standard business NDA
