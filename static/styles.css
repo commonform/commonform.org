@@ -32,6 +32,10 @@ header[role='banner'] {
   margin-top: 2rem;
 }
 
+header[role='banner'] a:first-child {
+  border-bottom: none;
+}
+
 header[role='banner'] h1 {
   margin-top: 0.5rem;
 }
@@ -143,12 +147,19 @@ main[role='main'] .logo {
   }
 }
 
-a {
+a[href] {
+  color: black;
   text-decoration: none;
+  border-bottom: 1px dashed #999;
 }
 
-a:hover {
+a[href] img {
+  border-bottom: none;
+}
+
+a[href]:hover {
   text-decoration: underline;
+  color: #999;
 }
 
 .conspicuous > p {
