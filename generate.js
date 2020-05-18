@@ -523,7 +523,7 @@ function renderPublisherPages() {
             }
           })
           .sort((a, b) => {
-            return revedCompare(a.edition, b.edition)
+            return revedCompare(b.number, a.number)
           })
         const data = Object.assign(
           {
