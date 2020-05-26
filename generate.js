@@ -207,9 +207,6 @@ runSeries(
             )
             loadComponents(clone(form), options, done)
           },
-          upgraded: (done) => {
-            loadComponents(clone(form), loadOptions, done)
-          },
         },
         (error, loaded) => {
           if (error) throw error
@@ -243,12 +240,10 @@ runSeries(
               github: `https://github.com/commonform/commonform.org/blob/master/${file}`,
               digest: hash(form),
               docx: `${edition}.docx`,
-              originalDOCX: `${edition}-original.docx`,
-              upgradedDOCX: `${edition}-upgraded.docx`,
+              completeDOCX: `${edition}-complete.docx`,
               json: `${edition}.json`,
               markdown: `${edition}.md`,
-              originalMarkdown: `${edition}-original.md`,
-              upgradedMarkdown: `${edition}-upgraded.md`,
+              completeMarkdown: `${edition}-complete.md`,
               spelled,
               project,
               projectMetadata:
@@ -263,9 +258,6 @@ runSeries(
               rendered,
               edition,
               draft: Boolean(revedParse(edition).draft),
-              locked: analysis.components.every(
-                (element) => !has(element[0], 'upgrade'),
-              ),
             },
             frontMatter,
           )
@@ -285,8 +277,7 @@ runSeries(
           fs.mkdirSync(path.dirname(page), { recursive: true })
           fs.writeFileSync(page, html)
 
-          writeHTML(loaded.original, 'original')
-          writeHTML(loaded.upgraded, 'upgraded')
+          writeHTML(loaded.original, 'complete')
 
           function writeHTML(form, suffix) {
             data.rendered = renderHTML(clone(form), values, {
@@ -315,7 +306,7 @@ runSeries(
           }
 
           data.rendered = renderHTML(
-            clone(loaded.upgraded),
+            clone(loaded.original),
             values,
             {
               html5: true,
@@ -389,12 +380,7 @@ runSeries(
           }
 
           writeDOCX(form, '')
-          writeDOCX(
-            loaded.upgraded,
-            '-upgraded',
-            '(with updates and corrections)',
-          )
-          writeDOCX(loaded.original, '-original', '(original)')
+          writeDOCX(loaded.original, '-complete', '')
 
           function writeDOCX(form, suffix, label) {
             label = label || ''
@@ -436,7 +422,6 @@ runSeries(
           fs.writeFileSync(markdownFile, content)
 
           writeMarkdown(loaded.original, '-original')
-          writeMarkdown(loaded.upgraded, '-upgraded')
           function writeMarkdown(form, suffix) {
             const markdownFile = path.join(
               'site',

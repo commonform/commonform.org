@@ -45,16 +45,6 @@
           <th>Published</th>
           <td><%= publishedDisplay %></td>
         </tr>
-        <tr>
-          <th>Upgrades</th>
-          <td>
-            <% if (locked) { %>
-            This form’s text will not change.
-            <% } else { %>
-            Some components used in this form may upgrade automatically over time.
-            <% } %>
-          </td>
-        </tr>
         <% if (notes) { %>
         <tr>
           <th>Release Notes</th>
@@ -90,11 +80,9 @@
           <td>
             <ul>
               <li><a download="<%= publisher %> <%= project %> <%= edition %>.docx" href="<%= docx %>">Microsoft Word</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %> (original).docx" href="<%= originalDOCX %>">Microsoft Word (Original)</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %> (upgraded).docx" href="<%= upgradedDOCX %>">Microsoft Word (Upgraded)</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= edition %> (complete).docx" href="<%= completeDOCX %>">Microsoft Word (Complete)</a></li>
               <li><a download="<%= publisher %> <%= project %> <%= edition %>.md" href="<%= markdown %>">Markdown</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %> (original).md" href="<%= originalMarkdown %>">Markdown (Original)</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %> (upgraded).md" href="<%= upgradedMarkdown %>">Markdown (Upgraded)</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= edition %> (complete).md" href="<%= completeMarkdown %>">Markdown (Complete)</a></li>
               <li><a download="<%= publisher %> <%= project %> <%= edition %>.json" href="<%= json %>">JSON Data</a></li>
             </ul>
           </td>
@@ -105,14 +93,9 @@
           <td><a href="<%= permalink %>"><%= permalink.replace(/^https:\/\//, '') %></a></td>
         </tr>
         <tr>
-          <th>Original</th>
-          <% const original = `https://commonform.org/${publisher}/${project}/${edition}-original` %>
-          <td><a href="<%= original %>"><%= original.replace(/^https:\/\//, '') %></a></td>
-        </tr>
-        <tr>
-          <th>Upgraded</th>
-          <% const upgraded = `https://commonform.org/${publisher}/${project}/${edition}-upgraded` %>
-          <td><a href="<%= upgraded %>"><%= upgraded.replace(/^https:\/\//, '') %></a></td>
+          <th>Complete</th>
+          <% const complete = `https://commonform.org/${publisher}/${project}/${edition}-complete` %>
+          <td><a href="<%= complete %>"><%= complete.replace(/^https:\/\//, '') %></a></td>
         </tr>
         <tr>
           <th>Annotated</th>
