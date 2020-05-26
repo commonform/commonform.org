@@ -23,6 +23,7 @@
     "outline-numbering": "^2.0.0",
     "resolutions-schedules-exhibits-numbering": "^1.0.0",
     "reviewers-edition-compare": "^1.0.5",
+    "reviewers-edition-parse": "^2.0.6",
     "reviewers-edition-spell": "^2.0.0",
     "reviewers-edition-to-semver": "^1.0.1",
     "rimraf": "^3.0.2",

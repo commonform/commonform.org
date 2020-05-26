@@ -14,6 +14,14 @@
       <p class=edition><%= spelled %></p>
     </header>
     <main role=main>
+      <% if (draft) { %>
+      <aside class=warning>
+        <p>
+          This is a draft.
+          Check <a href="/<%= publisher %>/<%= project %>">the project page</a> for the latest edition.
+        </p>
+      </aside>
+      <% } %>
       <%- rendered %>
       <p id=digest class=digest><code class=digest><%= digest %></code></p>
       <table id=metadata>

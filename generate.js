@@ -18,6 +18,7 @@ const prepareBlanks = require('commonform-prepare-blanks')
 const renderDOCX = require('commonform-docx')
 const renderHTML = require('commonform-html')
 const revedCompare = require('reviewers-edition-compare')
+const revedParse = require('reviewers-edition-parse')
 const revedSpell = require('reviewers-edition-spell')
 const rimraf = require('rimraf')
 const runParallel = require('run-parallel')
@@ -261,6 +262,7 @@ runSeries(
               ),
               rendered,
               edition,
+              draft: Boolean(revedParse(edition).draft),
               locked: analysis.components.every(
                 (element) => !has(element[0], 'upgrade'),
               ),

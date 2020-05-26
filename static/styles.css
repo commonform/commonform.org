@@ -364,3 +364,22 @@ ul {
 .thanks {
   column-count: 2;
 }
+
+.warning,
+.info {
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  margin: 1rem 0;
+  padding: 0 0.8rem;
+}
+
+.warning {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+.warning a[href] {
+  border-bottom: 1px dashed #856404;
+  color: #856404;
+}
