@@ -237,7 +237,7 @@ runSeries(
           const data = Object.assign(
             {
               title,
-              github: `https://github.com/commonform/commonform.org/blob/master/${file}`,
+              github: `https://github.com/commonform/commonform.org/blob/main/${file}`,
               digest: hash(form),
               docx: `${edition}.docx`,
               completeDOCX: `${edition}-complete.docx`,
