@@ -35,7 +35,7 @@
     "creditstxt": "^1.0.2",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.13",
-    "prettier": "^2.0.5"
+    "prettier": "^2.1.1"
   },
   "scripts": {
     "audit": "npm audit --production",
