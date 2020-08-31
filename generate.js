@@ -243,7 +243,7 @@ runSeries(
               completeDOCX: `${edition}-complete.docx`,
               json: `${edition}.json`,
               markdown: `${edition}.md`,
-              completeMarkdown: `${edition}-complete.md`,
+              originalMarkdown: `${edition}-original.md`,
               spelled,
               project,
               projectMetadata:
