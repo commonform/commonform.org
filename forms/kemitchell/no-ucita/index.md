@@ -2,4 +2,4 @@
 component: true
 ---
 
-ward of the Uniform Information Transactions Act
+ward off the Uniform Information Transactions Act
