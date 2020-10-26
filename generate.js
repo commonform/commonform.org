@@ -73,19 +73,22 @@ const forms = formFiles.map((file) => {
   const frontMatter = parsed.data
   if (!validateFrontMatter(frontMatter)) {
     console.error(validateFrontMatter.errors)
-    throw new Error(`invalid front matter: ${file}`)
+    console.error(`invalid front matter: ${file}`)
+    process.exit(1)
   }
   let form
   try {
     form = markup.parse(content).form
   } catch (error) {
-    throw new Error(`invalid markup: ${file}`)
+    console.error(`invalid markup: ${file}`)
+    process.exit(1)
   }
   const digest = hash(form)
   if (frontMatter.digest && frontMatter.digest !== digest) {
-    throw new Error(
+    console.error(
       `${file} form digest does not match front matter`,
     )
+    process.exit(1)
   }
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
@@ -155,7 +158,8 @@ indexFiles.forEach((projectFile) => {
   meta.description = markdown(parsed.content)
   if (!validateProject(meta)) {
     console.error(validateProject.errors)
-    throw new Error(`invalid project meta: ${projectFile}`)
+    console.error(`invalid project meta: ${projectFile}`)
+    process.exit(1)
   }
   const [_, publisher, project] = projectFile
     .replace('.json', '')
@@ -177,7 +181,8 @@ publisherFiles.forEach((file) => {
   meta.about = markdown(parsed.content)
   if (!validatePublisher(meta)) {
     console.error(validatePublisher.errors)
-    throw new Error(`invalid publisher meta: ${file}`)
+    console.error(`invalid publisher meta: ${file}`)
+    process.exit(1)
   }
   const [_, publisher] = path.dirname(file).split(path.sep)
   if (!publisherMetadata[publisher]) {
@@ -194,7 +199,8 @@ runSeries(
       const frontMatter = split.data
       if (!validateFrontMatter(frontMatter)) {
         console.error(validateFrontMatter.errors)
-        throw new Error(`invalid front matter: ${file}`)
+        console.error(`invalid front matter: ${file}`)
+        process.exit(1)
       }
       const parsed = markup.parse(content)
       const form = parsed.form
@@ -209,7 +215,10 @@ runSeries(
           },
         },
         (error, loaded) => {
-          if (error) throw error
+          if (error) {
+            console.error(error)
+            process.exit(1)
+          }
           const values = prepareBlanks(
             frontMatter.defaults || {},
             parsed.directions,
@@ -266,7 +275,8 @@ runSeries(
           try {
             html = ejs.render(templates.form, data)
           } catch (error) {
-            throw new Error(`${file}: ${error.message}`)
+            console.error(`${file}: ${error.message}`)
+            process.exit(1)
           }
           const page = path.join(
             'site',
@@ -291,7 +301,8 @@ runSeries(
             try {
               html = ejs.render(templates.form, data)
             } catch (error) {
-              throw new Error(`${file}: ${error.message}`)
+              console.error(`${file}: ${error.message}`)
+              process.exit(1)
             }
             const htmlFile = path.join(
               'site',
@@ -321,7 +332,8 @@ runSeries(
           try {
             html = ejs.render(templates.form, data)
           } catch (error) {
-            throw new Error(`${file}: ${error.message}`)
+            console.error(`${file}: ${error.message}`)
+            process.exit(1)
           }
           const annotated = path.join(
             'site',
