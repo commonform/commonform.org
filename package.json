@@ -27,7 +27,7 @@
     "reviewers-edition-spell": "^2.0.0",
     "reviewers-edition-to-semver": "^1.0.1",
     "rimraf": "^3.0.2",
-    "run-parallel": "^1.1.9",
+    "run-parallel": "^1.1.10",
     "run-series": "^1.1.8"
   },
   "devDependencies": {
