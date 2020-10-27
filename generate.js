@@ -369,6 +369,7 @@ runSeries(
             title,
             edition,
             centerTitle: false,
+            leftAlignBody: true,
             indentMargins: true,
             markFilled: true,
             smartify: true,
