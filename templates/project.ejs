@@ -23,7 +23,7 @@
       <ul>
         <% editions.forEach((edition) => { %>
         <li>
-          <a href=./<%= edition.number %>><%= edition.spelled %></a>
+          <a href=/<%= publisher %>/<%= project %>/<%= edition.number %>><%= edition.spelled %></a>
           (<%= edition.published %>)
         </li>
       <% }) %>
