@@ -2,7 +2,8 @@
   "private": true,
   "dependencies": {
     "agreement-schedules-exhibits-numbering": "^2.0.0",
-    "ajv": "^6.12.6",
+    "ajv": "^8.0.2",
+    "ajv-formats": "^2.0.1",
     "commonform-analyze": "^4.0.0",
     "commonform-commonmark": "^6.0.0",
     "commonform-critique": "^1.0.3",

@@ -9,7 +9,7 @@
       "type": "array",
       "items": {
         "type": "integer",
-        "min": 0
+        "minimum": 0
       },
       "minItems": 1
     },

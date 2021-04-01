@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const AJV = require('ajv')
+const addFormatstoAJV = require('ajv-formats')
 const analyze = require('commonform-analyze')
 const commonmark = require('commonmark')
 const critique = require('commonform-critique')
@@ -33,6 +34,7 @@ const numberings = {
 }
 
 const ajv = new AJV()
+addFormatstoAJV(ajv)
 const validateFrontMatter = ajv.compile(
   require('./schemas/front-matter'),
 )
