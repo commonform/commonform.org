@@ -4,7 +4,8 @@
     "spdx": ["CC-BY-3.0"]
   },
   "packages": {
-    "escape-regexp": "0.0.1"
+    "escape-regexp": "0.0.1",
+    "scss-parser": "1.0.4"
   },
   "corrections": true
 }
