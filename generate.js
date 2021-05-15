@@ -355,14 +355,13 @@ runSeries(
             }
           }
           if (!publishers[publisher].projects[project]) {
-            publishers[publisher].projects[
-              project
-            ] = Object.assign(
-              {
-                editions: {},
-              },
-              projectMetadata[publisher][project],
-            )
+            publishers[publisher].projects[project] =
+              Object.assign(
+                {
+                  editions: {},
+                },
+                projectMetadata[publisher][project],
+              )
           }
           publishers[publisher].projects[project].editions[
             edition
