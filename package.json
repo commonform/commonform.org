@@ -17,7 +17,7 @@
     "depcheck": "^1.4.1",
     "ejs": "^3.1.6",
     "english-months": "^1.0.3",
-    "glob": "^7.1.6",
+    "glob": "^7.1.7",
     "gray-matter": "^4.0.2",
     "licensee": "^8.1.0",
     "ooxml-signature-pages": "^3.0.2",
