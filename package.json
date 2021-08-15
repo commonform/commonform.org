@@ -12,7 +12,7 @@
     "commonform-html": "^3.6.1",
     "commonform-lint": "^3.0.2",
     "commonform-load-components": "^2.1.0",
-    "commonmark": "^0.29.3",
+    "commonmark": "^0.30.0",
     "decimal-numbering": "^3.0.2",
     "depcheck": "^1.4.1",
     "ejs": "^3.1.6",
