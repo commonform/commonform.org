@@ -7,7 +7,7 @@
     "commonform-analyze": "^4.0.0",
     "commonform-commonmark": "^6.0.0",
     "commonform-critique": "^1.0.3",
-    "commonform-docx": "^5.5.0",
+    "commonform-docx": "^5.5.2",
     "commonform-hash": "^1.0.0",
     "commonform-html": "^3.6.1",
     "commonform-lint": "^3.0.2",
