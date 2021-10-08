@@ -9,7 +9,7 @@
     "commonform-critique": "^1.0.3",
     "commonform-docx": "^5.5.2",
     "commonform-hash": "^1.0.0",
-    "commonform-html": "^3.6.1",
+    "commonform-html": "^3.1.3",
     "commonform-lint": "^3.0.2",
     "commonform-load-components": "^2.1.0",
     "commonmark": "^0.30.0",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "commonform-prepare-blanks": "^1.0.2",
-    "creditstxt": "^1.0.2",
+    "creditstxt": "^1.0.1",
     "prettier": "^2.4.1"
   },
   "scripts": {
