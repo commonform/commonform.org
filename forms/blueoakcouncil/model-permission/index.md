@@ -1,7 +1,7 @@
 ---
 component: false
 trademarks: [5891296]
-logo: https://blueoakcouncil.org/logo.svg
+logo: /blueoakcouncil.svg
 semver: true
 ---
 

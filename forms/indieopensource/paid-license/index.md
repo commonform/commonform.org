@@ -1,7 +1,7 @@
 ---
 component: false
 featured: true
-logo: https://indieopensource.com/logo.svg
+logo: /indieopensource.svg
 ---
 
 a short and sweet paid software license agreement
