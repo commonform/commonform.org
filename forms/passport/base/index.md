@@ -2,7 +2,7 @@
 component: false
 star: true
 featured: true
-logo: https://saaspassport.com/assets/logo.svg
+logo: /saaspassport.svg
 ---
 
 standard legal terms for software as a service sales
