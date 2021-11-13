@@ -1,0 +1,26 @@
+[
+  {
+    "featured": true,
+    "title": "Waypoint NDA",
+    "url": "https://waypointnda.com",
+    "description": "the standard business nondisclosure agreement",
+    "published": "2021-06-18",
+    "logo": "https://waypointnda.com/logo.svg"
+  },
+  {
+    "featured": true,
+    "title": "Guestbook NDA",
+    "url": "https://guestbooknda.com",
+    "description": "the standard one-way nondisclosure agreement",
+    "published": "2021-06-15",
+    "logo": "https://guestbooknda.com/logo.svg"
+  },
+  {
+    "featured": true,
+    "title": "Square One",
+    "url": "https://squareoneforms.com",
+    "description": "free forms for hiring employees and contractors",
+    "published": "2021-10-26",
+    "logo": "https://squareoneforms.com/logo.svg"
+  }
+]

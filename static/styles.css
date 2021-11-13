@@ -345,7 +345,7 @@ ul {
 }
 
 .featured li {
-  border-radius: 1ex;
+  border-radius: 0.5ex;
   border: 1px solid #777;
   display: block;
   padding: 1rem;

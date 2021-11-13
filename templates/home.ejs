@@ -19,11 +19,19 @@
       <ul class=featured>
       <% featured.forEach((feature) => { %>
         <li>
-          <a href="/<%= feature.publisher %>/<%= feature.project %>/<%= feature.edition %>">
-            <% if (feature.logo) { %><img class=logo src="<%= feature.logo %>" alt=logo><% } %>
-            <%= feature.title %>
-          </a>
-          <%- feature.description %>
+          <% if (feature.publisher) { %>
+            <a href="/<%= feature.publisher %>/<%= feature.project %>/<%= feature.edition %>">
+              <% if (feature.logo) { %><img class=logo src="<%= feature.logo %>" alt=logo><% } %>
+              <%= feature.title %>
+            </a>
+            <%- feature.description %>
+          <% } else { %>
+            <a href="<%= feature.url %>">
+              <img class=logo src="<%= feature.logo %>" alt=logo>
+              <%= feature.title %>
+            </a>
+            <p><%= feature.description %></p>
+          <% } %>
         </li>
       <% }) %>
       </ul>
