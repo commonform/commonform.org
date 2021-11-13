@@ -563,7 +563,7 @@ const external = require('./external')
 
 function renderHomePage() {
   const page = path.join('site', 'index.html')
-  const featured = external.filter(project => project.featured)
+  const featured = external.filter((project) => project.featured)
   Object.keys(publishers).forEach((publisherName) => {
     const publisher = publishers[publisherName]
     const projects = publishers[publisherName].projects
