@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 html {
-  font-family: "Equity A", Georgia, serif;
+  font-family: 'Equity A', Georgia, serif;
   font-size: 2.4vw;
   line-height: 1.4;
   text-rendering: optimizeLegibility;
@@ -233,7 +233,7 @@ td ul {
 
 .digest {
   color: #777;
-  font-family: "Triplicate A", 'Andale Mono', monospace;
+  font-family: 'Triplicate A', 'Andale Mono', monospace;
   font-size: 90%;
 }
 
