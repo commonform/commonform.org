@@ -19,10 +19,10 @@
       "enum": [
         "CC0-1.0",
         "CC-BY-4.0",
-        "kemitchell/law-form-license/1e",
-        "kemitchell/tiny-verbatim-license/1e",
-        "waypoint/waypoint-license/1e",
-        "blueoakcouncil/model-permission/1e"
+        "kemitchell/law-form-license/1.0.0",
+        "kemitchell/tiny-verbatim-license/1.0.0",
+        "waypoint/waypoint-license/1.0.0",
+        "blueoakcouncil/model-permission/1.0.0"
       ]
     },
     "defaults": {

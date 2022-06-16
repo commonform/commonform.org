@@ -86,7 +86,7 @@ const forms = formFiles.map((file) => {
   const digest = hash(form)
   if (frontMatter.digest && frontMatter.digest !== digest) {
     console.error(
-      `${file} form digest does not match front matter`,
+      `${file} form digest ${digest} does not match front matter ${frontMatter.digest}`,
     )
     process.exit(1)
   }
