@@ -21,7 +21,7 @@
       <% featured.forEach((feature) => { %>
         <li>
           <% if (feature.publisher) { %>
-            <a href="/<%= feature.publisher %>/<%= feature.project %>/<%= feature.edition %>">
+            <a href="/<%= feature.publisher %>/<%= feature.project %>/<%= feature.version %>">
               <% if (feature.logo) { %><img class=logo src="<%= feature.logo %>" alt=logo><% } %>
               <%= feature.title %>
             </a>

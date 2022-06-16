@@ -13,14 +13,14 @@
     <header role=banner>
       <a href=/><img alt="Common Form logotype" src=/logo.svg></a>
       <h1><%= title %> </h1>
-      <p class=edition><%= spelled %></p>
+      <p class=version><%= spelled %></p>
     </header>
     <main role=main>
       <% if (draft) { %>
       <aside class=warning>
         <p>
           This is a draft.
-          Check <a href="/<%= publisher %>/<%= project %>">the project page</a> for the latest edition.
+          Check <a href="/<%= publisher %>/<%= project %>">the project page</a> for the latest version.
         </p>
       </aside>
       <% } %>
@@ -40,8 +40,8 @@
           <td><a href="/<%= publisher %>/<%= project %>"><%= project %></a></td>
         </tr>
         <tr>
-          <th>Edition</th>
-          <td><%= spelled %> (<%= edition %>)</td>
+          <th>Version</th>
+          <td><%= spelled %> (<%= version %>)</td>
         </tr>
         <tr>
           <th>Published</th>
@@ -81,34 +81,34 @@
           <th>Downloads</th>
           <td>
             <ul>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %>.docx" href="<%= docx %>">Microsoft Word</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %> (complete).docx" href="<%= completeDOCX %>">Microsoft Word (Complete)</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %>.md" href="<%= markdown %>">Markdown</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %> (original).md" href="<%= originalMarkdown %>">Markdown (Original)</a></li>
-              <li><a download="<%= publisher %> <%= project %> <%= edition %>.json" href="<%= json %>">JSON Data</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= version %>.docx" href="<%= docx %>">Microsoft Word</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= version %> (complete).docx" href="<%= completeDOCX %>">Microsoft Word (Complete)</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= version %>.md" href="<%= markdown %>">Markdown</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= version %> (original).md" href="<%= originalMarkdown %>">Markdown (Original)</a></li>
+              <li><a download="<%= publisher %> <%= project %> <%= version %>.json" href="<%= json %>">JSON Data</a></li>
             </ul>
           </td>
         </tr>
         <tr>
           <th>Permalink</th>
-          <% const permalink = `https://commonform.org/${publisher}/${project}/${edition}` %>
+          <% const permalink = `https://commonform.org/${publisher}/${project}/${version}` %>
           <td><a href="<%= permalink %>"><%= permalink.replace(/^https:\/\//, '') %></a></td>
         </tr>
         <tr>
           <th>Complete</th>
-          <% const complete = `https://commonform.org/${publisher}/${project}/${edition}-complete` %>
+          <% const complete = `https://commonform.org/${publisher}/${project}/${version}-complete` %>
           <td><a href="<%= complete %>"><%= complete.replace(/^https:\/\//, '') %></a></td>
         </tr>
         <tr>
           <th>Annotated</th>
-          <% const annotated = `https://commonform.org/${publisher}/${project}/${edition}-annotated` %>
+          <% const annotated = `https://commonform.org/${publisher}/${project}/${version}-annotated` %>
           <td><a href="<%= annotated %>"><%= annotated.replace(/^https:\/\//, '') %></a></td>
         </tr>
       </table>
     </main>
     <footer role=contentinfo>
       <% if (publisherMetadata.email) { %>
-      <p><a href="mailto:<%= publisherMetadata.email %>?subject=<%= encodeURIComponent(`Feedback on ${project} ${edition}`) %>">E-mail the publisher of this form.</a></p>
+      <p><a href="mailto:<%= publisherMetadata.email %>?subject=<%= encodeURIComponent(`Feedback on ${project} ${version}`) %>">E-mail the publisher of this form.</a></p>
       <% } %>
       <p>This form has been <a href=/permanence>permanently published</a>.</p>
       <p><a href="<%= github %>">Source file on GitHub.</a></p>

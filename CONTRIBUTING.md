@@ -34,8 +34,8 @@ Once you've created a publisher profile for yourself, you can create projects.
 
 Once you've created a project, you can publish forms under it.
 
-1.  Determine the [reviewers edition](https://reviewersedition.org) for your form, like `1e1d` for "first draft of first edition" or 3e for "third edition".
+1.  Determine the [Legal Versioning number](https://legalversioning.com) for your form, like `1.0.0-1` for "first draft of first edition" or `3.0.0` for "third edition".
 
-2.  Copy [`./forms/kemitchell/fairshake/1e1u.md`](./forms/kemitchell/fairshake/1e1u.md) into your project directory. Rename the file to match the [edition](https://reviewersedition.org) of your form, like `./forms/jdoe/bill-of-sale/1e.md`.
+2.  Copy [`./forms/kemitchell/fairshake/1.0.0.md`](./forms/kemitchell/fairshake/1.0.0.md) into your project directory. Rename the file to match the version of your form, like `./forms/jdoe/bill-of-sale/1.0.0.md`.
 
 3.  Edit the new file with the content of your form.

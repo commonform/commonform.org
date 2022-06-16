@@ -22,10 +22,10 @@
       <h2><%= project %></h2>
       <%- description %>
       <ul>
-        <% editions.forEach((edition) => { %>
+        <% versions.forEach((version) => { %>
         <li>
-          <a href=/<%= publisher %>/<%= project %>/<%= edition.number %>><%= edition.spelled %></a>
-          (<%= edition.published %>)
+          <a href=/<%= publisher %>/<%= project %>/<%= version.number %>><%= version.spelled %></a>
+          (<%= version.published %>)
         </li>
       <% }) %>
       </ul>
@@ -65,7 +65,7 @@
       </table>
     </main>
     <footer role=contentinfo>
-      <p><a href=/guide#editions>What's with the edition numbers?</a></p>
+      <p><a href=/guide#versions>What's with the version numbers?</a></p>
       <p><a href=/terms>Terms of Service</a></p>
     </footer>
   </body>

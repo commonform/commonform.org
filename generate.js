@@ -18,13 +18,11 @@ const path = require('path')
 const prepareBlanks = require('commonform-prepare-blanks')
 const renderDOCX = require('commonform-docx')
 const renderHTML = require('commonform-html')
-const revedCompare = require('reviewers-edition-compare')
-const revedParse = require('reviewers-edition-parse')
-const revedSpell = require('reviewers-edition-spell')
+const versionCompare = require('legal-versioning-compare')
+const versionParse = require('legal-versioning-parse')
 const rimraf = require('rimraf')
 const runParallel = require('run-parallel')
 const runSeries = require('run-series')
-const toSemVer = require('reviewers-edition-to-semver')
 
 const numberings = {
   decimal: require('decimal-numbering'),
@@ -94,11 +92,11 @@ const forms = formFiles.map((file) => {
   }
   const dirname = path.dirname(file)
   const [_, publisher, project] = dirname.split(path.sep)
-  const edition = path.basename(file, '.md')
+  const version = path.basename(file, '.md')
   return {
     publisher,
     project,
-    edition,
+    version,
     frontMatter,
     digest: hash(form),
     form,
@@ -109,7 +107,7 @@ function getForm(
   repository,
   publisher,
   project,
-  edition,
+  version,
   callback,
 ) {
   if (repository !== 'commonform.org')
@@ -120,33 +118,33 @@ function getForm(
     return (
       element.publisher === publisher &&
       element.project === project &&
-      element.edition === edition
+      element.version === version
     )
   })
   callback(null, result ? result.form : false)
 }
 
-function getEditions(repository, publisher, project, callback) {
+function getVersions(repository, publisher, project, callback) {
   if (repository !== 'commonform.org')
     return callback(
       new Error(`invalid repository: ${repository}`),
     )
-  const editions = forms
+  const versions = forms
     .filter((element) => {
       return (
         element.publisher === publisher &&
         element.project === project
       )
     })
-    .map((element) => element.edition)
-  const result = editions.length > 0 ? editions : false
+    .map((element) => element.version)
+  const result = versions.length > 0 ? versions : false
   callback(null, result)
 }
 
 const loadOptions = {
   repositories: ['commonform.org'],
   caches: {
-    editions: { get: getEditions },
+    versions: { get: getVersions },
     forms: { get: getForm },
   },
 }
@@ -233,28 +231,26 @@ runSeries(
             smartify: true,
             classNames: ['form'],
           })
+          console.error(file)
           const dirname = path.dirname(file)
           const [_, publisher, project] = dirname.split(path.sep)
-          const edition = path.basename(file, '.md')
+          const version = path.basename(file, '.md')
           const title = frontMatter.title || project
           const annotations = []
             .concat(lint(form))
             .concat(critique(form))
           var analysis = analyze(form)
-          const spelled = projectMetadata[publisher][project]
-            .semver
-            ? toSemVer(edition)
-            : revedSpell(edition)
+          const spelled = `Version ${version}`
           const data = Object.assign(
             {
               title,
               github: `https://github.com/commonform/commonform.org/blob/main/${file}`,
               digest: hash(form),
-              docx: `${edition}.docx`,
-              completeDOCX: `${edition}-complete.docx`,
-              json: `${edition}.json`,
-              markdown: `${edition}.md`,
-              originalMarkdown: `${edition}-original.md`,
+              docx: `${version}.docx`,
+              completeDOCX: `${version}-complete.docx`,
+              json: `${version}.json`,
+              markdown: `${version}.md`,
+              originalMarkdown: `${version}-original.md`,
               spelled,
               project,
               projectMetadata:
@@ -267,8 +263,8 @@ runSeries(
                 frontMatter.published,
               ),
               rendered,
-              edition,
-              draft: Boolean(revedParse(edition).draft),
+              version,
+              draft: Boolean(versionParse(version).draft),
             },
             frontMatter,
           )
@@ -284,7 +280,7 @@ runSeries(
             'site',
             publisher,
             project,
-            `${edition}.html`,
+            `${version}.html`,
           )
           fs.mkdirSync(path.dirname(page), { recursive: true })
           fs.writeFileSync(page, html)
@@ -310,7 +306,7 @@ runSeries(
               'site',
               publisher,
               project,
-              `${edition}-${suffix}.html`,
+              `${version}-${suffix}.html`,
             )
             fs.mkdirSync(path.dirname(htmlFile), {
               recursive: true,
@@ -341,7 +337,7 @@ runSeries(
             'site',
             publisher,
             project,
-            `${edition}-annotated.html`,
+            `${version}-annotated.html`,
           )
           fs.mkdirSync(path.dirname(annotated), {
             recursive: true,
@@ -358,17 +354,17 @@ runSeries(
             publishers[publisher].projects[project] =
               Object.assign(
                 {
-                  editions: {},
+                  versions: {},
                 },
                 projectMetadata[publisher][project],
               )
           }
-          publishers[publisher].projects[project].editions[
-            edition
+          publishers[publisher].projects[project].versions[
+            version
           ] = frontMatter
           var docxOptions = {
             title,
-            edition,
+            version,
             centerTitle: false,
             leftAlignBody: true,
             indentMargins: true,
@@ -399,7 +395,7 @@ runSeries(
           function writeDOCX(form, suffix, label) {
             label = label || ''
             const options = Object.assign({}, docxOptions, {
-              edition: spelled + ' ' + label,
+              version: spelled + ' ' + label,
             })
             renderDOCX(clone(form), values, options)
               .generateAsync({ type: 'nodebuffer' })
@@ -408,7 +404,7 @@ runSeries(
                   'site',
                   publisher,
                   project,
-                  `${edition}${suffix}.docx`,
+                  `${version}${suffix}.docx`,
                 )
                 fs.writeFileSync(wordFile, buffer)
               })
@@ -418,7 +414,7 @@ runSeries(
             'site',
             publisher,
             project,
-            `${edition}.json`,
+            `${version}.json`,
           )
           fs.writeFileSync(
             jsonFile,
@@ -431,7 +427,7 @@ runSeries(
             'site',
             publisher,
             project,
-            `${edition}.md`,
+            `${version}.md`,
           )
           fs.writeFileSync(markdownFile, content)
 
@@ -441,7 +437,7 @@ runSeries(
               'site',
               publisher,
               project,
-              `${edition}${suffix}.md`,
+              `${version}${suffix}.md`,
             )
             fs.writeFileSync(
               markdownFile,
@@ -510,27 +506,25 @@ function renderPublisherPages() {
           project,
           'index.html',
         )
-        const editions = Object.keys(projects[project].editions)
-          .map((edition) => {
+        const versions = Object.keys(projects[project].versions)
+          .map((version) => {
             const frontMatter =
-              projects[project].editions[edition]
+              projects[project].versions[version]
             return {
-              number: edition,
-              spelled: projectMetadata[publisher][project].semver
-                ? toSemVer(edition)
-                : revedSpell(edition),
+              number: version,
+              spelled: `Version ${version}`,
               published: displayDate(frontMatter.published),
               frontMatter,
             }
           })
           .sort((a, b) => {
-            return revedCompare(b.number, a.number)
+            return versionCompare(b.number, a.number)
           })
         const data = Object.assign(
           {
             publisher,
             project,
-            editions,
+            versions,
             trademarks: false,
             archived: false,
             logo: false,
@@ -543,8 +537,8 @@ function renderPublisherPages() {
         const json = JSON.stringify({
           publisher,
           project,
-          editions: editions.map((edition) => {
-            return edition.number
+          versions: versions.map((version) => {
+            return version.number
           }),
         })
         const jsonFile = path.join(
@@ -569,20 +563,20 @@ function renderHomePage() {
     const projects = publishers[publisherName].projects
     Object.keys(projects).forEach((projectName) => {
       const project = projects[projectName]
-      const editions = project.editions
-      const latest = Object.keys(editions)
-        .sort((a, b) => revedCompare(a, b))
+      const versions = project.versions
+      const latest = Object.keys(versions)
+        .sort((a, b) => versionCompare(a, b))
         .reverse()[0]
-      const edition = editions[latest]
+      const version = versions[latest]
       if (project.featured) {
         featured.push({
           publisher: publisherName,
           name: publisherMetadata[publisherName].name,
           project: projectName,
           description: project.description,
-          edition: latest,
-          published: edition.published,
-          title: edition.title,
+          version: latest,
+          published: version.published,
+          title: version.title,
           logo: project.logo || false,
         })
       }
@@ -613,15 +607,15 @@ function renderAtomFeeds() {
     Object.keys(projects).forEach((project) => {
       const projectPosts = []
       const projectMeta = projects[project]
-      const editions = projects[project].editions
-      Object.keys(editions).forEach((edition) => {
-        const editionMeta = editions[edition]
-        const permalink = `https://commonform.org/${publisher}/${project}/${edition}`
+      const versions = projects[project].versions
+      Object.keys(versions).forEach((version) => {
+        const versionMeta = versions[version]
+        const permalink = `https://commonform.org/${publisher}/${project}/${version}`
         const post = toPost({
           project,
-          edition,
+          version,
           projectMeta,
-          editionMeta,
+          versionMeta,
           permalink,
         })
         publisherPosts.push(post)
@@ -662,15 +656,15 @@ function renderAtomFeeds() {
 
 function toPost({
   project,
-  edition,
+  version,
   projectMeta,
-  editionMeta,
+  versionMeta,
   permalink,
 }) {
   return {
-    title: `${projectMeta.title || project} ${edition}`,
+    title: `${projectMeta.title || project} ${version}`,
     description: '',
-    date: editionMeta.published,
+    date: versionMeta.published,
     link: permalink,
     permalink,
   }
