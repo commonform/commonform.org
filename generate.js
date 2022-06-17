@@ -103,17 +103,14 @@ const forms = formFiles.map((file) => {
   }
 })
 
-function getForm(
-  repository,
-  publisher,
-  project,
-  version,
-  callback,
-) {
-  if (repository !== 'commonform.org')
+function getForm(url, callback) {
+  const parsed = new URL(url)
+  if (parsed.hostname !== 'commonform.org')
     return callback(
       new Error(`invalid repository: ${repository}`),
     )
+  const [_, publisher, project, json] = parsed.pathname.split('/')
+  const version = path.basename(json, '.json')
   const result = forms.find((element) => {
     return (
       element.publisher === publisher &&
@@ -121,7 +118,7 @@ function getForm(
       element.version === version
     )
   })
-  callback(null, result ? result.form : false)
+  callback(null, result ? { publisher, name: project, version, form: result.form } : false)
 }
 
 function getVersions(repository, publisher, project, callback) {
@@ -142,11 +139,7 @@ function getVersions(repository, publisher, project, callback) {
 }
 
 const loadOptions = {
-  repositories: ['commonform.org'],
-  caches: {
-    versions: { get: getVersions },
-    forms: { get: getForm },
-  },
+  cache: { get: getForm },
 }
 
 const projectMetadata = {}
